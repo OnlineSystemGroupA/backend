@@ -49,6 +49,7 @@
       <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
       <version>2.0.4</version>
     </dependency>
+
     <!-- swagger 第三方 ui -->
     <dependency>
       <groupId>com.github.xiaoymin</groupId>
