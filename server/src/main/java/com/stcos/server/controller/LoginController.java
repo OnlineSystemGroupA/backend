@@ -34,6 +34,11 @@ public class LoginController {
 //        return RespObj.error("错误");
     }
 
+    @GetMapping
+    @Schema(name = "test")
+    public String test() {
+        return "hello-world!";
+    }
 
 
 }
