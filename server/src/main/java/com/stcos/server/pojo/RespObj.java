@@ -1,5 +1,6 @@
 package com.stcos.server.pojo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,17 +17,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RespObj {
 
-    /**
-     * 状态码
-     */
+    @Schema(description = "状态码", name = "code")
     private long code;
-    /**
-     * 提示语
-     */
+
+    @Schema(description = "提示信息", name = "message")
     private String message;
-    /**
-     * 需要包含的其他信息
-     */
+
+    @Schema(description = "需要包含的其他信息", name = "obj")
     private Object obj;
 
     public static RespObj success(String message) {
