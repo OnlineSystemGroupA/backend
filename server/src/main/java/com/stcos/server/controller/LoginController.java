@@ -28,10 +28,10 @@ public class LoginController {
     @PostMapping
     @Schema(name = "login", description = "登录")
     public RespObj login(LoginParam param, HttpServletRequest request) {
-//        return RespObj.success("200");
+        return RespObj.success("200");
 
 
-        return RespObj.error("错误");
+//        return RespObj.error("错误");
     }
 
 
