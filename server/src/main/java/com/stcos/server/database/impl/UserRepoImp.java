@@ -1,7 +1,7 @@
 package com.stcos.server.database.impl;
 
 import com.stcos.server.database.UserRepo;
-import com.stcos.server.mapper.UserMapper;
+import com.stcos.server.database.mapper.UserMapper;
 import com.stcos.server.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

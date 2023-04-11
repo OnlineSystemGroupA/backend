@@ -1,6 +1,6 @@
 package com.stcos.server;
 
-import com.stcos.server.mapper.UserMapper;
+import com.stcos.server.database.mapper.UserMapper;
 import com.stcos.server.pojo.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
