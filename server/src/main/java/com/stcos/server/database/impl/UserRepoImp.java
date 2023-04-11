@@ -6,7 +6,6 @@ import com.stcos.server.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +25,18 @@ public class UserRepoImp implements UserRepo {
     public User getUserByName(String username){
         Map<String, Object> map = new HashMap<>();
         map.put("username",username);
-        List<User> list = userMapper.selectByMap(map);
-        return list.get(0);
+        return userMapper.selectByMap(map).get(0);
+    }
+
+    @Override
+    public boolean existUserName(String username) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        return userMapper.selectByMap(map).isEmpty();
+    }
+
+    @Override
+    public void addNewUser(User newuser) {
+        userMapper.insert(newuser);
     }
 }
