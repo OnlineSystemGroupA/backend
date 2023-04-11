@@ -1,5 +1,6 @@
 package com.stcos.server.database;
 
+import com.stcos.server.pojo.entity.TempUser;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -14,4 +15,8 @@ public interface UserRepo {
     default UserDetails getUserByName(String username) {
         return null;
     };
+
+    default boolean existUserName(String username) {return false;};
+
+    default void addNewUser(TempUser tempUser){return;};
 }
