@@ -112,10 +112,5 @@ public class LoginController {
         return result;
     }
 
-    @GetMapping
-    @Schema(name = "test")
-    public String test() {
-        return "hello-world!";
-    }
 
 }
