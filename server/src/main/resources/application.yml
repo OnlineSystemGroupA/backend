@@ -20,6 +20,18 @@ knife4j:
   setting:
     language: zh_cn
 
+
+spring:
+# 配置数据源信息
+    datasource:
+      # 配置数据源结构类型
+      type: com.zaxxer.hikari.HikariDataSource
+      # 数据库链接信息配置
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
+      username: stcos
+      password: stcosgroupa
+
 jwt:
   # JWT 存储的请求头
   tokenHeader: Authorization
@@ -29,3 +41,16 @@ jwt:
   expiration: 604800
   # JWT 负载中拿到开头
   tokenHead: Bearer
+
+# MyBatis配置
+mybatis-plus:
+  configuration:
+    # 配置MyBatis日志文件
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 设置MyBatis-Plus的全局配置
+  global-config:
+    db-config:
+      # 配置MyBatis-Plus的主键策略
+      id-type: auto
+      # 设置实体类所对应的表的统一前缀
+      table-prefix: t_

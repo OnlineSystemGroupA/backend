@@ -1,7 +1,7 @@
 package com.stcos.server;
 
 import com.stcos.server.mapper.UserMapper;
-import com.stcos.server.pojo.User;
+import com.stcos.server.pojo.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,6 @@ public class ServerApplicationTest{
 
     @Autowired
     private UserMapper userMapper;
-
 
     @Test
     public void testSelectList(){
