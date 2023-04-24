@@ -17,4 +17,6 @@ public class TempUser {
 
     String password;
 
+    String uuid;
+
 }
