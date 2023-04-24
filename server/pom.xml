@@ -92,7 +92,13 @@
       <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
       <version>3.6.1</version>
     </dependency>
-
+    <!-- for testing -->
+    <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
+      <version>${spring.boot.version}</version>
+    </dependency>
 
 
 

@@ -3,6 +3,7 @@ package com.stcos.server.controller;
 import com.stcos.server.pojo.RespBean;
 import com.stcos.server.pojo.entity.TempUser;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 
 @RestController
+@Tag(name = "ProcessController")
 public class ProcessController {
 
     private TaskService taskService;
