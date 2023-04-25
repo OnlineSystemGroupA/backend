@@ -20,9 +20,9 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 @Schema(title = "登录参数对象", name = "LoginParam")
 public class LoginParam {
 
-    @Schema(name = "用户名", requiredMode = REQUIRED)
+    @Schema(name = "username", requiredMode = REQUIRED)
     private String username;
-    @Schema(name = "密码", requiredMode = REQUIRED)
+    @Schema(name = "password", requiredMode = REQUIRED)
     private String password;
 
 }
