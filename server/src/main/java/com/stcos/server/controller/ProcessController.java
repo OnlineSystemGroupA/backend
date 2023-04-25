@@ -1,7 +1,7 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.pojo.RespBean;
-import com.stcos.server.pojo.entity.TempUser;
+import com.stcos.server.pojo.entity.User;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.flowable.engine.RuntimeService;
@@ -52,7 +52,7 @@ public class ProcessController {
     @PostMapping("/start")
     public RespBean startProcess(@RequestBody String text, @Parameter(hidden = true) Principal principal) {
         Map<String, Object> variables = new HashMap<>();
-        String uuid = ((TempUser) userDetailsService.loadUserByUsername(principal.getName())).getUuid();
+        String uuid = ((User) userDetailsService.loadUserByUsername(principal.getName())).getUid();
         variables.put("text", text);
         variables.put("user", uuid);
         variables.put("admin", "admin-742cec45-0ae5-4965-93c9-150ba49bbb32");
