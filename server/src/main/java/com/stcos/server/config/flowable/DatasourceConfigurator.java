@@ -45,10 +45,6 @@ public class DatasourceConfigurator implements EngineConfigurator {
 
     @Override
     public void beforeInit(AbstractEngineConfiguration engineConfiguration) {
-    }
-
-    @Override
-    public void configure(AbstractEngineConfiguration engineConfiguration) {
         DataSource dataSource = DataSourceBuilder.create()
                 .type(type)
                 .driverClassName(driverClassName)
@@ -56,6 +52,10 @@ public class DatasourceConfigurator implements EngineConfigurator {
                 .username(username)
                 .password(password).build();
         engineConfiguration.setDataSource(dataSource);
+    }
+
+    @Override
+    public void configure(AbstractEngineConfiguration engineConfiguration) {
     }
 
     @Override
