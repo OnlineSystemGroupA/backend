@@ -37,7 +37,7 @@ public class UserRepoImp implements UserRepo {
     }
 
     @Override
-    public boolean existUserName(String username) {
+    public boolean existUsername(String username) {
         Map<String,Object> map = new HashMap<>();
         map.put("username",username);
         return !userMapper.selectByMap(map).isEmpty();

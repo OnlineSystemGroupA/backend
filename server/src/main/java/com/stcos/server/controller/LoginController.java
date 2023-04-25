@@ -68,7 +68,6 @@ public class LoginController {
         } else {
             result = service.register(param.getUsername(), param.getPassword(), param.getEmail());
         }
-        log.info("register: " + result);
         return result;
     }
 
@@ -83,9 +82,7 @@ public class LoginController {
                     content = @Content()),
             @ApiResponse(responseCode = "603", description = "用户名或密码错误",
                     content = @Content()),
-            @ApiResponse(responseCode = "604", description = "用户名或密码错误",
-                    content = @Content()),
-            @ApiResponse(responseCode = "605", description = "参数错误",
+            @ApiResponse(responseCode = "604", description = "参数错误",
                     content = @Content(schema = @Schema(implementation = Errors.class))),
     })
     public RespBean login(
@@ -95,11 +92,10 @@ public class LoginController {
             @Parameter(hidden = true) Errors errors) {
         RespBean result;
         if (errors.hasFieldErrors("username")) {
-            result = new RespBean(-1, "参数错误", errors.getFieldErrors());
+            result = new RespBean(604, "参数错误", errors.getFieldErrors());
         } else {
             result = service.login(loginParam.getUsername(), loginParam.getPassword());
         }
-        log.info("login: " + result);
         return result;
     }
 
@@ -108,7 +104,6 @@ public class LoginController {
     @ApiResponse(responseCode = "600", description = "注销成功", content = @Content())
     public RespBean logout() {
         RespBean result = service.logout();
-        log.info("logout: " + result);
         return result;
     }
 

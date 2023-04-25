@@ -16,7 +16,7 @@ public interface UserRepo {
     default UserDetails getUserByName(String username) {
         return null;
     }
-    default boolean existUserName(String username){
+    default boolean existUsername(String username){
         return false;
     }
 
