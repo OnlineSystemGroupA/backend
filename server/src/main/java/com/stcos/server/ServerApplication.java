@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 //scan for "Mapper" package
-@MapperScan("com.stcos.server.mapper")
+@MapperScan("com.stcos.server.database.mapper")
 public class ServerApplication
 {
     public static void main( String[] args )
