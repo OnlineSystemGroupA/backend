@@ -19,8 +19,12 @@ import java.util.Map;
 @Component
 public class UserRepoImp implements UserRepo {
 
-    @Autowired
+
     private UserMapper userMapper;
+
+    @Autowired
+    public void setUserMapper(UserMapper userMapper){this.userMapper=userMapper;}
+
     @Override
     public User getUserByName(String username){
         Map<String, Object> map = new HashMap<>();

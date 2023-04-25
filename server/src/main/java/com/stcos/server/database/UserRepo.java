@@ -1,5 +1,6 @@
 package com.stcos.server.database;
 
+import com.stcos.server.pojo.entity.TempUser;
 import com.stcos.server.pojo.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +20,8 @@ public interface UserRepo {
         return false;
     }
 
+    default void addNewUser(TempUser newuser){
+    }
     default void addNewUser(User newuser){
     }
 }
