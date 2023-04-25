@@ -86,7 +86,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(UserRepo repo) {
         return username -> {
-            UserDetails account = repo.getUserByUsername(username);
+            UserDetails account = repo.getUserByName(username);
             if (account != null) return account;
             throw new UsernameNotFoundException("找不到用户" + username);
         };
