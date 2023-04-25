@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @since 2023/4/3 20:52
  */
 
-@Component
-public class UserRepoImp implements UserRepo {
+//@Component
+public class UserRepoImp {
 
 }

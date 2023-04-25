@@ -1,19 +1,15 @@
 package com.stcos.server.config.flowable;
 
-import lombok.extern.slf4j.Slf4j;
-import org.flowable.engine.*;
-import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+import org.flowable.app.spring.SpringAppEngineConfiguration;
+import org.flowable.cmmn.engine.CmmnEngineConfiguration;
+import org.flowable.dmn.engine.DmnEngineConfiguration;
+import org.flowable.eventregistry.spring.SpringEventRegistryEngineConfiguration;
+import org.flowable.idm.engine.IdmEngineConfiguration;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
-import org.flowable.spring.boot.ProcessEngineConfigurationConfigurer;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sql.DataSource;
 
 /**
  * description
@@ -24,17 +20,44 @@ import javax.sql.DataSource;
  */
 
 @Configuration
-public class ProcessEngineConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
+public class ProcessEngineConfig {
+
+    private DatasourceConfigurator datasourceConfigurator;
+
+    @Autowired
+    public void setDatasourceConfigurator(DatasourceConfigurator datasourceConfigurator) {
+        this.datasourceConfigurator = datasourceConfigurator;
+    }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.dynamic.datasource.flowable")
-    public DataSource dataSource() {
-        return DataSourceBuilder.create().build();
+    public EngineConfigurationConfigurer<SpringProcessEngineConfiguration> SpringProcessEngineConfigurationConfigurer() {
+        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
     }
 
-    @Override
-    public void configure(SpringProcessEngineConfiguration engineConfiguration) {
-        engineConfiguration.setDataSource(dataSource());
+    @Bean
+    public EngineConfigurationConfigurer<IdmEngineConfiguration> IdmEngineConfigurationConfigurer() {
+        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
     }
+
+    @Bean
+    public EngineConfigurationConfigurer<CmmnEngineConfiguration> CmmnEngineConfigurationConfigurer() {
+        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
+    }
+
+    @Bean
+    public EngineConfigurationConfigurer<DmnEngineConfiguration> DmnEngineConfigurationConfigurer() {
+        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
+    }
+
+    @Bean
+    public EngineConfigurationConfigurer<SpringEventRegistryEngineConfiguration> SpringEventRegistryEngineConfigurationConfigurer() {
+        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
+    }
+
+    @Bean
+    public EngineConfigurationConfigurer<SpringAppEngineConfiguration> SpringAppEngineConfigurationConfigurer() {
+        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
+    }
+
 }
 
