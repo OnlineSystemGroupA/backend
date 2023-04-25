@@ -28,6 +28,12 @@
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${spring.boot.version}</version>
+      <scope>test</scope>
+    </dependency>
     <!-- web -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -54,7 +60,6 @@
       <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
       <version>2.0.4</version>
     </dependency>
-
     <!-- swagger 第三方 ui -->
     <dependency>
       <groupId>com.github.xiaoymin</groupId>
@@ -65,13 +70,24 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
-      <version>${spring.boot.version}</version>
     </dependency>
     <!-- JWT -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt</artifactId>
       <version>0.9.1</version>
+    </dependency>
+    <!-- MyBatis-Plus -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <version>3.5.3.1</version>
+    </dependency>
+    <!-- mybatis-plus-generator -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-generator</artifactId>
+      <version>3.5.3.1</version>
     </dependency>
     <!-- MySQL -->
     <dependency>
@@ -86,30 +102,10 @@
       <artifactId>flowable-spring-boot-starter</artifactId>
       <version>7.0.0.M1</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter -->
-<!--    <dependency>-->
-<!--      <groupId>com.baomidou</groupId>-->
-<!--      <artifactId>dynamic-datasource-spring-boot-starter</artifactId>-->
-<!--      <version>3.6.1</version>-->
-<!--    </dependency>-->
-    <!-- for testing -->
-    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <version>${spring.boot.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-validation</artifactId>
-      <version>${spring.boot.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-
 
   </dependencies>
 

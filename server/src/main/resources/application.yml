@@ -20,6 +20,18 @@ knife4j:
   setting:
     language: zh_cn
 
+
+spring:
+# 配置数据源信息
+    datasource:
+      # 配置数据源结构类型
+      type: com.zaxxer.hikari.HikariDataSource
+      # 数据库链接信息配置
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
+      username: stcos
+      password: stcosgroupa
+
 jwt:
   # JWT 存储的请求头
   tokenHeader: Authorization
@@ -30,43 +42,16 @@ jwt:
   # JWT 负载中拿到开头
   tokenHead: Bearer
 
-
-
-
-spring:
-  # 配置数据源信息
-  datasource:
-    # 配置数据源结构类型
-    type: com.zaxxer.hikari.HikariDataSource
-    # 数据库链接信息配置
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
-    username: stcos
-    password: stcosgroupa
-  #    dynamic:
-  #      primary: main # 设置默认数据源
-  #      strict: false # 关闭严格匹配，在匹配失效时使用默认数据源
-  #      datasource:
-  #        main:
-  #          # 配置数据源结构类型
-  #          type: com.zaxxer.hikari.HikariDataSource
-  #          # 数据库链接信息配置
-  #          driver-class-name: com.mysql.cj.jdbc.Driver
-  #          url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
-  #          username: stcos
-  #          password: stcosgroupa
-  #        flowable:
-  #          type: com.zaxxer.hikari.HikariDataSource
-  #          driver-class-name: com.mysql.cj.jdbc.Driver
-  #          jdbc-url: jdbc:mysql://localhost:3306/flowable_demo?serverTimezone=UTC&nullCatalogMeansCurrent=true
-  #          username: flowable_demo
-  #          password:
-  jpa:
-    database: MySQL
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-
+# MyBatis配置
+mybatis-plus:
+  configuration:
+    # 配置MyBatis日志文件
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 设置MyBatis-Plus的全局配置
+  global-config:
+    db-config:
+      # 配置MyBatis-Plus的主键策略
+      id-type: auto
 
 flowable:
   #关闭定时任务JOB

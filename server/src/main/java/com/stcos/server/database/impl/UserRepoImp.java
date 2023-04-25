@@ -1,7 +1,12 @@
 package com.stcos.server.database.impl;
 
 import com.stcos.server.database.UserRepo;
+import com.stcos.server.database.mapper.UserMapper;
+import com.stcos.server.pojo.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * description
@@ -14,4 +19,28 @@ import org.springframework.stereotype.Component;
 //@Component
 public class UserRepoImp {
 
+
+    private UserMapper userMapper;
+
+    @Autowired
+    public void setUserMapper(UserMapper userMapper){this.userMapper=userMapper;}
+
+    @Override
+    public User getUserByName(String username){
+        Map<String, Object> map = new HashMap<>();
+        map.put("username",username);
+        return userMapper.selectByMap(map).get(0);
+    }
+
+    @Override
+    public boolean existUserName(String username) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        return userMapper.selectByMap(map).isEmpty();
+    }
+
+    @Override
+    public void addNewUser(User newuser) {
+        userMapper.insert(newuser);
+    }
 }
