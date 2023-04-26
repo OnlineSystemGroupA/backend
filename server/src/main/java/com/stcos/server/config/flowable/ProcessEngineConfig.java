@@ -1,14 +1,8 @@
 package com.stcos.server.config.flowable;
 
 import org.flowable.app.spring.SpringAppEngineConfiguration;
-import org.flowable.cmmn.engine.CmmnEngineConfiguration;
-import org.flowable.dmn.engine.DmnEngineConfiguration;
-import org.flowable.eventregistry.spring.SpringEventRegistryEngineConfiguration;
-import org.flowable.idm.engine.IdmEngineConfiguration;
-import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /*
@@ -30,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-public class ProcessEngineConfig {
+public class ProcessEngineConfig implements EngineConfigurationConfigurer<SpringAppEngineConfiguration> {
 
     private DatasourceConfigurator datasourceConfigurator;
 
@@ -39,34 +33,9 @@ public class ProcessEngineConfig {
         this.datasourceConfigurator = datasourceConfigurator;
     }
 
-    @Bean
-    public EngineConfigurationConfigurer<SpringProcessEngineConfiguration> springProcessEngineConfigurationConfigurer() {
-        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
-    }
-
-    @Bean
-    public EngineConfigurationConfigurer<IdmEngineConfiguration> idmEngineConfigurationConfigurer() {
-        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
-    }
-
-    @Bean
-    public EngineConfigurationConfigurer<CmmnEngineConfiguration> cmmnEngineConfigurationConfigurer() {
-        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
-    }
-
-    @Bean
-    public EngineConfigurationConfigurer<DmnEngineConfiguration> dmnEngineConfigurationConfigurer() {
-        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
-    }
-
-    @Bean
-    public EngineConfigurationConfigurer<SpringEventRegistryEngineConfiguration> springEventRegistryEngineConfigurationConfigurer() {
-        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
-    }
-
-    @Bean
-    public EngineConfigurationConfigurer<SpringAppEngineConfiguration> springAppEngineConfigurationConfigurer() {
-        return engineConfiguration -> engineConfiguration.addConfigurator(datasourceConfigurator);
+    @Override
+    public void configure(SpringAppEngineConfiguration engineConfiguration) {
+        engineConfiguration.addConfigurator(datasourceConfigurator);
     }
 
 }

@@ -60,7 +60,7 @@ public class DatasourceConfigurator implements EngineConfigurator {
 
     @Override
     public int getPriority() {
-        return 1;
+        return 600000;
     }
 
 }
