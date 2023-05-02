@@ -15,7 +15,7 @@
     <description>backend</description>
     <modules>
         <module>server</module>
-      <module>api</module>
+      <module>openapi</module>
     </modules>
 
     <packaging>pom</packaging>
