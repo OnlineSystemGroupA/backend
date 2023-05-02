@@ -1,5 +1,6 @@
 package com.stcos.server.controller;
 
+import com.stcos.server.controller.api.LoginApi;
 import com.stcos.server.pojo.LoginParam;
 import com.stcos.server.pojo.RegisterParam;
 import com.stcos.server.pojo.RespBean;
@@ -38,7 +39,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @Tag(name = "LoginController")
-public class LoginController {
+public class LoginController implements LoginApi {
 
     private UserAuthenticationService service;
 
@@ -50,18 +51,8 @@ public class LoginController {
 //////////////////////////////////// AUTO_WIRED END   ///////////////////////////////////////
 
 
-    @PostMapping("/register")
-    @Operation(summary = "用户注册")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "600", description = "注册成功", content = @Content()),
-            @ApiResponse(responseCode = "601", description = "用户名已存在", content = @Content()),
-            @ApiResponse(responseCode = "602", description = "参数错误", content = @Content())
-    })
-    public RespBean register(
-            @Parameter(required = true)
-            @Valid @RequestBody RegisterParam param,
-            @Parameter(hidden = true)
-            Errors errors) {
+    @Override
+    public RespBean register(RegisterParam param, Errors errors) {
         RespBean result;
         if (errors.hasErrors()) {
             result = new RespBean(-1, "参数错误", errors.getFieldErrors());
@@ -71,25 +62,8 @@ public class LoginController {
         return result;
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "用户登录", description = "登录成功返回 token")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "600", description = "登录成功",
-                    content = @Content(schema = @Schema(implementation = TokenMap.class))),
-            @ApiResponse(responseCode = "601", description = "用户不存在",
-                    content = @Content()),
-            @ApiResponse(responseCode = "602", description = "账号禁用",
-                    content = @Content()),
-            @ApiResponse(responseCode = "603", description = "用户名或密码错误",
-                    content = @Content()),
-            @ApiResponse(responseCode = "604", description = "参数错误",
-                    content = @Content(schema = @Schema(implementation = Errors.class))),
-    })
-    public RespBean login(
-            @Parameter(required = true, description = "登录参数")
-            @RequestBody
-            @Valid LoginParam loginParam,
-            @Parameter(hidden = true) Errors errors) {
+    @Override
+    public RespBean login(LoginParam loginParam, Errors errors) {
         RespBean result;
         if (errors.hasFieldErrors("username")) {
             result = new RespBean(604, "参数错误", errors.getFieldErrors());
@@ -99,9 +73,7 @@ public class LoginController {
         return result;
     }
 
-    @PostMapping("/logout")
-    @Operation(summary = "注销登录")
-    @ApiResponse(responseCode = "600", description = "注销成功", content = @Content())
+    @Override
     public RespBean logout() {
         RespBean result = service.logout();
         return result;
