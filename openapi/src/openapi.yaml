@@ -20,7 +20,7 @@ paths:
     post:
       tags:
         - authentication
-      summary: register
+      summary: 用户注册
       description: 注册新用户
       operationId: register
       requestBody:
@@ -31,18 +31,17 @@ paths:
               $ref: "#/components/schemas/RegisterParam"
         required: true
       responses:
+
         '200':
           description: 注册成功
-          content: { }
         '409':
           description: 用户名已存在
-          content: { }
 
   /authentication/login:
     post:
       tags:
         - authentication
-      summary: login
+      summary: 用户登录
       description: 登录成功返回 token
       operationId: login
       requestBody:
@@ -61,31 +60,27 @@ paths:
                 $ref: "#/components/schemas/Token"
         '404':
           description: 用户不存在
-          content: { }
         '401':
           description: 用户名或密码错误
-          content: { }
         '403':
           description: 账号禁用
-          content: { }
 
   /authentication/logout:
     post:
       tags:
         - authentication
-      summary: logout
+      summary: 用户注销
       description: 注销登录
       operationId: logout
       responses:
         '200':
           description: 注销成功
-          content: { }
 
   /process/start:
     post:
       tags:
         - process
-      summary: start process
+      summary: 启动流程
       description: 开启一个新的委托流程
       operationId: startProcess
       responses:
@@ -94,12 +89,12 @@ paths:
           content:
             'application/json':
               schema:
-                type: string
+                $ref: "#/components/schemas/ProcessId"
   /process/tasks:
     get:
       tags:
         - process
-      summary: get tasks
+      summary: 获取所有任务
       description: 获取与当前用户可见的任务列表
       operationId: getTasks
       responses:
@@ -116,7 +111,7 @@ paths:
     get:
       tags:
         - process
-      summary: get a task
+      summary: 获取单个任务
       description: 通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见
       operationId: getTaskById
       parameters:
@@ -132,21 +127,17 @@ paths:
           content:
             'application/json':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Task"
+                $ref: "#/components/schemas/Task"
         '403':
           description: 指定任务对该用户不可见
-          content: { }
         '404':
           description: 指定任务不存在
-          content: { }
 
   /process/tasks/{taskId}/complete:
     post:
       tags:
         - process
-      summary: complete a task
+      summary: 完成任务
       description: 将指定任务设置为已完成，并跳转至下一阶段
       operationId: completeTask
       parameters:
@@ -159,13 +150,10 @@ paths:
       responses:
         '200':
           description: 成功完成指定任务
-          content: { }
         '403':
           description: 指定任务对该用户不可见或当前用户无完成任务权限
-          content: { }
         '404':
           description: 指定任务不存在
-          content: { }
 
   /process/tasks/{taskId}/items/{itemName}:
     parameters:
@@ -184,26 +172,22 @@ paths:
     put:
       tags:
         - process
-      summary: update a item of one task
+      summary: 更新变量
       description: 修改指定任务中的指定资源
       operationId: updateTaskItem
       responses:
         '200':
           description: 成功更新指定资源
-          content: { }
         '201':
           description: 成功创建指定资源
-          content: { }
         '403':
           description: 该任务对当前用户不可见或当前用户无修改权限
-          content: { }
         '404':
           description: 指定任务不存在
-          content: { }
     get:
       tags:
         - process
-      summary: get a item of one task
+      summary: 获取变量
       description: 获取指定任务中的指定资源
       operationId: getTaskItem
       responses:
@@ -215,11 +199,8 @@ paths:
                 type: object
         '403':
           description: 指定任务或资源对该用户不可见
-          content: { }
         '404':
           description: 指定任务或资源不存在
-          content: { }
-
 
 components:
   schemas:
@@ -256,6 +237,7 @@ components:
       required:
         - tokenHead
         - tokenStr
+        - userType
       properties:
         tokenHead:
           type: string
@@ -263,6 +245,9 @@ components:
         tokenStr:
           type: string
           description: token 字符串
+        userType:
+          type: string
+          description: 成功登录的用户类型：admin、operator、client.
 
     Task:
       type: object
@@ -288,3 +273,11 @@ components:
         startUserId:
           type: string
           description: 当前流程的发起人
+
+    ProcessId:
+      required:
+        - processId
+      properties:
+        processId:
+          type: string
+          description: 新委托流程的 id
