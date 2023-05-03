@@ -1,4 +1,4 @@
-package com.stcos.server.config.swagger;
+package com.stcos.server.config.openapi;
 
 /**
  * description

@@ -16,6 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Deprecated
 @Accessors(chain = true)
 public class TempUser {
 

@@ -36,7 +36,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     private ClientMapper clientMapper;
 
-    @Autowired
+//    @Autowired
     public void setClientMapper(ClientMapper clientMapper) {
         this.clientMapper = clientMapper;
     }

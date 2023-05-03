@@ -33,8 +33,10 @@ paths:
       responses:
         '200':
           description: 注册成功
+          content: { }
         '409':
           description: 用户名已存在
+          content: { }
 
   /authentication/login:
     post:
@@ -59,10 +61,13 @@ paths:
                 $ref: "#/components/schemas/Token"
         '404':
           description: 用户不存在
+          content: { }
         '401':
           description: 用户名或密码错误
+          content: { }
         '403':
           description: 账号禁用
+          content: { }
 
   /authentication/logout:
     post:
@@ -74,6 +79,147 @@ paths:
       responses:
         '200':
           description: 注销成功
+          content: { }
+
+  /process/start:
+    post:
+      tags:
+        - process
+      summary: start process
+      description: 开启一个新的委托流程
+      operationId: startProcess
+      responses:
+        '200':
+          description: 启动成功
+          content:
+            'application/json':
+              schema:
+                type: string
+  /process/tasks:
+    get:
+      tags:
+        - process
+      summary: get tasks
+      description: 获取与当前用户可见的任务列表
+      operationId: getTasks
+      responses:
+        '200':
+          description: 成功获取任务列表
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+
+  /process/tasks/{taskId}:
+    get:
+      tags:
+        - process
+      summary: get a task
+      description: 通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见
+      operationId: getTaskById
+      parameters:
+        - name: taskId
+          in: path
+          description: 待查询的任务 id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取指定任务
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        '403':
+          description: 指定任务对该用户不可见
+          content: { }
+        '404':
+          description: 指定任务不存在
+          content: { }
+
+  /process/tasks/{taskId}/complete:
+    post:
+      tags:
+        - process
+      summary: complete a task
+      description: 将指定任务设置为已完成，并跳转至下一阶段
+      operationId: completeTask
+      parameters:
+        - name: taskId
+          in: path
+          description: 待完成的任务 id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功完成指定任务
+          content: { }
+        '403':
+          description: 指定任务对该用户不可见或当前用户无完成任务权限
+          content: { }
+        '404':
+          description: 指定任务不存在
+          content: { }
+
+  /process/tasks/{taskId}/items/{itemName}:
+    parameters:
+      - name: taskId
+        in: path
+        description: 指定任务 id
+        schema:
+          type: string
+        required: true
+      - name: itemName
+        in: path
+        description: 指定资源名
+        schema:
+          type: string
+        required: true
+    put:
+      tags:
+        - process
+      summary: update a item of one task
+      description: 修改指定任务中的指定资源
+      operationId: updateTaskItem
+      responses:
+        '200':
+          description: 成功更新指定资源
+          content: { }
+        '201':
+          description: 成功创建指定资源
+          content: { }
+        '403':
+          description: 该任务对当前用户不可见或当前用户无修改权限
+          content: { }
+        '404':
+          description: 指定任务不存在
+          content: { }
+    get:
+      tags:
+        - process
+      summary: get a item of one task
+      description: 获取指定任务中的指定资源
+      operationId: getTaskItem
+      responses:
+        '200':
+          description: 成功获取指定资源
+          content:
+            'application/json':
+              schema:
+                type: object
+        '403':
+          description: 指定任务或资源对该用户不可见
+          content: { }
+        '404':
+          description: 指定任务或资源不存在
+          content: { }
+
 
 components:
   schemas:
@@ -117,3 +263,28 @@ components:
         tokenStr:
           type: string
           description: token 字符串
+
+    Task:
+      type: object
+      required:
+        - processId
+        - taskId
+        - taskName
+        - description
+        - startUserId
+      properties:
+        processId:
+          type: string
+          description: 当前任务对应的流程实例 id
+        taskId:
+          type: string
+          description: 当前任务实例的 id
+        taskName:
+          type: string
+          description: 当前任务的名称
+        description:
+          type: string
+          description: 当前任务的描述、状态等
+        startUserId:
+          type: string
+          description: 当前流程的发起人
