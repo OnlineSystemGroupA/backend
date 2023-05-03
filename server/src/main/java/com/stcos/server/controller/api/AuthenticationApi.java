@@ -8,6 +8,7 @@ package com.stcos.server.controller.api;
 import com.stcos.server.pojo.dto.LoginParamDto;
 import com.stcos.server.pojo.dto.RegisterParamDto;
 import com.stcos.server.pojo.dto.TokenDto;
+import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

@@ -23,10 +23,16 @@ public interface AuthenticationService {
      */
     void register(String username, String password, String email) throws ServiceException;
 
-
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws ServiceException
+     */
     TokenDto operatorLogin(String username, String password)  throws ServiceException;
 
-    TokenDto customerLogin(String username, String password)  throws ServiceException;
+    TokenDto clientLogin(String username, String password)  throws ServiceException;
 
     TokenDto adminLogin(String username, String password)  throws ServiceException;
 

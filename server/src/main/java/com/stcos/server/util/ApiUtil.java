@@ -1,4 +1,4 @@
-package com.stcos.server.controller.api;
+package com.stcos.server.util;
 
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -9,6 +9,7 @@ public class ApiUtil {
     public static void setExampleResponse(NativeWebRequest req, String contentType, String example) {
         try {
             HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);
+            assert res != null;
             res.setCharacterEncoding("UTF-8");
             res.addHeader("Content-Type", contentType);
             res.getWriter().print(example);

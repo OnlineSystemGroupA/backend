@@ -3,7 +3,7 @@ package com.stcos.server.service.impl;
 import com.stcos.server.pojo.dto.TokenDto;
 import com.stcos.server.service.AuthenticationService;
 import com.stcos.server.service.ServiceException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * description
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @since 2023/4/3 21:01
  */
 
-@Component
+@Service
 public class AuthenticationServiceImp implements AuthenticationService {
 
 
@@ -28,7 +28,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public TokenDto customerLogin(String username, String password) throws ServiceException {
+    public TokenDto clientLogin(String username, String password) throws ServiceException {
         return null;
     }
 
@@ -38,7 +38,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public void logout() {
+    public void logout() throws ServiceException {
 
     }
 

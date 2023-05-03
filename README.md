@@ -77,7 +77,7 @@ Pojo：简单的Java对象或者无规则简单java对象，没有业务逻辑�
 
 1. 基本信息部分共三张表：
 
-   - `com.stcos.server.pojo.po.Customer` 对应 customer 表；
+   - `com.stcos.server.pojo.po.Client` 对应 client 表；
 
    - `com.stcos.server.pojo.po.Admin` 对应 admin 表；
 
@@ -87,7 +87,7 @@ Pojo：简单的Java对象或者无规则简单java对象，没有业务逻辑�
 
 2. 角色，一张角色表： 
 
-    由于客户（Customer）与平台管理员（Admin）的角色唯一，此处仅需要维护工作人员（Operator）与角色的一对多映射关系。
+    由于客户（Client）与平台管理员（Admin）的角色唯一，此处仅需要维护工作人员（Operator）与角色的一对多映射关系。
 
     表中包含两个字段：工作人员 id 以及角色名称，两者均为字符串。
 
@@ -95,5 +95,5 @@ Pojo：简单的Java对象或者无规则简单java对象，没有业务逻辑�
 
     维护工作人员（Operator）与权限的一对多映射关系。同上。
 
-
+【注】平台管理员账号不可通过调用接口动态创建，需在产品交付前创建好并告知甲方。
 

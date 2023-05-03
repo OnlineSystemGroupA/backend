@@ -21,7 +21,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @TableName("customer")
-public class Customer implements UserDetails {
+public class Client implements UserDetails {
 
     /**
      * primary key settings
@@ -72,7 +72,7 @@ public class Customer implements UserDetails {
         }};
     }
 
-    public Customer(String username, String password, String email) {
+    public Client(String username, String password, String email) {
         this.uid = "customer-" + UUID.randomUUID();
         this.username = username;
         this.password = password;

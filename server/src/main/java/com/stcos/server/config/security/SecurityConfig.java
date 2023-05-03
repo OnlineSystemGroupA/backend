@@ -1,6 +1,8 @@
 package com.stcos.server.config.security;
 
-import com.stcos.server.database.UserRepo;
+import com.stcos.server.mapper.AdminMapper;
+import com.stcos.server.mapper.ClientMapper;
+import com.stcos.server.mapper.OperatorMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -84,10 +86,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepo repo) {
+    public UserDetailsService userDetailsService(ClientMapper clientMapper,
+                                                 AdminMapper adminMapper, OperatorMapper operatorMapper) {
         return username -> {
-            UserDetails account = repo.getUserByName(username);
+            UserDetails account = clientMapper.getByUsernameClient(username);
             if (account != null) return account;
+
             throw new UsernameNotFoundException("找不到用户" + username);
         };
     }
