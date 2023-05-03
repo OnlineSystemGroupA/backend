@@ -41,25 +41,8 @@ paths:
       tags:
         - authentication
       summary: login
-      description: "
-      登录成功返回 token;
-      
-      关于参数 usertype, 需要登录的用户类型: 
-      
-      - operator: 工作人员登录
-      
-      - customer: 客户登录
-      
-      - admin: 平台管理员登录
-      "
+      description: 登录成功返回 token
       operationId: login
-      parameters:
-        - name: usertype
-          in: query
-          description: 需要登录的用户类型
-          schema:
-            type: string
-          required: true
       requestBody:
         description: 用户名、密码
         content:

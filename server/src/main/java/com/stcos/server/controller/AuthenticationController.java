@@ -1,35 +1,32 @@
 package com.stcos.server.controller;
 
-
 import com.stcos.server.controller.api.AuthenticationApi;
 import com.stcos.server.pojo.dto.LoginParamDto;
 import com.stcos.server.pojo.dto.RegisterParamDto;
 import com.stcos.server.pojo.dto.TokenDto;
 import com.stcos.server.service.AuthenticationService;
 import com.stcos.server.service.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /*
-            __                _       ______            __             ____
-           / /   ____  ____ _(_)___  / ____/___  ____  / /__________  / / /__  _____
-          / /   / __ \/ __ `/ / __ \/ /   / __ \/ __ \/ __/ ___/ __ \/ / / _ \/ ___/
-         / /___/ /_/ / /_/ / / / / / /___/ /_/ / / / / /_/ /  / /_/ / / /  __/ /
-        /_____/\____/\__, /_/_/ /_/\____/\____/_/ /_/\__/_/   \____/_/_/\___/_/
-                    /____/
+    ___         __  __               __  _            __  _             ______            __             ____
+   /   | __  __/ /_/ /_  ___  ____  / /_(_)________ _/ /_(_)___  ____  / ____/___  ____  / /__________  / / /__  _____
+  / /| |/ / / / __/ __ \/ _ \/ __ \/ __/ / ___/ __ `/ __/ / __ \/ __ \/ /   / __ \/ __ \/ __/ ___/ __ \/ / / _ \/ ___/
+ / ___ / /_/ / /_/ / / /  __/ / / / /_/ / /__/ /_/ / /_/ / /_/ / / / / /___/ /_/ / / / / /_/ /  / /_/ / / /  __/ /
+/_/  |_\__,_/\__/_/ /_/\___/_/ /_/\__/_/\___/\__,_/\__/_/\____/_/ /_/\____/\____/_/ /_/\__/_/   \____/_/_/\___/_/
+
  */
 
 /**
- * 提供用户认证的接口
+ * 实现用户认证的接口
  *
  * @author Kekwy
  * @version 1.0
  * @since 2023/3/29 15:27
  */
 
-@Slf4j
 @RestController
 public class AuthenticationController implements AuthenticationApi {
 
@@ -37,28 +34,54 @@ public class AuthenticationController implements AuthenticationApi {
 
 
     @Autowired
-    public void setPosService(AuthenticationService service) {
+    public void setAuthenticationService(AuthenticationService service) {
         this.service = service;
     }
 
 
     @Override
-    public ResponseEntity<TokenDto> login(String usertype, LoginParamDto loginParamDto) {
-        return AuthenticationApi.super.login(usertype, loginParamDto);
+    public ResponseEntity<TokenDto> login(LoginParamDto loginParamDto) {
+        ResponseEntity<TokenDto> response = null;
+        TokenDto tokenDto = null;
+        try {
+            tokenDto = service.login(loginParamDto.getUsername(), loginParamDto.getPassword());
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> response = ResponseEntity.status(404).build();
+                case 1 -> response = ResponseEntity.status(401).build();
+                case 2 -> response = ResponseEntity.status(403).build();
+            }
+        }
+        if (response == null) {
+            response = ResponseEntity.ok(tokenDto);
+        }
+        return response;
     }
 
     @Override
     public ResponseEntity<Void> register(RegisterParamDto registerParamDto) {
+        ResponseEntity<Void> response = null;
         try {
             service.register(registerParamDto.getUsername(), registerParamDto.getPassword(), registerParamDto.getEmail());
         } catch (ServiceException e) {
-            throw new RuntimeException(e);
+            if (e.getCode() == 0) {
+                // 用户名已存在
+                response = ResponseEntity.status(409).build();
+            }
         }
-        return ResponseEntity.ok().build();
+        if (response == null) {
+            response = ResponseEntity.ok().build();
+        }
+        return response;
     }
 
     @Override
     public ResponseEntity<Void> logout() {
-        return AuthenticationApi.super.logout();
+        try {
+            service.logout();
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(null);
     }
 }

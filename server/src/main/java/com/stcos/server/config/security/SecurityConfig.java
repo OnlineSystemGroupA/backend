@@ -72,7 +72,6 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 
-
         // 添加自定义未授权和未登录结果返回
         http.exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
@@ -85,16 +84,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(ClientMapper clientMapper,
-                                                 AdminMapper adminMapper, OperatorMapper operatorMapper) {
-        return username -> {
-            UserDetails account = clientMapper.getByUsernameClient(username);
-            if (account != null) return account;
-
-            throw new UsernameNotFoundException("找不到用户" + username);
-        };
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(ClientMapper clientMapper,
+//                                                 AdminMapper adminMapper, OperatorMapper operatorMapper) {
+//        return username -> {
+//            UserDetails account;
+//            account = clientMapper.getByUsernameClient(username);
+//            if (account != null) return account;
+//            account = operatorMapper.getByUsernameOperator(username);
+//            if (account != null) return account;
+//            account = adminMapper.getByUsernameAdmin(username);
+//            if (account != null) return account;
+//            throw new UsernameNotFoundException("找不到用户：" + username);
+//        };
+//    }
 
 }
 

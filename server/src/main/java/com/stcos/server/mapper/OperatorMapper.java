@@ -14,4 +14,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OperatorMapper extends BaseMapper<Operator> {
+    Operator getByUsernameOperator(String username);
 }

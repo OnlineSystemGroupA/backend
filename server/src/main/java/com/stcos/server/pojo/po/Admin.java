@@ -19,6 +19,8 @@ public class Admin implements UserDetails {
     @TableId
     private String uid;
 
+    private String username;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

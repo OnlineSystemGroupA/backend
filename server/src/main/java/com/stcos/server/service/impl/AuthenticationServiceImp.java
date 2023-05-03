@@ -23,23 +23,13 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public TokenDto operatorLogin(String username, String password) throws ServiceException {
+    public TokenDto login(String username, String password) throws ServiceException {
         return null;
     }
 
-    @Override
-    public TokenDto clientLogin(String username, String password) throws ServiceException {
-        return null;
-    }
-
-    @Override
-    public TokenDto adminLogin(String username, String password) throws ServiceException {
-        return null;
-    }
-
+    // 目前不需要实现
     @Override
     public void logout() throws ServiceException {
-
     }
 
 }

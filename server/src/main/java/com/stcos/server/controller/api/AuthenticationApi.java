@@ -54,17 +54,7 @@ public interface AuthenticationApi {
     @Operation(
         operationId = "login",
         summary = "login",
-        description = """
-            登录成功返回 token; 
-            
-            关于参数 usertype, 需要登录的用户类型: 
-            
-            - operator: 工作人员登录; 
-            
-            - customer: 客户登录;
-            
-            - admin: 平台管理员登录.
-            """,
+        description = "登录成功返回 token",
         tags = { "authentication" },
         responses = {
             @ApiResponse(responseCode = "200", description = "登录成功", content = {
@@ -82,7 +72,6 @@ public interface AuthenticationApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<TokenDto> login(
-        @NotNull @Parameter(name = "usertype", description = "需要登录的用户类型", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "usertype", required = true) String usertype,
         @Parameter(name = "LoginParamDto", description = "用户名、密码", required = true) @Valid @RequestBody LoginParamDto loginParamDto
     ) {
         getRequest().ifPresent(request -> {
