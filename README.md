@@ -15,7 +15,7 @@
   * [Controller](#Controller)
   * [Service](#Service)
   * [Database](#Database)
-
+* [**数据库表设计**](#数据库表设计)
 ## 参考文档
 
 OpenAPI 规范 (中文版)：https://openapi.apifox.cn
@@ -27,6 +27,9 @@ Dto：Data Transfer Object 数据传输对象；
 Pojo：简单的Java对象或者无规则简单java对象，没有业务逻辑的一个中间对象；
 
 // 待续
+
+
+
 
 ## 开发规范
 
@@ -68,4 +71,29 @@ Pojo：简单的Java对象或者无规则简单java对象，没有业务逻辑�
 
 
 
-### 
+## 数据库表设计
+
+账户持久化主要包含：基本信息、角色、权限。
+
+1. 基本信息部分共三张表：
+
+   - `com.stcos.server.pojo.po.Customer` 对应 customer 表；
+
+   - `com.stcos.server.pojo.po.Admin` 对应 admin 表；
+
+   - `com.stcos.server.pojo.po.Operator` 对应 operator 表。
+
+   具体需要包含的字段见类中成员数据的定义。
+
+2. 角色，一张角色表： 
+
+    由于客户（Customer）与平台管理员（Admin）的角色唯一，此处仅需要维护工作人员（Operator）与角色的一对多映射关系。
+
+    表中包含两个字段：工作人员 id 以及角色名称，两者均为字符串。
+
+3. 权限，一张权限表：
+
+    维护工作人员（Operator）与权限的一对多映射关系。同上。
+
+
+
