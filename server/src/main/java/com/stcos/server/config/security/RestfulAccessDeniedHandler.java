@@ -1,7 +1,6 @@
 package com.stcos.server.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stcos.server.pojo.RespBean;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,11 +27,10 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
             throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+        response.setStatus(403);
         response.getWriter();
         PrintWriter out = response.getWriter();
-        RespBean respBean = RespBean.error("权限不足，请联系管理员！");
-        respBean.setCode(403);
-        out.write(new ObjectMapper().writeValueAsString(respBean));
+        out.write(new ObjectMapper().writeValueAsString("权限不足，请联系管理员！"));
         out.flush();
         out.close();
     }

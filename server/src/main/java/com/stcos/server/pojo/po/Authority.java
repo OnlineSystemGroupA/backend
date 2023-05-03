@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.entity;
+package com.stcos.server.pojo.po;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

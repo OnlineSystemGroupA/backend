@@ -1,9 +1,136 @@
 openapi: 3.0.3
 info:
-  title: Title
-  description: Title
+  title: 南大软件测试中心在线系统
+  description: 后端 API 文档
   version: 1.0.0
+  contact:
+    name: 在线系统项目 A 组
+    url: https://github.com/OnlineSystemGroupA
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
 servers:
-  - url: 'http:'
+  - url: http://masterchedan.top:8081/
+    description: Development server
+
 paths:
-  
+  /authentication/register:
+    post:
+      tags:
+        - authentication
+      summary: register
+      description: 注册新用户
+      operationId: register
+      requestBody:
+        description: "用户注册所必需的信息"
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/RegisterParam"
+        required: true
+      responses:
+        '200':
+          description: 注册成功
+        '409':
+          description: 用户名已存在
+
+  /authentication/login:
+    post:
+      tags:
+        - authentication
+      summary: login
+      description: "
+      登录成功返回 token;
+      
+      关于参数 usertype, 需要登录的用户类型: 
+      
+      - operator: 工作人员登录
+      
+      - customer: 客户登录
+      
+      - admin: 平台管理员登录
+      "
+      operationId: login
+      parameters:
+        - name: usertype
+          in: query
+          description: 需要登录的用户类型
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: 用户名、密码
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/LoginParam"
+        required: true
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/Token"
+        '404':
+          description: 用户不存在
+        '401':
+          description: 用户名或密码错误
+        '403':
+          description: 账号禁用
+
+  /authentication/logout:
+    post:
+      tags:
+        - authentication
+      summary: logout
+      description: 注销登录
+      operationId: logout
+      responses:
+        '200':
+          description: 注销成功
+
+components:
+  schemas:
+    RegisterParam:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: 用户名，唯一
+        email:
+          type: string
+          description: 用户邮箱
+        password:
+          type: string
+          description: 用户密码
+
+    LoginParam:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    Token:
+      type: object
+      required:
+        - tokenHead
+        - tokenStr
+      properties:
+        tokenHead:
+          type: string
+          description: token 的头部，前端请求携带 token 时需要将其拼接在 token 之前
+        tokenStr:
+          type: string
+          description: token 字符串

@@ -1,7 +1,6 @@
 package com.stcos.server.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stcos.server.pojo.RespBean;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,9 +28,7 @@ public class RestAuthorizationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json");
         response.setStatus(401);
         PrintWriter out = response.getWriter();
-        RespBean respBean = RespBean.error("尚未登录，请登录");
-        respBean.setCode(401);
-        out.write(new ObjectMapper().writeValueAsString(respBean));
+        out.write(new ObjectMapper().writeValueAsString("尚未登录，请登录"));
         out.flush();
         out.close();
     }

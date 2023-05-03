@@ -16,6 +16,10 @@
   * [Service](#Service)
   * [Database](#Database)
 
+## 参考文档
+
+OpenAPI 规范 (中文版)：https://openapi.apifox.cn
+
 ## 名词解释
 
 Dto：Data Transfer Object 数据传输对象；

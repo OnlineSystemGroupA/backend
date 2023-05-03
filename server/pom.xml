@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
 
   <name>server</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -106,11 +106,24 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-    <!-- 引入项目中的 API 定义 -->
+    <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
     <dependency>
-      <groupId>com.stcos</groupId>
-      <artifactId>openapi</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
@@ -128,48 +141,23 @@
           <addResources>true</addResources>
         </configuration>
       </plugin>
-
-      <!-- We use the Resources plugin to filer Dockerfile and run.sh, it inserts actual JAR filename -->
-      <!-- The final Dockerfile will be created in target/dockerfile/Dockerfile -->
       <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <!-- here the phase you need -->
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/dockerfile</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/docker</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>0.4.10</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9</version>
         <configuration>
-          <imageName>${docker.image.name}:${docker.image.tag}</imageName>
-          <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
-          <resources>
-            <resource>
-              <targetPath>/</targetPath>
-              <directory>${project.build.directory}</directory>
-              <include>${project.build.finalName}.jar</include>
-            </resource>
-          </resources>
+          <doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
+          <docletArtifact>
+            <groupId>ch.raffael.pegdown-doclet</groupId>
+            <artifactId>pegdown-doclet</artifactId>
+            <version>1.1</version>
+          </docletArtifact>
+          <useStandardDocletOptions>true</useStandardDocletOptions>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
+
 
 </project>

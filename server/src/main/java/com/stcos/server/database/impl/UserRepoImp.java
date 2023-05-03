@@ -2,8 +2,8 @@ package com.stcos.server.database.impl;
 
 import com.stcos.server.database.UserRepo;
 import com.stcos.server.database.mapper.UserMapper;
-import com.stcos.server.pojo.entity.TempUser;
-import com.stcos.server.pojo.entity.User;
+import com.stcos.server.pojo.po.TempUser;
+import com.stcos.server.pojo.po.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class UserRepoImp implements UserRepo {
     public void setUserMapper(UserMapper userMapper){this.userMapper=userMapper;}
 
     @Override
-    public User getUserByName(String username){
+    public Customer getUserByName(String username){
         Map<String, Object> map = new HashMap<>();
         map.put("username",username);
         if(userMapper.selectByMap(map).isEmpty())
@@ -44,12 +44,12 @@ public class UserRepoImp implements UserRepo {
     }
 
     @Override
-    public void addNewUser(User newuser) {
+    public void addNewUser(Customer newuser) {
         userMapper.insert(newuser);
     }
 
     @Override
     public void addNewUser(TempUser newuser){
-        this.addNewUser(new User(newuser.getName(), newuser.getPassword(), newuser.getEmail()));
+        this.addNewUser(new Customer(newuser.getName(), newuser.getPassword(), newuser.getEmail()));
     }
 }
