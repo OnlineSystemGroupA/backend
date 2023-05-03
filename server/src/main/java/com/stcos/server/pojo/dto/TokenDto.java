@@ -13,16 +13,18 @@ import java.util.Objects;
  */
 
 @JsonTypeName("Token")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T00:46:16.665025500+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
 public class TokenDto {
 
   private String tokenHead;
 
   private String tokenStr;
 
+  private String userType;
+
   /**
    * Default constructor
-   * @deprecated Use {@link TokenDto#TokenDto(String, String)}
+   * @deprecated Use {@link TokenDto#TokenDto(String, String, String)}
    */
   @Deprecated
   public TokenDto() {
@@ -32,9 +34,10 @@ public class TokenDto {
   /**
    * Constructor with only required parameters
    */
-  public TokenDto(String tokenHead, String tokenStr) {
+  public TokenDto(String tokenHead, String tokenStr, String userType) {
     this.tokenHead = tokenHead;
     this.tokenStr = tokenStr;
+    this.userType = userType;
   }
 
   public TokenDto tokenHead(String tokenHead) {
@@ -77,6 +80,26 @@ public class TokenDto {
     this.tokenStr = tokenStr;
   }
 
+  public TokenDto userType(String userType) {
+    this.userType = userType;
+    return this;
+  }
+
+  /**
+   * 成功登录的用户类型：admin、operator、client.
+   * @return userType
+  */
+  @NotNull 
+  @Schema(name = "userType", description = "成功登录的用户类型：admin、operator、client.", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("userType")
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -87,12 +110,13 @@ public class TokenDto {
     }
     TokenDto token = (TokenDto) o;
     return Objects.equals(this.tokenHead, token.tokenHead) &&
-        Objects.equals(this.tokenStr, token.tokenStr);
+        Objects.equals(this.tokenStr, token.tokenStr) &&
+        Objects.equals(this.userType, token.userType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(tokenHead, tokenStr);
+    return Objects.hash(tokenHead, tokenStr, userType);
   }
 
   @Override
@@ -101,6 +125,7 @@ public class TokenDto {
     sb.append("class TokenDto {\n");
     sb.append("    tokenHead: ").append(toIndentedString(tokenHead)).append("\n");
     sb.append("    tokenStr: ").append(toIndentedString(tokenStr)).append("\n");
+    sb.append("    userType: ").append(toIndentedString(userType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

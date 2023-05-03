@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("Task")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T17:01:02.060228900+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
 public class TaskDto {
 
   private String processId;

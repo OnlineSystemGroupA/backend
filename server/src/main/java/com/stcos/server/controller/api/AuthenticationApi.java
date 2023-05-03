@@ -11,7 +11,6 @@ import com.stcos.server.pojo.dto.TokenDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,15 +22,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T10:42:19.658315100+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "authentication", description = "the authentication API")
 public interface AuthenticationApi {
@@ -41,11 +38,10 @@ public interface AuthenticationApi {
     }
 
     /**
-     * POST /authentication/login : login
-     *  登录成功返回 token; 关于参数 usertype, 需要登录的用户类型: - operator: 工作人员登录 - customer: 客户登录 - admin: 平台管理员登录
+     * POST /authentication/login : 用户登录
+     * 登录成功返回 token
      *
-     * @param usertype 需要登录的用户类型 (required)
-     * @param registerParamDto 用户名、密码 (required)
+     * @param loginParamDto 用户名、密码 (required)
      * @return 登录成功 (status code 200)
      *         or 用户不存在 (status code 404)
      *         or 用户名或密码错误 (status code 401)
@@ -53,16 +49,16 @@ public interface AuthenticationApi {
      */
     @Operation(
         operationId = "login",
-        summary = "login",
+        summary = "用户登录",
         description = "登录成功返回 token",
         tags = { "authentication" },
         responses = {
             @ApiResponse(responseCode = "200", description = "登录成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TokenDto.class))
             }),
-            @ApiResponse(responseCode = "404", description = "用户不存在", content = {@Content()}),
-            @ApiResponse(responseCode = "401", description = "用户名或密码错误", content = {@Content()}),
-            @ApiResponse(responseCode = "403", description = "账号禁用", content = {@Content()})
+            @ApiResponse(responseCode = "404", description = "用户不存在"),
+            @ApiResponse(responseCode = "401", description = "用户名或密码错误"),
+            @ApiResponse(responseCode = "403", description = "账号禁用")
         }
     )
     @RequestMapping(
@@ -77,7 +73,7 @@ public interface AuthenticationApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"tokenHead\" : \"tokenHead\", \"tokenStr\" : \"tokenStr\" }";
+                    String exampleString = "{ \"tokenHead\" : \"tokenHead\", \"userType\" : \"userType\", \"tokenStr\" : \"tokenStr\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -89,14 +85,14 @@ public interface AuthenticationApi {
 
 
     /**
-     * POST /authentication/logout : logout
+     * POST /authentication/logout : 用户注销
      * 注销登录
      *
      * @return 注销成功 (status code 200)
      */
     @Operation(
         operationId = "logout",
-        summary = "logout",
+        summary = "用户注销",
         description = "注销登录",
         tags = { "authentication" },
         responses = {
@@ -108,7 +104,7 @@ public interface AuthenticationApi {
         value = "/authentication/logout"
     )
     default ResponseEntity<Void> logout(
-
+        
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -116,7 +112,7 @@ public interface AuthenticationApi {
 
 
     /**
-     * POST /authentication/register : register
+     * POST /authentication/register : 用户注册
      * 注册新用户
      *
      * @param registerParamDto 用户注册所必需的信息 (required)
@@ -125,7 +121,7 @@ public interface AuthenticationApi {
      */
     @Operation(
         operationId = "register",
-        summary = "register",
+        summary = "用户注册",
         description = "注册新用户",
         tags = { "authentication" },
         responses = {

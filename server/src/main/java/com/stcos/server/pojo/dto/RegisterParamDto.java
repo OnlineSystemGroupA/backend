@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("RegisterParam")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T00:46:16.665025500+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
 public class RegisterParamDto {
 
   private String username;

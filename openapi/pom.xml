@@ -77,7 +77,7 @@
           </inputSpec>
           <modelNameSuffix>Dto</modelNameSuffix>
           <apiPackage>com.stcos.server.controller.api</apiPackage>
-          <modelPackage>com.stcos.server.model.dto</modelPackage>
+          <modelPackage>com.stcos.server.pojo.dto</modelPackage>
         </configuration>
       </plugin>
     </plugins>

@@ -1,15 +1,12 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.ProcessApi;
+import com.stcos.server.pojo.dto.ProcessIdDto;
 import com.stcos.server.pojo.dto.TaskDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.flowable.engine.RuntimeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * description
@@ -20,7 +17,6 @@ import java.util.Optional;
  */
 
 @RestController
-@Tag(name = "ProcessController")
 public class ProcessController implements ProcessApi {
 
 //    private TaskService taskService;
@@ -83,7 +79,7 @@ public class ProcessController implements ProcessApi {
     }
 
     @Override
-    public ResponseEntity<List<TaskDto>> getTaskById(String taskId) {
+    public ResponseEntity<TaskDto> getTaskById(String taskId) {
         return ProcessApi.super.getTaskById(taskId);
     }
 
@@ -98,7 +94,7 @@ public class ProcessController implements ProcessApi {
     }
 
     @Override
-    public ResponseEntity<String> startProcess() {
+    public ResponseEntity<ProcessIdDto> startProcess() {
         return ProcessApi.super.startProcess();
     }
 

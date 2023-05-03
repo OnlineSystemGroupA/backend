@@ -5,6 +5,7 @@
  */
 package com.stcos.server.controller.api;
 
+import com.stcos.server.pojo.dto.ProcessIdDto;
 import com.stcos.server.pojo.dto.TaskDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,7 @@ import javax.annotation.Generated;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T17:01:02.060228900+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "process", description = "the process API")
 public interface ProcessApi {
@@ -38,7 +39,7 @@ public interface ProcessApi {
     }
 
     /**
-     * POST /process/tasks/{taskId}/complete : complete a task
+     * POST /process/tasks/{taskId}/complete : 完成任务
      * 将指定任务设置为已完成，并跳转至下一阶段
      *
      * @param taskId 待完成的任务 id (required)
@@ -48,7 +49,7 @@ public interface ProcessApi {
      */
     @Operation(
         operationId = "completeTask",
-        summary = "complete a task",
+        summary = "完成任务",
         description = "将指定任务设置为已完成，并跳转至下一阶段",
         tags = { "process" },
         responses = {
@@ -70,7 +71,7 @@ public interface ProcessApi {
 
 
     /**
-     * GET /process/tasks/{taskId} : get a task
+     * GET /process/tasks/{taskId} : 获取单个任务
      * 通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见
      *
      * @param taskId 待查询的任务 id (required)
@@ -80,12 +81,12 @@ public interface ProcessApi {
      */
     @Operation(
         operationId = "getTaskById",
-        summary = "get a task",
+        summary = "获取单个任务",
         description = "通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见",
         tags = { "process" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功获取指定任务", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskDto.class)))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDto.class))
             }),
             @ApiResponse(responseCode = "403", description = "指定任务对该用户不可见"),
             @ApiResponse(responseCode = "404", description = "指定任务不存在")
@@ -96,13 +97,13 @@ public interface ProcessApi {
         value = "/process/tasks/{taskId}",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<TaskDto>> getTaskById(
+    default ResponseEntity<TaskDto> getTaskById(
         @Parameter(name = "taskId", description = "待查询的任务 id", required = true, in = ParameterIn.PATH) @PathVariable("taskId") String taskId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"startUserId\" : \"startUserId\", \"processId\" : \"processId\", \"description\" : \"description\", \"taskName\" : \"taskName\", \"taskId\" : \"taskId\" }, { \"startUserId\" : \"startUserId\", \"processId\" : \"processId\", \"description\" : \"description\", \"taskName\" : \"taskName\", \"taskId\" : \"taskId\" } ]";
+                    String exampleString = "{ \"startUserId\" : \"startUserId\", \"processId\" : \"processId\", \"description\" : \"description\", \"taskName\" : \"taskName\", \"taskId\" : \"taskId\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -114,7 +115,7 @@ public interface ProcessApi {
 
 
     /**
-     * GET /process/tasks/{taskId}/items/{itemName} : get a item of one task
+     * GET /process/tasks/{taskId}/items/{itemName} : 获取变量
      * 获取指定任务中的指定资源
      *
      * @param taskId 指定任务 id (required)
@@ -125,7 +126,7 @@ public interface ProcessApi {
      */
     @Operation(
         operationId = "getTaskItem",
-        summary = "get a item of one task",
+        summary = "获取变量",
         description = "获取指定任务中的指定资源",
         tags = { "process" },
         responses = {
@@ -151,14 +152,14 @@ public interface ProcessApi {
 
 
     /**
-     * GET /process/tasks : get tasks
+     * GET /process/tasks : 获取所有任务
      * 获取与当前用户可见的任务列表
      *
      * @return 成功获取任务列表 (status code 200)
      */
     @Operation(
         operationId = "getTasks",
-        summary = "get tasks",
+        summary = "获取所有任务",
         description = "获取与当前用户可见的任务列表",
         tags = { "process" },
         responses = {
@@ -190,19 +191,19 @@ public interface ProcessApi {
 
 
     /**
-     * POST /process/start : start process
+     * POST /process/start : 启动流程
      * 开启一个新的委托流程
      *
      * @return 启动成功 (status code 200)
      */
     @Operation(
         operationId = "startProcess",
-        summary = "start process",
+        summary = "启动流程",
         description = "开启一个新的委托流程",
         tags = { "process" },
         responses = {
             @ApiResponse(responseCode = "200", description = "启动成功", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessIdDto.class))
             })
         }
     )
@@ -211,16 +212,25 @@ public interface ProcessApi {
         value = "/process/start",
         produces = { "application/json" }
     )
-    default ResponseEntity<String> startProcess(
+    default ResponseEntity<ProcessIdDto> startProcess(
         
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"processId\" : \"processId\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
 
 
     /**
-     * PUT /process/tasks/{taskId}/items/{itemName} : update a item of one task
+     * PUT /process/tasks/{taskId}/items/{itemName} : 更新变量
      * 修改指定任务中的指定资源
      *
      * @param taskId 指定任务 id (required)
@@ -232,7 +242,7 @@ public interface ProcessApi {
      */
     @Operation(
         operationId = "updateTaskItem",
-        summary = "update a item of one task",
+        summary = "更新变量",
         description = "修改指定任务中的指定资源",
         tags = { "process" },
         responses = {

@@ -2,7 +2,9 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.mapper.ClientMapper;
 import com.stcos.server.pojo.dto.TokenDto;
+import com.stcos.server.pojo.po.Admin;
 import com.stcos.server.pojo.po.Client;
+import com.stcos.server.pojo.po.Operator;
 import com.stcos.server.service.AuthenticationService;
 import com.stcos.server.service.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
@@ -85,7 +87,14 @@ public class AuthenticationServiceImp implements AuthenticationService {
         // 生成 token
         String token = JwtTokenUtil.generateToken(userDetails);
 
-        return new TokenDto(tokenHead, token);
+        if (userDetails instanceof Admin) {
+            return new TokenDto(tokenHead, token, "admin");
+        } else if (userDetails instanceof Operator) {
+            return new TokenDto(tokenHead, token, "operator");
+        } else if (userDetails instanceof Client) {
+            return new TokenDto(tokenHead, token, "client");
+        }
+        return new TokenDto(tokenHead, token, null);
     }
 
     // 目前不需要实现
