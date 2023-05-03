@@ -14,4 +14,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientMapper extends BaseMapper<Client> {
     Client getByUsernameClient(String username);
+
+    /**
+     * 增加新用户
+     * @param client 待添加用户
+     *
+     */
+    void addNewUser(Client client);
 }
