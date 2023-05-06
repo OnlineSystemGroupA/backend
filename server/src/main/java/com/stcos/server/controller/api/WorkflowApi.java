@@ -29,17 +29,17 @@ import javax.annotation.Generated;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-06T16:58:45.971001+08:00[Asia/Shanghai]")
 @Validated
-@Tag(name = "process", description = "the process API")
-public interface ProcessApi {
+@Tag(name = "workflow", description = "the workflow API")
+public interface WorkflowApi {
 
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
 
     /**
-     * POST /process/tasks/{taskId}/complete : 完成任务
+     * POST /workflow/tasks/{taskId}/complete : 完成任务
      * 将指定任务设置为已完成，并跳转至下一阶段
      *
      * @param taskId 待完成的任务 id (required)
@@ -51,7 +51,7 @@ public interface ProcessApi {
         operationId = "completeTask",
         summary = "完成任务",
         description = "将指定任务设置为已完成，并跳转至下一阶段",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功完成指定任务"),
             @ApiResponse(responseCode = "403", description = "指定任务对该用户不可见或当前用户无完成任务权限"),
@@ -60,7 +60,7 @@ public interface ProcessApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/process/tasks/{taskId}/complete"
+        value = "/workflow/tasks/{taskId}/complete"
     )
     default ResponseEntity<Void> completeTask(
         @Parameter(name = "taskId", description = "待完成的任务 id", required = true, in = ParameterIn.PATH) @PathVariable("taskId") String taskId
@@ -71,7 +71,42 @@ public interface ProcessApi {
 
 
     /**
-     * GET /process/tasks/{taskId} : 获取单个任务
+     * GET /workflow/processes/{processId}/samples/ : 所有样品下载
+     * 获取指定任务中的指定资源
+     *
+     * @param processId 指定流程实例 id (required)
+     * @return 成功获取指定资源 (status code 200)
+     *         or 指定任务或资源对该用户不可见 (status code 403)
+     *         or 指定任务或资源不存在 (status code 404)
+     */
+    @Operation(
+        operationId = "downloadSamples",
+        summary = "所有样品下载",
+        description = "获取指定任务中的指定资源",
+        tags = { "workflow" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "成功获取指定资源", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "指定任务或资源对该用户不可见"),
+            @ApiResponse(responseCode = "404", description = "指定任务或资源不存在")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/workflow/processes/{processId}/samples/",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Object> downloadSamples(
+        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /workflow/tasks/{taskId} : 获取单个任务
      * 通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见
      *
      * @param taskId 待查询的任务 id (required)
@@ -83,7 +118,7 @@ public interface ProcessApi {
         operationId = "getTaskById",
         summary = "获取单个任务",
         description = "通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功获取指定任务", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = TaskDto.class))
@@ -94,7 +129,7 @@ public interface ProcessApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/process/tasks/{taskId}",
+        value = "/workflow/tasks/{taskId}",
         produces = { "application/json" }
     )
     default ResponseEntity<TaskDto> getTaskById(
@@ -115,10 +150,10 @@ public interface ProcessApi {
 
 
     /**
-     * GET /process/tasks/{taskId}/items/{itemName} : 获取变量
+     * GET /workflow/processes/{processId}/items/{itemName} : 获取流程资源
      * 获取指定任务中的指定资源
      *
-     * @param taskId 指定任务 id (required)
+     * @param processId 指定流程实例 id (required)
      * @param itemName 指定资源名 (required)
      * @return 成功获取指定资源 (status code 200)
      *         or 指定任务或资源对该用户不可见 (status code 403)
@@ -126,9 +161,9 @@ public interface ProcessApi {
      */
     @Operation(
         operationId = "getTaskItem",
-        summary = "获取变量",
+        summary = "获取流程资源",
         description = "获取指定任务中的指定资源",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功获取指定资源", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
@@ -139,11 +174,11 @@ public interface ProcessApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/process/tasks/{taskId}/items/{itemName}",
+        value = "/workflow/processes/{processId}/items/{itemName}",
         produces = { "application/json" }
     )
     default ResponseEntity<Object> getTaskItem(
-        @Parameter(name = "taskId", description = "指定任务 id", required = true, in = ParameterIn.PATH) @PathVariable("taskId") String taskId,
+        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
         @Parameter(name = "itemName", description = "指定资源名", required = true, in = ParameterIn.PATH) @PathVariable("itemName") String itemName
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -152,7 +187,7 @@ public interface ProcessApi {
 
 
     /**
-     * GET /process/tasks : 获取所有任务
+     * GET /workflow/tasks : 获取所有任务
      * 获取与当前用户可见的任务列表
      *
      * @return 成功获取任务列表 (status code 200)
@@ -161,7 +196,7 @@ public interface ProcessApi {
         operationId = "getTasks",
         summary = "获取所有任务",
         description = "获取与当前用户可见的任务列表",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功获取任务列表", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TaskDto.class)))
@@ -170,7 +205,7 @@ public interface ProcessApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/process/tasks",
+        value = "/workflow/tasks",
         produces = { "application/json" }
     )
     default ResponseEntity<List<TaskDto>> getTasks(
@@ -191,7 +226,39 @@ public interface ProcessApi {
 
 
     /**
-     * POST /process/start : 启动流程
+     * POST /workflow/processes/{processId}/samples/ : 更新流程资源
+     * 修改指定任务中的指定资源
+     *
+     * @param processId 指定流程实例 id (required)
+     * @return 成功上传 (status code 201)
+     *         or 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过 (status code 403)
+     *         or 指定任务不存在 (status code 404)
+     */
+    @Operation(
+        operationId = "samplesUpload",
+        summary = "更新流程资源",
+        description = "修改指定任务中的指定资源",
+        tags = { "workflow" },
+        responses = {
+            @ApiResponse(responseCode = "201", description = "成功上传"),
+            @ApiResponse(responseCode = "403", description = "该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过"),
+            @ApiResponse(responseCode = "404", description = "指定任务不存在")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/workflow/processes/{processId}/samples/"
+    )
+    default ResponseEntity<Void> samplesUpload(
+        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /workflow/start : 启动流程
      * 开启一个新的委托流程
      *
      * @return 启动成功 (status code 200)
@@ -209,7 +276,7 @@ public interface ProcessApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/process/start",
+        value = "/workflow/start",
         produces = { "application/json" }
     )
     default ResponseEntity<ProcessIdDto> startProcess(
@@ -230,10 +297,10 @@ public interface ProcessApi {
 
 
     /**
-     * PUT /process/tasks/{taskId}/items/{itemName} : 更新变量
+     * PUT /workflow/processes/{processId}/items/{itemName} : 更新流程资源
      * 修改指定任务中的指定资源
      *
-     * @param taskId 指定任务 id (required)
+     * @param processId 指定流程实例 id (required)
      * @param itemName 指定资源名 (required)
      * @return 成功更新指定资源 (status code 200)
      *         or 成功创建指定资源 (status code 201)
@@ -242,9 +309,9 @@ public interface ProcessApi {
      */
     @Operation(
         operationId = "updateTaskItem",
-        summary = "更新变量",
+        summary = "更新流程资源",
         description = "修改指定任务中的指定资源",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功更新指定资源"),
             @ApiResponse(responseCode = "201", description = "成功创建指定资源"),
@@ -254,10 +321,10 @@ public interface ProcessApi {
     )
     @RequestMapping(
         method = RequestMethod.PUT,
-        value = "/process/tasks/{taskId}/items/{itemName}"
+        value = "/workflow/processes/{processId}/items/{itemName}"
     )
     default ResponseEntity<Void> updateTaskItem(
-        @Parameter(name = "taskId", description = "指定任务 id", required = true, in = ParameterIn.PATH) @PathVariable("taskId") String taskId,
+        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
         @Parameter(name = "itemName", description = "指定资源名", required = true, in = ParameterIn.PATH) @PathVariable("itemName") String itemName
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

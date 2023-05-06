@@ -11,6 +11,7 @@ import com.stcos.server.pojo.dto.TokenDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,13 +23,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-03T23:03:21.844871700+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-06T16:58:45.971001+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "authentication", description = "the authentication API")
 public interface AuthenticationApi {
@@ -42,6 +44,7 @@ public interface AuthenticationApi {
      * 登录成功返回 token
      *
      * @param loginParamDto 用户名、密码 (required)
+     * @param userType 进行登录的用户类型：admin、operator、client. (optional)
      * @return 登录成功 (status code 200)
      *         or 用户不存在 (status code 404)
      *         or 用户名或密码错误 (status code 401)
@@ -68,12 +71,13 @@ public interface AuthenticationApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<TokenDto> login(
-        @Parameter(name = "LoginParamDto", description = "用户名、密码", required = true) @Valid @RequestBody LoginParamDto loginParamDto
+        @Parameter(name = "LoginParamDto", description = "用户名、密码", required = true) @Valid @RequestBody LoginParamDto loginParamDto,
+        @Parameter(name = "user-type", description = "进行登录的用户类型：admin、operator、client.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "user-type", required = false) String userType
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"tokenHead\" : \"tokenHead\", \"userType\" : \"userType\", \"tokenStr\" : \"tokenStr\" }";
+                    String exampleString = "{ \"tokenHead\" : \"tokenHead\", \"tokenStr\" : \"tokenStr\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

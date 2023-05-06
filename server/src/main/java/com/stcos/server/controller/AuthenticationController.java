@@ -40,7 +40,7 @@ public class AuthenticationController implements AuthenticationApi {
 
 
     @Override
-    public ResponseEntity<TokenDto> login(LoginParamDto loginParamDto) {
+    public ResponseEntity<TokenDto> login(LoginParamDto loginParamDto, String userType) {
         ResponseEntity<TokenDto> response = null;
         TokenDto tokenDto = null;
         try {

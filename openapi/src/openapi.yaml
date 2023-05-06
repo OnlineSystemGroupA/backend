@@ -44,6 +44,12 @@ paths:
       summary: 用户登录
       description: 登录成功返回 token
       operationId: login
+      parameters:
+        - name: user-type
+          in: query
+          description: 进行登录的用户类型：admin、operator、client.
+          schema:
+            type: string
       requestBody:
         description: 用户名、密码
         content:
@@ -76,7 +82,7 @@ paths:
         '200':
           description: 注销成功
 
-  /process/start:
+  /workflow/start:
     post:
       tags:
         - process
@@ -90,10 +96,10 @@ paths:
             'application/json':
               schema:
                 $ref: "#/components/schemas/ProcessId"
-  /process/tasks:
+  /workflow/tasks:
     get:
       tags:
-        - process
+        - workflow
       summary: 获取所有任务
       description: 获取与当前用户可见的任务列表
       operationId: getTasks
@@ -107,10 +113,10 @@ paths:
                 items:
                   $ref: "#/components/schemas/Task"
 
-  /process/tasks/{taskId}:
+  /workflow/tasks/{taskId}:
     get:
       tags:
-        - process
+        - workflow
       summary: 获取单个任务
       description: 通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见
       operationId: getTaskById
@@ -133,10 +139,10 @@ paths:
         '404':
           description: 指定任务不存在
 
-  /process/tasks/{taskId}/complete:
+  /workflow/tasks/{taskId}/complete:
     post:
       tags:
-        - process
+        - workflow
       summary: 完成任务
       description: 将指定任务设置为已完成，并跳转至下一阶段
       operationId: completeTask
@@ -155,11 +161,11 @@ paths:
         '404':
           description: 指定任务不存在
 
-  /process/tasks/{taskId}/items/{itemName}:
+  /workflow/processes/{processId}/items/{itemName}:
     parameters:
-      - name: taskId
+      - name: processId
         in: path
-        description: 指定任务 id
+        description: 指定流程实例 id
         schema:
           type: string
         required: true
@@ -171,8 +177,8 @@ paths:
         required: true
     put:
       tags:
-        - process
-      summary: 更新变量
+        - workflow
+      summary: 更新流程资源
       description: 修改指定任务中的指定资源
       operationId: updateTaskItem
       responses:
@@ -186,10 +192,49 @@ paths:
           description: 指定任务不存在
     get:
       tags:
-        - process
-      summary: 获取变量
+        - workflow
+      summary: 获取流程资源
       description: 获取指定任务中的指定资源
       operationId: getTaskItem
+      responses:
+        '200':
+          description: 成功获取指定资源
+          content:
+            'application/json':
+              schema:
+                type: object
+        '403':
+          description: 指定任务或资源对该用户不可见
+        '404':
+          description: 指定任务或资源不存在
+
+  /workflow/processes/{processId}/samples/:
+    parameters:
+      - name: processId
+        in: path
+        description: 指定流程实例 id
+        schema:
+          type: string
+        required: true
+    post:
+      tags:
+        - workflow
+      summary: 更新流程资源
+      description: 修改指定任务中的指定资源
+      operationId: samplesUpload
+      responses:
+        '201':
+          description: 成功上传
+        '403':
+          description: 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过
+        '404':
+          description: 指定任务不存在
+    get:
+      tags:
+        - workflow
+      summary: 所有样品下载
+      description: 获取指定任务中的指定资源
+      operationId: downloadSamples
       responses:
         '200':
           description: 成功获取指定资源
@@ -237,7 +282,6 @@ components:
       required:
         - tokenHead
         - tokenStr
-        - userType
       properties:
         tokenHead:
           type: string
@@ -245,9 +289,6 @@ components:
         tokenStr:
           type: string
           description: token 字符串
-        userType:
-          type: string
-          description: 成功登录的用户类型：admin、operator、client.
 
     Task:
       type: object
