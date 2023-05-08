@@ -6,6 +6,7 @@
 package com.stcos.server.controller.api;
 
 import com.stcos.server.pojo.dto.ProcessIdDto;
+import com.stcos.server.pojo.dto.SamplePathDto;
 import com.stcos.server.pojo.dto.TaskDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,13 +24,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Generated;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-06T16:58:45.971001+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "workflow", description = "the workflow API")
 public interface WorkflowApi {
@@ -71,7 +74,7 @@ public interface WorkflowApi {
 
 
     /**
-     * GET /workflow/processes/{processId}/samples/ : 所有样品下载
+     * GET /workflow/processes/{processId}/samples : 所有样品下载
      * 获取指定任务中的指定资源
      *
      * @param processId 指定流程实例 id (required)
@@ -86,7 +89,7 @@ public interface WorkflowApi {
         tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功获取指定资源", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
+                @Content(mediaType = "multipart/form-data", array = @ArraySchema(schema = @Schema(implementation = MultipartFile.class)))
             }),
             @ApiResponse(responseCode = "403", description = "指定任务或资源对该用户不可见"),
             @ApiResponse(responseCode = "404", description = "指定任务或资源不存在")
@@ -94,12 +97,21 @@ public interface WorkflowApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/workflow/processes/{processId}/samples/",
-        produces = { "application/json" }
+        value = "/workflow/processes/{processId}/samples",
+        produces = { "multipart/form-data" }
     )
-    default ResponseEntity<Object> downloadSamples(
+    default ResponseEntity<List<MultipartFile>> downloadSamples(
         @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("multipart/form-data"))) {
+                    String exampleString = "Custom MIME type example not yet supported: multipart/form-data";
+                    ApiUtil.setExampleResponse(request, "multipart/form-data", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -156,8 +168,8 @@ public interface WorkflowApi {
      * @param processId 指定流程实例 id (required)
      * @param itemName 指定资源名 (required)
      * @return 成功获取指定资源 (status code 200)
-     *         or 指定任务或资源对该用户不可见 (status code 403)
-     *         or 指定任务或资源不存在 (status code 404)
+     *         or 指定流程或资源对该用户不可见 (status code 403)
+     *         or 指定流程或资源不存在 (status code 404)
      */
     @Operation(
         operationId = "getTaskItem",
@@ -168,8 +180,8 @@ public interface WorkflowApi {
             @ApiResponse(responseCode = "200", description = "成功获取指定资源", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class))
             }),
-            @ApiResponse(responseCode = "403", description = "指定任务或资源对该用户不可见"),
-            @ApiResponse(responseCode = "404", description = "指定任务或资源不存在")
+            @ApiResponse(responseCode = "403", description = "指定流程或资源对该用户不可见"),
+            @ApiResponse(responseCode = "404", description = "指定流程或资源不存在")
         }
     )
     @RequestMapping(
@@ -226,32 +238,53 @@ public interface WorkflowApi {
 
 
     /**
-     * POST /workflow/processes/{processId}/samples/ : 更新流程资源
-     * 修改指定任务中的指定资源
+     * POST /workflow/processes/{processId}/samples : 上传样品
+     * 上传与对应流程相关的样品文件
      *
      * @param processId 指定流程实例 id (required)
+     * @param files  (optional)
      * @return 成功上传 (status code 201)
+     *         or 没有上传文件 (status code 400)
      *         or 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过 (status code 403)
      *         or 指定任务不存在 (status code 404)
+     *         or 上传文件失败 (status code 500)
+     *         or 存储空间不足 (status code 507)
      */
     @Operation(
         operationId = "samplesUpload",
-        summary = "更新流程资源",
-        description = "修改指定任务中的指定资源",
+        summary = "上传样品",
+        description = "上传与对应流程相关的样品文件",
         tags = { "workflow" },
         responses = {
-            @ApiResponse(responseCode = "201", description = "成功上传"),
+            @ApiResponse(responseCode = "201", description = "成功上传", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SamplePathDto.class)))
+            }),
+            @ApiResponse(responseCode = "400", description = "没有上传文件"),
             @ApiResponse(responseCode = "403", description = "该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过"),
-            @ApiResponse(responseCode = "404", description = "指定任务不存在")
+            @ApiResponse(responseCode = "404", description = "指定任务不存在"),
+            @ApiResponse(responseCode = "500", description = "上传文件失败"),
+            @ApiResponse(responseCode = "507", description = "存储空间不足")
         }
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/workflow/processes/{processId}/samples/"
+        value = "/workflow/processes/{processId}/samples",
+        produces = { "application/json" },
+        consumes = { "multipart/form-data" }
     )
-    default ResponseEntity<Void> samplesUpload(
-        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    default ResponseEntity<List<SamplePathDto>> samplesUpload(
+        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+        @Parameter(name = "files", description = "") @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"path\" : \"path\", \"startUserId\" : \"startUserId\", \"description\" : \"description\", \"taskName\" : \"taskName\", \"taskId\" : \"taskId\" }, { \"path\" : \"path\", \"startUserId\" : \"startUserId\", \"description\" : \"description\", \"taskName\" : \"taskName\", \"taskId\" : \"taskId\" } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -298,25 +331,25 @@ public interface WorkflowApi {
 
     /**
      * PUT /workflow/processes/{processId}/items/{itemName} : 更新流程资源
-     * 修改指定任务中的指定资源
+     * 修改指定流程中的指定资源
      *
      * @param processId 指定流程实例 id (required)
      * @param itemName 指定资源名 (required)
      * @return 成功更新指定资源 (status code 200)
      *         or 成功创建指定资源 (status code 201)
-     *         or 该任务对当前用户不可见或当前用户无修改权限 (status code 403)
-     *         or 指定任务不存在 (status code 404)
+     *         or 该流程实例对当前用户不可见或当前用户无修改权限 (status code 403)
+     *         or 指定流程实例不存在 (status code 404)
      */
     @Operation(
         operationId = "updateTaskItem",
         summary = "更新流程资源",
-        description = "修改指定任务中的指定资源",
+        description = "修改指定流程中的指定资源",
         tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功更新指定资源"),
             @ApiResponse(responseCode = "201", description = "成功创建指定资源"),
-            @ApiResponse(responseCode = "403", description = "该任务对当前用户不可见或当前用户无修改权限"),
-            @ApiResponse(responseCode = "404", description = "指定任务不存在")
+            @ApiResponse(responseCode = "403", description = "该流程实例对当前用户不可见或当前用户无修改权限"),
+            @ApiResponse(responseCode = "404", description = "指定流程实例不存在")
         }
     )
     @RequestMapping(

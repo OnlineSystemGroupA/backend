@@ -30,7 +30,7 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-06T16:58:45.971001+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "authentication", description = "the authentication API")
 public interface AuthenticationApi {
