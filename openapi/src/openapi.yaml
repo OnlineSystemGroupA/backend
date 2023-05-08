@@ -208,7 +208,7 @@ paths:
         '404':
           description: 指定任务或资源不存在
 
-  /workflow/processes/{processId}/samples/:
+  /workflow/processes/{processId}/samples:
     parameters:
       - name: processId
         in: path
@@ -219,9 +219,20 @@ paths:
     post:
       tags:
         - workflow
-      summary: 更新流程资源
-      description: 修改指定任务中的指定资源
+      summary: 上传样品
+      description: 上传与对应流程相关的样品文件
       operationId: samplesUpload
+      requestBody:
+        description: 需要上传的样品文件
+        content:
+          'multipart/form-data':
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
       responses:
         '201':
           description: 成功上传

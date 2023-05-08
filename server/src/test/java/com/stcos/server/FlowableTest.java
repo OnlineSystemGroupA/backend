@@ -3,6 +3,7 @@ package com.stcos.server;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.ProcessEngineConfiguration;
 import org.flowable.engine.RepositoryService;
+import org.flowable.engine.RuntimeService;
 import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -86,6 +87,10 @@ public class FlowableTest {
         variable.put("text", "委托测试");
         ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("workflow", variable);
         System.out.println("processInstance.getProcessDefinitionId() = " + processInstance.getProcessDefinitionId());
+
+        RuntimeService runtimeService = processEngine.getRuntimeService();
+
+//        ProcessInstance processInstance1 = runtimeService.createProcessInstanceQuery().processInstanceId().singleResult();
 
 //        processInstance.get
 

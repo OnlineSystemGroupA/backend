@@ -1,6 +1,7 @@
 package com.stcos.server.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.stcos.server.pojo.UserDetailsImp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
  * @version 1.0
  * @since 2023/5/3 12:43
  */
-public class Admin implements UserDetails {
+public class Admin extends UserDetailsImp {
 
     @TableId
     private String uid;
@@ -33,7 +34,7 @@ public class Admin implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
@@ -56,8 +57,9 @@ public class Admin implements UserDetails {
         return false;
     }
 
-    public Admin(String uid) {
+    public Admin(String username) {
         this.uid = "admin-" + UUID.randomUUID();
+        this.username = username;
     }
 
 }
