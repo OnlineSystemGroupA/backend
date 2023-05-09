@@ -88,13 +88,13 @@ public class AuthenticationServiceImp implements AuthenticationService {
         String token = JwtTokenUtil.generateToken(userDetails);
 
         if (userDetails instanceof Admin) {
-            return new TokenDto(tokenHead, token, "admin");
+            return new TokenDto(tokenHead, token);
         } else if (userDetails instanceof Operator) {
-            return new TokenDto(tokenHead, token, "operator");
+            return new TokenDto(tokenHead, token);
         } else if (userDetails instanceof Client) {
-            return new TokenDto(tokenHead, token, "client");
+            return new TokenDto(tokenHead, token);
         }
-        return new TokenDto(tokenHead, token, null);
+        return new TokenDto(tokenHead, token);
     }
 
     // 目前不需要实现

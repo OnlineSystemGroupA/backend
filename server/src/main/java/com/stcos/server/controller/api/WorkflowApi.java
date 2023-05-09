@@ -151,7 +151,7 @@ public interface WorkflowApi {
 
     /**
      * GET /workflow/processes/{processId}/items/{itemName} : 获取流程资源
-     * 获取指定任务中的指定资源
+     * 获取指定流程中的指定资源
      *
      * @param processId 指定流程实例 id (required)
      * @param itemName 指定资源名 (required)
@@ -298,7 +298,7 @@ public interface WorkflowApi {
 
     /**
      * PUT /workflow/processes/{processId}/items/{itemName} : 更新流程资源
-     * 修改指定任务中的指定资源
+     * 更新指定任务中的指定资源
      *
      * @param processId 指定流程实例 id (required)
      * @param itemName 指定资源名 (required)
