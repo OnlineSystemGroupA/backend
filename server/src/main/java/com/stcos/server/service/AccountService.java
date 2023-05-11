@@ -43,7 +43,7 @@ public interface AccountService {
      *                          code: <br>
      *                          0: 用户名对应的 Operator 对象不存在
      */
-    Operator getOperater(String username) throws ServiceException;
+    Operator getOperator(String username) throws ServiceException;
 
     /**
      * 注册一个新的客户账号

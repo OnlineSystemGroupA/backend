@@ -69,7 +69,7 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public Operator getOperater(String username) throws ServiceException {
+    public Operator getOperator(String username) throws ServiceException {
         Operator operator = operatorMapper.getByUsernameOperator(username);
         if (operator == null) {
             throw new ServiceException(0); // Operator not found
