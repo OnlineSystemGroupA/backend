@@ -16,7 +16,7 @@ servers:
     description: Development server
 
 paths:
-  /authentication/register:
+  /auth/register:
     post:
       tags:
         - authentication
@@ -37,7 +37,7 @@ paths:
         '409':
           description: 用户名已存在
 
-  /authentication/login:
+  /auth/login:
     post:
       tags:
         - authentication
@@ -71,7 +71,7 @@ paths:
         '403':
           description: 账号禁用
 
-  /authentication/logout:
+  /auth/logout:
     post:
       tags:
         - authentication

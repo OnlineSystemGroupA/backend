@@ -10,7 +10,7 @@ import com.stcos.server.pojo.dto.TokenDto;
  * @version 1.0
  * @since 2023/4/3 21:01
  */
-public interface AuthenticationService {
+public interface AuthService {
 
     /**
      * 注册一个新的客户账号

@@ -3,7 +3,7 @@ package com.stcos.server.service.impl;
 import com.stcos.server.mapper.ClientMapper;
 import com.stcos.server.pojo.dto.TokenDto;
 import com.stcos.server.pojo.po.Client;
-import com.stcos.server.service.AuthenticationService;
+import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class AuthenticationServiceImp implements AuthenticationService {
+public class AuthServiceImp implements AuthService {
 
     private UserDetailsService userDetailsService;
 

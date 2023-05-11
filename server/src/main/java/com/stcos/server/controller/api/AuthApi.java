@@ -30,17 +30,17 @@ import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-11T20:37:40.615842300+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "authentication", description = "the authentication API")
-public interface AuthenticationApi {
+public interface AuthApi {
 
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
 
     /**
-     * POST /authentication/login : 用户登录
+     * POST /auth/login : 用户登录
      * 登录成功返回 token
      *
      * @param loginParamDto 用户名、密码 (required)
@@ -66,7 +66,7 @@ public interface AuthenticationApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/authentication/login",
+        value = "/auth/login",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
@@ -89,7 +89,7 @@ public interface AuthenticationApi {
 
 
     /**
-     * POST /authentication/logout : 用户注销
+     * POST /auth/logout : 用户注销
      * 注销登录
      *
      * @return 注销成功 (status code 200)
@@ -105,7 +105,7 @@ public interface AuthenticationApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/authentication/logout"
+        value = "/auth/logout"
     )
     default ResponseEntity<Void> logout(
         
@@ -116,7 +116,7 @@ public interface AuthenticationApi {
 
 
     /**
-     * POST /authentication/register : 用户注册
+     * POST /auth/register : 用户注册
      * 注册新用户
      *
      * @param registerParamDto 用户注册所必需的信息 (required)
@@ -135,7 +135,7 @@ public interface AuthenticationApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/authentication/register",
+        value = "/auth/register",
         consumes = { "application/json" }
     )
     default ResponseEntity<Void> register(
