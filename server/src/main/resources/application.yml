@@ -64,5 +64,8 @@ flowable:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://masterchedan.top:3306/flowable?serverTimezone=UTC&nullCatalogMeansCurrent=true
+#    url: jdbc:mysql://localhost:3306/flowable_demo?serverTimezone=UTC&nullCatalogMeansCurrent=true
     username: stcos
     password: stcosgroupa
+#    username: flowable_demo
+#    password:

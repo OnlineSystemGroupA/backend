@@ -1,10 +1,10 @@
 package com.stcos.server.controller;
 
-import com.stcos.server.controller.api.AuthenticationApi;
+import com.stcos.server.controller.api.AuthApi;
 import com.stcos.server.pojo.dto.LoginParamDto;
 import com.stcos.server.pojo.dto.RegisterParamDto;
 import com.stcos.server.pojo.dto.TokenDto;
-import com.stcos.server.service.AuthenticationService;
+import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +28,14 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-public class AuthenticationController implements AuthenticationApi {
+public class AuthController implements AuthApi {
 
-    private AuthenticationService service;
+    private AuthService authService;
 
 
     @Autowired
-    public void setAuthenticationService(AuthenticationService service) {
-        this.service = service;
+    public void setAuthenticationService(AuthService service) {
+        this.authService = service;
     }
 
 
@@ -44,7 +44,7 @@ public class AuthenticationController implements AuthenticationApi {
         ResponseEntity<TokenDto> response = null;
         TokenDto tokenDto = null;
         try {
-            tokenDto = service.login(loginParamDto.getUsername(), loginParamDto.getPassword());
+            tokenDto = authService.login(loginParamDto.getUsername(), loginParamDto.getPassword());
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(404).build();
@@ -62,7 +62,7 @@ public class AuthenticationController implements AuthenticationApi {
     public ResponseEntity<Void> register(RegisterParamDto registerParamDto) {
         ResponseEntity<Void> response = null;
         try {
-            service.register(registerParamDto.getUsername(), registerParamDto.getPassword(), registerParamDto.getEmail());
+            authService.register(registerParamDto.getUsername(), registerParamDto.getPassword(), registerParamDto.getEmail());
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
                 // 用户名已存在
@@ -78,7 +78,7 @@ public class AuthenticationController implements AuthenticationApi {
     @Override
     public ResponseEntity<Void> logout() {
         try {
-            service.logout();
+            authService.logout();
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }

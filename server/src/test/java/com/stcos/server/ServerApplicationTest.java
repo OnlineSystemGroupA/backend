@@ -23,4 +23,5 @@ public class ServerApplicationTest{
         List<Client> list = clientMapper.selectList(null);
         list.forEach(System.out::println);
     }
+
 }

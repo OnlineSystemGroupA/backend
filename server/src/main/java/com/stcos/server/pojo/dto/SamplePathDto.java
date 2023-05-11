@@ -9,14 +9,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * TaskDto
+ * SamplePathDto
  */
 
-@JsonTypeName("Task")
+@JsonTypeName("SamplePath")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
-public class TaskDto {
+public class SamplePathDto {
 
-  private String processId;
+  private String path;
 
   private String taskId;
 
@@ -28,45 +28,41 @@ public class TaskDto {
 
   /**
    * Default constructor
-   * @deprecated Use {@link TaskDto#TaskDto(String, String, String, String, String)}
+   * @deprecated Use {@link SamplePathDto#SamplePathDto(String)}
    */
   @Deprecated
-  public TaskDto() {
+  public SamplePathDto() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public TaskDto(String processId, String taskId, String taskName, String description, String startUserId) {
-    this.processId = processId;
-    this.taskId = taskId;
-    this.taskName = taskName;
-    this.description = description;
-    this.startUserId = startUserId;
+  public SamplePathDto(String path) {
+    this.path = path;
   }
 
-  public TaskDto processId(String processId) {
-    this.processId = processId;
+  public SamplePathDto path(String path) {
+    this.path = path;
     return this;
   }
 
   /**
    * 当前任务对应的流程实例 id
-   * @return processId
+   * @return path
   */
   @NotNull 
-  @Schema(name = "processId", description = "当前任务对应的流程实例 id", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("processId")
-  public String getProcessId() {
-    return processId;
+  @Schema(name = "path", description = "当前任务对应的流程实例 id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("path")
+  public String getPath() {
+    return path;
   }
 
-  public void setProcessId(String processId) {
-    this.processId = processId;
+  public void setPath(String path) {
+    this.path = path;
   }
 
-  public TaskDto taskId(String taskId) {
+  public SamplePathDto taskId(String taskId) {
     this.taskId = taskId;
     return this;
   }
@@ -75,8 +71,8 @@ public class TaskDto {
    * 当前任务实例的 id
    * @return taskId
   */
-  @NotNull 
-  @Schema(name = "taskId", description = "当前任务实例的 id", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "taskId", description = "当前任务实例的 id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("taskId")
   public String getTaskId() {
     return taskId;
@@ -86,7 +82,7 @@ public class TaskDto {
     this.taskId = taskId;
   }
 
-  public TaskDto taskName(String taskName) {
+  public SamplePathDto taskName(String taskName) {
     this.taskName = taskName;
     return this;
   }
@@ -95,8 +91,8 @@ public class TaskDto {
    * 当前任务的名称
    * @return taskName
   */
-  @NotNull 
-  @Schema(name = "taskName", description = "当前任务的名称", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "taskName", description = "当前任务的名称", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("taskName")
   public String getTaskName() {
     return taskName;
@@ -106,7 +102,7 @@ public class TaskDto {
     this.taskName = taskName;
   }
 
-  public TaskDto description(String description) {
+  public SamplePathDto description(String description) {
     this.description = description;
     return this;
   }
@@ -115,8 +111,8 @@ public class TaskDto {
    * 当前任务的描述、状态等
    * @return description
   */
-  @NotNull 
-  @Schema(name = "description", description = "当前任务的描述、状态等", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "description", description = "当前任务的描述、状态等", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -126,7 +122,7 @@ public class TaskDto {
     this.description = description;
   }
 
-  public TaskDto startUserId(String startUserId) {
+  public SamplePathDto startUserId(String startUserId) {
     this.startUserId = startUserId;
     return this;
   }
@@ -135,8 +131,8 @@ public class TaskDto {
    * 当前流程的发起人
    * @return startUserId
   */
-  @NotNull 
-  @Schema(name = "startUserId", description = "当前流程的发起人", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "startUserId", description = "当前流程的发起人", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("startUserId")
   public String getStartUserId() {
     return startUserId;
@@ -154,24 +150,24 @@ public class TaskDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TaskDto task = (TaskDto) o;
-    return Objects.equals(this.processId, task.processId) &&
-        Objects.equals(this.taskId, task.taskId) &&
-        Objects.equals(this.taskName, task.taskName) &&
-        Objects.equals(this.description, task.description) &&
-        Objects.equals(this.startUserId, task.startUserId);
+    SamplePathDto samplePath = (SamplePathDto) o;
+    return Objects.equals(this.path, samplePath.path) &&
+        Objects.equals(this.taskId, samplePath.taskId) &&
+        Objects.equals(this.taskName, samplePath.taskName) &&
+        Objects.equals(this.description, samplePath.description) &&
+        Objects.equals(this.startUserId, samplePath.startUserId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(processId, taskId, taskName, description, startUserId);
+    return Objects.hash(path, taskId, taskName, description, startUserId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TaskDto {\n");
-    sb.append("    processId: ").append(toIndentedString(processId)).append("\n");
+    sb.append("class SamplePathDto {\n");
+    sb.append("    path: ").append(toIndentedString(path)).append("\n");
     sb.append("    taskId: ").append(toIndentedString(taskId)).append("\n");
     sb.append("    taskName: ").append(toIndentedString(taskName)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");

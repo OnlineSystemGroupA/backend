@@ -2,10 +2,8 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.mapper.ClientMapper;
 import com.stcos.server.pojo.dto.TokenDto;
-import com.stcos.server.pojo.po.Admin;
 import com.stcos.server.pojo.po.Client;
-import com.stcos.server.pojo.po.Operator;
-import com.stcos.server.service.AuthenticationService;
+import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class AuthenticationServiceImp implements AuthenticationService {
+public class AuthServiceImp implements AuthService {
 
     private UserDetailsService userDetailsService;
 
@@ -87,13 +85,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
         // 生成 token
         String token = JwtTokenUtil.generateToken(userDetails);
 
-        if (userDetails instanceof Admin) {
-            return new TokenDto(tokenHead, token);
-        } else if (userDetails instanceof Operator) {
-            return new TokenDto(tokenHead, token);
-        } else if (userDetails instanceof Client) {
-            return new TokenDto(tokenHead, token);
-        }
         return new TokenDto(tokenHead, token);
     }
 

@@ -16,7 +16,7 @@ servers:
     description: Development server
 
 paths:
-  /authentication/register:
+  /auth/register:
     post:
       tags:
         - authentication
@@ -37,7 +37,7 @@ paths:
         '409':
           description: 用户名已存在
 
-  /authentication/login:
+  /auth/login:
     post:
       tags:
         - authentication
@@ -71,7 +71,7 @@ paths:
         '403':
           description: 账号禁用
 
-  /authentication/logout:
+  /auth/logout:
     post:
       tags:
         - authentication
@@ -179,7 +179,7 @@ paths:
       tags:
         - workflow
       summary: 更新流程资源
-      description: 修改指定任务中的指定资源
+      description: 修改指定流程中的指定资源
       operationId: updateTaskItem
       responses:
         '200':
@@ -187,9 +187,9 @@ paths:
         '201':
           description: 成功创建指定资源
         '403':
-          description: 该任务对当前用户不可见或当前用户无修改权限
+          description: 该流程实例对当前用户不可见或当前用户无修改权限
         '404':
-          description: 指定任务不存在
+          description: 指定流程实例不存在
     get:
       tags:
         - workflow
@@ -204,11 +204,11 @@ paths:
               schema:
                 type: object
         '403':
-          description: 指定任务或资源对该用户不可见
+          description: 指定流程或资源对该用户不可见
         '404':
-          description: 指定任务或资源不存在
+          description: 指定流程或资源不存在
 
-  /workflow/processes/{processId}/samples/:
+  /workflow/processes/{processId}/samples:
     parameters:
       - name: processId
         in: path
@@ -219,16 +219,39 @@ paths:
     post:
       tags:
         - workflow
-      summary: 更新流程资源
-      description: 修改指定任务中的指定资源
+      summary: 上传样品
+      description: 上传与对应流程相关的样品文件
       operationId: samplesUpload
+      requestBody:
+        description: 需要上传的样品文件
+        content:
+          'multipart/form-data':
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
       responses:
         '201':
           description: 成功上传
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SamplePath"
+        '400':
+          description: 没有上传文件
         '403':
           description: 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过
         '404':
           description: 指定任务不存在
+        '500':
+          description: 上传文件失败
+        '507':
+          description: 存储空间不足
     get:
       tags:
         - workflow
@@ -239,9 +262,14 @@ paths:
         '200':
           description: 成功获取指定资源
           content:
-            'application/json':
+            'multipart/form-data':
               schema:
-                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: string
+                      format: binary
         '403':
           description: 指定任务或资源对该用户不可见
         '404':
@@ -300,6 +328,27 @@ components:
         - startUserId
       properties:
         processId:
+          type: string
+          description: 当前任务对应的流程实例 id
+        taskId:
+          type: string
+          description: 当前任务实例的 id
+        taskName:
+          type: string
+          description: 当前任务的名称
+        description:
+          type: string
+          description: 当前任务的描述、状态等
+        startUserId:
+          type: string
+          description: 当前流程的发起人
+
+    SamplePath:
+      type: object
+      required:
+        - path
+      properties:
+        path:
           type: string
           description: 当前任务对应的流程实例 id
         taskId:
