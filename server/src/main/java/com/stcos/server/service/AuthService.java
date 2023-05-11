@@ -12,17 +12,7 @@ import com.stcos.server.pojo.dto.TokenDto;
  */
 public interface AuthService {
 
-    /**
-     * 注册一个新的客户账号
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @param email    邮箱
-     * @throws ServiceException 各异常状态码含义如下 <br>
-     *                          code: <br>
-     *                          0: 用户名已存在
-     */
-    void register(String username, String password, String email) throws ServiceException;
+
 
     /**
      * 登录

@@ -2,7 +2,6 @@ package com.stcos.server.service;
 
 
 import org.flowable.task.api.Task;
-
 import java.util.List;
 
 public interface WorkflowService {

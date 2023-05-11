@@ -4,6 +4,7 @@ import com.stcos.server.controller.api.AuthApi;
 import com.stcos.server.pojo.dto.LoginParamDto;
 import com.stcos.server.pojo.dto.RegisterParamDto;
 import com.stcos.server.pojo.dto.TokenDto;
+import com.stcos.server.service.AccountService;
 import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,15 @@ public class AuthController implements AuthApi {
 
     private AuthService authService;
 
-
     @Autowired
-    public void setAuthenticationService(AuthService service) {
+    public void setAuthService(AuthService service) {
         this.authService = service;
     }
+
+    private AccountService accountService;
+
+    @Autowired
+    public  void setAccountService(AccountService service){ this.accountService = service; }
 
 
     @Override
@@ -62,7 +67,7 @@ public class AuthController implements AuthApi {
     public ResponseEntity<Void> register(RegisterParamDto registerParamDto) {
         ResponseEntity<Void> response = null;
         try {
-            authService.register(registerParamDto.getUsername(), registerParamDto.getPassword(), registerParamDto.getEmail());
+            accountService.register(registerParamDto.getUsername(), registerParamDto.getPassword(), registerParamDto.getEmail());
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
                 // 用户名已存在

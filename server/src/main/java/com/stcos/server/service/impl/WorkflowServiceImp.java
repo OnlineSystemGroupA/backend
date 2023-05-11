@@ -40,7 +40,7 @@ public class WorkflowServiceImp implements WorkflowService {
     public Task getTaskById(String taskId) throws ServiceException {
         List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(tasks == null)
+        if(tasks == null) //没有对应Id的task
             throw new ServiceException(1);
         Task task = tasks.get(0);
         if(!task.getAssignee().equals(userDetails.getUsername())){ //当前用户不是被分配到的用户（即不可见）

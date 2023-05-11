@@ -1,8 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.mapper.ClientMapper;
 import com.stcos.server.pojo.dto.TokenDto;
-import com.stcos.server.pojo.po.Client;
 import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
@@ -34,13 +32,6 @@ public class AuthServiceImp implements AuthService {
         this.userDetailsService = userDetailsService;
     }
 
-    private ClientMapper clientMapper;
-
-//    @Autowired
-    public void setClientMapper(ClientMapper clientMapper) {
-        this.clientMapper = clientMapper;
-    }
-
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -50,19 +41,6 @@ public class AuthServiceImp implements AuthService {
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
-
-    @Override
-    public void register(String username, String password, String email) throws ServiceException {
-        try {
-            userDetailsService.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e) { //不存在用户名
-            Client client = new Client(username, passwordEncoder.encode(password), email);
-            clientMapper.addNewUser(client);
-            return ;
-        }
-
-        throw new ServiceException(0);
-    }
 
     @Override
     public TokenDto login(String username, String password) throws ServiceException {
