@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.stcos.server.pojo.po.Operator;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * description
  *
@@ -14,5 +17,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OperatorMapper extends BaseMapper<Operator> {
-    Operator getByUsernameOperator(String username);
+    default Operator getByUsernameOperator(String username){
+        Map<String, Object> map = new HashMap<>();
+        map.put("username",username);
+        if(this.selectByMap(map).isEmpty())
+            return null;
+        else
+            return this.selectByMap(map).get(0);
+    }
+
+    default boolean existUserName(String username) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        return !this.selectByMap(map).isEmpty();
+    }
 }
