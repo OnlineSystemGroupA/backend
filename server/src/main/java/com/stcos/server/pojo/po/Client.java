@@ -3,12 +3,7 @@ package com.stcos.server.pojo.po;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -21,7 +16,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @TableName("customer")
-public class Client implements UserDetails {
+public class Client {
 
     /**
      * primary key settings
@@ -64,13 +59,6 @@ public class Client implements UserDetails {
      */
     private boolean credentialsNonExpired;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>() {{
-            // 客户一般不具有特殊权限，且只拥有有一个身份，故此处采用硬编码方式
-            add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
-        }};
-    }
 
     public Client(String username, String password, String email) {
         this.uid = "customer-" + UUID.randomUUID();
