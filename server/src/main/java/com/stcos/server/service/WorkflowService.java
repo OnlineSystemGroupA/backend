@@ -12,8 +12,8 @@ public interface WorkflowService {
      * @param taskId 指定任务Id
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 指定任务对该用户不可见或当前用户无完成任务权限
-     *                          1: 指定任务不存在
+     *                          0: 指定任务对该用户不可见或当前用户无完成任务权限 <br>
+     *                          1: 指定任务不存在 <br>
      */
     void completeTask(String taskId) throws ServiceException;
 
@@ -24,8 +24,8 @@ public interface WorkflowService {
      * @return 对应任务
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 指定任务对该用户不可见
-     *                          1: 指定任务不存在
+     *                          0: 指定任务对该用户不可见 <br>
+     *                          1: 指定任务不存在 <br>
      */
     Task getTaskById(String taskId) throws ServiceException;
 
@@ -45,8 +45,8 @@ public interface WorkflowService {
      * @return 资源
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 指定任务或资源对当前用户不可见
-     *                          1: 指定任务或资源不存在
+     *                          0: 指定任务或资源对当前用户不可见 <br>
+     *                          1: 指定任务或资源不存在 <br>
      */
     Object getTaskItem(String processId, String itemName) throws ServiceException;
 
@@ -57,9 +57,9 @@ public interface WorkflowService {
      * @param itemName 指定资源名
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 没有指定资源（需要创建）
-     *                          1: 该任务对当前用户不可见或当前用户无修改权限
-     *                          2: 指定任务不存在
+     *                          0: 没有指定资源（需要创建） <br>
+     *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
+     *                          2: 指定任务不存在 <br>
      */
     void updateTaskItem(String processId, String itemName) throws ServiceException;
     /**

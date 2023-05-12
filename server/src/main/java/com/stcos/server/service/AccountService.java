@@ -53,7 +53,7 @@ public interface AccountService {
      * @param email    邮箱
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 用户名已存在
+     *                          0: 用户名已存在 <br>
      */
     void register(String username, String password, String email) throws ServiceException;
 

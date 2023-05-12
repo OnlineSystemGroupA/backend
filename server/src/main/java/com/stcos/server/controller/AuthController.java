@@ -7,8 +7,13 @@ import com.stcos.server.pojo.dto.TokenDto;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
+import com.stcos.server.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -43,22 +48,30 @@ public class AuthController implements AuthApi {
     @Autowired
     public  void setAccountService(AccountService service){ this.accountService = service; }
 
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Override
     public ResponseEntity<TokenDto> login(LoginParamDto loginParamDto, String userType) {
         ResponseEntity<TokenDto> response = null;
-        TokenDto tokenDto = null;
+        UserDetails userDetails = null;
         try {
-            tokenDto = authService.login(loginParamDto.getUsername(), loginParamDto.getPassword());
+            userDetails = authService.login(loginParamDto.getUsername(), loginParamDto.getPassword(), userType);
         } catch (ServiceException e) {
             switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(404).build();
+                case 0, 3 -> response = ResponseEntity.status(404).build();
                 case 1 -> response = ResponseEntity.status(401).build();
                 case 2 -> response = ResponseEntity.status(403).build();
+                default -> throw new RuntimeException();
             }
         }
         if (response == null) {
-            response = ResponseEntity.ok(tokenDto);
+            // 生成 token
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
+                    null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            String token = JwtTokenUtil.generateToken(userDetails);
+            response = ResponseEntity.ok(new TokenDto(tokenHead, token));
         }
         return response;
     }

@@ -1,6 +1,6 @@
 package com.stcos.server.service;
 
-import com.stcos.server.pojo.dto.TokenDto;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * 用户认证业务：
@@ -12,21 +12,20 @@ import com.stcos.server.pojo.dto.TokenDto;
  */
 public interface AuthService {
 
-
-
     /**
      * 登录
      *
      * @param username 用户名
      * @param password 密码
-     * @return 包含用户名的 token
+     * @return 用户信息
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 用户不存在 <br>
      *                          1: 用户名或密码错误 <br>
      *                          2: 账号禁用 <br>
+     *                          3: userType错误 <br>
      */
-    TokenDto login(String username, String password) throws ServiceException;
+    UserDetails login(String username, String password, String userType) throws ServiceException;
 
     /**
      * 用户注销
