@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AccountServiceImp implements AccountService {
 
     private AdminMapper adminMapper;
@@ -34,13 +36,6 @@ public class AccountServiceImp implements AccountService {
     @Autowired
     public void setOperatorMapper(OperatorMapper operatorMapper) {
         this.operatorMapper = operatorMapper;
-    }
-
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
     }
 
     private PasswordEncoder passwordEncoder;
@@ -79,14 +74,10 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public void register(String username, String password, String email) throws ServiceException {
-        try {
-            userDetailsService.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e) { // 不存在用户名
-            Client client = new Client(username, passwordEncoder.encode(password), email);
-            clientMapper.addNewUser(client);
-            return ;
-        }
-
-        throw new ServiceException(0);
+         Client client = clientMapper.getByUsernameClient(username);
+         if (client != null)
+             throw new ServiceException(0);
+         client = new Client(username, passwordEncoder.encode(password), email);
+        clientMapper.addNewUser(client);
     }
 }

@@ -56,16 +56,18 @@ public class AuthServiceImp implements AuthService {
     @Override
     public UserDetails login(String username, String password, String userType) throws ServiceException {
         UserDetails userDetails;
+        if (userType == null) //未传入userType
+            throw new ServiceException(3);
         switch (userType) {
-            case "Admin" -> {
+            case "admin" -> {
                 Admin admin = adminMapper.getByUsernameAdmin(username);
                 userDetails = userDetailsFactory.getUserDetails(admin);
             }
-            case "Client" -> {
+            case "client" -> {
                 Client client = clientMapper.getByUsernameClient(username);
                 userDetails = userDetailsFactory.getUserDetails(client);
             }
-            case "Operator" -> {
+            case "operator" -> {
                 Operator operator = operatorMapper.getByUsernameOperator(username);
                 userDetails = userDetailsFactory.getUserDetails(operator);
             }
