@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  * @since 2023/5/11 20:56
  */
-@Service
 public interface AccountService {
     /**
      * 根据用户名获取 Admin 对象

@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 @Data
 @NoArgsConstructor
-@TableName("customer")
+@TableName("t_client")
 public class Client {
 
     /**
@@ -42,30 +42,29 @@ public class Client {
     /**
      * 账户是否可用
      */
-    private boolean enabled;
+    private boolean enabled = true;
 
     /**
      * 账户是否到期
      */
-    private boolean accountNonExpired;
+    private boolean accountNonExpired = true;
 
     /**
      * 账户是否锁定
      */
-    private boolean accountNonLocked;
+    private boolean accountNonLocked = true;
 
     /**
      * 凭据是否到期
      */
-    private boolean credentialsNonExpired;
+    private boolean credentialsNonExpired = true;
 
 
     public Client(String username, String password, String email) {
-        this.uid = "customer-" + UUID.randomUUID();
+        this.uid = "cl-" + UUID.randomUUID();
         this.username = username;
         this.password = password;
         this.email = email;
-        this.enabled = true;
     }
 
 }

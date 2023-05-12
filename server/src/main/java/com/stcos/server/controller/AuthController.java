@@ -70,7 +70,7 @@ public class AuthController implements AuthApi {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                     null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            String token = JwtTokenUtil.generateToken(userDetails);
+            String token = JwtTokenUtil.generateToken(userDetails, userType);
             response = ResponseEntity.ok(new TokenDto(tokenHead, token));
         }
         return response;

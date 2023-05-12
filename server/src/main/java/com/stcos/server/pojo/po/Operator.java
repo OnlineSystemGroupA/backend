@@ -1,6 +1,8 @@
 package com.stcos.server.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -16,11 +18,13 @@ import java.util.UUID;
  */
 
 @Data
+@TableName(value = "t_operator")
 public class Operator {
 
     @TableId
     private String uid;
 
+    @TableField(exist=false)
     private List<GrantedAuthority> authorities;
 
     private String password;
