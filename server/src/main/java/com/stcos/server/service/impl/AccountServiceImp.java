@@ -38,13 +38,6 @@ public class AccountServiceImp implements AccountService {
         this.operatorMapper = operatorMapper;
     }
 
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -81,14 +74,10 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public void register(String username, String password, String email) throws ServiceException {
-        try {
-            userDetailsService.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e) { // 不存在用户名
-            Client client = new Client(username, passwordEncoder.encode(password), email);
-            clientMapper.addNewUser(client);
-            return ;
-        }
-
-        throw new ServiceException(0);
+         Client client = clientMapper.getByUsernameClient(username);
+         if (client != null)
+             throw new ServiceException(0);
+         client = new Client(username, passwordEncoder.encode(password), email);
+        clientMapper.addNewUser(client);
     }
 }
