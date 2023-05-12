@@ -61,14 +61,17 @@ public class AuthServiceImp implements AuthService {
         switch (userType) {
             case "admin" -> {
                 Admin admin = adminMapper.getByUsernameAdmin(username);
+                if(admin == null) throw new ServiceException(0);
                 userDetails = userDetailsFactory.getUserDetails(admin);
             }
             case "client" -> {
                 Client client = clientMapper.getByUsernameClient(username);
+                if(client == null) throw new ServiceException(0);
                 userDetails = userDetailsFactory.getUserDetails(client);
             }
             case "operator" -> {
                 Operator operator = operatorMapper.getByUsernameOperator(username);
+                if(operator == null) throw new ServiceException(0);
                 userDetails = userDetailsFactory.getUserDetails(operator);
             }
             default -> throw new ServiceException(3);
