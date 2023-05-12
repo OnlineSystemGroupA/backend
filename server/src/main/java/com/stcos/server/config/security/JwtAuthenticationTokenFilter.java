@@ -1,5 +1,7 @@
 package com.stcos.server.config.security;
 
+import com.stcos.server.service.AccountService;
+import com.stcos.server.service.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,7 +34,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private String tokenHead;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private AccountService accountService;
+
+    @Autowired
+    private UserDetailsFactory userDetailsFactory;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -44,10 +47,28 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             String authToken = authHeader.substring(tokenHead.length());
             String username = JwtTokenUtil.getUserNameFromToken(authToken);
+            String usertype = JwtTokenUtil.getUserTypeFromToken(authToken);
             // token 有效，但是用户未登录
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // 登录
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails;
+                // 查找用户
+                try {
+                    switch (usertype) {
+                        case "client" ->
+                                userDetails = userDetailsFactory.getUserDetails(accountService.getClient(username));
+                        case "operator" ->
+                                userDetails = userDetailsFactory.getUserDetails(accountService.getOperator(username));
+                        case "admin" ->
+                                userDetails = userDetailsFactory.getUserDetails(accountService.getAdmin(username));
+                        default -> {
+                            filterChain.doFilter(request, response);
+                            return;
+                        }
+                    }
+                } catch (ServiceException e) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
                 // 验证 token 是否有效，重新设置用户对象
                 if (JwtTokenUtil.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken token =

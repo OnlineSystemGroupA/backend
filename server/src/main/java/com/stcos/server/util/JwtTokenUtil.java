@@ -57,6 +57,17 @@ public class JwtTokenUtil {
         return username;
     }
 
+    public static String getUserTypeFromToken(String token) {
+        String username;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            username = claims.getSubject();
+        } catch (Exception e) {
+            username = null;
+        }
+        return username;
+    }
+
     /**
      * 验证 token 是否有效
      * @param token
@@ -137,5 +148,6 @@ public class JwtTokenUtil {
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
+
 
 }

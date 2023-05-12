@@ -17,6 +17,6 @@ public interface AccountService {
 
     Client getClient(String username) throws ServiceException;
 
-    Operator getOperate(String username) throws ServiceException;
+    Operator getOperator(String username) throws ServiceException;
 
 }
