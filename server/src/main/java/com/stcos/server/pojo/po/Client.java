@@ -1,9 +1,9 @@
 package com.stcos.server.pojo.po;
 
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-
 import java.util.UUID;
 
 /**
@@ -66,5 +66,4 @@ public class Client {
         this.password = password;
         this.email = email;
     }
-
 }

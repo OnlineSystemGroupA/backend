@@ -46,7 +46,29 @@ CREATE TABLE IF NOT EXISTS t_client
 
 CREATE TABLE IF NOT EXISTS t_authority
 (
-    uid       VARCHAR(64) NOT NULL,
-    authority VARCHAR(10) NOT NULL
+    authority_id         VARCHAR(64) NOT NULL,
+    authority_name       VARCHAR(10) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS t_user_authority
+(
+    uid             VARCHAR(64) NOT NULL,
+    authority_id    VARCHAR(64) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+CREATE TABLE IF NOT EXISTS t_role
+(
+    role_id      VARCHAR(64) NOT NULL,
+    role_name    VARCHAR(10) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS t_user_role
+(
+    uid         VARCHAR(64) NOT NULL,
+    role_id     VARCHAR(64) NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

@@ -43,4 +43,6 @@ public class Operator {
     public Operator(String uid) {
         this.uid = "operator-" + UUID.randomUUID();
     }
+
+
 }

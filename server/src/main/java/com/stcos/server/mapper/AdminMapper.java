@@ -1,10 +1,13 @@
 package com.stcos.server.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.stcos.server.pojo.po.Admin;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,4 +34,14 @@ public interface AdminMapper extends BaseMapper<Admin> {
         map.put("username",username);
         return !this.selectByMap(map).isEmpty();
     }
+
+
+@Select("select * from user where ${ew.SqlSegment}")
+@Results({
+        @Result(column = "uid",property = "uid"),
+        @Result(column = "uid",property = "authorities", many=@Many(
+                select = "com.stcos.server.mapper.RoleMapper.getListByUserId"
+        ))
+})
+List<Admin> getList(@Param("ew") QueryWrapper wrapper);
 }
