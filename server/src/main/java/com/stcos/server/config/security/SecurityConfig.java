@@ -46,9 +46,9 @@ public class SecurityConfig {
                 // 允许登录访问
                 .authorizeHttpRequests().requestMatchers(
                         "/hello",
-                        "/login",
-                        "/logout",
-                        "/register",
+                        "/auth/login",
+                        "/auth/logout",
+                        "/auth/register",
                         "/css/**",
                         "/js/**",
                         "/index.html",

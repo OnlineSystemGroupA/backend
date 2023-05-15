@@ -1,18 +1,16 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.config.security.UserDetailsFactory;
+import com.stcos.server.mapper.AdminMapper;
 import com.stcos.server.mapper.ClientMapper;
-import com.stcos.server.pojo.dto.TokenDto;
+import com.stcos.server.mapper.OperatorMapper;
+import com.stcos.server.pojo.po.Admin;
 import com.stcos.server.pojo.po.Client;
+import com.stcos.server.pojo.po.Operator;
 import com.stcos.server.service.AuthService;
 import com.stcos.server.service.ServiceException;
-import com.stcos.server.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,20 +25,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImp implements AuthService {
 
-    private UserDetailsService userDetailsService;
+    private UserDetailsFactory userDetailsFactory;
+    @Autowired
+    public void setUserDetailsFactory(UserDetailsFactory userDetailsFactory) {
+        this.userDetailsFactory = userDetailsFactory;
+    }
+
+    private AdminMapper adminMapper;
 
     @Autowired
-     public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    public void setAdminMapper(AdminMapper adminMapper) {this.adminMapper = adminMapper;}
 
     private ClientMapper clientMapper;
 
-//    @Autowired
-    public void setClientMapper(ClientMapper clientMapper) {
-        this.clientMapper = clientMapper;
-    }
+    @Autowired
+    public void setClientMapper(ClientMapper clientMapper) {this.clientMapper = clientMapper;}
 
+    private OperatorMapper operatorMapper;
+    @Autowired
+    public void setOperatorMapper(OperatorMapper operatorMapper) {
+        this.operatorMapper = operatorMapper;
+    }
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -48,44 +53,36 @@ public class AuthServiceImp implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Value("${jwt.tokenHead}")
-    private String tokenHead;
-
     @Override
-    public void register(String username, String password, String email) throws ServiceException {
-        try {
-            userDetailsService.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e) { //不存在用户名
-            Client client = new Client(username, passwordEncoder.encode(password), email);
-            clientMapper.addNewUser(client);
-            return ;
-        }
-
-        throw new ServiceException(0);
-    }
-
-    @Override
-    public TokenDto login(String username, String password) throws ServiceException {
+    public UserDetails login(String username, String password, String userType) throws ServiceException {
         UserDetails userDetails;
-        try {
-            userDetails = userDetailsService.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e){ //用户不存在
-            throw new ServiceException(0);
+        if (userType == null) //未传入userType
+            throw new ServiceException(3);
+        switch (userType) {
+            case "admin" -> {
+                Admin admin = adminMapper.getByUsernameAdmin(username);
+                if(admin == null) throw new ServiceException(0);
+                userDetails = userDetailsFactory.getUserDetails(admin);
+            }
+            case "client" -> {
+                Client client = clientMapper.getByUsernameClient(username);
+                if(client == null) throw new ServiceException(0);
+                userDetails = userDetailsFactory.getUserDetails(client);
+            }
+            case "operator" -> {
+                Operator operator = operatorMapper.getByUsernameOperator(username);
+                if(operator == null) throw new ServiceException(0);
+                userDetails = userDetailsFactory.getUserDetails(operator);
+            }
+            default -> throw new ServiceException(3);
         }
-
         if(!passwordEncoder.matches(password, userDetails.getPassword())) //用户名与密码不匹配
             throw new ServiceException(1);
 
         else if (!userDetails.isEnabled()) //用户被禁用
             throw new ServiceException(2);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
-                null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        // 生成 token
-        String token = JwtTokenUtil.generateToken(userDetails);
-
-        return new TokenDto(tokenHead, token);
+        return userDetails;
     }
 
     // 目前不需要实现

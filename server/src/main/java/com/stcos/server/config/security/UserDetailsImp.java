@@ -1,8 +1,9 @@
 package com.stcos.server.config.security;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,8 +18,7 @@ import java.util.List;
  * @since 2023/5/8 20:51
  */
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class UserDetailsImp implements UserDetails {
 
@@ -26,40 +26,16 @@ public class UserDetailsImp implements UserDetails {
 
     private List<GrantedAuthority> authorities;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
+    private String password;
 
-    @Override
-    public String getPassword() {
-        return null;
-    }
+    private String username;
 
-    @Override
-    public String getUsername() {
-        return null;
-    }
+    boolean accountNonExpired;
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
+    boolean accountNonLocked;
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
+    boolean credentialsNonExpired;
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
+    boolean enabled;
 
 }

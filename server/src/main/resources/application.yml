@@ -22,15 +22,23 @@ knife4j:
 
 
 spring:
-# 配置数据源信息
-    datasource:
-      # 配置数据源结构类型
-      type: com.zaxxer.hikari.HikariDataSource
-      # 数据库链接信息配置
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
-      username: stcos
-      password: stcosgroupa
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+
+  # 配置数据源信息
+  datasource:
+    # 配置数据源结构类型
+    type: com.zaxxer.hikari.HikariDataSource
+    # 数据库链接信息配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
+    #      username: stcos
+    #      password: stcosgroupa
+    url: jdbc:mysql://localhost:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
+    username: demo
+    password:
 
 jwt:
   # JWT 存储的请求头
@@ -63,9 +71,9 @@ flowable:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://masterchedan.top:3306/flowable?serverTimezone=UTC&nullCatalogMeansCurrent=true
-#    url: jdbc:mysql://localhost:3306/flowable_demo?serverTimezone=UTC&nullCatalogMeansCurrent=true
-    username: stcos
-    password: stcosgroupa
-#    username: flowable_demo
-#    password:
+    #    url: jdbc:mysql://masterchedan.top:3306/flowable?serverTimezone=UTC&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://localhost:3306/flowable_demo?serverTimezone=UTC&nullCatalogMeansCurrent=true
+    #    username: stcos
+    #    password: stcosgroupa
+    username: flowable_demo
+    password:
