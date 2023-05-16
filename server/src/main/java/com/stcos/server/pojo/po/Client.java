@@ -1,10 +1,9 @@
 package com.stcos.server.pojo.po;
 
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-
-import javax.swing.*;
 import java.util.UUID;
 
 /**
@@ -41,24 +40,6 @@ public class Client {
     private String email;
 
     /**
-     *
-     */
-    private String realName;
-
-    private String phone;
-
-    private String company;
-
-    private String companyAddress;
-
-    /**
-     * 用户头像路径
-     */
-    private String avatarPath;
-
-
-
-    /**
      * 账户是否可用
      */
     private boolean enabled = true;
@@ -85,5 +66,4 @@ public class Client {
         this.password = password;
         this.email = email;
     }
-
 }
