@@ -40,7 +40,7 @@ public class Admin {
 
 
     public Admin(String username) {
-        this.uid = "admin-" + UUID.randomUUID();
+        this.uid = "ad-" + UUID.randomUUID();
         this.username = username;
     }
 

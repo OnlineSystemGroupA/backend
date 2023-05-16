@@ -31,6 +31,20 @@ public class Operator {
 
     private String username;
 
+
+    private String realName;
+
+
+    private String department;
+
+    private String position;
+
+    private String email;
+
+    private String phone;
+
+    private String avatarPath;
+
     boolean accountNonExpired;
 
     boolean accountNonLocked;
@@ -41,6 +55,6 @@ public class Operator {
 
 
     public Operator(String uid) {
-        this.uid = "operator-" + UUID.randomUUID();
+        this.uid = "op-" + UUID.randomUUID();
     }
 }
