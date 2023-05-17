@@ -1,10 +1,15 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.WorkflowApi;
+import com.stcos.server.entity.dto.LoginParamDto;
 import com.stcos.server.entity.dto.ProcessIdDto;
 import com.stcos.server.entity.dto.SamplePathDto;
 import com.stcos.server.entity.dto.TaskDto;
+import com.stcos.server.entity.form.Form;
+import com.stcos.server.entity.form.TestForm;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +32,8 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<List<SamplePathDto>> samplesUpload(String processId, List<MultipartFile> files) {
-        return WorkflowApi.super.samplesUpload(processId, files);
+    public ResponseEntity<List<SamplePathDto>> uploadSamples(String processId, List<MultipartFile> files) {
+        return WorkflowApi.super.uploadSamples(processId, files);
     }
 
     @Override

@@ -272,7 +272,7 @@ public interface WorkflowApi {
         produces = { "application/json" },
         consumes = { "multipart/form-data" }
     )
-    default ResponseEntity<List<SamplePathDto>> samplesUpload(
+    default ResponseEntity<List<SamplePathDto>> uploadSamples(
         @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
         @Parameter(name = "files", description = "") @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) {

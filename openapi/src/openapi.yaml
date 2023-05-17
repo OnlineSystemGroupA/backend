@@ -161,7 +161,7 @@ paths:
         '404':
           description: 指定任务不存在
 
-  /workflow/processes/{processId}/items/{itemName}:
+  /workflow/processes/{processId}/forms/{formName}:
     parameters:
       - name: processId
         in: path
@@ -169,7 +169,7 @@ paths:
         schema:
           type: string
         required: true
-      - name: itemName
+      - name: formName
         in: path
         description: 指定资源名
         schema:
@@ -180,7 +180,7 @@ paths:
         - workflow
       summary: 更新流程资源
       description: 修改指定流程中的指定资源
-      operationId: updateTaskItem
+      operationId: updateForm
       responses:
         '200':
           description: 成功更新指定资源
@@ -195,7 +195,7 @@ paths:
         - workflow
       summary: 获取流程资源
       description: 获取指定任务中的指定资源
-      operationId: getTaskItem
+      operationId: getForm
       responses:
         '200':
           description: 成功获取指定资源
@@ -221,7 +221,7 @@ paths:
         - workflow
       summary: 上传样品
       description: 上传与对应流程相关的样品文件
-      operationId: samplesUpload
+      operationId: uploadSamples
       requestBody:
         description: 需要上传的样品文件
         content:
