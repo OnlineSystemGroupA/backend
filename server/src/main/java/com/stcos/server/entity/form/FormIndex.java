@@ -43,7 +43,7 @@ public class FormIndex {
      * 表单是否归档，归档之后的表单，请使用 processArchiveId 获取关联流程的归档记录 <br>
      * 否则使用 processInstanceId 查询与其关联的流程实例
      */
-    private boolean isArchived;
+    private boolean archived;
 
     /**
      * 表单在哪个任务中被创建，对应的任务名
@@ -58,17 +58,17 @@ public class FormIndex {
     /**
      * 表单创建时间
      */
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdDate;
+
+    /**
+     * 表单最后一次被谁修改
+     */
+    private String lastModifiedBy;
 
     /**
      * 表单最后一次被修改的时间
      */
     private LocalDateTime lastModifiedDate;
-
-    /**
-     * 表单最后一次被谁修改
-     */
-    private Long lastModifiedBy;
 
     /**
      * 表单索引对应的表单实体，懒加载

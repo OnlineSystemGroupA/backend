@@ -205,11 +205,24 @@
 
 // TODO
 
+#### 2.2.1 FormIndex 表单索引
 
+> 软件包： com.stcos.server.entity.form
 
-
-
-
+| 字段名            | 描述                                                         | 类型          |
+| ----------------- | ------------------------------------------------------------ | ------------- |
+| formIndexId       | 表单索引 ID                                                  | String        |
+| formId            | 表单索引对应表单的 ID                                        | String        |
+| formName          | 表单名称                                                     | String        |
+| processInstanceId | 表单对应的流程实例的 ID                                      | String        |
+| processArchiveId  | 表单对应的流程记录的 ID                                      | String        |
+| archived          | 表单是否归档，归档之后的表单，请使用 processArchiveId 获取关联流程的归档记录，否则使用 processInstanceId 查询与其关联的流程实例 | boolen        |
+| createdIn         | 表单在哪个任务中被创建，对应的任务名                         | String        |
+| createdBy         | 表单的创建者                                                 | String        |
+| createdDate       | 表单创建时间                                                 | LocalDateTime |
+| lastModifiedBy    | 表单最后一次被谁修改                                         | String        |
+| lastModifiedDate  | 表单最后一次被修改的时间                                     | LocalDateTime |
+| form              | 表单索引对应的表单实体，懒加载                               | Form          |
 
 
 

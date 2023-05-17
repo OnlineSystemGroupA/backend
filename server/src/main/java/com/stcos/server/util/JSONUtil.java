@@ -6,7 +6,7 @@ import com.stcos.server.exception.ServerErrorException;
 import lombok.experimental.UtilityClass;
 
 /**
- * description
+ * JSON 工具类，用于 Json 字符串与 Java 对象间的互相转换
  *
  * @author Kekwy
  * @version 1.0

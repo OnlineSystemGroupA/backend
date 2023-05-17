@@ -1,0 +1,22 @@
+@startsalt
+{
+== FormIndex
+{T-
+ + ===字段名    | ===描述 | ===类型
+ +formIndexId      | 表单索引 ID     | Age
+ +formId       | 7.13 billion   | 30
+ +formName     | 964 million    | 30
+ +processInstanceId     | 964 million    | 30
+ +processArchiveId     | 964 million    | 30
+ +archived     | 表单是否归档，归档之后的表单，
+ + | 请使用 processArchiveId 获取关联流程的归档记录，
+     +| 否则使用 processInstanceId 查询与其关联的流程实例
+ +createdIn     | 表单在哪个任务中被创建，对应的任务名    | 30
+ +createdBy     | 表单的创建者    | 30
+ +createdDate     | 表单创建时间    | 30
+ +lastModifiedBy     | 表单最后一次被谁修改    | 30
+ +lastModifiedDate     | 表单最后一次被修改的时间    | 30
+ +form     | 表单索引对应的表单实体，懒加载    | Form
+}
+}
+@endsalt

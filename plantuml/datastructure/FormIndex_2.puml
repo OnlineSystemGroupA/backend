@@ -1,0 +1,26 @@
+@startuml
+skin rose
+
+class FormIndex {
+- String formIndexId
+- String formId
+- String formName
+- String processInstanceId
+- Long processArchiveId
+- boolean isArchived
+- String createdIn
+- String createdBy
+- LocalDateTime createdDateTime
+- LocalDateTime lastModifiedDate
+- Long lastModifiedBy
+- Form form
+}
+
+
+
+abstract class Form {
+}
+
+Form <- FormIndex::form
+
+@enduml

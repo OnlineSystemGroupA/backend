@@ -1,0 +1,61 @@
+@startuml
+skin rose
+skinparam roundcorner 25
+rectangle "                     Front End                     "  as network <<$archimate/network>> #white
+
+rectangle "Spring Security"  as security <<$archimate/constraint>> #technology
+
+network -- security
+
+rectangle "Auth Controller"  as AuthController <<$archimate/component>> #application
+rectangle "Workflow Controller"  as WorkflowController <<$archimate/component>> #application
+rectangle "Archive Controller"  as ArchivesController <<$archimate/component>> #application
+rectangle "Manager Controller"  as ManagerController <<$archimate/component>> #application
+rectangle "UserInfo Controller"  as UserInfoController <<$archimate/component>> #application
+rectangle "Menu Controller"  as MenuController <<$archimate/component>> #application
+
+security -- AuthController
+security -- WorkflowController
+security -- ArchivesController
+security -- ManagerController
+security -- UserInfoController
+security -- MenuController
+
+rectangle "Auth Service"  as AuthService <<$archimate/service>> #business
+rectangle "File Service"  as FileService <<$archimate/service>> #business
+rectangle "Workflow Service"  as WorkflowService <<$archimate/service>> #business
+rectangle "Archive Service"  as ArchivesService <<$archimate/service>> #business
+rectangle "Account Service"  as AccountService <<$archimate/service>> #business
+rectangle "Menu Service"  as MenuService <<$archimate/service>> #business
+
+AuthController <-- AuthService
+AuthController <-- AccountService
+WorkflowController <-- WorkflowService
+
+WorkflowController <-- FileService
+
+ArchivesController <-- FileService
+ArchivesController <-- ArchivesService
+
+ManagerController <-- ArchivesService
+ManagerController <-- FileService
+ManagerController <-- AccountService
+ManagerController <-- WorkflowService
+ManagerController <-- MenuService
+
+UserInfoController <-- AccountService
+UserInfoController <-- FileService
+
+MenuController <-- MenuService
+
+database "                    MyBatis Mapper Dao                    "  as dao <<$archimate/strategy-capability>> #strategy
+
+AuthService <-- dao
+FileService <-- dao
+WorkflowService <-- dao
+ArchivesService <-- dao
+AccountService <-- dao
+MenuService <-- dao
+
+remove ManagerController
+@enduml
