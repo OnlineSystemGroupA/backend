@@ -1,4 +1,4 @@
-package com.stcos.server.service;
+package com.stcos.server.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

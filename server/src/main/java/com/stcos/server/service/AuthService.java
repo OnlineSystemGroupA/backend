@@ -1,5 +1,6 @@
 package com.stcos.server.service;
 
+import com.stcos.server.exception.ServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**

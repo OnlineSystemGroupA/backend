@@ -1,6 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.service.ServiceException;
+import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;

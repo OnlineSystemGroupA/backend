@@ -6,7 +6,7 @@ import com.stcos.server.entity.dto.RegisterParamDto;
 import com.stcos.server.entity.dto.TokenDto;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.service.AuthService;
-import com.stcos.server.service.ServiceException;
+import com.stcos.server.exception.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,7 +1,7 @@
 package com.stcos.server.config.security;
 
 import com.stcos.server.service.AccountService;
-import com.stcos.server.service.ServiceException;
+import com.stcos.server.exception.ServiceException;
 import com.stcos.server.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

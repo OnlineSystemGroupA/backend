@@ -7,10 +7,8 @@ import com.stcos.server.pojo.po.Admin;
 import com.stcos.server.pojo.po.Client;
 import com.stcos.server.pojo.po.Operator;
 import com.stcos.server.service.AccountService;
-import com.stcos.server.service.ServiceException;
+import com.stcos.server.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
