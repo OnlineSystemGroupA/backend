@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.po.forms;
+package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @Accessors(fluent = true)
 @TableName(value = "t_application_verify_form")
-public class ApplicationVerifyForm {
+public class ApplicationVerifyForm extends Form {
     private String confidentialLevel;
     private boolean isVirusCheck;
     private String virusScanner;

@@ -1,16 +1,14 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.WorkflowApi;
-import com.stcos.server.pojo.dto.ProcessIdDto;
-import com.stcos.server.pojo.dto.SamplePathDto;
-import com.stcos.server.pojo.dto.TaskDto;
+import com.stcos.server.entity.dto.ProcessIdDto;
+import com.stcos.server.entity.dto.SamplePathDto;
+import com.stcos.server.entity.dto.TaskDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * description

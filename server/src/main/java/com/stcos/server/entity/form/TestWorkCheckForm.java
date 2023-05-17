@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.po.forms;
+package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Data
 @Accessors(fluent = true)
 @TableName(value = "t_test_work_check_form")
-public class TestWorkCheckForm {
+public class TestWorkCheckForm extends Form {
     private String softwareName;
     private String softwareVersion;
     private String clientCompany;

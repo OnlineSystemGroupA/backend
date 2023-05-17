@@ -88,6 +88,8 @@ public class FlowableTest {
         ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("workflow", variable);
         System.out.println("processInstance.getProcessDefinitionId() = " + processInstance.getProcessDefinitionId());
 
+        processInstance.getProcessInstanceId();
+
         RuntimeService runtimeService = processEngine.getRuntimeService();
 
 //        ProcessInstance processInstance1 = runtimeService.createProcessInstanceQuery().processInstanceId().singleResult();

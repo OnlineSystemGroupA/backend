@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.dto;
+package com.stcos.server.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -9,48 +9,45 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * RegisterParamDto
+ * LoginParamDto
  */
 
-@JsonTypeName("RegisterParam")
+@JsonTypeName("LoginParam")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
-public class RegisterParamDto {
+public class LoginParamDto {
 
   private String username;
-
-  private String email;
 
   private String password;
 
   /**
    * Default constructor
-   * @deprecated Use {@link RegisterParamDto#RegisterParamDto(String, String, String)}
+   * @deprecated Use {@link LoginParamDto#LoginParamDto(String, String)}
    */
   @Deprecated
-  public RegisterParamDto() {
+  public LoginParamDto() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public RegisterParamDto(String username, String email, String password) {
+  public LoginParamDto(String username, String password) {
     this.username = username;
-    this.email = email;
     this.password = password;
   }
 
-  public RegisterParamDto username(String username) {
+  public LoginParamDto username(String username) {
     this.username = username;
     return this;
   }
 
   /**
-   * 用户名，唯一
+   * Get username
    * @return username
   */
   @NotNull 
-  @Schema(name = "username", description = "用户名，唯一", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "username", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("username")
   public String getUsername() {
     return username;
@@ -60,37 +57,17 @@ public class RegisterParamDto {
     this.username = username;
   }
 
-  public RegisterParamDto email(String email) {
-    this.email = email;
-    return this;
-  }
-
-  /**
-   * 用户邮箱
-   * @return email
-  */
-  @NotNull 
-  @Schema(name = "email", description = "用户邮箱", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("email")
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public RegisterParamDto password(String password) {
+  public LoginParamDto password(String password) {
     this.password = password;
     return this;
   }
 
   /**
-   * 用户密码
+   * Get password
    * @return password
   */
   @NotNull 
-  @Schema(name = "password", description = "用户密码", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "password", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("password")
   public String getPassword() {
     return password;
@@ -108,23 +85,21 @@ public class RegisterParamDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RegisterParamDto registerParam = (RegisterParamDto) o;
-    return Objects.equals(this.username, registerParam.username) &&
-        Objects.equals(this.email, registerParam.email) &&
-        Objects.equals(this.password, registerParam.password);
+    LoginParamDto loginParam = (LoginParamDto) o;
+    return Objects.equals(this.username, loginParam.username) &&
+        Objects.equals(this.password, loginParam.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, email, password);
+    return Objects.hash(username, password);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RegisterParamDto {\n");
+    sb.append("class LoginParamDto {\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();

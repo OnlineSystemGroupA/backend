@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.po.forms;
+package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @Accessors(fluent = true)
 @TableName(value = "t_test_plan_verify_form")
-public class TestPlanVerifyForm {
+public class TestPlanVerifyForm extends Form {
     private String softwareName;
     private String softwareVersion;
     private String projectId;

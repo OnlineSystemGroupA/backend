@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.po.forms;
+package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @Accessors(fluent = true)
 @TableName(value = "t_document_review_form")
-public class DocumentReviewForm {
+public class DocumentReviewForm extends Form {
     private String softwareName;
     private String softwareVersion;
     private String clientCompany;

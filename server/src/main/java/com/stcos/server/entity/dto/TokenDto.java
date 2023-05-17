@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.dto;
+package com.stcos.server.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;

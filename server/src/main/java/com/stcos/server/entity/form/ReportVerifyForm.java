@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.po.forms;
+package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(fluent = true)
 @TableName(value = "t_report_verify_form")
-public class ReportVerifyForm {
+public class ReportVerifyForm extends Form {
     private String softwareName;
     private String client;
     private boolean isReportIdChecked;

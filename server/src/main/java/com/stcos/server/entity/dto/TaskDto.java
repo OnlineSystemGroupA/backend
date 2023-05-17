@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.dto;
+package com.stcos.server.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -9,14 +9,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * SamplePathDto
+ * TaskDto
  */
 
-@JsonTypeName("SamplePath")
+@JsonTypeName("Task")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
-public class SamplePathDto {
+public class TaskDto {
 
-  private String path;
+  private String processId;
 
   private String taskId;
 
@@ -28,41 +28,45 @@ public class SamplePathDto {
 
   /**
    * Default constructor
-   * @deprecated Use {@link SamplePathDto#SamplePathDto(String)}
+   * @deprecated Use {@link TaskDto#TaskDto(String, String, String, String, String)}
    */
   @Deprecated
-  public SamplePathDto() {
+  public TaskDto() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public SamplePathDto(String path) {
-    this.path = path;
+  public TaskDto(String processId, String taskId, String taskName, String description, String startUserId) {
+    this.processId = processId;
+    this.taskId = taskId;
+    this.taskName = taskName;
+    this.description = description;
+    this.startUserId = startUserId;
   }
 
-  public SamplePathDto path(String path) {
-    this.path = path;
+  public TaskDto processId(String processId) {
+    this.processId = processId;
     return this;
   }
 
   /**
    * 当前任务对应的流程实例 id
-   * @return path
+   * @return processId
   */
   @NotNull 
-  @Schema(name = "path", description = "当前任务对应的流程实例 id", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("path")
-  public String getPath() {
-    return path;
+  @Schema(name = "processId", description = "当前任务对应的流程实例 id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("processId")
+  public String getProcessId() {
+    return processId;
   }
 
-  public void setPath(String path) {
-    this.path = path;
+  public void setProcessId(String processId) {
+    this.processId = processId;
   }
 
-  public SamplePathDto taskId(String taskId) {
+  public TaskDto taskId(String taskId) {
     this.taskId = taskId;
     return this;
   }
@@ -71,8 +75,8 @@ public class SamplePathDto {
    * 当前任务实例的 id
    * @return taskId
   */
-  
-  @Schema(name = "taskId", description = "当前任务实例的 id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "taskId", description = "当前任务实例的 id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("taskId")
   public String getTaskId() {
     return taskId;
@@ -82,7 +86,7 @@ public class SamplePathDto {
     this.taskId = taskId;
   }
 
-  public SamplePathDto taskName(String taskName) {
+  public TaskDto taskName(String taskName) {
     this.taskName = taskName;
     return this;
   }
@@ -91,8 +95,8 @@ public class SamplePathDto {
    * 当前任务的名称
    * @return taskName
   */
-  
-  @Schema(name = "taskName", description = "当前任务的名称", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "taskName", description = "当前任务的名称", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("taskName")
   public String getTaskName() {
     return taskName;
@@ -102,7 +106,7 @@ public class SamplePathDto {
     this.taskName = taskName;
   }
 
-  public SamplePathDto description(String description) {
+  public TaskDto description(String description) {
     this.description = description;
     return this;
   }
@@ -111,8 +115,8 @@ public class SamplePathDto {
    * 当前任务的描述、状态等
    * @return description
   */
-  
-  @Schema(name = "description", description = "当前任务的描述、状态等", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "description", description = "当前任务的描述、状态等", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("description")
   public String getDescription() {
     return description;
@@ -122,7 +126,7 @@ public class SamplePathDto {
     this.description = description;
   }
 
-  public SamplePathDto startUserId(String startUserId) {
+  public TaskDto startUserId(String startUserId) {
     this.startUserId = startUserId;
     return this;
   }
@@ -131,8 +135,8 @@ public class SamplePathDto {
    * 当前流程的发起人
    * @return startUserId
   */
-  
-  @Schema(name = "startUserId", description = "当前流程的发起人", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "startUserId", description = "当前流程的发起人", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("startUserId")
   public String getStartUserId() {
     return startUserId;
@@ -150,24 +154,24 @@ public class SamplePathDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SamplePathDto samplePath = (SamplePathDto) o;
-    return Objects.equals(this.path, samplePath.path) &&
-        Objects.equals(this.taskId, samplePath.taskId) &&
-        Objects.equals(this.taskName, samplePath.taskName) &&
-        Objects.equals(this.description, samplePath.description) &&
-        Objects.equals(this.startUserId, samplePath.startUserId);
+    TaskDto task = (TaskDto) o;
+    return Objects.equals(this.processId, task.processId) &&
+        Objects.equals(this.taskId, task.taskId) &&
+        Objects.equals(this.taskName, task.taskName) &&
+        Objects.equals(this.description, task.description) &&
+        Objects.equals(this.startUserId, task.startUserId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(path, taskId, taskName, description, startUserId);
+    return Objects.hash(processId, taskId, taskName, description, startUserId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SamplePathDto {\n");
-    sb.append("    path: ").append(toIndentedString(path)).append("\n");
+    sb.append("class TaskDto {\n");
+    sb.append("    processId: ").append(toIndentedString(processId)).append("\n");
     sb.append("    taskId: ").append(toIndentedString(taskId)).append("\n");
     sb.append("    taskName: ").append(toIndentedString(taskName)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");

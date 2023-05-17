@@ -5,9 +5,9 @@
  */
 package com.stcos.server.controller.api;
 
-import com.stcos.server.pojo.dto.ProcessIdDto;
-import com.stcos.server.pojo.dto.SamplePathDto;
-import com.stcos.server.pojo.dto.TaskDto;
+import com.stcos.server.entity.dto.ProcessIdDto;
+import com.stcos.server.entity.dto.SamplePathDto;
+import com.stcos.server.entity.dto.TaskDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
