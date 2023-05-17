@@ -169,6 +169,12 @@ paths:
         schema:
           type: string
         required: true
+      - name: taskId
+        in: query
+        description: 当前用户正在处理的任务 id
+        schema:
+          type: string
+        required: true
       - name: formName
         in: path
         description: 指定资源名

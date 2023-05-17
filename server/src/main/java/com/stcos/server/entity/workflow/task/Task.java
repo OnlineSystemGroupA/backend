@@ -1,4 +1,4 @@
-package com.stcos.server.entity.process.task;
+package com.stcos.server.entity.workflow.task;
 
 /**
  * description
