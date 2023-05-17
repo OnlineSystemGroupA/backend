@@ -8,4 +8,9 @@ package com.stcos.server.exception;
  * @since 2023/5/17 14:27
  */
 public class ServerErrorException extends RuntimeException {
+
+    public ServerErrorException(Throwable cause) {
+        super(cause);
+    }
+
 }
