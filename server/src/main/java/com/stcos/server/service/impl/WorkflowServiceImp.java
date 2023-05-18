@@ -1,5 +1,6 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.config.security.UserDetailsImp;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import org.flowable.engine.RuntimeService;
@@ -51,8 +52,8 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public List<Task> getTasks() throws ServiceException {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return taskService.createTaskQuery().taskAssignee(userDetails.getUsername()).list();
+        UserDetailsImp userDetails = (UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return taskService.createTaskQuery().taskAssignee(userDetails.getUid()).list();
     }
 
     @Override
