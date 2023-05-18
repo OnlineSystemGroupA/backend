@@ -1,19 +1,15 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.UserDetailsImp;
-import com.stcos.server.config.security.UserDetailsImp;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
-import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -64,9 +60,6 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public List<Task> getTasks() throws ServiceException {
-
-//        System.out.println(taskService.createTaskQuery().executionId("5fa248e5-f56b-11ed-9d29-4c796ec27013").singleResult().getAssignee());
-
         UserDetailsImp userDetails = (UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return taskService.createTaskQuery().taskAssignee(userDetails.getUid()).list();
     }
