@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * description
  *
- * @author
+ * @author masterCheDan
  * @version 1.0
  * @since 2023/5/3 13:21
  */
@@ -24,6 +24,21 @@ public interface OperatorMapper extends BaseMapper<Operator> {
     default Operator getByUsernameOperator(String username){
         Map<String, Object> map = new HashMap<>();
         map.put("username",username);
+        if(this.selectByMap(map).isEmpty())
+            return null;
+        else
+            return this.selectByMap(map).get(0);
+    }
+
+    /**
+     * 通过Uid查找干员
+     *
+     * @param uid 干员Uid
+     * @return 查找到的Operator对象
+     */
+    default Operator getByUidOperator(String uid){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid",uid);
         if(this.selectByMap(map).isEmpty())
             return null;
         else

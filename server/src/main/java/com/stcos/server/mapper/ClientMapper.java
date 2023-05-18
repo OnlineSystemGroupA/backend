@@ -26,6 +26,21 @@ public interface ClientMapper extends BaseMapper<Client> {
     }
 
     /**
+     * 通过Uid查找用户
+     *
+     * @param uid 用户Uid
+     * @return 查找到的Client对象
+     */
+    default Client getByUidClient(String uid){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid",uid);
+        if(this.selectByMap(map).isEmpty())
+            return null;
+        else
+            return this.selectByMap(map).get(0);
+    }
+
+    /**
      * 增加新用户
      * @param client 待添加用户
      *

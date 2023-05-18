@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * “用户修改委托”任务监听器
+ * ”用户确认测试报告“任务监听器
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/18 14:44
+ * @since 2023/5/18 15:04
  */
 
 @Component
-public class ModifyApplicationListener implements TaskListener{
+public class ConfirmTestReportListener implements TaskListener{
     private EmailService emailService;
 
     @Autowired
@@ -25,6 +25,7 @@ public class ModifyApplicationListener implements TaskListener{
     }
 
     private ClientMapper clientMapper;
+
     @Autowired
     public void setClientMapper(ClientMapper clientMapper) {
         this.clientMapper = clientMapper;
@@ -35,8 +36,8 @@ public class ModifyApplicationListener implements TaskListener{
         Client client = clientMapper.getByUidClient(task.getAssignee());
         if(client == null)
             return ;
-        String subject = "修改委托";
-        String text = "您好！一项由您提起的软件测试委托经审核没有通过，请您修改委托并重新提交。";
+        String subject = "确认测试报告";
+        String text = "您好！您的一份测试委托的报告已经生成，请尽快前往确认。";
         emailService.sendEmail(client.getEmail(), subject, text);
     }
 }
