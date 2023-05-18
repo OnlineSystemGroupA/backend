@@ -32,17 +32,22 @@ public class Operator {
     private String username;
 
 
+    @TableField(exist=false)
     private String realName;
 
 
+    @TableField(exist=false)
     private String department;
 
+    @TableField(exist=false)
     private String position;
 
     private String email;
 
+    @TableField(exist=false)
     private String phone;
 
+    @TableField(exist=false)
     private String avatarPath;
 
     boolean accountNonExpired;

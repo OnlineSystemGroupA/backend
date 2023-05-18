@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,7 +101,8 @@ public class WorkflowController implements WorkflowApi {
         }
         List<TaskDto> taskDtos = new ArrayList<>();
         for (Task task: tasks) {
-            taskDtos.add(new TaskDto(task.getProcessInstanceId(), task.getId(), task.getName(), task.getDescription(), task.getOwner()));
+            taskDtos.add(new TaskDto(task.getProcessInstanceId(),
+                    task.getId(), task.getName(), task.getDescription(), task.getOwner()));
         }
         return ResponseEntity.ok(taskDtos);
     }
@@ -119,7 +122,7 @@ public class WorkflowController implements WorkflowApi {
     public ResponseEntity<Void> updateTaskItem(String processId, String itemName) {
         ResponseEntity<Void> response = null;
         try{
-            service.updateTaskItem(processId, itemName);
+            service.updateForm(processId, itemName, null);
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(201).build();

@@ -1,8 +1,10 @@
 package com.stcos.server.service;
 
 
+import com.stcos.server.entity.form.Form;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
+
 import java.util.List;
 
 public interface WorkflowService {
@@ -54,15 +56,17 @@ public interface WorkflowService {
     /**
      * 更新指定任务中的指定资源
      *
-     * @param processId 指定流程实例 id
-     * @param itemName 指定资源名
+     * @param processInstanceId 指定流程实例 id
+     * @param formName          表单名
+     * @param form              表单对象
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 没有指定资源（需要创建） <br>
      *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
      *                          2: 指定任务不存在 <br>
      */
-    void updateTaskItem(String processId, String itemName) throws ServiceException;
+    void updateForm(String processInstanceId, String formName, Form form) throws ServiceException;
+
     /**
      * 开始新的委托流程
      *
