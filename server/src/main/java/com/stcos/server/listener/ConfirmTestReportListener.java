@@ -31,13 +31,15 @@ public class ConfirmTestReportListener implements TaskListener{
         this.clientMapper = clientMapper;
     }
 
+    @Override
     public void create(DelegateTask task) {
         //发送邮件
         Client client = clientMapper.getByUidClient(task.getAssignee());
         if(client == null)
             return ;
         String subject = "确认测试报告";
-        String text = "您好！您的一份测试委托的报告已经生成，请尽快前往确认。";
+        //String text = "您好！您的一份测试委托的报告已经生成，请尽快前往确认。";
+        String text = client.getUsername() + ",你醒啦？该干活了";
         emailService.sendEmail(client.getEmail(), subject, text);
     }
 }

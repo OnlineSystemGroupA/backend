@@ -37,7 +37,8 @@ public class VerifyApplicationListener implements TaskListener{
         if(operator == null)
             return ;
         String subject = "审核用户委托";
-        String text = "您好！一项被指派给您的\"审核用户委托\"任务已被创建，请尽快完成！";
+        //String text = "您好！一项被指派给您的\"审核用户委托\"任务已被创建，请尽快完成！";
+        String text = operator.getUsername() + ",你醒啦？该干活了";
         emailService.sendEmail(operator.getEmail(), subject, text);
     }
 }

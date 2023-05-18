@@ -30,13 +30,15 @@ public class ModifyApplicationListener implements TaskListener{
         this.clientMapper = clientMapper;
     }
 
+    @Override
     public void create(DelegateTask task) {
         //发送邮件
         Client client = clientMapper.getByUidClient(task.getAssignee());
         if(client == null)
             return ;
         String subject = "修改委托";
-        String text = "您好！一项由您提起的软件测试委托经审核没有通过，请您修改委托并重新提交。";
+        //String text = "您好！一项由您提起的软件测试委托经审核没有通过，请您修改委托并重新提交。";
+        String text = client.getUsername() + ",你醒啦？该干活了";
         emailService.sendEmail(client.getEmail(), subject, text);
     }
 }
