@@ -22,10 +22,10 @@ public class TaskConfig {
     public Map<String, List<String>> taskRequiredVarMap() {
         return new HashMap<>() {{
             put("填写委托", List.of("ApplicationForm"));
-            put("分配工作人员", List.of("Assignee"));  //被分配的工作人员
-            put("审核用户委托", List.of("ApplicationVerifyForm"));
+            put("分配工作人员", List.of("assignee"));  //被分配的工作人员
+            put("审核用户委托", List.of("ApplicationVerifyForm", "passed")); //passed：审核结果
             put("用户修改委托", List.of("ApplicationForm"));
-            put("生成报价", List.of("Quotation")); //报价
+            put("生成报价", List.of("quotation")); //报价
             put("生成合同草稿", List.of("ContractDraft")); //合同草稿
             put("签署合同", List.of("Contract")); //合同
             put("上传样品", List.of("Sample")); //样品
