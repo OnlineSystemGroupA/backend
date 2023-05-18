@@ -8,4 +8,7 @@ package com.stcos.server.service;
  * @since 2023/4/24 0:23
  */
 public interface EmailService {
+
+    void sendEmail(String from, String to, String subject, String text);
+
 }
