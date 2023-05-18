@@ -40,6 +40,21 @@ spring:
     username: demo
     password:
 
+  mail:
+    # 使用 smtp 协议
+    protocol: smtp
+    host: smtp.qq.com
+    port: 587
+    username: keekkewy@qq.com
+    # 授权码
+    password: thbigoxavkrkbhdg
+    test-connection: false
+    properties.mail:
+      smtp.auth: false
+      debug: false
+      mime.splitlongparameters: false
+    default-encoding: UTF-8
+
 jwt:
   # JWT 存储的请求头
   tokenHeader: Authorization

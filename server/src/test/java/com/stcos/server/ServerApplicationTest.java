@@ -1,7 +1,7 @@
 package com.stcos.server;
 
 import com.stcos.server.mapper.ClientMapper;
-import com.stcos.server.pojo.po.Client;
+import com.stcos.server.entity.user.Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

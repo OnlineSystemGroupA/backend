@@ -1,7 +1,7 @@
 package com.stcos.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.pojo.po.Authority;
+import com.stcos.server.entity.user.Authority;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

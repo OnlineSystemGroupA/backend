@@ -2,8 +2,8 @@ package com.stcos.server.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.pojo.po.Admin;
-import com.stcos.server.pojo.po.Operator;
+import com.stcos.server.entity.user.Admin;
+import com.stcos.server.entity.user.Operator;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

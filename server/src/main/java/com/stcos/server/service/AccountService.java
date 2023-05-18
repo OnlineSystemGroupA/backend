@@ -1,9 +1,9 @@
 package com.stcos.server.service;
 
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.pojo.po.Admin;
-import com.stcos.server.pojo.po.Client;
-import com.stcos.server.pojo.po.Operator;
+import com.stcos.server.entity.user.Admin;
+import com.stcos.server.entity.user.Client;
+import com.stcos.server.entity.user.Operator;
 
 /**
  * description

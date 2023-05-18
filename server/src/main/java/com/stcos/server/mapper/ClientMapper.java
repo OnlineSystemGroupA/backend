@@ -1,7 +1,7 @@
 package com.stcos.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.pojo.po.Client;
+import com.stcos.server.entity.user.Client;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

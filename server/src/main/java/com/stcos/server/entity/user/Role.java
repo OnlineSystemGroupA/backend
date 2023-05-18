@@ -1,4 +1,4 @@
-package com.stcos.server.pojo.po;
+package com.stcos.server.entity.user;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

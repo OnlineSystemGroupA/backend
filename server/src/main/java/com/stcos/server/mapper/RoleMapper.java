@@ -1,7 +1,7 @@
 package com.stcos.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.pojo.po.Role;
+import com.stcos.server.entity.user.Role;
 import org.apache.ibatis.annotations.Select;
 import java.util.List;
 

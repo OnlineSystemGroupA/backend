@@ -56,12 +56,12 @@ public class FormIndex {
     private LocalDateTime lastModifiedDate;
 
     /**
-     * 对表单具有读权限的用户
+     * 对表单具有读权限用户的 ID 列表
      */
     private List<String> readableUsers;
 
     /**
-     * 对表单具有写权限的用户
+     * 对表单具有写权限用户的 ID 列表
      */
     private List<String> writableUsers;
 
