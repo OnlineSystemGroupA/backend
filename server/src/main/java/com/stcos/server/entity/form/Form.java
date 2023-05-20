@@ -2,8 +2,8 @@ package com.stcos.server.entity.form;
 
 import com.stcos.server.util.JSONUtil;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +16,9 @@ import java.util.Map;
  */
 
 @Data
+@Document(collection = "form")
 public abstract class Form {
-
+    @Id
     private Long formId;
 
     // TODO 酌情设计一些与表单操作有关的共用方法

@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skin rose
+
+autonumber
+
+participant "Spring Context" as a
+participant "Workflow Service" as b
+participant "Runtime Service" as c
+participant "File Service" as f
+database "Form Mapper" as d
+entity "Sample List" as e
+
+-> a: 用户发送请求
+activate a
+a -> b: 发起新的流程
+activate b
+b -> a: 获取用户 ID
+activate a
+return 用户 ID
+b -> c: 判断流程实例是否存在
+activate c
+return
+b -> c: 获取样品列表
+activate c
+return 样品列表 ID
+b -> d: 根据样品列表 ID 查找数据库
+activate d
+return 样品列表对象
+b -> e: 判断当前登录用户是否具有上传权限
+activate e
+b -> e: 添加新文件索引
+deactivate
+
+b -> d: 保存样品列表
+activate d
+return
+b -> f: 保存样品文件
+activate f
+return
+return 文件信息摘要
+return 向用户发送响应
+
+@enduml

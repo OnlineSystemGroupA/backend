@@ -17,7 +17,6 @@ import java.util.UUID;
  * @since 2023/5/3 12:43
  */
 @Data
-@TableName(value = "t_admin")
 public class Admin {
 
     @TableId

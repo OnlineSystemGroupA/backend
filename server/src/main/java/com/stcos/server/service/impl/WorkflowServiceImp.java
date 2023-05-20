@@ -82,9 +82,11 @@ public class WorkflowServiceImp implements WorkflowService {
             throw new ServiceException(0);
         }
 
+        // 获取表单索引
+
         // 判断当前用户对该表单是否具有写权限
 
-        // 生成表单索引
+        // 更新表单索引
 //        FormIndex formIndex = new FormIndex();
 
         // 将表单保存至数据库
@@ -96,12 +98,17 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public String startProcess() throws ServiceException {
+        // 获取当前登录用户，使用其 id 设置任务发起人
         String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
-        // 初始化流程参数
+        // 初始化流程变量，创建
+
+
+        // TODO 将以下创建 map 的方法注释
         Map<String, Object> map = new HashMap<>() {{
             put("client", userId);
             put("admin", "op-1");
+            put("passed", true);
         }};
 
         ProcessInstance processInstance =

@@ -1,0 +1,56 @@
+@startuml
+
+skin rose
+
+skinparam groupInheritance 1
+skinparam linetype ortho
+
+class FormIndex {
+}
+class ApplicationForm {
+}
+
+class TestReportForm {
+}
+
+
+class TestFunctionForm {
+}
+
+abstract class Form {
+}
+class TestWorkCheckForm {
+}
+
+class ApplicationVerifyForm {
+}
+class ReportVerifyForm {
+}
+class TestRecordsForm {
+}
+
+class TestPlanVerifyForm {
+}
+
+class DocumentReviewForm {
+}
+
+class TestPlanForm {
+}
+
+FormIndex o-- Form
+
+Form <|-- ApplicationForm
+Form <|-- TestReportForm
+Form <|--- TestFunctionForm
+Form <|--- TestWorkCheckForm
+Form <|---- ApplicationVerifyForm
+Form <|---- ReportVerifyForm
+Form <|--- TestRecordsForm
+Form <|--- TestPlanVerifyForm
+Form <|-- DocumentReviewForm
+Form <|-- TestPlanForm
+
+
+
+@enduml

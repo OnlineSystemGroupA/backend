@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skin rose
+
+autonumber
+
+participant "Spring Context" as a
+participant "Workflow Service" as b
+participant "Runtime Service" as d
+entity "Process Variable" as c
+
+-> a: 用户发送请求
+activate a
+a -> b: 发起新的流程
+activate b
+b -> a: 获取用户 ID
+activate a
+return 用户 ID
+b -> c: 初始化变量
+activate c
+return 流程变量对象
+b -> d: 创建流程实例对象
+activate d
+return 流程实例对象
+return 流程实例 ID
+return 向用户发送响应
+
+@enduml

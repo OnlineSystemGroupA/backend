@@ -1,6 +1,9 @@
 package com.stcos.server.entity.form;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Persistent;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,11 +16,13 @@ import java.util.List;
  * @since 2023/5/17 9:51
  */
 @Data
+@Document
 public class FormIndex {
 
     /**
      * 表单索引 ID
      */
+    @Id
     private Long formIndexId;
 
     /**
@@ -68,6 +73,7 @@ public class FormIndex {
     /**
      * 表单索引对应的表单实体，懒加载
      */
+    @Persistent
     private Form form;
 
 

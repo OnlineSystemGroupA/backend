@@ -1,5 +1,6 @@
 package com.stcos.server.config.workflow;
 
+import com.stcos.server.entity.process.TaskConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +17,15 @@ import java.util.Map;
  */
 
 @Configuration
-public class TaskConfig {
+public class TaskConfigConfigurer {
+
+    @Bean
+    public Map<String, List<TaskConfig>> taskConfigMap() {
+        return new HashMap<>(){{
+            put("填写委托", null);
+        }};
+    }
+
 
     @Bean
     public Map<String, List<String>> taskRequiredVarMap() {

@@ -23,6 +23,15 @@ class EmailServiceImpTest {
     @Test
     void sendEmail() {
         emailServiceImp.sendEmail("201220100@smail.nju.edu.cn",
-                "测试", "你醒啦，该干活了。");
+                "确认测试报告", ",你醒啦？该干活了");
+
+        String subject = "确认测试报告";
+        //String text = "您好！您的一份测试委托的报告已经生成，请尽快前往确认。";
+        String text = "AmadeusZQK,你醒啦？该干活了";
+        emailServiceImp.sendEmail("1138705975@qq.com", subject, text);
+    }
+
+    @Test
+    void testSendEmail() {
     }
 }
