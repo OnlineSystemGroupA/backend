@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skin rose
+
+interface UserDetails
+abstract class User {
+'    - uid
+'    - username
+'    - password
+'    - authorities
+'    - email
+}
+
+
+class Admin
+
+class Operator
+
+class Client
+
+UserDetails <|.. User
+
+User <|-- Admin
+
+User <|-- Operator
+
+User <|-- Client
+
+@enduml

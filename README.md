@@ -1,8 +1,8 @@
 # 项目大纲
 
-> 详细介绍我们后端实现的最终目标，以及我们目前的设计与目标有什么关系。大家看不到自己的预期成果，回报太远，脑海中没有宏观框架，不清楚自己在写的到底是什么，以及与项目整体的关系，合作方式非常分散，不适合学生小组以边学习边开发的方式进行。
-
-
+> 最后一次修改：2023年5月19日
+>
+> 最后修改人：Kekwy
 
 ## 1 需求简介
 
@@ -70,33 +70,27 @@
 
 【注<sub>2</sub>】可在后期将每个组件的功能补充完整后直接复用至设计文档
 
-### 2.1 组件设计
-
-> 根据大致需求，划分大致功能为：用户认证、用户管理、权限管理、菜单管理、流程管理、文件传输、文件管理、表单传输、表单管理。
->
-> 根据大致功能定义如下组件：
-
 <img src="README.assets/uml-1.2.1-2-1683790332689-5.svg" alt="uml-1.2.1-2" style="zoom:80%;" />
 
-#### 2.1.1 Front End 前端
+### 2.1 Front End 前端
 
 最终在客户浏览器中运行的一个图形化应用，提供视图展示、交互功能，依赖后端处理、提供数据。提供用户的直接交互场景。
 
-#### 2.1.2 Spring Security 权限管理
+### 2.2 Spring Security 权限管理
 
 基于 Spring Security 实现对请求的拦截、放行，以及在上下文中维护一个完成登录的用户对象。将使用者与系统中的角色建立映射关系（认证）、根据不同角色的权限限制使用者行为（授权）。
 
-#### 2.1.3 Controller 控制器层
+### 2.3 Controller 控制器层
 
 向外提供接口，处理 HTTP 请求，调用服务层接口。
 
-##### 2.1.3.1 Auth Controller
+#### 2.3.1 Auth Controller
 
 > /auth
 
 提供用户认证相关的接口，如用户登录、注册、注销等，其中注销操作对应的后端行为暂时留空。
 
-##### 2.1.3.2 UserInfo Controller
+#### 2.3.2 UserInfo Controller
 
 > /users
 
@@ -104,7 +98,7 @@
 
 由于获取/上传用户头像与文件操作有关，该组件还依赖于文件服务（File Service）。
 
-##### 2.1.3.3 Workflow Controller
+#### 2.3.3 Workflow Controller
 
 > /workflow
 
@@ -112,7 +106,7 @@
 
 由于上传/下载测试样品与文件操作有关，该组件还依赖于文件服务（File Service）。
 
-##### 2.1.3.4 Archive Controller
+#### 2.3.4 Archive Controller
 
 > /archives
 
@@ -120,27 +114,27 @@
 
 由于在归档前需要通过文件服务将对应的文件移动到归档目录，该组件还依赖于文件服务（File Service）。
 
-##### 2.1.3.5 Menu Controller
+#### 2.3.5 Menu Controller
 
 由于每个用户的职责、权限不同，在前端界面菜单栏可见的条目也不同，前端在展示用户工作界面之前需要向后端发送请求，后端会根据当前登录用户的<u>角色</u>从数据库中查找其可见的菜单项返回给前端。
 
 平台管理员也可以通过当前控制器提供的接口，对某个用户可见的菜单项进行增删改查。
 
-#### 2.1.4 Service 服务层
+### 2.4 Service 服务层
 
 向上层提供服务，处理数据，调用 Dao 层接口。需要注意的是，对部分资源的操作需要的验证权限；对于部分服务接口，本身访问其就需要一定的权限。
 
-##### 2.1.4.1 Auth Service
+#### 2.4.1 Auth Service
 
 用户的认证服务，根据传入的用户名、用户类型确定用户，根据密码判定是否成功登录，登录成功后返回 token。
 
 【变动】认证服务不再提供用户注册功能，现在的用户注册功能由 Account Service 提供。
 
-##### 2.1.4.2 Account Service
+#### 2.4.2 Account Service
 
 用户及用户信息的增删改查。
 
-##### 2.1.4.3 File Service
+#### 2.4.3 File Service
 
 文件的上传、下载、转存。
 
@@ -148,19 +142,19 @@
 
 需要根据文件类型生成不同的文件索引保存至数据库，索引的生成方式在对应的文件
 
-##### 2.1.4.4 Workflow Service
+#### 2.4.4 Workflow Service
 
 获取流程资源，更新流程资源，发起流程，查看任务，完成任务。
 
-##### 2.1.4.5 Archive Service
+#### 2.4.5 Archive Service
 
 归档信息的增删改查。
 
-##### 2.1.4.6 Menu Service
+#### 2.4.6 Menu Service
 
 用户菜单的增删改查。
 
-#### 2.1.5 DAO 持久化层
+### 2.5 DAO 持久化层
 
 基于 Mybatis 的 Mapper 接口实现与数据库的交互，进行数据持久化。
 
@@ -193,75 +187,384 @@
 
 
 
-### 2.2 类设计
+## 3 实体类设计
 
-> 陷入过度 MVC 的泥潭，而将面向对象的设计变成了面向过程的设计。因为：不需要初始化组件对象，在 spring boot 框架之外，装配一个组件并调用其方法，就好像 c 语言编程中引入头文件，然后调用函数，在纯粹的一层一层方法调用中基本使用不到面向对象的思想。—— Kekwy
+// TODO uml 图
 
-对象自身可以拥有业务逻辑。
+### 3.1 用户
 
-// TODO 菜单项的数据结构待定
+> 软件包： com.stcos.server.entity.user
 
-// TODO pojo 待商议
+<img src="README.assets/user-1684483704195-2.svg" alt="user" style="zoom:67%;" />
 
-// TODO
-
-#### 2.2.1 User 用户
-
-##### 2.2.1.1 UserDetailsImp
+#### 3.1.1 User 用户虚基类
 
 
 
-##### 2.2.1.2 Client 客户
+#### 3.1.2 Client 客户
 
 
 
-##### 2.2.1.3 Operator 工作人员
+#### 3.1.3 Operator 工作人员
 
 
 
-##### 2.2.1.4 Admin 平台管理员
+#### 3.1.4 Admin 平台管理员
 
 
 
-#### 2.2.2 Workflow 工作流
-
-##### 2.2.2.1 Process 流程
-
-定义在我们的项目中，一个流程实例中可具备的资源
-
-##### 2.2.2.2 Task 任务
-
-
-
-#### 2.2.3 Form 表单
-
-##### 2.2.3.1 FormIndex 表单索引
+### 3.2 表单
 
 > 软件包： com.stcos.server.entity.form
 
-| 字段名           | 描述                                 | 类型          |
-| ---------------- | ------------------------------------ | ------------- |
-| formIndexId      | 表单索引 ID                          | String        |
-| formId           | 表单索引对应表单的 ID                | String        |
-| formName         | 表单名称                             | String        |
-| createdIn        | 表单在哪个任务中被创建，对应的任务名 | String        |
-| createdBy        | 表单的创建者                         | String        |
-| createdDate      | 表单创建时间                         | LocalDateTime |
-| lastModifiedBy   | 表单最后一次被谁修改                 | String        |
-| lastModifiedDate | 表单最后一次被修改的时间             | LocalDateTime |
-| readableUsers    | 对表单具有读权限用户的 ID 列表       | List\<String> |
-| writableUsers    | 对表单具有写权限用户的 ID 列表       | List\<String> |
-| form             | 表单索引对应的表单实体，懒加载       | Form          |
+#### 3.2.1 FormIndex 表单索引
 
-##### 2.2.3.2 Form 表单
+| 字段名           | 描述                           | 类型          |
+| ---------------- | ------------------------------ | ------------- |
+| formIndexId      | 表单索引 ID                    | Long          |
+| formId           | 表单索引对应表单的 ID          | Long          |
+| formName         | 表单名称                       | String        |
+| createdBy        | 表单的创建者                   | String        |
+| createdDate      | 表单创建时间                   | LocalDateTime |
+| lastModifiedBy   | 表单最后一次被谁修改           | String        |
+| lastModifiedDate | 表单最后一次被修改的时间       | LocalDateTime |
+| readableUsers    | 对表单具有读权限用户的 ID 列表 | List\<String> |
+| writableUsers    | 对表单具有写权限用户的 ID 列表 | List\<String> |
+| form             | 表单索引对应的表单实体，懒加载 | Form          |
+
+#### 3.2.2 Form 表单
+
+![form](README.assets/form-1684554391919-4.svg)
+
+数据结构与甲方提供文件中的表格结构对应。
+
+### 3.3 文件
+
+> 软件包： com.stcos.server.entity.file
+
+#### 3.3.1 FileIndex 文件索引
+
+| 字段名      | 描述                     | 类型          |
+| ----------- | ------------------------ | ------------- |
+| fileIndexId | 文件索引 ID              | Long          |
+| fileName    | 文件名称                 | String        |
+| fileType    | 文件类型                 | String        |
+| updatedBy   | 文件上传者               | String        |
+| updatedDate | 文件上传时间             | LocalDateTime |
+| filePath    | 文件在服务器磁盘上的路径 | String        |
+
+#### 3.3.2 SampleList 样品列表
+
+| 字段名        | 描述                           | 类型             |
+| ------------- | ------------------------------ | ---------------- |
+| sampleListId  | 样品列表 ID                    | Long             |
+| readableUsers | 对样品具有读权限用户的 ID 列表 | List\<String>    |
+| writableUsers | 对样品具有写权限用户的 ID 列表 | List\<String>    |
+| fileIndexList | 文件索引列表                   | List\<FileIndex> |
+
+### 3.4 邮件
+
+> 软件包：com.stcos.server.entity.email
+
+#### 3.4.1 EmailContent 邮件内容
+
+| 字段名       | 描述         | 类型   |
+| ------------ | ------------ | ------ |
+| subject      | 邮件主题     | String |
+| textTemplate | 邮件正文模板 | String |
+
+### 3.5 流程
+
+> 软件包：com.stcos.server.entity.process
+
+#### 3.5.1 ProcessDetails 流程详情
+
+| 字段名          | 描述         | 类型               |
+| --------------- | ------------ | ------------------ |
+| id              | 流程实例 ID  | String             |
+| title           | 软件项目名称 | String             |
+| version         | 软件项目版本 | String             |
+| testType        | 测试类型     | String             |
+| applicationDate | 申请日期     | LocalDateTime      |
+| applicant       | 申请人姓名   | String             |
+| company         | 公司名称     | String             |
+| telephone       | 联系电话     | String             |
+| email           | 邮箱         | String             |
+| address         | 联系地址     | String             |
+| startDate       | 开始测试日期 | LocalDateTime      |
+| dueDate         | 预计结束日期 | LocalDateTime      |
+| taskDetailsList | 任务详情列表 | List\<TaskDetails> |
+
+#### 3.5.2 TaskDetails 任务详情
+
+| 字段名      | 描述                                      | 类型          |
+| ----------- | ----------------------------------------- | ------------- |
+| id          | 任务详情 ID，仅用于查找数据库，不参与业务 | Long          |
+| taskName    | 任务名                                    | String        |
+| operator    | 操作人员                                  | String        |
+| department  | 操作人单位                                | String        |
+| startDate   | 开始时间                                  | LocalDateTime |
+| finishDate  | 完成时间                                  | LocalDateTime |
+| result      | 操作结果，true 表示通过，false 表示不通过 | boolen        |
+| description | 操作描述                                  | String        |
+
+## 4 业务设计
+
+### 4.1 配置
+
+> 软件包：com.stcos.server.entity.process
+
+#### 4.1.1 流程变量
+
+用于在发起流程时对整个流程中所需要的流程变量进行初始化，其中流程发起人需要根据上下文中的登录用户进行设置，其他变量均需要初始化为默认值，关于流程变量的种类和默认值详见下文流程建模（））sdfhdkjs
+
+使用键值对的方式设置变量，示例：
+
+```java
+public class ProcessVariable extends HashMap<String, Object> {
+    public ProcessVariable(String startUser) {
+        put("startUser", startUser);         // 初始化流程发起人
+        put("passable", true);               // 初始化流程控制变量
+        put("ApplicationForm", null);        // 初始化申请表单
+        ...
+    }
+}
+```
+
+其中部分默认值可以考虑放在配置文件（application.yml）中，使用 `@Value` 注解进行注入。
+
+#### 4.1.2 任务配置
+
+// TODO UML 图
 
 
 
-#### 2.2.4 
+**定义**
+
+任务创建时，会为任务分配人开启相关表单的读或写权限；而任务关闭时会收回相关表单的写权限，让提交后的表单不可被修改，某些任务也可能会收回表单而读权限，而使任务完成后的该表单对当前分配人不可见。同时某些任务的执行也需要一些特殊的权限，每个任务被创建时向被分配者发送的邮件提示也不同，因此我们需要为每一个任务定义一个配置类，并实现任务配置接口，用于对任务配置的获取。
+
+任务配置接口中的各方法以及描述如下：
+
+| 方法名                  | 描述                                                         | 返回值        |
+| ----------------------- | ------------------------------------------------------------ | ------------- |
+| getRequiredForms        | 获取完成任务需要提供的表单，用于判断当前任务是否满足完成条件 | List\<String> |
+| getEmailSubject         | 获取通知邮件的主题                                           | String        |
+| getEmailText            | 获取通知邮件的正文                                           | String        |
+| getReadableForms        | 获取任务创建时，需要为被分配人打开读权限的表单               | List\<String> |
+| getWritableForms        | 获取任务创建时，需要为被分配人打开写权限的表单               | List\<String> |
+| getWillDisReadableForms | 获取任务完成时，需要关闭被分配人读权限的表单                 | List\<String> |
+| getWillDisWritableForms | 获取任务完成时，需要关闭被分配人写权限的表单                 | List\<String> |
+
+**部署**
+
+在完成任务配置的定义之后，需要通过创建 bean 的方式建立任务名与任务配置对象的对象关系，需要获取任务配置时将通过任务名从中查询任务配置对象，代码示例如下（软件包：com.stcos.server.config.workflow）：
+
+```java
+@Configuration
+public class TaskConfigConfigurer {
+    
+    @Bean
+    public Map<String, List<TaskConfig>> taskConfigMap() {
+        return new HashMap<>(){{
+            put("填写委托", null); // 创建任务对象的配置类对象，并建立对应关系
+        }};
+    }
+    
+}
+```
+
+#### 4.1.3 类间关系
 
 
 
-### 2.3 软件包*
+### 4.2 基本操作
+
+> 核心业务行为的实现逻辑设计
+
+#### 4.2.1 发起流程
+
+<img src="README.assets/%E5%8F%91%E8%B5%B7%E6%B5%81%E7%A8%8B%E5%BA%8F%E5%88%97%E5%9B%BE-1684498934913-14.svg" alt="发起流程序列图" style="zoom:67%;" />
+
+首先从 Spring 上下文中获取当前登录用户的 ID，使用其创建流程变量对象，再调用 flowable 启动流程的 API 传入流程变量创建新的流程实例。最终将流程实例 ID 返回给用户。
+
+#### 4.2.2 完成任务
+
+![完成任务序列图](README.assets/%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%E5%BA%8F%E5%88%97%E5%9B%BE-1684504398635-18.svg)
+
+#### 4.2.3 任务监听器
+
+> 任务的初始化与后处理
+
+创建任务：
+
+重置任务参数；
+
+为被分配人开启对应的表单的读或写权限；
+
+判断是否需要为被分配人开启样品的读或写权限；
+
+更新流程摘要和流程详情；
+
+发送邮箱通知被分配人。
+
+完成任务：
+
+关闭被分配人对应表单的读/写权限；
+
+判断是否需要关闭被分配人对样品的读或写权限；
+
+更新流程摘要和流程详情。
+
+#### 4.2.4 上传表单
+
+<img src="README.assets/%E4%B8%8A%E4%BC%A0%E8%A1%A8%E5%8D%95%E5%BA%8F%E5%88%97%E5%9B%BE.svg" alt="上传表单序列图" style="zoom:67%;" />
+
+#### 4.2.5 查看表单
+
+<img src="README.assets/%E6%9F%A5%E7%9C%8B%E8%A1%A8%E5%8D%95%E5%BA%8F%E5%88%97%E5%9B%BE.svg" alt="查看表单序列图" style="zoom: 70%;" />
+
+#### 4.2.6 上传样品
+
+<img src="README.assets/%E4%B8%8A%E4%BC%A0%E6%A0%B7%E5%93%81%E5%BA%8F%E5%88%97%E5%9B%BE-1684507109584-26.svg" alt="上传样品序列图" style="zoom:80%;" />
+
+
+
+#### 4.2.7 下载样品
+
+<img src="README.assets/%E4%B8%8B%E8%BD%BD%E6%A0%B7%E5%93%81%E5%BA%8F%E5%88%97%E5%9B%BE-1684506964314-24.svg" alt="下载样品序列图" style="zoom:80%;" />
+
+### 4.3 流程建模
+
+主流程：
+
+![image-20230520091450513](README.assets/image-20230520091450513.png)
+
+流程变量：
+
+<table>
+    <tr>
+        <td><b>键</b></td>
+        <td><b>描述</b></td>
+        <td><b>类型</b></td>
+        <td><b>初始值</b></td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center"><i>任务参数</i></td>
+    </tr>
+    <tr>
+        <td>passable</td>
+        <td>在遇到网关时使用，用于决定流程的下一个任务，默认值为 true</td>
+        <td>boolen</td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>description</td>
+        <td>上一个任务完成时，被分配人对任务结果的描述</td>
+        <td>String</td>
+        <td> null </td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center"><i>流程摘要</i></td>
+    </tr>
+    <tr>
+    	<td>title</td>
+        <td>软件项目名称</td>
+        <td>String</td>
+        <td>根据用户上传申请表中内容设置</td>
+    </tr>
+    <tr>
+    	<td>startUser</td>
+        <td>流程发起人 ID</td>
+        <td>String</td>
+        <td>根据流程启动时的用户 ID 设置</td>
+    </tr>
+    <tr>
+    	<td>startTime</td>
+        <td>流程启动时间</td>
+        <td>LocalDateTime</td>
+        <td>根据流程启动时的系统时间设置</td>
+    </tr>
+    <tr>
+    	<td>finishTime</td>
+        <td>流程结束时间</td>
+        <td>LocalDateTime</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>state</td>
+        <td>流程状态</td>
+        <td>String</td>
+        <td>设置为 "进行中"</td>
+    </tr>
+    <tr>
+    	<td>currentTask</td>
+        <td>当前正在进行的任务</td>
+        <td>String</td>
+        <td>设置为 "填写委托"</td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center"><i>表单索引</i></td>
+    </tr>
+    <tr>
+    	<td>ApplicationForm</td>
+        <td>软件项目委托测试申请表索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>ApplicationVerifyForm</td>
+        <td>软件项目委托测试申请表之审核信息索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>DocumentReviewForm</td>
+        <td>软件文档评审表索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>ReportVerifyForm</td>
+        <td>测试报告检查表索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>TestFunctionForm</td>
+        <td>委托测试软件功能列表索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>TestPlanForm</td>
+        <td>软件测试方案索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>TestReportForm</td>
+        <td>软件测试报告索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+    	<td>TestWorkCheckForm</td>
+        <td>软件项目委托测试工作检查表索引 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center"><i>样品列表</i></td>
+    </tr>
+    <tr>
+    	<td>sampleList</td>
+        <td>样品列表 ID</td>
+        <td>Long</td>
+        <td>null</td>
+    </tr>
+</table>
+
+#### 4.3.1 填写委托
 
 
 
@@ -269,7 +572,53 @@
 
 
 
-### 2.4 对外接口
+
+
+<img src="README.assets/image-20230511173205803.png" alt="image-20230511173205803" style="zoom: 60%;" />
+
+
+
+#### 3.2 生成报价
+
+
+
+#### 3.3 生成合同草稿
+
+
+
+#### 3.4 签署合同
+
+
+
+#### 3.5 上传样品
+
+
+
+#### 3.6 生成测试方案
+
+
+
+#### 3.7 生成测试报告
+
+
+
+#### 3.8 确认测试结果
+
+<img src="README.assets/image-20230511173527411.png" alt="image-20230511173527411" style="zoom:60%;" />
+
+#### 3.9 后续处理
+
+
+
+## 4 软件包
+
+
+
+
+
+
+
+## 5 对外接口
 
 > 后端的开发过程中可以不关注
 >
@@ -283,7 +632,7 @@
 
 
 
-### 2.5 开发规范
+## 6 开发规范
 
 Java 编程规范：
 
@@ -313,144 +662,11 @@ server：后端项目的核心；
 
 其中 server 模块的配置文件位于：<u>server/src/main/resources/application.yml</u>
 
-## 3 流程模型
+### 
 
-![image-20230511173140828](README.assets/image-20230511173140828.png)
 
 
 
-### 3.1 审核委托
-
-<img src="README.assets/image-20230511173205803.png" alt="image-20230511173205803" style="zoom: 60%;" />
-
-| 任务名称 | 调用接口 | 生成资源 | 前置条件 |
-| -------- | -------- | -------- | -------- |
-|          |          |          |          |
-|          |          |          |          |
-|          |          |          |          |
-|          |          |          |          |
-|          |          |          |          |
-|          |          |          |          |
-|          |          |          |          |
-
-
-
-### 3.2 生成报价
-
-
-
-### 3.3 生成合同草稿
-
-
-
-### 3.4 签署合同
-
-
-
-### 3.5 上传样品
-
-
-
-### 3.6 生成测试方案
-
-
-
-### 3.7 生成测试报告
-
-
-
-### 3.8 确认测试结果
-
-<img src="README.assets/image-20230511173527411.png" alt="image-20230511173527411" style="zoom:60%;" />
-
-### 3.9 后续处理
-
-
-
-
-
-## 4 背景知识
-
-### 4.1 Java 语法
-
-略，让我看看谁现在还不会这个（半恼
-
-### 4.2 Maven 项目管理
-
-> "Maven 翻译为"专家"、"内行"，是 Apache 下的一个纯 Java 开发的开源项目。基于项目对象模型（缩写：POM）概念，Maven利用一个中央信息片断能管理一个项目的构建、报告和文档等步骤。
->
-> Maven 是一个项目管理工具，可以对 Java 项目进行构建、依赖管理。
->
-> Maven 也可被用于构建和管理各种项目，例如 C#，Ruby，Scala 和其他语言编写的项目。Maven 曾是 Jakarta 项目的子项目，现为由 Apache 软件基金会主持的独立 Apache 项目。"——菜鸟教程
-
-简言之就是一个项目管理工具，我们的项目基于它进行编译、打包、运行、发布等，同时我们使用到的第三方依赖也基于 Maven 引入。在项目根目录下有一个 pom.xml 文件，使我们的项目可以被识别为 Maven 项目，同时也包含了构建时的配置。
-
-一个常见 pom 文件的大致结构如下：
-
-```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    ...
-  </parent>
-
-  <artifactId>xxx</artifactId>
-  <packaging>jar</packaging>
-    
-  <properties>
-    ...
-  </properties>
-
-  <dependencies>
-    ...
-  </dependencies>
-
-  <build>
-    <plugins>
-      ...
-    </plugins>
-  </build>
-
-</project>
-
-```
-
-我们所使用到的外部依赖有：
-
-///////////////////////////软件清单/////////////////////////////
-
-该文件在开发过程中的变动频率很低，每次变动都必须在 commit 中详细注明变动的范围即原因。
-
-### 4.3 Spring  依赖注入
-
-依赖注入必须在 bean 中进行，且期望注入的对象必须为 bean。
-
-什么是 bean？
-
-可以大致理解为
-
-### 4.4 用户认证
-
-
-
-从上下文中获取当前登录的用户对象：
-
-
-
-### 4.5 flowable 流程引擎
-
-> 中文文档：
-
-待补充
-
-由于需要满足流程定义变动的需求，每个任务对象不用通过实现一个类在code 中写死，应该通过flowable 引入表单依赖，在表单中定义task属性，实际上也是将一个task实例自定义为一个满足我们业务场景的对象。
-
-### 4.6 OpenAPI 规范
-
-> 中文文档：
-
-<u>接口的定义方式：（编写接口定义代码由张宇轩全程负责，此处介绍仅为帮助大家了解我们的项目）</u>
 
 
 
@@ -460,27 +676,9 @@ server：后端项目的核心；
 
 
 
-## 6 任务分配
-
-### 问题
-
-纵向各模块分离开发（4.27 的任务分配）中的问题：
-
-需求不明确，组内分散，各干各的互不相干，且没有交流合作，遇到技术问题大多时候只能自己解决。
-
-分层开发在我们小组中实施的局限性：
 
 
-
-与纵向各模块分离开发以及早期提出的分层开发的区别
-
-实现之前先共同商讨接口设计，而不是将设计交给某一位同学，增加他的工作压力
-
-
-
-其中每个阶段需要进行单元测试
-
-### 方案
+### 
 
 
 
@@ -488,11 +686,7 @@ server：后端项目的核心；
 
 
 
-*设置硬 ddl，来不及完成可以寻求其他成员帮助（工作量仍计算为原负责成员，自行酌情感谢提供帮助的成员），但是不再允许延后。
 
-
-
-理想状态应该是分层开发，自己进行mock测试的，但是我们毕竟是学生项目小组。
 
 
 
@@ -561,12 +755,6 @@ flowable 流程引擎的使用
 
 
 
-
-![image-20230510212603010](README.assets/image-20230510212603010.png)
-
-
-
-![image-20230511154225910](README.assets/image-20230511154225910.png)
 
 
 

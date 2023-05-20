@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skin rose
+
+autonumber
+
+participant "Spring Context" as a
+participant "Workflow Service" as b
+participant "Runtime Service" as c
+database "Form Mapper" as d
+entity "Form Index" as e
+
+-> a: 用户发送请求
+activate a
+a -> b: 发起新的流程
+activate b
+b -> a: 获取用户 ID
+activate a
+return 用户 ID
+b -> c: 判断流程实例是否存在
+activate c
+return
+b -> c: 根据表单名获取表单索引
+activate c
+return 表单索引 ID
+b -> d: 根据表单索引 ID 查找数据库
+activate d
+return 表单索引对象
+b -> e: 判断当前登录用户是否具有读取权限
+activate e
+b -> e: 获取表单数据
+return Form 对象
+return 表单
+return 向用户发送响应
+
+@enduml
