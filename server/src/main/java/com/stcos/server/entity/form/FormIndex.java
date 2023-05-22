@@ -3,6 +3,7 @@ package com.stcos.server.entity.form;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,59 +17,69 @@ import java.util.List;
 public class FormIndex {
 
     /**
-     * 表单索引 ID
+     * 表单索引 ID，保存对象时由数据库自动赋值
      */
-    private Long formIndexId;
+    private Long formIndexId = null;
 
     /**
      * 表单索引对应表单的 ID
      */
-    private Long formId;
+    private Long formId = null;
 
     /**
-     * 表单名称
+     * 表单类型
      */
-    private String formName;
+    private String formType = null;
 
     /**
-     * 表单在哪个任务中被创建，对应的任务名
+     * 表单的创建者 (userId)
      */
-    private String createdIn;
-
-    /**
-     * 表单的创建者
-     */
-    private String createdBy;
+    private String createdBy = null;
 
     /**
      * 表单创建时间
      */
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = null;
 
     /**
-     * 表单最后一次被谁修改
+     * 表单最后一次被谁修改 (userId)
      */
-    private String lastModifiedBy;
+    private String lastModifiedBy = null;
 
     /**
      * 表单最后一次被修改的时间
      */
-    private LocalDateTime lastModifiedDate;
+    private LocalDateTime lastModifiedDate = null;
 
     /**
      * 对表单具有读权限用户的 ID 列表
      */
-    private List<String> readableUsers;
+    private List<String> readableUsers = new ArrayList<>();
 
     /**
      * 对表单具有写权限用户的 ID 列表
      */
-    private List<String> writableUsers;
+    private List<String> writableUsers = new ArrayList<>();
 
     /**
      * 表单索引对应的表单实体，懒加载
      */
-    private Form form;
+    private Form form = null;
 
-
+    public FormIndex(
+            Long formId,
+            String formType,
+            String createdBy,
+            LocalDateTime createdDate,
+            String lastModifiedBy,
+            LocalDateTime lastModifiedDate,
+            Form form) {
+        this.formId = formId;
+        this.formType = formType;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.lastModifiedBy = lastModifiedBy;
+        this.lastModifiedDate = lastModifiedDate;
+        this.form = form;
+    }
 }

@@ -242,25 +242,26 @@
 
 > 软件包： com.stcos.server.entity.file
 
-#### 3.3.1 FileIndex 文件索引
+#### 3.3.1 <font color="#dd00">FileMetadata 文件元数据</font>
 
-| 字段名      | 描述                     | 类型          |
-| ----------- | ------------------------ | ------------- |
-| fileIndexId | 文件索引 ID              | Long          |
-| fileName    | 文件名称                 | String        |
-| fileType    | 文件类型                 | String        |
-| updatedBy   | 文件上传者               | String        |
-| updatedDate | 文件上传时间             | LocalDateTime |
-| filePath    | 文件在服务器磁盘上的路径 | String        |
+| 字段名                                    | 描述                                     | 类型                            |
+| ----------------------------------------- | ---------------------------------------- | ------------------------------- |
+| <font color="#dd00">fileMetadataId</font> | <font color="#dd00">文件元数据 ID</font> | Long                            |
+| fileName                                  | 文件名称                                 | String                          |
+| fileType                                  | 文件类型                                 | String                          |
+| <font color="#dd00">fileSize</font>       | <font color="#dd00">文件大小</font>      | <font color="#dd00">Long</font> |
+| updatedBy                                 | 文件上传者 <font color="#dd00">ID</font> | String                          |
+| updatedDate                               | 文件上传时间                             | LocalDateTime                   |
+| filePath                                  | 文件在服务器磁盘上的路径                 | String                          |
 
-#### 3.3.2 SampleList 样品列表
+#### 3.3.2 <font color="#dd00">Sample 样品</font>
 
-| 字段名        | 描述                           | 类型             |
-| ------------- | ------------------------------ | ---------------- |
-| sampleListId  | 样品列表 ID                    | Long             |
-| readableUsers | 对样品具有读权限用户的 ID 列表 | List\<String>    |
-| writableUsers | 对样品具有写权限用户的 ID 列表 | List\<String>    |
-| fileIndexList | 文件索引列表                   | List\<FileIndex> |
+| 字段名                                      | 描述                                      | 类型                                           |
+| ------------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
+| sampleListId                                | 样品列表 ID                               | Long                                           |
+| readableUsers                               | 对样品具有读权限用户的 ID 列表            | List\<String>                                  |
+| writableUsers                               | 对样品具有写权限用户的 ID 列表            | List\<String>                                  |
+| <font color="#dd00">fileMetadataList</font> | <font color="#dd00">文件元数据列表</font> | <font color="#dd00">List\<FileMetadata></font> |
 
 ### 3.4 邮件
 
@@ -316,7 +317,7 @@
 
 #### 4.1.1 流程变量
 
-用于在发起流程时对整个流程中所需要的流程变量进行初始化，其中流程发起人需要根据上下文中的登录用户进行设置，其他变量均需要初始化为默认值，关于流程变量的种类和默认值详见下文流程建模（））sdfhdkjs
+用于在发起流程时对整个流程中所需要的流程变量进行初始化，其中流程发起人需要根据上下文中的登录用户进行设置，其他变量均需要初始化为默认值，关于流程变量的种类和默认值详见下文流程建模。
 
 使用键值对的方式设置变量，示例：
 
@@ -432,6 +433,10 @@ public class TaskConfigConfigurer {
 #### 4.2.7 下载样品
 
 <img src="README.assets/%E4%B8%8B%E8%BD%BD%E6%A0%B7%E5%93%81%E5%BA%8F%E5%88%97%E5%9B%BE-1684506964314-24.svg" alt="下载样品序列图" style="zoom:80%;" />
+
+#### 4.2.8 删除样品或部分文件
+
+
 
 ### 4.3 流程建模
 

@@ -1,10 +1,14 @@
 package com.stcos.server.service;
 
 
+import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 public interface WorkflowService {
@@ -41,36 +45,78 @@ public interface WorkflowService {
     List<Task> getTasks() throws ServiceException;
 
     /**
-     * 获取指定任务中的指定资源（变量）
+     * 获取指定流程中的指定表单
      *
-     * @param processId 指定流程Id
-     * @param itemName  资源名字
-     * @return 资源
+     * @param processId 指定流程实例 Id
+     * @param formType  表单类型
+     * @return 表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 指定任务或资源对当前用户不可见 <br>
-     *                          1: 指定任务或资源不存在 <br>
+     *                          0: 当前流程不存在 <br>
+     *                          1: 该任务对当前用户不可见或当前用户无读取权限 <br>
      */
-    Object getTaskItem(String processId, String itemName) throws ServiceException;
+    Form getForm(String processId, String formType) throws ServiceException;
 
     /**
-     * 更新指定任务中的指定资源
+     * 更新指定流程中的指定表单
      *
-     * @param processInstanceId 指定流程实例 id
-     * @param formName          表单名
-     * @param form              表单对象
+     * @param processInstanceId 指定流程实例 Id
+     * @param formType          表单类型
+     * @param formData          表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
-     *                          0: 没有指定资源（需要创建） <br>
+     *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
-     *                          2: 指定任务不存在 <br>
      */
-    void updateForm(String processInstanceId, String formName, Form form) throws ServiceException;
+    void updateForm(String processInstanceId, String formType, String formData) throws ServiceException;
+
+    /**
+     * 上传样品文件
+     *
+     * @param processInstanceId 指定流程实例 Id
+     * @param files 样品文件
+     * @return 样品文件摘要
+     * @throws ServiceException 各异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 当前流程不存在 <br>
+     *                          1: 该任务对当前用户不可见或当前用户无上传权限 <br>
+     *                          2: 没有上传文件 <br>
+     *                          3: 存储空间不足 <br>
+     *                          4: 文件上传失败 <br>
+     */
+    List<FileMetadataDto> uploadSample(String processInstanceId, List<MultipartFile> files) throws ServiceException;
+
+    /**
+     * 下载样品文件
+     *
+     * @param processInstanceId 指定流程实例 Id
+     * @return 样品文件
+     * @throws ServiceException 各异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 当前流程不存在 <br>
+     *                          1: 该任务对当前用户不可见或当前用户无下载权限 <br>
+     *                          2: 文件不存在 <br>
+     *                          3: 文件下载失败 <br>
+     */
+    List<File> downloadSample(String processInstanceId) throws ServiceException;
+
+    /**
+     * 删除样品或部分文件
+     *
+     * @param processInstanceId 指定流程实例 Id
+     * @throws ServiceException 各异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 当前流程不存在 <br>
+     *                          1: 该任务对当前用户不可见或当前用户无下载权限 <br>
+     *                          2: 文件不存在 <br>
+     *                          3: 文件删除失败 <br>
+     */
+    void deleteFiles(String processInstanceId) throws ServiceException;
 
     /**
      * 开始新的委托流程
      *
-     * @return 新开启的委托的Id
+     * @return 新开启的委托的 Id
      * @throws ServiceException 一般不抛出异常
      */
     String startProcess() throws ServiceException;
