@@ -17,7 +17,7 @@ import java.util.List;
 @Accessors(fluent = true)
 @TableName(value = "t_application_form")
 public class ApplicationForm extends Form {
-    private List<String> testType;
+    private List<String> testTypes;
     private String softwareName;
     private String softwareVersion;
     private String companyChineseName;
@@ -25,9 +25,9 @@ public class ApplicationForm extends Form {
     private String developmentDepartment;
     private String companyType;
     private String description;
-    private List<String> testStandard;
+    private List<String> testStandards;
     private List<String> testAspects;
-    private SoftwareScale softwareScale;
+    private List<SoftwareScale> softwareScale;
     private String softwareType;
     private List<ClientSystem> clientSystems;
     private double clientMemory;
@@ -53,9 +53,8 @@ public class ApplicationForm extends Form {
     @Data
     @Accessors(fluent = true)
     public static class SoftwareScale {
-        private String functionNum;
-        private String functionPoint;
-        private String codeLines;
+        private String scaleDescription;
+        private int scale;
     }
 
     @Data

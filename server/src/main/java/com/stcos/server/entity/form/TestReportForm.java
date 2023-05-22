@@ -45,7 +45,7 @@ public class TestReportForm extends Form {
     private List<TestStandard> testStandards;
     private List<Reference> references;
     private List<FunctionTest> functionTests;
-    private Map<String, List<Test>> tests; // String = efficiencyTests, portabilityTests, usabilityTests, reliabilityTests, or maintainabilityTests
+    private Map<String, List<GeneralTest>> tests; // String = efficiencyTests, portabilityTests, usabilityTests, reliabilityTests, or maintainabilityTests
 
     @Data
     @Accessors(fluent = true)
@@ -114,7 +114,7 @@ public class TestReportForm extends Form {
 
     @Data
     @Accessors(fluent = true)
-    public static class Test {
+    public static class GeneralTest {
         private String property;
         private String testExplanation;
         private String testResult;
