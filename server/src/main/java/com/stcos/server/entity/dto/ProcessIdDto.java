@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("ProcessId")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
 public class ProcessIdDto {
 
   private String processId;
@@ -40,11 +40,11 @@ public class ProcessIdDto {
   }
 
   /**
-   * 新委托流程的 id
+   * 新委托流程的 ID
    * @return processId
   */
   @NotNull 
-  @Schema(name = "processId", description = "新委托流程的 id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "processId", description = "新委托流程的 ID", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("processId")
   public String getProcessId() {
     return processId;

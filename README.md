@@ -4,6 +4,11 @@
 >
 > 最后修改人：Kekwy
 
+
+
+
+ProcessId 默认指的是 flowable 中的 processInstanceId
+
 ## 1 需求简介
 
 南京大学软件测试中心在线系统，是一个非常典型且具有一定业务复杂度的前后端分离项目。所谓前后端分离，可以简单理解为把一个项目拆成两个项目，其中前端负责设计向用户展示的页面，后端负责处理用户请求，向前端提供数据。简言之，我们的目标是实现一个网站。
@@ -484,14 +489,14 @@ public class TaskConfigConfigurer {
         <td>根据流程启动时的用户 ID 设置</td>
     </tr>
     <tr>
-    	<td>startTime</td>
-        <td>流程启动时间</td>
+    	<td>startDate</td>
+        <td>流程启动日期</td>
         <td>LocalDateTime</td>
         <td>根据流程启动时的系统时间设置</td>
     </tr>
     <tr>
-    	<td>finishTime</td>
-        <td>流程结束时间</td>
+    	<td>finishDate</td>
+        <td>流程结束日期</td>
         <td>LocalDateTime</td>
         <td>null</td>
     </tr>
@@ -505,7 +510,7 @@ public class TaskConfigConfigurer {
     	<td>currentTask</td>
         <td>当前正在进行的任务</td>
         <td>String</td>
-        <td>设置为 "填写委托"</td>
+        <td>设置为 "填写申请表"</td>
     </tr>
     <tr>
         <td colspan="4" align="center"><i>表单索引</i></td>
@@ -559,15 +564,18 @@ public class TaskConfigConfigurer {
         <td>null</td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>样品列表</i></td>
+        <td colspan="4" align="center"><i>测试样品</i></td>
     </tr>
     <tr>
-    	<td>sampleList</td>
-        <td>样品列表 ID</td>
+    	<td>sample</td>
+        <td>样品 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
 </table>
+
+
+
 
 #### 4.3.1 填写委托
 

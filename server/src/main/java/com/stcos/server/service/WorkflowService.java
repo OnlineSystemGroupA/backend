@@ -4,6 +4,7 @@ package com.stcos.server.service;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
+import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +23,7 @@ public interface WorkflowService {
      *                          0: 指定任务对该用户不可见或当前用户无完成任务权限 <br>
      *                          1: 指定任务不存在 <br>
      */
-    void completeTask(String taskId) throws ServiceException;
+    void completeTask(String processId, String taskId, Boolean passable) throws ServiceException;
 
     /**
      * 通过 id 查询某一个任务
@@ -120,4 +121,6 @@ public interface WorkflowService {
      * @throws ServiceException 一般不抛出异常
      */
     String startProcess() throws ServiceException;
+
+    List<FormIndex> getFormMetadata(String processId) throws ServiceException;
 }

@@ -288,4 +288,9 @@ public class WorkflowServiceImp implements WorkflowService {
         return processInstance.getProcessInstanceId();
     }
 
+    @Override
+    public List<FormIndex> getFormMetadata(String processId) throws ServiceException {
+        return null;
+    }
+
 }
