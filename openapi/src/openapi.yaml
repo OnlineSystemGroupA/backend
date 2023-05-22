@@ -301,14 +301,10 @@ paths:
         '200':
           description: 成功获取指定资源
           content:
-            'multipart/form-data':
+            'application/octet-stream':
               schema:
-                properties:
-                  files:
-                    type: array
-                    items:
-                      type: string
-                      format: binary
+                type: string
+                format: binary
         '403':
           description: 指定任务或资源对该用户不可见
         '404':

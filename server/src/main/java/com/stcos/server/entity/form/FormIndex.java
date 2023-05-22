@@ -1,6 +1,7 @@
 package com.stcos.server.entity.form;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
  * @since 2023/5/17 9:51
  */
 @Data
+@NoArgsConstructor
 public class FormIndex {
 
     /**

@@ -7,6 +7,8 @@ import com.stcos.server.entity.file.Sample;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
+import com.stcos.server.mapper.FileMapper;
+import com.stcos.server.mapper.FormMapper;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.WorkflowService;
 import org.flowable.engine.RuntimeService;
@@ -58,7 +60,7 @@ public class WorkflowServiceImp implements WorkflowService {
     public void setFileMapper(FileMapper fileMapper) { this.fileMapper = fileMapper; }
 
     @Override
-    public void completeTask(String taskId) throws ServiceException {
+    public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
         Task task = getTaskById(taskId);
 
         // 验证是否满足完成条件
@@ -108,17 +110,13 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public void updateForm(String processInstanceId, String formType, String formData) throws ServiceException {
+    public void updateForm(String processId, String formType, Form form) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取表单索引
-        FormIndex formIndex = getFormIndex(processInstanceId, formType);
+        FormIndex formIndex = getFormIndex(processId, formType);
 
         // 获取当前登录用户，和当前表单的可写用户列表
         String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> writableUsers = formIndex.getWritableUsers();
-
-        // 根据表单类型把 JSON 格式转为相应的表单对象
-        Form form = Form.buildForm(formType, formData);
-        assert form != null;
 
         // 判断当前登录用户是否具有修改权限
         if (writableUsers != null && writableUsers.contains(userId)) {

@@ -86,35 +86,26 @@ public interface WorkflowApi {
      *         or 指定任务或资源不存在 (status code 404)
      */
     @Operation(
-        operationId = "downloadSample",
-        summary = "所有样品下载",
-        description = "获取指定任务中的指定资源",
-        tags = { "workflow" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "成功获取指定资源", content = {
-                @Content(mediaType = "multipart/form-data", array = @ArraySchema(schema = @Schema(implementation = MultipartFile.class)))
-            }),
-            @ApiResponse(responseCode = "403", description = "指定任务或资源对该用户不可见"),
-            @ApiResponse(responseCode = "404", description = "指定任务或资源不存在")
-        }
+            operationId = "downloadSample",
+            summary = "所有样品下载",
+            description = "获取指定任务中的指定资源",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功获取指定资源", content = {
+                            @Content(mediaType = "application/octet-stream", schema = @Schema(implementation = org.springframework.core.io.Resource.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "指定任务或资源对该用户不可见"),
+                    @ApiResponse(responseCode = "404", description = "指定任务或资源不存在")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/workflow/processes/{processId}/sample",
-        produces = { "multipart/form-data" }
+            method = RequestMethod.GET,
+            value = "/workflow/processes/{processId}/sample",
+            produces = { "application/octet-stream" }
     )
-    default ResponseEntity<List<MultipartFile>> downloadSample(
-        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    default ResponseEntity<org.springframework.core.io.Resource> downloadSample(
+            @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("multipart/form-data"))) {
-                    String exampleString = "Custom MIME type example not yet supported: multipart/form-data";
-                    ApiUtil.setExampleResponse(request, "multipart/form-data", exampleString);
-                    break;
-                }
-            }
-        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

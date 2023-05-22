@@ -1,9 +1,11 @@
 package com.stcos.server.entity.dto;
 
 import com.stcos.server.entity.file.FileMetadata;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class FileMetadataDto {
     /**
      * 文件元数据 ID，保存对象时由数据库自动赋值

@@ -1,10 +1,7 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.WorkflowApi;
-import com.stcos.server.entity.dto.FileIndexDto;
-import com.stcos.server.entity.dto.FormMetadataDto;
-import com.stcos.server.entity.dto.ProcessDto;
-import com.stcos.server.entity.dto.ProcessIdDto;
+import com.stcos.server.entity.dto.*;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServerErrorException;
@@ -13,10 +10,13 @@ import com.stcos.server.service.WorkflowService;
 import com.stcos.server.util.JSONUtil;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +111,7 @@ public class WorkflowController implements WorkflowApi {
             List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formIndexList.size());
             for (FormIndex formIndex : formIndexList) {
                 formMetadataDtoList.add(
-                        new FormMetadataDto(formIndex.getFormIndexId(), formIndex.getFormName())
+                        new FormMetadataDto(formIndex.getFormIndexId(), formIndex.getFormType())
                 );
             }
             response = ResponseEntity.ok(formMetadataDtoList);
@@ -126,24 +126,43 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<List<MultipartFile>> downloadSample(String processId) {
-        ResponseEntity<List<MultipartFile>> response = null;
-//        try {
-//            List<FormIndex> formIndexList = workflowService.download;
-//            List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formIndexList.size());
-//            for (FormIndex formIndex : formIndexList) {
-//                formMetadataDtoList.add(
-//                        new FormMetadataDto(formIndex.getFormIndexId(), formIndex.getFormName())
-//                );
-//            }
-//            response = ResponseEntity.ok(formMetadataDtoList);
-//        } catch (ServiceException e) {
-//            switch (e.getCode()) {
-//                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
-//                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
-//                default -> ResponseEntity.internalServerError();
-//            }
-//        }
+    public ResponseEntity<List<FileIndexDto>> uploadSample(String processId, List<MultipartFile> files) {
+        ResponseEntity<List<FileIndexDto>> response = null;
+        try {
+            List<FileMetadataDto> fileMetadataDtoList = workflowService.uploadSample(processId, files);
+            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataDtoList.size());
+            for (FileMetadataDto fileMetadataDto : fileMetadataDtoList) {
+                fileIndexDtoList.add(
+                        new FileIndexDto(fileMetadataDto.getFileMetadataId(),
+                                fileMetadataDto.getFileName(),
+                                fileMetadataDto.getFileType())
+                );
+            }
+            response = ResponseEntity.ok(fileIndexDtoList);
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
+                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                default -> ResponseEntity.internalServerError();
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseEntity<Resource> downloadSample(String processId) {
+        ResponseEntity<Resource> response = null;
+        try {
+            List<File> fileList = workflowService.downloadSample(processId);
+            //
+            response = ResponseEntity.ok(new FileSystemResource(fileList.get(0)));
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
+                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                default -> ResponseEntity.internalServerError();
+            }
+        }
         return response;
     }
 
@@ -174,11 +193,6 @@ public class WorkflowController implements WorkflowApi {
         return WorkflowApi.super.getProcesses();
     }
 
-
-    @Override
-    public ResponseEntity<List<FileIndexDto>> uploadSample(String processId, List<MultipartFile> files) {
-        return WorkflowApi.super.uploadSample(processId, files);
-    }
 
 //    @Override
 //    public ResponseEntity<Void> updateTaskItem(String processId, String itemName) {

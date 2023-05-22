@@ -2,7 +2,6 @@ package com.stcos.server.service;
 
 
 import com.stcos.server.entity.dto.FileMetadataDto;
-import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
@@ -61,15 +60,15 @@ public interface WorkflowService {
     /**
      * 更新指定流程中的指定表单
      *
-     * @param processInstanceId 指定流程实例 Id
-     * @param formType          表单类型
-     * @param formData          表单的 JSON 格式
+     * @param processId 指定流程实例 Id
+     * @param formType  表单类型
+     * @param form      表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
      */
-    void updateForm(String processInstanceId, String formType, String formData) throws ServiceException;
+    void updateForm(String processId, String formType, Form form) throws ServiceException;
 
     /**
      * 上传样品文件
