@@ -1,11 +1,11 @@
 package com.stcos.server.config.workflow;
 
+import com.stcos.server.entity.process.TaskConfigs.*;
 import com.stcos.server.entity.process.TaskConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,29 +20,27 @@ import java.util.Map;
 public class TaskConfigConfigurer {
 
     @Bean
-    public Map<String, List<TaskConfig>> taskConfigMap() {
+    public Map<String, TaskConfig> taskConfigMap() {
         return new HashMap<>(){{
-            put("填写委托", null);
-        }};
-    }
-
-
-    @Bean
-    public Map<String, List<String>> taskRequiredVarMap() {
-        return new HashMap<>() {{
-            put("填写委托", List.of("ApplicationForm"));
-            put("分配工作人员", List.of("assignee"));  //被分配的工作人员
-            put("审核用户委托", List.of("ApplicationVerifyForm", "passed")); //passed：审核结果
-            put("用户修改委托", List.of("ApplicationForm"));
-            put("生成报价", List.of("quotation")); //报价
-            put("生成合同草稿", List.of("ContractDraft")); //合同草稿
-            put("签署合同", List.of("Contract")); //合同
-            put("上传样品", List.of("Sample")); //样品
-            put("生成测试方案", List.of("TestPlanForm"));
-            put("生成测试报告", List.of("TestReportForm"));
-            put("用户确认测试结果", List.of("ReportVerifyForm"));
-            put("后续处理", List.of("DocumentReviewForm"));
+            put("填写申请表", new FillOutAppFormConfig());
+            put("分配工作人员", new AssignOperatorConfig());
+            put("用户确认测试报告", new ConfirmTestReportConfig());
+            put("生成合同草稿", new GenContractDraftConfig());
+            put("生成报价", new GenQuotationConfig());
+            put("生成测试方案", new GenTestPlanConfig());
+            put("生成测试报告", new GenTestReportConfig());
+            put("用户修改委托", new ModifyApplicationConfig());
+            put("后续处理", new PostProcessingConfig());
+            put("发送测试报告", new SendTestReportConfig());
+            put("签署合同", new SignContractConfig());
+            put("上传样品", new UploadSampleConfig());
+            put("审核用户委托", new VerifyApplicationConfig());
         }};
     }
 
 }
+
+/*
+    问题：
+    TestFunctionForm被哪个任务需要？
+ */

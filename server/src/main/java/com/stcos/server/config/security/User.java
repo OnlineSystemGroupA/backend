@@ -2,12 +2,8 @@ package com.stcos.server.config.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,7 +16,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class UserDetailsImp implements UserDetails {
+public class User implements org.springframework.security.core.userdetails.UserDetails {
 
     private String uid;
 
@@ -29,6 +25,8 @@ public class UserDetailsImp implements UserDetails {
     private String password;
 
     private String username;
+
+    //private String email;
 
     boolean accountNonExpired;
 

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 @Component
 public class UserDetailsFactory {
 
-    public UserDetailsImp getUserDetails(Client client) {
-        return new UserDetailsImp(client.getUid(),
+    public User getUserDetails(Client client) {
+        return new User(client.getUid(),
                 new ArrayList<>(){{
                     add(new SimpleGrantedAuthority("ROLE_CLIENT"));
                 }},
@@ -31,8 +31,8 @@ public class UserDetailsFactory {
                 client.isEnabled());
     }
 
-    public UserDetailsImp getUserDetails(Admin admin) {
-        return new UserDetailsImp(admin.getUid(),
+    public User getUserDetails(Admin admin) {
+        return new User(admin.getUid(),
                 admin.getAuthorities(),
                 admin.getPassword(),
                 admin.getUsername(),
@@ -43,8 +43,8 @@ public class UserDetailsFactory {
 
     }
 
-    public UserDetailsImp getUserDetails(Operator operator) {
-        return new UserDetailsImp(operator.getUid(),
+    public User getUserDetails(Operator operator) {
+        return new User(operator.getUid(),
                 operator.getAuthorities(),
                 operator.getPassword(),
                 operator.getUsername(),

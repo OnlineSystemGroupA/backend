@@ -1,10 +1,12 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.config.security.UserDetailsImp;
+import com.stcos.server.config.security.User;
+import com.stcos.server.config.workflow.TaskConfigConfigurer;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.Sample;
 import com.stcos.server.entity.form.Form;
+import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.mapper.FileMapper;
@@ -20,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -59,12 +62,12 @@ public class WorkflowServiceImp implements WorkflowService {
     @Autowired
     public void setFileMapper(FileMapper fileMapper) { this.fileMapper = fileMapper; }
 
+
     @Override
     public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
         Task task = getTaskById(taskId);
 
-        // 验证是否满足完成条件
-
+        // TODO 验证是否满足完成条件
         // 若满足完成条件则完成该任务
         taskService.complete(task.getId());
     }
@@ -72,11 +75,11 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public Task getTaskById(String taskId) throws ServiceException {
         List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
-        UserDetailsImp userDetails = (UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (tasks == null) //没有对应Id的task
             throw new ServiceException(1);
         Task task = tasks.get(0);
-        if (!task.getAssignee().equals(userDetails.getUid())) { //当前用户不是被分配到的用户（即不可见）
+        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
             throw new ServiceException(0);
         }
         return task;
@@ -84,8 +87,8 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public List<Task> getTasks() throws ServiceException {
-        UserDetailsImp userDetails = (UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return taskService.createTaskQuery().taskAssignee(userDetails.getUid()).list();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return taskService.createTaskQuery().taskAssignee(user.getUid()).list();
     }
 
     @Override
@@ -94,7 +97,7 @@ public class WorkflowServiceImp implements WorkflowService {
         FormIndex formIndex = getFormIndex(processInstanceId, formType);
 
         // 获取当前登录用户，和当前文件的可读用户列表
-        String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> readableUsers = formIndex.getReadableUsers();
 
         Form form;
@@ -115,7 +118,7 @@ public class WorkflowServiceImp implements WorkflowService {
         FormIndex formIndex = getFormIndex(processId, formType);
 
         // 获取当前登录用户，和当前表单的可写用户列表
-        String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> writableUsers = formIndex.getWritableUsers();
 
         // 判断当前登录用户是否具有修改权限
@@ -146,7 +149,7 @@ public class WorkflowServiceImp implements WorkflowService {
         Sample sample = getSample(processInstanceId);
 
         // 获取当前登录用户，和当前样品的可写用户列表
-        String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> writableUsers = sample.getWritableUsers();
 
         List<FileMetadata> fileMetadataList = new ArrayList<>();
@@ -185,7 +188,7 @@ public class WorkflowServiceImp implements WorkflowService {
         Sample sample = getSample(processInstanceId);
 
         // 获取当前登录用户，和当前样品的可读用户列表
-        String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> readableUsers = sample.getReadableUsers();
 
         List<File> files = new ArrayList<>();
@@ -214,7 +217,7 @@ public class WorkflowServiceImp implements WorkflowService {
         Sample sample = getSample(processInstanceId);
 
         // 获取当前登录用户，和当前样品的可写用户列表
-        String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> writableUsers = sample.getWritableUsers();
 
         // 判断当前登录用户是否具有删除权限
@@ -268,20 +271,12 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public String startProcess() throws ServiceException {
         // 获取当前登录用户，使用其 id 设置任务发起人
-        String userId = ((UserDetailsImp) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
         // 初始化流程变量，创建
-
-
-        // TODO 将以下创建 map 的方法注释
-        Map<String, Object> map = new HashMap<>() {{
-            put("client", userId);
-            put("admin", "op-1");
-            put("passed", true);
-        }};
-
+        ProcessVariable processVariable = new ProcessVariable(userId);
         ProcessInstance processInstance =
-                runtimeService.startProcessInstanceByKey("workflow", map);
+                runtimeService.startProcessInstanceByKey("workflow", processVariable);
 
         return processInstance.getProcessInstanceId();
     }
