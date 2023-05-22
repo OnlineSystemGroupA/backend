@@ -2,6 +2,7 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.UserDetailsImp;
 import com.stcos.server.entity.form.Form;
+import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import org.flowable.engine.RuntimeService;
@@ -36,8 +37,8 @@ public class WorkflowServiceImp implements WorkflowService {
 
 
     @Override
-    public void completeTask(String taskId) throws ServiceException {
-        Task task = getTaskById(taskId);
+    public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
+        Task task = getTaskById(processId);
 
         // 验证是否满足完成条件
 
@@ -65,22 +66,26 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public Object getTaskItem(String processId, String itemName) throws ServiceException {
+    public Form getForm(String processId, String itemName) throws ServiceException {
         Task task = getTaskById(processId);
         if (!taskService.hasVariable(task.getId(), itemName)) //没有对应资源
             throw new ServiceException(1);
-        return taskService.getVariable(task.getId(), itemName);
+        return null;
 
     }
 
     @Override
-    public void updateForm(String processInstanceId, String formName, Form form) throws ServiceException {
+    public void updateForm(String processId, String formName, Form formData) throws ServiceException {
         // 判断 processId 对应的流程是否存在
         ProcessInstance processInstance = runtimeService.
-                createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+                createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (processInstance == null) {
             throw new ServiceException(0);
         }
+
+        Long formIndexId = (Long) runtimeService.getVariable(processId, formName);
+
+
 
         // 获取表单索引
 
@@ -92,7 +97,7 @@ public class WorkflowServiceImp implements WorkflowService {
         // 将表单保存至数据库
 
         // 将表单索引保存至流程实例变量中
-        runtimeService.setVariable(processInstanceId, formName, null);
+        runtimeService.setVariable(processId, formName, null);
 
     }
 
@@ -115,6 +120,11 @@ public class WorkflowServiceImp implements WorkflowService {
                 runtimeService.startProcessInstanceByKey("workflow", map);
 
         return processInstance.getProcessInstanceId();
+    }
+
+    @Override
+    public List<FormIndex> getFormMetadata(String processId) throws ServiceException {
+        return null;
     }
 
 }

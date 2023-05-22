@@ -11,30 +11,32 @@ rectangle "Auth Controller"  as AuthController <<$archimate/component>> #applica
 rectangle "Workflow Controller"  as WorkflowController <<$archimate/component>> #application
 rectangle "Archive Controller"  as ArchivesController <<$archimate/component>> #application
 rectangle "Manager Controller"  as ManagerController <<$archimate/component>> #application
-rectangle "UserInfo Controller"  as UserInfoController <<$archimate/component>> #application
+rectangle "Account Controller"  as AccountController <<$archimate/component>> #application
 rectangle "Menu Controller"  as MenuController <<$archimate/component>> #application
 
 security -- AuthController
 security -- WorkflowController
 security -- ArchivesController
 security -- ManagerController
-security -- UserInfoController
+security -- AccountController
 security -- MenuController
 
 rectangle "Auth Service"  as AuthService <<$archimate/service>> #business
-rectangle "File Service"  as FileService <<$archimate/service>> #business
 rectangle "Workflow Service"  as WorkflowService <<$archimate/service>> #business
 rectangle "Archive Service"  as ArchivesService <<$archimate/service>> #business
 rectangle "Account Service"  as AccountService <<$archimate/service>> #business
 rectangle "Menu Service"  as MenuService <<$archimate/service>> #business
 
+rectangle "File Service"  as FileService <<$archimate/service>> #motivation
+rectangle "Form Service"  as FormService <<$archimate/service>> #motivation
+
 AuthController <-- AuthService
 AuthController <-- AccountService
 WorkflowController <-- WorkflowService
 
-WorkflowController <-- FileService
+'WorkflowController <-- FileService
 
-ArchivesController <-- FileService
+'ArchivesController <-- FileService
 ArchivesController <-- ArchivesService
 
 ManagerController <-- ArchivesService
@@ -43,19 +45,26 @@ ManagerController <-- AccountService
 ManagerController <-- WorkflowService
 ManagerController <-- MenuService
 
-UserInfoController <-- AccountService
-UserInfoController <-- FileService
+AccountController <-- AccountService
+'UserInfoController <-- FileService
 
 MenuController <-- MenuService
 
+ArchivesService <-- FileService
+
+WorkflowService <-- FormService
+
 database "                    MyBatis Mapper Dao                    "  as dao <<$archimate/strategy-capability>> #strategy
 
-AuthService <-- dao
+WorkflowService <-- FileService
+
+AuthService <--- dao
 FileService <-- dao
-WorkflowService <-- dao
-ArchivesService <-- dao
-AccountService <-- dao
-MenuService <-- dao
+FormService <-- dao
+'WorkflowService <--- dao
+ArchivesService <--- dao
+AccountService <--- dao
+MenuService <--- dao
 
 remove ManagerController
 @enduml

@@ -85,7 +85,7 @@ paths:
   /workflow/start:
     post:
       tags:
-        - process
+        - workflow
       summary: 启动流程
       description: 开启一个新的委托流程
       operationId: startProcess
@@ -96,50 +96,24 @@ paths:
             'application/json':
               schema:
                 $ref: "#/components/schemas/ProcessId"
-  /workflow/tasks:
+  /workflow/processes:
     get:
       tags:
         - workflow
-      summary: 获取所有任务
-      description: 获取与当前用户可见的任务列表
-      operationId: getTasks
+      summary: 获取流程实例
+      description: 获取与当前用户相关的流程实例
+      operationId: getProcesses
       responses:
         '200':
-          description: 成功获取任务列表
+          description: 成功获取流程实例列表
           content:
             'application/json':
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Task"
+                  $ref: "#/components/schemas/Process"
 
-  /workflow/tasks/{taskId}:
-    get:
-      tags:
-        - workflow
-      summary: 获取单个任务
-      description: 通过 id 查询某一个任务，前提是该任务必须对当前登录用户可见
-      operationId: getTaskById
-      parameters:
-        - name: taskId
-          in: path
-          description: 待查询的任务 id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 成功获取指定任务
-          content:
-            'application/json':
-              schema:
-                $ref: "#/components/schemas/Task"
-        '403':
-          description: 指定任务对该用户不可见
-        '404':
-          description: 指定任务不存在
-
-  /workflow/tasks/{taskId}/complete:
+  /workflow/processes/{processId}/tasks/{taskId}/complete:
     post:
       tags:
         - workflow
@@ -147,19 +121,79 @@ paths:
       description: 将指定任务设置为已完成，并跳转至下一阶段
       operationId: completeTask
       parameters:
-        - name: taskId
+        - name: processId
           in: path
-          description: 待完成的任务 id
+          description: 待完成任务所属的流程实例 Id
           required: true
           schema:
             type: string
+        - name: taskId
+          in: path
+          description: 待完成的任务 Id
+          required: true
+          schema:
+            type: string
+        - name: passable
+          in: query
+          description: 是否通过，流程遇到网关用于决定运行方向
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           description: 成功完成指定任务
         '403':
           description: 指定任务对该用户不可见或当前用户无完成任务权限
         '404':
-          description: 指定任务不存在
+          description: 指定任务或流程不存在
+
+  /workflow/processes/{processId}/details:
+    get:
+      tags:
+        - workflow
+      summary: 获取流程详情
+      description: 获取流程详情
+      operationId: getProcessDetails
+      parameters:
+        - name: processId
+          in: path
+          description: 流程实例 Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取指定流程的详细信息
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
+  /workflow/processes/{processId}/forms:
+    get:
+      tags:
+        - workflow
+      summary: 获取表单
+      description: 获取表单
+      operationId: getFormMetadata
+      parameters:
+        - name: processId
+          in: path
+          description: 指定流程实例 id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 成功获取可见表单列表
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FormMetadata"
+        '404':
+          description: 指定流程不存在
 
   /workflow/processes/{processId}/forms/{formName}:
     parameters:
@@ -169,29 +203,27 @@ paths:
         schema:
           type: string
         required: true
-      - name: taskId
-        in: query
-        description: 当前用户正在处理的任务 id
-        schema:
-          type: string
-        required: true
       - name: formName
         in: path
-        description: 指定资源名
+        description: 期望操作的表单名称
         schema:
           type: string
         required: true
     put:
       tags:
         - workflow
-      summary: 更新流程资源
-      description: 修改指定流程中的指定资源
-      operationId: updateForm
+      summary: 更新或创建表单
+      description: 更新或创建表单
+      operationId: putForm
+      requestBody:
+        content:
+          'text/plain':
+            schema:
+              description: 包含表单对象的 JSON 字符串
+              type: string
       responses:
         '200':
-          description: 成功更新指定资源
-        '201':
-          description: 成功创建指定资源
+          description: 成功更新或创建表单
         '403':
           description: 该流程实例对当前用户不可见或当前用户无修改权限
         '404':
@@ -199,22 +231,23 @@ paths:
     get:
       tags:
         - workflow
-      summary: 获取流程资源
-      description: 获取指定任务中的指定资源
+      summary: 获取表单
+      description: 获取表单
       operationId: getForm
       responses:
         '200':
-          description: 成功获取指定资源
+          description: 成功获取指定表单
           content:
-            'application/json':
+            'text/plain':
               schema:
-                type: object
+                description: 包含表单对象的 JSON 字符串
+                type: string
         '403':
-          description: 指定流程或资源对该用户不可见
+          description: 指定流程或表单对该用户不可见
         '404':
-          description: 指定流程或资源不存在
+          description: 指定流程或表单不存在
 
-  /workflow/processes/{processId}/samples:
+  /workflow/processes/{processId}/sample:
     parameters:
       - name: processId
         in: path
@@ -227,7 +260,7 @@ paths:
         - workflow
       summary: 上传样品
       description: 上传与对应流程相关的样品文件
-      operationId: uploadSamples
+      operationId: uploadSample
       requestBody:
         description: 需要上传的样品文件
         content:
@@ -247,7 +280,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/SamplePath"
+                  $ref: "#/components/schemas/fileIndex"
         '400':
           description: 没有上传文件
         '403':
@@ -263,7 +296,7 @@ paths:
         - workflow
       summary: 所有样品下载
       description: 获取指定任务中的指定资源
-      operationId: downloadSamples
+      operationId: downloadSample
       responses:
         '200':
           description: 成功获取指定资源
@@ -324,51 +357,54 @@ components:
           type: string
           description: token 字符串
 
-    Task:
+    Process:
       type: object
       required:
         - processId
         - taskId
         - taskName
-        - description
-        - startUserId
+        - assignee
+        - startUser
+        - startDate
       properties:
         processId:
           type: string
-          description: 当前任务对应的流程实例 id
+          description: 流程实例 id
         taskId:
           type: string
-          description: 当前任务实例的 id
+          description: 当前任务的实例 id
         taskName:
           type: string
           description: 当前任务的名称
-        description:
+        assignee:
           type: string
-          description: 当前任务的描述、状态等
-        startUserId:
+          description: 当前任务被分配人
+        startUser:
           type: string
-          description: 当前流程的发起人
+          description: 流程发起人姓名
+        startDate:
+          type: string
+          description: 流程发起时间
 
-    SamplePath:
+    fileIndex:
       type: object
       required:
-        - path
+        - fileIndexId
+        - fileName
+        - fileType
       properties:
-        path:
+        fileIndexId:
+          type: integer
+          format: int64
+          description: 文件索引 ID
+        fileName:
           type: string
-          description: 当前任务对应的流程实例 id
-        taskId:
+          description: 文件名
+        fileType:
           type: string
-          description: 当前任务实例的 id
-        taskName:
-          type: string
-          description: 当前任务的名称
-        description:
-          type: string
-          description: 当前任务的描述、状态等
-        startUserId:
-          type: string
-          description: 当前流程的发起人
+          description: 文件类型
+
+
 
     ProcessId:
       required:
@@ -376,4 +412,17 @@ components:
       properties:
         processId:
           type: string
-          description: 新委托流程的 id
+          description: 新委托流程的 ID
+
+    FormMetadata:
+      required:
+        - formIndexId
+        - formName
+      properties:
+        formIndexId:
+          type: integer
+          format: int64
+          description: 表单索引 ID
+        formName:
+          type: string
+          description: 表单名称

@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("LoginParam")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-09T00:09:21.323897900+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
 public class LoginParamDto {
 
   private String username;
