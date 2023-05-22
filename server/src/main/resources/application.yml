@@ -92,3 +92,7 @@ flowable:
     #    password: stcosgroupa
     username: flowable_demo
     password:
+
+file:
+  upload:
+    directory: "./temp"
