@@ -138,7 +138,7 @@ public class WorkflowServiceImp implements WorkflowService {
 
         // 判断当前登录用户是否具有修改权限
         if (writableUsers != null && writableUsers.contains(userId)) {
-            if (formIndex.getFormIndexId() == null) {
+            if (formIndex.getFormIndexId() == -1) {
                 // 保存表单
 //                formRepository.saveForm(form);
                 formRepository.saveFrom(form);
