@@ -19,6 +19,7 @@ import java.util.Map;
 @Document(collection = "form")
 public abstract class Form {
     @Id
+    @AutoId
     private Long formId;
 
     // TODO 酌情设计一些与表单操作有关的共用方法

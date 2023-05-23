@@ -1,6 +1,8 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
+import com.stcos.server.database.mongo.FormRepository;
+import com.stcos.server.database.mongo.FormIndexRepository;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.Sample;
@@ -9,7 +11,6 @@ import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.database.mysql.FileMapper;
-import com.stcos.server.database.mysql.FormMapper;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.WorkflowService;
 import org.flowable.engine.RuntimeService;
@@ -49,11 +50,18 @@ public class WorkflowServiceImp implements WorkflowService {
         this.fileService = fileService;
     }
 
-    private FormMapper formMapper;
+    private FormRepository formRepository;
 
     @Autowired
-    public void setFormMapper(FormMapper formMapper) {
-        this.formMapper = formMapper;
+    public void setFormRepository(FormRepository formRepository) {
+        this.formRepository = formRepository;
+    }
+
+    private FormIndexRepository formIndexRepository;
+
+    @Autowired
+    public void setFormIndexRepository(FormIndexRepository formIndexRepository) {
+        this.formIndexRepository = formIndexRepository;
     }
 
     private FileMapper fileMapper;
@@ -131,8 +139,9 @@ public class WorkflowServiceImp implements WorkflowService {
         // 判断当前登录用户是否具有修改权限
         if (writableUsers != null && writableUsers.contains(userId)) {
             if (formIndex.getFormIndexId() == null) {
-                // 保存表单  Todo: FormMapper
-                formMapper.saveForm(form);
+                // 保存表单
+//                formRepository.saveForm(form);
+                formRepository.saveFrom(form);
 
                 // 初始化表单索引
                 formIndex = new FormIndex(form.getFormId(), formType, userId, LocalDateTime.now(), userId, LocalDateTime.now(), form);
@@ -146,8 +155,8 @@ public class WorkflowServiceImp implements WorkflowService {
             throw new ServiceException(1); // 无修改权限的异常
         }
 
-        // 保存表单索引  Todo: FormMapper
-        formMapper.saveFormIndex(formIndex);
+        // 保存表单索引
+        formIndexRepository.saveFrom(formIndex);
     }
 
     @Override
@@ -257,7 +266,7 @@ public class WorkflowServiceImp implements WorkflowService {
         Long formIndexId = (Long) runtimeService.getVariable(processInstanceId, formType);
 
         // 根据表单索引 ID 查询数据库
-        return formMapper.selectByFormIndexId(formIndexId);
+        return formIndexRepository.findByFormIndexId(formIndexId);
     }
 
     private Sample getSample(String processInstanceId) throws ServiceException {

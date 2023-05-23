@@ -26,6 +26,7 @@ public class FormIndex {
      * 表单索引 ID，保存对象时由数据库自动赋值
      */
     @Id
+    @AutoId
     private Long formIndexId = null;
 
     /**

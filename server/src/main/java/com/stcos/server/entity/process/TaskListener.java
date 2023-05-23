@@ -1,7 +1,7 @@
 package com.stcos.server.entity.process;
 
+import com.stcos.server.database.mongo.FormIndexRepository;
 import com.stcos.server.entity.form.FormIndex;
-import com.stcos.server.database.mysql.FormMapper;
 import com.stcos.server.service.EmailService;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ public class TaskListener {
         this.taskConfigMap = taskConfigMap;
     }
 
-    private FormMapper formMapper;
+    private FormIndexRepository formIndexRepository;
 
     @Autowired
-    public void setFormMapper(FormMapper formMapper) {
-        this.formMapper = formMapper;
+    public void setFromIndexRepository(FormIndexRepository formIndexRepository) {
+        this.formIndexRepository = formIndexRepository;
     }
 
     private EmailService emailService;
@@ -59,7 +59,7 @@ public class TaskListener {
         for (String requiredForm : requiredForms) {
             if(task.getVariable(requiredForm) == null){
                 FormIndex formIndex = new FormIndex();
-                formMapper.saveFormIndex(formIndex);
+                formIndexRepository.saveFrom(formIndex);
                 task.setVariable(requiredForm, formIndex.getFormIndexId());
             }
         }
@@ -68,13 +68,13 @@ public class TaskListener {
         List<String> readableForms = taskConfig.getReadableForms();
         for (String readableForm: readableForms) {
             Long formIndexId = (Long) task.getVariable(readableForm);
-            FormIndex formIndex = formMapper.selectByFormIndexId(formIndexId);
+            FormIndex formIndex = formIndexRepository.findByFormIndexId(formIndexId);
             formIndex.getReadableUsers().add(task.getAssignee());
         }
         List<String> writableForms = taskConfig.getWritableForms();
         for (String writableForm: writableForms) {
             Long formIndexId = (Long) task.getVariable(writableForm);
-            FormIndex formIndex = formMapper.selectByFormIndexId(formIndexId);
+            FormIndex formIndex = formIndexRepository.findByFormIndexId(formIndexId);
             formIndex.getReadableUsers().add(task.getAssignee());
         }
 
