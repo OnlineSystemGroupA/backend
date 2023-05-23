@@ -46,7 +46,7 @@ public class FillOutAppFormConfig implements TaskConfig { //填写申请表
 
     @Override
     public List<String> getWillDisReadableForms() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
