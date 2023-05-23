@@ -1,4 +1,4 @@
-package com.stcos.server.mapper;
+package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

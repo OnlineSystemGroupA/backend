@@ -1,4 +1,4 @@
-package com.stcos.server.mapper;
+package com.stcos.server.database.mysql;
 
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.Sample;

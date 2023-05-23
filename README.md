@@ -159,36 +159,17 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 用户菜单的增删改查。
 
-### 2.5 DAO 持久化层
+### 2.5 数据持久化层
+
+![image-20230522211149540](README.assets/image-20230522211149540.png)
+
+![image-20230522211043773](README.assets/image-20230522211043773.png)
+
+
 
 基于 Mybatis 的 Mapper 接口实现与数据库的交互，进行数据持久化。
 
 #### 数据库表设计
-
-账户持久化主要包含：基本信息、角色、权限。
-
-1. 基本信息部分共三张表：
-
-   - `com.stcos.server.entity.user.Client` 对应 client 表；
-
-   - `com.stcos.server.entity.user.Admin` 对应 admin 表；
-
-   - `com.stcos.server.entity.user.Operator` 对应 operator 表。
-
-   具体需要包含的字段见类中成员数据的定义。
-
-2. 角色，一张角色表： 
-
-   由于客户（Client）与平台管理员（Admin）的角色唯一，此处仅需要维护工作人员（Operator）与角色的一对多映射关系。
-
-   表中包含两个字段：工作人员 id 以及角色名称，两者均为字符串。
-
-3. 权限，一张权限表：
-
-   维护工作人员（Operator）与权限的一对多映射关系。同上。
-
-
-【注】平台管理员账号不可通过调用接口动态创建，需在产品交付前创建好并告知甲方。
 
 
 
@@ -247,26 +228,26 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 > 软件包： com.stcos.server.entity.file
 
-#### 3.3.1 <font color="#dd00">FileMetadata 文件元数据</font>
+#### 3.3.1 FileMetadata 文件元数据
 
-| 字段名                                    | 描述                                     | 类型                            |
-| ----------------------------------------- | ---------------------------------------- | ------------------------------- |
-| <font color="#dd00">fileMetadataId</font> | <font color="#dd00">文件元数据 ID</font> | Long                            |
-| fileName                                  | 文件名称                                 | String                          |
-| fileType                                  | 文件类型                                 | String                          |
-| <font color="#dd00">fileSize</font>       | <font color="#dd00">文件大小</font>      | <font color="#dd00">Long</font> |
-| updatedBy                                 | 文件上传者 <font color="#dd00">ID</font> | String                          |
-| updatedDate                               | 文件上传时间                             | LocalDateTime                   |
-| filePath                                  | 文件在服务器磁盘上的路径                 | String                          |
+| 字段名         | 描述                     | 类型          |
+| -------------- | ------------------------ | ------------- |
+| fileMetadataId | 文件元数据 ID            | Long          |
+| fileName       | 文件名称                 | String        |
+| fileType       | 文件类型                 | String        |
+| fileSize       | 文件大小                 | Long          |
+| updatedBy      | 文件上传者 ID            | String        |
+| updatedDate    | 文件上传时间             | LocalDateTime |
+| filePath       | 文件在服务器磁盘上的路径 | String        |
 
-#### 3.3.2 <font color="#dd00">Sample 样品</font>
+#### 3.3.2 Sample 样品
 
-| 字段名                                      | 描述                                      | 类型                                           |
-| ------------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
-| sampleListId                                | 样品列表 ID                               | Long                                           |
-| readableUsers                               | 对样品具有读权限用户的 ID 列表            | List\<String>                                  |
-| writableUsers                               | 对样品具有写权限用户的 ID 列表            | List\<String>                                  |
-| <font color="#dd00">fileMetadataList</font> | <font color="#dd00">文件元数据列表</font> | <font color="#dd00">List\<FileMetadata></font> |
+| 字段名           | 描述                           | 类型                |
+| ---------------- | ------------------------------ | ------------------- |
+| sampleId         | 样品 ID                        | Long                |
+| readableUsers    | 对样品具有读权限用户的 ID 列表 | List\<String>       |
+| writableUsers    | 对样品具有写权限用户的 ID 列表 | List\<String>       |
+| fileMetadataList | 文件元数据列表                 | List\<FileMetadata> |
 
 ### 3.4 邮件
 
@@ -379,7 +360,7 @@ public class TaskConfigConfigurer {
 }
 ```
 
-#### 4.1.3 类间关系
+
 
 
 

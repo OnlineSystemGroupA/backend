@@ -1,7 +1,6 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
-import com.stcos.server.config.workflow.TaskConfigConfigurer;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.Sample;
@@ -9,8 +8,8 @@ import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.mapper.FileMapper;
-import com.stcos.server.mapper.FormMapper;
+import com.stcos.server.database.mysql.FileMapper;
+import com.stcos.server.database.mysql.FormMapper;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.WorkflowService;
 import org.flowable.engine.RuntimeService;
@@ -60,7 +59,9 @@ public class WorkflowServiceImp implements WorkflowService {
     private FileMapper fileMapper;
 
     @Autowired
-    public void setFileMapper(FileMapper fileMapper) { this.fileMapper = fileMapper; }
+    public void setFileMapper(FileMapper fileMapper) {
+        this.fileMapper = fileMapper;
+    }
 
 
     @Override
@@ -88,7 +89,13 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public List<Task> getTasks() throws ServiceException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return taskService.createTaskQuery().taskAssignee(user.getUid()).list();
+        // 获取流程变量的坑！
+        // 参考：https://blog.csdn.net/weixin_43861630/article/details/129056964
+        Set<Task> taskSet = new HashSet<>(taskService.createTaskQuery().
+                processVariableValueEquals("startUser", user.getUid()).
+                includeProcessVariables().list());
+        taskSet.addAll(taskService.createTaskQuery().taskAssignee(user.getUid()).includeProcessVariables().list());
+        return taskSet.stream().toList();
     }
 
     @Override
@@ -123,7 +130,7 @@ public class WorkflowServiceImp implements WorkflowService {
 
         // 判断当前登录用户是否具有修改权限
         if (writableUsers != null && writableUsers.contains(userId)) {
-            if(formIndex.getFormIndexId() == null) {
+            if (formIndex.getFormIndexId() == null) {
                 // 保存表单  Todo: FormMapper
                 formMapper.saveForm(form);
 
