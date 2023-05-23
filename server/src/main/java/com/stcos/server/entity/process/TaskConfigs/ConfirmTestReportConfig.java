@@ -46,7 +46,7 @@ public class ConfirmTestReportConfig implements TaskConfig {
 
     @Override
     public List<String> getWillDisReadableForms() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

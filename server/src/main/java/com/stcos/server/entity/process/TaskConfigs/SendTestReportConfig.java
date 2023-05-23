@@ -15,7 +15,7 @@ import java.util.List;
 public class SendTestReportConfig implements TaskConfig {
     @Override
     public List<String> getRequiredForms() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SendTestReportConfig implements TaskConfig {
 
     @Override
     public List<String> getWritableForms() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
