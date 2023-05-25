@@ -132,7 +132,7 @@ public class FileServiceImp implements FileService {
                         String fileName = fileMetadata.getFileName();
                         String baseName = FilenameUtils.getBaseName(fileName);
                         String extension = FilenameUtils.getExtension(fileName);
-                        File tempFile = File.createTempFile(baseName, extension.equals("") ? "" : "." + extension);
+                        File tempFile = File.createTempFile(baseName, extension.isEmpty() ? "" : "." + extension);
                         // 拷贝文件到临时文件中
                         Files.copy(filePath, tempFile.toPath());
                         // 添加临时文件到下载文件列表中
