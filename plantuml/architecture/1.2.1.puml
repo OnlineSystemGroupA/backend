@@ -29,6 +29,7 @@ rectangle "Menu Service"  as MenuService <<$archimate/service>> #business
 
 rectangle "File Service"  as FileService <<$archimate/service>> #motivation
 rectangle "Form Service"  as FormService <<$archimate/service>> #motivation
+rectangle "User Service"  as UserService <<$archimate/service>> #motivation
 
 AuthController <-- AuthService
 AuthController <-- AccountService
@@ -51,10 +52,17 @@ AccountController <-- AccountService
 MenuController <-- MenuService
 
 ArchivesService <-- FileService
+ArchivesService <-- FormService
 
 WorkflowService <-- FormService
 
+'package "  DataBase  " {
+
+
 database "                    MyBatis Mapper Dao                    "  as dao <<$archimate/strategy-capability>> #strategy
+database "               MongoDB              "  as MongoDB <<$archimate/strategy-capability>> #strategy
+database "                          MySQL                         "  as MySQL <<$archimate/strategy-capability>> #strategy
+'}
 
 WorkflowService <-- FileService
 
@@ -67,4 +75,30 @@ AccountService <--- dao
 MenuService <--- dao
 
 remove ManagerController
+remove dao
+
+'remove AuthController
+'remove AuthService
+
+'WorkflowController <-- AccountService
+
+'WorkflowService <-- UserService
+
+FormService <-- MongoDB
+FileService <-- MongoDB
+
+AuthService <-- UserService
+AccountService <-- UserService
+AccountService <-- FileService
+
+UserService <-- MySQL
+ArchivesService <-- MySQL
+
+
+MenuService <-- MySQL
+AccountService <-- MySQL
+AuthService <-- MySQL
+
+remove UserService
+
 @enduml
