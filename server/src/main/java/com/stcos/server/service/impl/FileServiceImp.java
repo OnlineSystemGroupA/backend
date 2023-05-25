@@ -1,15 +1,20 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.config.security.User;
+import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.entity.file.Sample;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.mapper.FileMapper;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +22,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.stcos.server.service.FileService;
 
@@ -38,87 +45,166 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public List<FileMetadata> uploadSample(String processId, String userId, List<MultipartFile> files) throws ServiceException {
-        if (files == null || files.size() == 0) {
-            throw new ServiceException(0); // 没有上传文件
-        }
-
-        File dir = new File(uploadDirectory, String.join("/", processId));
-        if (!dir.exists() && !dir.mkdirs()) {
-            throw new ServiceException(1); // 存储空间不足
-        }
+    public List<FileMetadataDto> uploadSample(String processId, Sample sample, List<MultipartFile> files) throws ServiceException {
+        // 获取当前登录用户，和当前样品的可写用户列表
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        List<String> writableUsers = sample.getWritableUsers();
 
         List<FileMetadata> fileMetadataList = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename();
-            String uniqueFileName = getUniqueFileName(dir.getAbsolutePath(), fileName);
-            Path filePath = Paths.get(dir.getAbsolutePath(), uniqueFileName);
-            try {
-                Files.write(filePath, file.getBytes());
-                FileMetadata fileMetadata = new FileMetadata(uniqueFileName, file.getContentType(), file.getSize(), userId, LocalDateTime.now(), filePath.toString());
-                fileMapper.saveFileMetadata(fileMetadata);
-                fileMetadataList.add(fileMetadata);
-            } catch (IOException e) {
-                throw new ServiceException(2); // 文件上传失败
+
+        // 判断当前登录用户是否具有上传权限
+        if (writableUsers != null && writableUsers.contains(userId)) {
+            if (files == null || files.size() == 0) {
+                throw new ServiceException(2); // 没有上传文件
             }
+
+            File dir = new File(uploadDirectory, String.join("/", processId));
+            if (!dir.exists() && !dir.mkdirs()) {
+                throw new ServiceException(3); // 存储空间不足
+            }
+
+            for (MultipartFile file : files) {
+                String fileName = file.getOriginalFilename();
+                String uniqueFileName = getUniqueFileName(dir.getAbsolutePath(), fileName);
+                Path filePath = Paths.get(dir.getAbsolutePath(), uniqueFileName);
+                try {
+                    Files.write(filePath, file.getBytes());
+                    FileMetadata fileMetadata = new FileMetadata(uniqueFileName, file.getContentType(), file.getSize(), userId, LocalDateTime.now(), filePath.toString());
+                    fileMapper.saveFileMetadata(fileMetadata);
+                    fileMetadataList.add(fileMetadata);
+                } catch (IOException e) {
+                    throw new ServiceException(4); // 文件上传失败
+                }
+            }
+
+            // 把新旧文件元数据的列表合并
+            sample.mergeFileMetadataList(fileMetadataList);
+
+            // 保存样品对象
+            fileMapper.saveSample(sample);
+
+        } else {
+            throw new ServiceException(1); // 无上传权限的异常
         }
 
-        return fileMetadataList;
+        // 返回样品文件摘要
+        return fileMetadataList.stream()
+                .map(FileMetadataDto::new)
+                .toList();
     }
 
     private String getUniqueFileName(String dirPath, String fileName) {
         String baseName = FilenameUtils.getBaseName(fileName);
         String extension = FilenameUtils.getExtension(fileName);
         String uniqueFileName = fileName;
-        int counter = 1;
+        int counter = 2;
 
         // Check if the file already exists
         while (Files.exists(Paths.get(dirPath, uniqueFileName))) {
-            uniqueFileName = baseName + " (" + counter + ")" + "." + extension;
+            if (extension.isEmpty()) {
+                uniqueFileName = baseName + " (" + counter + ")";
+            } else {
+                uniqueFileName = baseName + " (" + counter + ")." + extension;
+            }
             counter++;
         }
 
         return uniqueFileName;
     }
 
-    public List<File> downloadSample(List<FileMetadata> fileMetadataList) throws ServiceException {
-        List<File> downloadedFiles = new ArrayList<>();
+    @Override
+    public File downloadSample(String processId, Sample sample) throws ServiceException {
+        // 获取当前登录用户，和当前样品的可读用户列表
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        List<String> readableUsers = sample.getReadableUsers();
 
-        for (FileMetadata fileMetadata : fileMetadataList) {
-            try {
-                Path filePath = Paths.get(fileMetadata.getFilePath());
-                if (Files.exists(filePath)) {
-                    // 创建一个临时文件用于存储下载的文件
-                    File tempFile = File.createTempFile(fileMetadata.getFileName(), fileMetadata.getFileType());
-                    // 拷贝文件到临时文件中
-                    Files.copy(filePath, tempFile.toPath());
-                    // 添加临时文件到下载文件列表中
-                    downloadedFiles.add(tempFile);
-                } else {
-                    throw new ServiceException(0); // 文件不存在
+        // 判断当前登录用户是否具有下载权限
+        if (readableUsers != null && readableUsers.contains(userId)) {
+            List<FileMetadata> fileMetadataList = sample.getFileMetadataList();
+            List<File> downloadedFiles = new ArrayList<>();
+
+            // 下载样品文件
+            for (FileMetadata fileMetadata : fileMetadataList) {
+                try {
+                    Path filePath = Paths.get(fileMetadata.getFilePath());
+                    if (Files.exists(filePath)) {
+                        // 创建一个临时文件用于存储下载的文件
+                        String fileName = fileMetadata.getFileName();
+                        String baseName = FilenameUtils.getBaseName(fileName);
+                        String extension = FilenameUtils.getExtension(fileName);
+                        File tempFile = File.createTempFile(baseName, extension.equals("") ? "" : "." + extension);
+                        // 拷贝文件到临时文件中
+                        Files.copy(filePath, tempFile.toPath());
+                        // 添加临时文件到下载文件列表中
+                        downloadedFiles.add(tempFile);
+                    } else {
+                        throw new ServiceException(2); // 文件不存在
+                    }
+                } catch (IOException e) {
+                    throw new ServiceException(3); // 文件下载失败
                 }
-            } catch (IOException e) {
-                throw new ServiceException(1); // 文件下载失败
             }
+
+            try {
+                return createZipFile(processId, downloadedFiles, fileMetadataList);
+            } catch (IOException e) {
+                throw new ServiceException(3); // 压缩文件时发生错误（也导致文件下载失败）
+            }
+
+        } else {
+            throw new ServiceException(1); // 下载权限的异常
         }
-        return downloadedFiles;
     }
 
-    public void deleteFiles(List<FileMetadata> fileMetadataList) throws ServiceException {
-        for (FileMetadata fileMetadata : fileMetadataList) {
-            try {
-                Path filePath = Paths.get(fileMetadata.getFilePath());
-                if (Files.exists(filePath)) {
-                    // 删除文件
-                    Files.delete(filePath);
-                    // 删除文件元数据
-                    fileMapper.deleteByFileMetadataId(fileMetadata.getFileMetadataId());
-                } else {
-                    throw new ServiceException(0); // 文件不存在
-                }
-            } catch (IOException e) {
-                throw new ServiceException(1); // 文件删除失败
+    private File createZipFile(String processId, List<File> files, List<FileMetadata> fileMetadataList) throws IOException {
+        String prefix = processId + "_";
+        File zipFile = File.createTempFile(prefix, ".zip");
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
+            for (int i = 0; i < files.size(); i++) {
+                File file = files.get(i);
+                FileMetadata fileMetadata = fileMetadataList.get(i);
+
+                zos.putNextEntry(new ZipEntry(fileMetadata.getFileName()));
+
+                byte[] bytes = Files.readAllBytes(file.toPath());
+                zos.write(bytes, 0, bytes.length);
+                zos.closeEntry();
             }
+        }
+
+        return zipFile;
+    }
+
+    @Override
+    public void deleteSample(Sample sample) throws ServiceException {
+        // 获取当前登录用户，和当前样品的可写用户列表
+        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        List<String> writableUsers = sample.getWritableUsers();
+
+        // 判断当前登录用户是否具有删除权限
+        if (writableUsers != null && writableUsers.contains(userId)) {
+            List<FileMetadata> fileMetadataList = sample.getFileMetadataList();
+            for (FileMetadata fileMetadata : fileMetadataList) {
+                try {
+                    Path filePath = Paths.get(fileMetadata.getFilePath());
+                    if (Files.exists(filePath)) {
+                        // 删除文件
+                        Files.delete(filePath);
+                        // 删除文件元数据
+                        fileMapper.deleteByFileMetadataId(fileMetadata.getFileMetadataId());
+                    } else {
+                        throw new ServiceException(2); // 文件不存在
+                    }
+                } catch (IOException e) {
+                    throw new ServiceException(3); // 文件删除失败
+                }
+            }
+
+            // 删除样品对象
+            fileMapper.deleteBySampleId(sample.getSampleId());
+        } else {
+            throw new ServiceException(1); // 无删除权限的异常
         }
     }
 }

@@ -12,6 +12,8 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -153,9 +155,19 @@ public class WorkflowController implements WorkflowApi {
     public ResponseEntity<Resource> downloadSample(String processId) {
         ResponseEntity<Resource> response = null;
         try {
-            List<File> fileList = workflowService.downloadSample(processId);
-            //
-            response = ResponseEntity.ok(new FileSystemResource(fileList.get(0)));
+            File zipFile = workflowService.downloadSample(processId);
+
+            String filename = zipFile.getName();
+            String desiredFilename = filename.substring(0, filename.lastIndexOf('_')) + ".zip";
+
+            FileSystemResource resource = new FileSystemResource(zipFile);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", desiredFilename);
+
+            response = ResponseEntity.ok().headers(headers).body(resource);
+
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
@@ -165,7 +177,6 @@ public class WorkflowController implements WorkflowApi {
         }
         return response;
     }
-
 
     @Override
     public ResponseEntity<Void> getProcessDetails(String processId) {
