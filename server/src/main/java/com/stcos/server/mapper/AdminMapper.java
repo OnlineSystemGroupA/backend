@@ -36,11 +36,11 @@ public interface AdminMapper extends BaseMapper<Admin> {
     }
 
 
-@Select("select * from user where ${ew.SqlSegment}")
+@Select("select * from t_admin where ${ew.SqlSegment}")
 @Results({
         @Result(column = "uid",property = "uid"),
         @Result(column = "uid",property = "authorities", many=@Many(
-                select = "com.stcos.server.mapper.RoleMapper.getListByUserId"
+                select = "com.stcos.server.mapper.RoleMapper.getAuthorityListByUid"
         ))
 })
 List<Admin> getList(@Param("ew") QueryWrapper wrapper);

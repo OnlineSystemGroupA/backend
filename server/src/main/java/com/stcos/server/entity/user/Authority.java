@@ -6,7 +6,6 @@ import lombok.Data;
 
 
 @Data
-@TableName(value = "t_authority")
 public class Authority {
     @TableId
     private String authorityId;

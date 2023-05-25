@@ -18,7 +18,6 @@ import java.util.UUID;
  */
 
 @Data
-@TableName(value = "t_operator")
 public class Operator {
 
     @TableId

@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 @Data
 @NoArgsConstructor
-@TableName("t_client")
 public class Client {
 
     /**
