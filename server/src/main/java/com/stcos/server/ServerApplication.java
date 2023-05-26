@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
  */
 @SpringBootApplication
 //scan for "Mapper" package
-@MapperScan("com.stcos.server.mapper")
+@MapperScan("com.stcos.server.database")
 public class ServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServerApplication.class, args);

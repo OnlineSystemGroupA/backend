@@ -75,7 +75,7 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 【注<sub>2</sub>】可在后期将每个组件的功能补充完整后直接复用至设计文档
 
-<img src="README.assets/uml-1.2.1-2-1683790332689-5.svg" alt="uml-1.2.1-2" style="zoom:80%;" />
+<img src="README.assets/1.2.1-1684845139749-2.svg" alt="1.2.1"  />
 
 ### 2.1 Front End 前端
 
@@ -159,36 +159,15 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 用户菜单的增删改查。
 
-### 2.5 DAO 持久化层
+### 2.5 数据持久化层
 
-基于 Mybatis 的 Mapper 接口实现与数据库的交互，进行数据持久化。
+![image-20230522211149540](README.assets/image-20230522211149540.png)
+
+![image-20230522211043773](README.assets/image-20230522211043773.png)
+
+
 
 #### 数据库表设计
-
-账户持久化主要包含：基本信息、角色、权限。
-
-1. 基本信息部分共三张表：
-
-   - `com.stcos.server.entity.user.Client` 对应 client 表；
-
-   - `com.stcos.server.entity.user.Admin` 对应 admin 表；
-
-   - `com.stcos.server.entity.user.Operator` 对应 operator 表。
-
-   具体需要包含的字段见类中成员数据的定义。
-
-2. 角色，一张角色表： 
-
-   由于客户（Client）与平台管理员（Admin）的角色唯一，此处仅需要维护工作人员（Operator）与角色的一对多映射关系。
-
-   表中包含两个字段：工作人员 id 以及角色名称，两者均为字符串。
-
-3. 权限，一张权限表：
-
-   维护工作人员（Operator）与权限的一对多映射关系。同上。
-
-
-【注】平台管理员账号不可通过调用接口动态创建，需在产品交付前创建好并告知甲方。
 
 
 
@@ -247,26 +226,26 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 > 软件包： com.stcos.server.entity.file
 
-#### 3.3.1 <font color="#dd00">FileMetadata 文件元数据</font>
+#### 3.3.1 FileMetadata 文件元数据
 
-| 字段名                                    | 描述                                     | 类型                            |
-| ----------------------------------------- | ---------------------------------------- | ------------------------------- |
-| <font color="#dd00">fileMetadataId</font> | <font color="#dd00">文件元数据 ID</font> | Long                            |
-| fileName                                  | 文件名称                                 | String                          |
-| fileType                                  | 文件类型                                 | String                          |
-| <font color="#dd00">fileSize</font>       | <font color="#dd00">文件大小</font>      | <font color="#dd00">Long</font> |
-| updatedBy                                 | 文件上传者 <font color="#dd00">ID</font> | String                          |
-| updatedDate                               | 文件上传时间                             | LocalDateTime                   |
-| filePath                                  | 文件在服务器磁盘上的路径                 | String                          |
+| 字段名         | 描述                     | 类型          |
+| -------------- | ------------------------ | ------------- |
+| fileMetadataId | 文件元数据 ID            | Long          |
+| fileName       | 文件名称                 | String        |
+| fileType       | 文件类型                 | String        |
+| fileSize       | 文件大小                 | Long          |
+| updatedBy      | 文件上传者 ID            | String        |
+| updatedDate    | 文件上传时间             | LocalDateTime |
+| filePath       | 文件在服务器磁盘上的路径 | String        |
 
-#### 3.3.2 <font color="#dd00">Sample 样品</font>
+#### 3.3.2 Sample 样品
 
-| 字段名                                      | 描述                                      | 类型                                           |
-| ------------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
-| sampleListId                                | 样品列表 ID                               | Long                                           |
-| readableUsers                               | 对样品具有读权限用户的 ID 列表            | List\<String>                                  |
-| writableUsers                               | 对样品具有写权限用户的 ID 列表            | List\<String>                                  |
-| <font color="#dd00">fileMetadataList</font> | <font color="#dd00">文件元数据列表</font> | <font color="#dd00">List\<FileMetadata></font> |
+| 字段名           | 描述                           | 类型                |
+| ---------------- | ------------------------------ | ------------------- |
+| sampleId         | 样品 ID                        | Long                |
+| readableUsers    | 对样品具有读权限用户的 ID 列表 | List\<String>       |
+| writableUsers    | 对样品具有写权限用户的 ID 列表 | List\<String>       |
+| fileMetadataList | 文件元数据列表                 | List\<FileMetadata> |
 
 ### 3.4 邮件
 
@@ -322,6 +301,8 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 #### 4.1.1 流程变量
 
+**初始化**
+
 用于在发起流程时对整个流程中所需要的流程变量进行初始化，其中流程发起人需要根据上下文中的登录用户进行设置，其他变量均需要初始化为默认值，关于流程变量的种类和默认值详见下文流程建模。
 
 使用键值对的方式设置变量，示例：
@@ -338,6 +319,12 @@ public class ProcessVariable extends HashMap<String, Object> {
 ```
 
 其中部分默认值可以考虑放在配置文件（application.yml）中，使用 `@Value` 注解进行注入。
+
+此处流程变量的概念与 Flowable 中的定义相同，详见 Flowable 的用户手册：https://tkjohn.github.io/flowable-userguide/#_getting_started
+
+**读取与写入**
+
+// TODO
 
 #### 4.1.2 任务配置
 
@@ -379,7 +366,7 @@ public class TaskConfigConfigurer {
 }
 ```
 
-#### 4.1.3 类间关系
+
 
 
 
@@ -447,7 +434,11 @@ public class TaskConfigConfigurer {
 
 主流程：
 
-![image-20230520091450513](README.assets/image-20230520091450513.png)
+![image-20230524102754629](README.assets/image-20230524102754629.png)
+
+【注<sub>1</sub>】“进行软件测试”任务为手动任务，表示其不在我们的系统中进行。
+
+【注<sub>2</sub>】
 
 流程变量：
 
@@ -459,7 +450,7 @@ public class TaskConfigConfigurer {
         <td><b>初始值</b></td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>任务参数</i></td>
+        <td colspan="4" align="center"><i><b>任务参数</b></i></td>
     </tr>
     <tr>
         <td>passable</td>
@@ -474,7 +465,16 @@ public class TaskConfigConfigurer {
         <td> null </td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>流程摘要</i></td>
+        <td colspan="4" align="center"><i><b>流程参与者</b></i></td>
+    </tr>
+    <tr>
+    	<td>client</td>
+        <td>发起委托流程的客户 ID</td>
+        <td>String</td>
+        <td>根据流程启动时的用户 ID 设置</td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center"><i><b>流程摘要</b></i></td>
     </tr>
     <tr>
     	<td>title</td>
@@ -484,9 +484,9 @@ public class TaskConfigConfigurer {
     </tr>
     <tr>
     	<td>startUser</td>
-        <td>流程发起人 ID</td>
+        <td>流程发起人姓名</td>
         <td>String</td>
-        <td>根据流程启动时的用户 ID 设置</td>
+        <td>根据流程启动时的用户姓名</td>
     </tr>
     <tr>
     	<td>startDate</td>
@@ -513,58 +513,58 @@ public class TaskConfigConfigurer {
         <td>设置为 "填写申请表"</td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>表单索引</i></td>
+        <td colspan="4" align="center"><i><b>表单元数据</b></i></td>
     </tr>
     <tr>
     	<td>ApplicationForm</td>
-        <td>软件项目委托测试申请表索引 ID</td>
+        <td>软件项目委托测试申请表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>ApplicationVerifyForm</td>
-        <td>软件项目委托测试申请表之审核信息索引 ID</td>
+        <td>软件项目委托测试申请表之审核信息元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>DocumentReviewForm</td>
-        <td>软件文档评审表索引 ID</td>
+        <td>软件文档评审表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>ReportVerifyForm</td>
-        <td>测试报告检查表索引 ID</td>
+        <td>测试报告检查表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestFunctionForm</td>
-        <td>委托测试软件功能列表索引 ID</td>
+        <td>委托测试软件功能列表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestPlanForm</td>
-        <td>软件测试方案索引 ID</td>
+        <td>软件测试方案元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestReportForm</td>
-        <td>软件测试报告索引 ID</td>
+        <td>软件测试报告元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestWorkCheckForm</td>
-        <td>软件项目委托测试工作检查表索引 ID</td>
+        <td>软件项目委托测试工作检查表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>测试样品</i></td>
+        <td colspan="4" align="center"><i><b>样品元数据</b></i></td>
     </tr>
     <tr>
     	<td>sampleMetadata</td>
@@ -575,10 +575,7 @@ public class TaskConfigConfigurer {
 </table>
 
 
-
-
-#### 4.3.1 填写委托
-
+参与者：
 
 
 
@@ -587,11 +584,43 @@ public class TaskConfigConfigurer {
 
 
 
-<img src="README.assets/image-20230511173205803.png" alt="image-20230511173205803" style="zoom: 60%;" />
+#### 4.3.2 审核委托
+
+![image-20230524111645680](README.assets/image-20230524111645680.png)
+
+##### 4.3.2.1 等待市场部主管分配市场部人员：
+
+参与者：
+
+
+
+需要产生的流程变量（任务完成条件）：
+
+
+
+任务时可读的表单：
+
+任务时可写的表单：
+
+任务后不可读的表单：
+
+任务后不可写的表单：
+
+
+
+任务时是否对样品有读或写权限：
+
+任务后是否对样品有读或写权限：
+
+
+
+特殊行为：
 
 
 
 #### 3.2 生成报价
+
+![image-20230524103858802](README.assets/image-20230524103858802.png)
 
 
 
@@ -617,7 +646,7 @@ public class TaskConfigConfigurer {
 
 #### 3.8 确认测试结果
 
-<img src="README.assets/image-20230511173527411.png" alt="image-20230511173527411" style="zoom:60%;" />
+
 
 #### 3.9 后续处理
 

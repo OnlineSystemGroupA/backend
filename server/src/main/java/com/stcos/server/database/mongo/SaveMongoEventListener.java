@@ -1,4 +1,4 @@
-package com.stcos.server.repository;
+package com.stcos.server.database.mongo;
 
 import com.stcos.server.entity.form.AutoId;
 import org.bson.Document;

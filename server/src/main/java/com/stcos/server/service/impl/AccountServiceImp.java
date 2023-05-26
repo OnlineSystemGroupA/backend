@@ -1,8 +1,8 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.mapper.AdminMapper;
-import com.stcos.server.mapper.ClientMapper;
-import com.stcos.server.mapper.OperatorMapper;
+import com.stcos.server.database.mysql.AdminMapper;
+import com.stcos.server.database.mysql.ClientMapper;
+import com.stcos.server.database.mysql.OperatorMapper;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.entity.user.Operator;

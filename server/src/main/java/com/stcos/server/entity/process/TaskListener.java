@@ -1,7 +1,7 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.mapper.FormMapper;
+import com.stcos.server.database.mongo.FormIndexRepository;
+import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.service.EmailService;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ public class TaskListener {
         this.taskConfigMap = taskConfigMap;
     }
 
-    private FormMapper formMapper;
+    private FormIndexRepository formIndexRepository;
 
     @Autowired
-    public void setFormMapper(FormMapper formMapper) {
-        this.formMapper = formMapper;
+    public void setFromIndexRepository(FormIndexRepository formIndexRepository) {
+        this.formIndexRepository = formIndexRepository;
     }
 
     private EmailService emailService;
@@ -58,9 +58,9 @@ public class TaskListener {
         List<String> requiredForms = taskConfig.getRequiredForms();
         for (String requiredForm : requiredForms) {
             if(task.getVariable(requiredForm) == null){
-                FormMetadata formMetadata = new FormMetadata();
-                formMapper.saveFormIndex(formMetadata);
-                task.setVariable(requiredForm, formMetadata.getFormMetadataId());
+                FormIndex formIndex = new FormIndex();
+                formIndexRepository.saveFrom(formIndex);
+                task.setVariable(requiredForm, formIndex.getFormIndexId());
             }
         }
 
@@ -68,14 +68,14 @@ public class TaskListener {
         List<String> readableForms = taskConfig.getReadableForms();
         for (String readableForm: readableForms) {
             Long formIndexId = (Long) task.getVariable(readableForm);
-            FormMetadata formMetadata = formMapper.selectByFormIndexId(formIndexId);
-            formMetadata.getReadableUsers().add(task.getAssignee());
+            FormIndex formIndex = formIndexRepository.findByFormIndexId(formIndexId);
+            formIndex.getReadableUsers().add(task.getAssignee());
         }
         List<String> writableForms = taskConfig.getWritableForms();
         for (String writableForm: writableForms) {
             Long formIndexId = (Long) task.getVariable(writableForm);
-            FormMetadata formMetadata = formMapper.selectByFormIndexId(formIndexId);
-            formMetadata.getReadableUsers().add(task.getAssignee());
+            FormIndex formIndex = formIndexRepository.findByFormIndexId(formIndexId);
+            formIndex.getReadableUsers().add(task.getAssignee());
         }
 
 
@@ -90,6 +90,7 @@ public class TaskListener {
                判断是否需要关闭被分配人对样品的读或写权限
                更新流程摘要和流程详情
         */
+//        task.
     }
 
     public void delete(DelegateTask task){

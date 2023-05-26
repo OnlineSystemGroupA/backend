@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description
@@ -201,26 +203,28 @@ public class WorkflowController implements WorkflowApi {
 
     @Override
     public ResponseEntity<List<ProcessDto>> getProcesses() {
-        return WorkflowApi.super.getProcesses();
+        List<Task> taskList = null;
+        try {
+            taskList = workflowService.getTasks();
+        } catch (ServiceException e) {
+            throw new ServerErrorException(e);
+        }
+        List<ProcessDto> processDtoList = new ArrayList<>(taskList.size());
+        for (Task task : taskList) {
+            Map<String, Object> processVariables = task.getProcessVariables();
+            processDtoList.add(
+                    new ProcessDto(task.getProcessInstanceId(),
+                            task.getId(),
+                            task.getName(),
+                            task.getAssignee(),
+                            (String) processVariables.get("startUser"),
+                            ((LocalDateTime) processVariables.get("startDate")).toString()
+                    )
+            );
+        }
+        return ResponseEntity.ok(processDtoList.stream().distinct().toList());
     }
 
-
-//    @Override
-//    public ResponseEntity<Void> updateTaskItem(String processId, String itemName) {
-//        ResponseEntity<Void> response = null;
-//        try {
-//            service.updateForm(processId, itemName, null);
-//        } catch (ServiceException e) {
-//            switch (e.getCode()) {
-//                case 0 -> response = ResponseEntity.status(201).build();
-//                case 1 -> response = ResponseEntity.status(403).build();
-//                case 2 -> response = ResponseEntity.status(404).build();
-//            }
-//        }
-//        if (response == null)
-//            response = ResponseEntity.ok().build();
-//        return response;
-//    }
 }
 
 /*

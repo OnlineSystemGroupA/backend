@@ -5,7 +5,7 @@ import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.SampleMetadata;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.mapper.FileMapper;
+import com.stcos.server.database.mysql.FileMapper;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
