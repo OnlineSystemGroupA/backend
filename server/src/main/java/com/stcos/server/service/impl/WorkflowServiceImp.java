@@ -1,13 +1,13 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
+import com.stcos.server.database.mysql.FileMapper;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.SampleMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.mapper.FileMapper;
 import com.stcos.server.repository.FormMetadataRepository;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.FormService;

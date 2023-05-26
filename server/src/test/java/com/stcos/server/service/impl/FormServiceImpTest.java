@@ -22,34 +22,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class FormServiceImpTest {
 
     @Autowired
+    private com.stcos.server.repository.FormMetadataRepository formMetadataRepository;
+
+    @Autowired
     private FormServiceImp formServiceImp;
 
     @Test
-    void updateForm() throws ServiceException {
+    void formServiceTest() throws ServiceException {
 
-        Form form = new TestReportForm();
+        Form form = new TestReportForm("softwareName", "softwareVersion");
 
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        FormMetadata formMetadata = new FormMetadata(
-                111L,
-                "TestReportForm",
-                "client",
-                localDateTime,
-                "client",
-                localDateTime
-        );
+//        FormMetadata formMetadata = new FormMetadata(
+//                111L,
+//                "TestReportForm",
+//                "client",
+//                localDateTime,
+//                "client",
+//                localDateTime
+//        );
+        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(25L);
 
-        List<String> readableUsers = new ArrayList<>();
-
-        readableUsers.add("111");
+        System.out.println(formMetadata);
 
         List<String> writableUsers = new ArrayList<>();
-
-        writableUsers.add("112");
-
-        formMetadata.setReadableUsers(readableUsers);
-
+        writableUsers.add("writableUser");
         formMetadata.setWritableUsers(writableUsers);
 
         try {
@@ -61,11 +59,14 @@ class FormServiceImpTest {
 
         System.out.println("Update successful");
 
-        System.out.println(formServiceImp.getForm(formMetadata));
-    }
+        List<String> readableUsers = new ArrayList<>();
+        readableUsers.add("readableUser");
+        formMetadata.setReadableUsers(readableUsers);
 
-    @Test
-    void getForm() {
-
+        try {
+            System.out.println(formServiceImp.getForm(formMetadata));
+        } catch (ServiceException e) {
+            System.out.println("Error code: " + e.getCode());
+        }
     }
 }
