@@ -3,7 +3,7 @@ package com.stcos.server.service.impl;
 import com.stcos.server.config.security.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.file.Sample;
+import com.stcos.server.entity.file.SampleMetadata;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.mapper.FileMapper;
 import org.apache.commons.io.FilenameUtils;
@@ -45,15 +45,14 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public List<FileMetadataDto> uploadSample(String processId, Sample sample, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadataDto> uploadSample(String processId, SampleMetadata sampleMetadata, List<MultipartFile> files) throws ServiceException {
         // 获取当前登录用户，和当前样品的可写用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
-        List<String> writableUsers = sample.getWritableUsers();
-
-        List<FileMetadata> fileMetadataList = new ArrayList<>();
 
         // 判断当前登录用户是否具有上传权限
-        if (writableUsers != null && writableUsers.contains(userId)) {
+        if (sampleMetadata.hasWritePermission(userId)) {
+            List<FileMetadata> fileMetadataList = new ArrayList<>();
+
             if (files == null || files.size() == 0) {
                 throw new ServiceException(2); // 没有上传文件
             }
@@ -78,19 +77,18 @@ public class FileServiceImp implements FileService {
             }
 
             // 把新旧文件元数据的列表合并
-            sample.mergeFileMetadataList(fileMetadataList);
+            sampleMetadata.mergeFileMetadataList(fileMetadataList);
 
             // 保存样品对象
-            fileMapper.saveSample(sample);
+            fileMapper.saveSample(sampleMetadata);
 
+            // 返回样品文件摘要
+            return fileMetadataList.stream()
+                    .map(FileMetadataDto::new)
+                    .toList();
         } else {
             throw new ServiceException(1); // 无上传权限的异常
         }
-
-        // 返回样品文件摘要
-        return fileMetadataList.stream()
-                .map(FileMetadataDto::new)
-                .toList();
     }
 
     private String getUniqueFileName(String dirPath, String fileName) {
@@ -113,14 +111,13 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public File downloadSample(String processId, Sample sample) throws ServiceException {
+    public File downloadSample(String processId, SampleMetadata sampleMetadata) throws ServiceException {
         // 获取当前登录用户，和当前样品的可读用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
-        List<String> readableUsers = sample.getReadableUsers();
 
         // 判断当前登录用户是否具有下载权限
-        if (readableUsers != null && readableUsers.contains(userId)) {
-            List<FileMetadata> fileMetadataList = sample.getFileMetadataList();
+        if (sampleMetadata.hasReadPermission(userId)) {
+            List<FileMetadata> fileMetadataList = sampleMetadata.getFileMetadataList();
             List<File> downloadedFiles = new ArrayList<>();
 
             // 下载样品文件
@@ -177,14 +174,14 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public void deleteSample(Sample sample) throws ServiceException {
+    public void deleteSample(SampleMetadata sampleMetadata) throws ServiceException {
         // 获取当前登录用户，和当前样品的可写用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
-        List<String> writableUsers = sample.getWritableUsers();
+        List<String> writableUsers = sampleMetadata.getWritableUsers();
 
         // 判断当前登录用户是否具有删除权限
         if (writableUsers != null && writableUsers.contains(userId)) {
-            List<FileMetadata> fileMetadataList = sample.getFileMetadataList();
+            List<FileMetadata> fileMetadataList = sampleMetadata.getFileMetadataList();
             for (FileMetadata fileMetadata : fileMetadataList) {
                 try {
                     Path filePath = Paths.get(fileMetadata.getFilePath());
@@ -202,7 +199,7 @@ public class FileServiceImp implements FileService {
             }
 
             // 删除样品对象
-            fileMapper.deleteBySampleId(sample.getSampleId());
+            fileMapper.deleteBySampleId(sampleMetadata.getSampleId());
         } else {
             throw new ServiceException(1); // 无删除权限的异常
         }

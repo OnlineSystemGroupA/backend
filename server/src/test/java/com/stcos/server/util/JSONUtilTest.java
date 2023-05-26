@@ -1,9 +1,7 @@
 package com.stcos.server.util;
 
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.entity.form.FormMetadata;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * description
@@ -16,6 +14,6 @@ class JSONUtilTest {
 
     @Test
     void toJSONString() {
-        System.out.println(JSONUtil.toJSONString(new FormIndex()));
+        System.out.println(JSONUtil.toJSONString(new FormMetadata()));
     }
 }

@@ -567,7 +567,7 @@ public class TaskConfigConfigurer {
         <td colspan="4" align="center"><i>测试样品</i></td>
     </tr>
     <tr>
-    	<td>sample</td>
+    	<td>sampleMetadata</td>
         <td>样品 ID</td>
         <td>Long</td>
         <td>null</td>

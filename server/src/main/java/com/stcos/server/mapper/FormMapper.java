@@ -1,7 +1,7 @@
 package com.stcos.server.mapper;
 
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.entity.form.FormMetadata;
 
 /**
  * description
@@ -13,7 +13,7 @@ import com.stcos.server.entity.form.FormIndex;
 public interface FormMapper {
     void saveForm(Form form);
 
-    void saveFormIndex(FormIndex formIndex);
+    void saveFormIndex(FormMetadata formMetadata);
 
-    FormIndex selectByFormIndexId(Long formIndexId);
+    FormMetadata selectByFormIndexId(Long formIndexId);
 }

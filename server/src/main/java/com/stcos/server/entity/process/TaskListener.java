@@ -1,6 +1,6 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.mapper.FormMapper;
 import com.stcos.server.service.EmailService;
 import org.flowable.task.service.delegate.DelegateTask;
@@ -58,9 +58,9 @@ public class TaskListener {
         List<String> requiredForms = taskConfig.getRequiredForms();
         for (String requiredForm : requiredForms) {
             if(task.getVariable(requiredForm) == null){
-                FormIndex formIndex = new FormIndex();
-                formMapper.saveFormIndex(formIndex);
-                task.setVariable(requiredForm, formIndex.getFormIndexId());
+                FormMetadata formMetadata = new FormMetadata();
+                formMapper.saveFormIndex(formMetadata);
+                task.setVariable(requiredForm, formMetadata.getFormMetadataId());
             }
         }
 
@@ -68,14 +68,14 @@ public class TaskListener {
         List<String> readableForms = taskConfig.getReadableForms();
         for (String readableForm: readableForms) {
             Long formIndexId = (Long) task.getVariable(readableForm);
-            FormIndex formIndex = formMapper.selectByFormIndexId(formIndexId);
-            formIndex.getReadableUsers().add(task.getAssignee());
+            FormMetadata formMetadata = formMapper.selectByFormIndexId(formIndexId);
+            formMetadata.getReadableUsers().add(task.getAssignee());
         }
         List<String> writableForms = taskConfig.getWritableForms();
         for (String writableForm: writableForms) {
             Long formIndexId = (Long) task.getVariable(writableForm);
-            FormIndex formIndex = formMapper.selectByFormIndexId(formIndexId);
-            formIndex.getReadableUsers().add(task.getAssignee());
+            FormMetadata formMetadata = formMapper.selectByFormIndexId(formIndexId);
+            formMetadata.getReadableUsers().add(task.getAssignee());
         }
 
 
