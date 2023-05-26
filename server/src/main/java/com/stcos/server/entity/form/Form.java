@@ -26,7 +26,7 @@ public abstract class Form {
 
     // TODO 酌情设计一些与表单操作有关的共用方法
 
-    private static final Map<String, Class<?extends Form>> FORM_NAME_CLASS_MAP = new HashMap<>(){{
+    private static final Map<String, Class<? extends Form>> FORM_NAME_CLASS_MAP = new HashMap<>(){{
         put("ApplicationForm", ApplicationForm.class);
         put("ApplicationVerifyForm", ApplicationVerifyForm.class);
         put("DocumentReviewForm", DocumentReviewForm.class);
@@ -48,7 +48,7 @@ public abstract class Form {
      */
     public static Form buildForm(String formType, String formData) {
         Class<? extends Form> formClass = FORM_NAME_CLASS_MAP.get(formType);
-        if (formType == null) return null;
+        if (formClass == null) return null;
         return JSONUtil.parseObject(formData, formClass);
     }
 }

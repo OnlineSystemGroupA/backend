@@ -27,7 +27,7 @@ public class ApplicationForm extends Form {
     private String description;
     private List<String> testStandards;
     private List<String> testAspects;
-    private List<SoftwareScale> softwareScale;
+    private List<SoftwareScale> softwareScales;
     private String softwareType;
     private List<ClientSystem> clientSystems;
     private double clientMemory;
