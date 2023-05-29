@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/27 20:47
+ * @since 2023/5/27 20:48
  */
 public class ArchiveConfig extends TaskConfig {
 
