@@ -3,7 +3,7 @@ package com.stcos.server.service;
 
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
 import org.springframework.web.multipart.MultipartFile;
@@ -121,5 +121,5 @@ public interface WorkflowService {
      */
     String startProcess() throws ServiceException;
 
-    List<FormIndex> getFormMetadata(String processId) throws ServiceException;
+    List<FormMetadata> getFormMetadata(String processId) throws ServiceException;
 }

@@ -1,7 +1,8 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.database.mongo.FormIndexRepository;
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.repository.FormMetadataRepository;
+
+import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.service.EmailService;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +21,22 @@ import java.util.Map;
 @Component
 public class TaskListener {
 
-    private  Map<String, TaskConfig> taskConfigMap;
+    private Map<String, TaskConfig> taskConfigMap;
 
     @Autowired
     public void setTaskConfigMap(Map<String, TaskConfig> taskConfigMap) {
         this.taskConfigMap = taskConfigMap;
     }
 
-    private FormIndexRepository formIndexRepository;
+    private FormMetadataRepository formMetadataRepository;
 
     @Autowired
-    public void setFromIndexRepository(FormIndexRepository formIndexRepository) {
-        this.formIndexRepository = formIndexRepository;
+    public void setFromIndexRepository(FormMetadataRepository formMetadataRepository) {
+        this.formMetadataRepository = formMetadataRepository;
     }
 
     private EmailService emailService;
+
     @Autowired
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
@@ -58,24 +60,24 @@ public class TaskListener {
         List<String> requiredForms = taskConfig.getRequiredForms();
         for (String requiredForm : requiredForms) {
             if(task.getVariable(requiredForm) == null){
-                FormIndex formIndex = new FormIndex();
-                formIndexRepository.saveFrom(formIndex);
-                task.setVariable(requiredForm, formIndex.getFormIndexId());
+                FormMetadata formMetadata = new FormMetadata();
+                formMetadataRepository.saveFormMetadata(formMetadata);
+                task.setVariable(requiredForm, formMetadata.getFormMetadataId());
             }
         }
 
         //为被分配人开启对应的表单的读或写权限
         List<String> readableForms = taskConfig.getReadableForms();
         for (String readableForm: readableForms) {
-            Long formIndexId = (Long) task.getVariable(readableForm);
-            FormIndex formIndex = formIndexRepository.findByFormIndexId(formIndexId);
-            formIndex.getReadableUsers().add(task.getAssignee());
+            Long formMetadataId = (Long) task.getVariable(readableForm);
+            FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+            formMetadata.getReadableUsers().add(task.getAssignee());
         }
         List<String> writableForms = taskConfig.getWritableForms();
         for (String writableForm: writableForms) {
-            Long formIndexId = (Long) task.getVariable(writableForm);
-            FormIndex formIndex = formIndexRepository.findByFormIndexId(formIndexId);
-            formIndex.getReadableUsers().add(task.getAssignee());
+            Long formMetadataId = (Long) task.getVariable(writableForm);
+            FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+            formMetadata.getReadableUsers().add(task.getAssignee());
         }
 
 

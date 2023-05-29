@@ -9,14 +9,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * FormIndexDto
+ * FormMetadataDto
  */
 
-@JsonTypeName("FormIndex")
+@JsonTypeName("FormMetadata")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
 public class FormMetadataDto {
 
-  private Long formIndexId;
+  private Long formMetadataId;
 
   private String formName;
 
@@ -32,29 +32,29 @@ public class FormMetadataDto {
   /**
    * Constructor with only required parameters
    */
-  public FormMetadataDto(Long formIndexId, String formName) {
-    this.formIndexId = formIndexId;
+  public FormMetadataDto(Long formMetadataId, String formName) {
+    this.formMetadataId = formMetadataId;
     this.formName = formName;
   }
 
-  public FormMetadataDto formIndexId(Long formIndexId) {
-    this.formIndexId = formIndexId;
+  public FormMetadataDto formMetadataId(Long formMetadataId) {
+    this.formMetadataId = formMetadataId;
     return this;
   }
 
   /**
-   * 表单索引 ID
-   * @return formIndexId
+   * 表单元数据 ID
+   * @return formMetadataId
   */
   @NotNull 
-  @Schema(name = "formIndexId", description = "表单索引 ID", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("formIndexId")
-  public Long getFormIndexId() {
-    return formIndexId;
+  @Schema(name = "formMetadataId", description = "表单元数据 ID", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("formMetadataId")
+  public Long getFormMetadataId() {
+    return formMetadataId;
   }
 
-  public void setFormIndexId(Long formIndexId) {
-    this.formIndexId = formIndexId;
+  public void setFormMetadataId(Long formMetadataId) {
+    this.formMetadataId = formMetadataId;
   }
 
   public FormMetadataDto formName(String formName) {
@@ -85,21 +85,21 @@ public class FormMetadataDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FormMetadataDto formIndex = (FormMetadataDto) o;
-    return Objects.equals(this.formIndexId, formIndex.formIndexId) &&
-        Objects.equals(this.formName, formIndex.formName);
+    FormMetadataDto formMetadata = (FormMetadataDto) o;
+    return Objects.equals(this.formMetadataId, formMetadata.formMetadataId) &&
+        Objects.equals(this.formName, formMetadata.formName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(formIndexId, formName);
+    return Objects.hash(formMetadataId, formName);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FormIndexDto {\n");
-    sb.append("    formIndexId: ").append(toIndentedString(formIndexId)).append("\n");
+    sb.append("class FormMetadataDto {\n");
+    sb.append("    formMetadataId: ").append(toIndentedString(formMetadataId)).append("\n");
     sb.append("    formName: ").append(toIndentedString(formName)).append("\n");
     sb.append("}");
     return sb.toString();

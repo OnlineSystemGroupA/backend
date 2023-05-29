@@ -1,8 +1,8 @@
 package com.stcos.server;
 
-import com.stcos.server.database.mongo.FormIndexRepository;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.repository.FormMetadataRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ public class FormRepositoryTest {
     private FormRepository formRepository;
 
     @Autowired
-    private FormIndexRepository formIndexRepository;
+    private FormMetadataRepository formMetadataRepository;
 
     @Test
     public void testFind(){
-        FormIndex form1 = new FormIndex();
-            formIndexRepository.saveFrom(form1);
-        List<FormIndex> formIndexList=formIndexRepository.findAll();
-        System.out.println(formIndexList);
+        FormMetadata form1 = new FormMetadata();
+            formMetadataRepository.saveFormMetadata(form1);
+        List<FormMetadata> formMetadataList=formMetadataRepository.findAll();
+        System.out.println(formMetadataList);
         List<Form> formList=formRepository.findAll();
         System.out.println(formList);
     }

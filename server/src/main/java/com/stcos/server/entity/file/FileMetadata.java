@@ -3,6 +3,7 @@ package com.stcos.server.entity.file;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class FileMetadata {

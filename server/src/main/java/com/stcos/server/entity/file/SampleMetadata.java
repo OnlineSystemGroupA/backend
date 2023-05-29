@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Sample {
+public class SampleMetadata {
     /**
-     * 样品列表 ID，保存对象时由数据库自动赋值
+     * 样品元数据 ID，保存对象时由数据库自动赋值
      */
-    private Long sampleId;
+    private Long sampleMetadataId;
 
     /**
      * 对样品具有读权限用户的 ID 列表
@@ -34,6 +34,14 @@ public class Sample {
             fileMetadataList.addAll(newList);
         }
     }
+
+    public boolean hasReadPermission(String userId) {
+        List<String> readableUsers = getReadableUsers();
+        return readableUsers != null && readableUsers.contains(userId);
+    }
+
+    public boolean hasWritePermission(String userId) {
+        List<String> writableUsers = getWritableUsers();
+        return writableUsers != null && writableUsers.contains(userId);
+    }
 }
-
-
