@@ -1,15 +1,16 @@
 package com.stcos.server.entity.file;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class FileMetadata {
     /**
      * 文件元数据 ID，保存对象时由数据库自动赋值
      */
+    @TableId(type = IdType.ASSIGN_ID)
     private Long fileMetadataId = null;
 
     /**

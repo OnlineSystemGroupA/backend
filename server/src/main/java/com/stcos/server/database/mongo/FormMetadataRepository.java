@@ -9,6 +9,11 @@ public interface FormMetadataRepository extends MongoRepository<FormMetadata,Lon
         insert(formMetadata);
     }
 
+    default void updateFormMetadata(FormMetadata formMetadata){
+        deleteById(formMetadata.getFormMetadataId());
+        insert(formMetadata);
+    }
+
     default FormMetadata findByFormMetadataId(Long formMetadata){
         return findById(formMetadata).orElse(null);
     }
