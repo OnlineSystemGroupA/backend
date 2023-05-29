@@ -6,13 +6,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.annotation.Generated;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * FileIndexDto
+ * FileMetadataDto
  */
 
-@JsonTypeName("fileIndex")
+@JsonTypeName("fileMetadata")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
 public class FileIndexDto {
 
@@ -21,6 +22,10 @@ public class FileIndexDto {
   private String fileName;
 
   private String fileType;
+
+  private String fileSize;
+
+  private LocalDateTime updatedDate;
 
   /**
    * Default constructor
@@ -49,7 +54,7 @@ public class FileIndexDto {
    * 文件索引 ID
    * @return fileIndexId
   */
-  @NotNull 
+  @NotNull
   @Schema(name = "fileIndexId", description = "文件索引 ID", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("fileIndexId")
   public Long getFileIndexId() {
@@ -69,7 +74,7 @@ public class FileIndexDto {
    * 文件名
    * @return fileName
   */
-  @NotNull 
+  @NotNull
   @Schema(name = "fileName", description = "文件名", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("fileName")
   public String getFileName() {
@@ -89,7 +94,7 @@ public class FileIndexDto {
    * 文件类型
    * @return fileType
   */
-  @NotNull 
+  @NotNull
   @Schema(name = "fileType", description = "文件类型", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("fileType")
   public String getFileType() {

@@ -48,4 +48,8 @@ public class SampleMetadata {
         List<String> writableUsers = getWritableUsers();
         return writableUsers != null && writableUsers.contains(userId);
     }
+
+    public boolean isSavedInDatabase() {
+        return sampleMetadataId != -1;
+    }
 }

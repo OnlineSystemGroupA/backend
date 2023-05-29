@@ -1,7 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
-import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariable;
@@ -98,7 +98,7 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public List<FileMetadataDto> uploadSample(String processId, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadata> uploadSample(String processId, List<MultipartFile> files) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
         Long sampleMetadataId = getSampleMetadataId(processId);
 

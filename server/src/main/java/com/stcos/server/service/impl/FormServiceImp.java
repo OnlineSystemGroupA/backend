@@ -32,7 +32,7 @@ public class FormServiceImp implements FormService {
     @Override
     public Form getForm(Long formMetadataId) throws ServiceException {
         // 根据表单元数据 ID 查询数据库
-        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+        FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
@@ -41,7 +41,7 @@ public class FormServiceImp implements FormService {
         // 判断当前登录用户是否具有读取权限
         if (formMetadata.hasReadPermission(userId)) {
             // 获取表单数据
-            return formRepository.findByFormId(formMetadata.getFormId());
+            return formRepository.selectByFormId(formMetadata.getFormId());
         } else {
             throw new ServiceException(1); // 无读取权限的异常
         }
@@ -50,7 +50,7 @@ public class FormServiceImp implements FormService {
     @Override
     public void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException {
         // 根据表单元数据 ID 查询数据库
-        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+        FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
@@ -59,22 +59,31 @@ public class FormServiceImp implements FormService {
         // 判断当前登录用户是否具有修改权限
         if (formMetadata.hasWritePermission(userId)) {
             // 保存表单
-            formRepository.saveForm(form);
-
-            if(formMetadata.getFormMetadataId() == -1) {
-                // 初始化表单元数据
-                formMetadata = new FormMetadata(form.getFormId(), formType, userId, LocalDateTime.now(), userId, LocalDateTime.now());
+            if (!form.isSavedInDatabase()) {
+                formRepository.saveForm(form); // 数据库首次保存
             } else {
-                // 更新表单元数据
-
-                // Test: System.out.println("Updating");
-
-                formMetadata.setLastModifiedBy(userId); // 设置最后修改人为当前用户
-                formMetadata.setLastModifiedDate(LocalDateTime.now()); // 设置最后修改时间为当前时间
+                formRepository.updateForm(form); // 数据库更新
             }
 
             // 保存表单元数据
-            formMetadataRepository.saveFormMetadata(formMetadata);
+            if (!formMetadata.isSavedInDatabase()) {
+                formMetadata.setFormId(form.getFormId());
+                formMetadata.setFormType(formType);
+                formMetadata.setCreatedBy(userId);
+                formMetadata.setCreatedDate(LocalDateTime.now());
+                formMetadata.setLastModifiedBy(userId);
+                formMetadata.setLastModifiedDate(LocalDateTime.now());
+
+                formMetadataRepository.saveFormMetadata(formMetadata); // 数据库首次保存
+
+            } else {
+                formMetadata.setLastModifiedBy(userId);
+                formMetadata.setLastModifiedDate(LocalDateTime.now());
+
+                formMetadataRepository.updateFormMetadata(formMetadata); // 数据库更新
+
+                // Test: System.out.println("Updating");
+            }
 
             // Test: System.out.println("formMetadataId: " + formMetadata.getFormMetadataId());
         } else {

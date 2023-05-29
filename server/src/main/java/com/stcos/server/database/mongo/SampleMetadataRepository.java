@@ -3,24 +3,21 @@ package com.stcos.server.database.mongo;
 import com.stcos.server.entity.file.SampleMetadata;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.util.ClassUtils.isPresent;
-
 public interface SampleMetadataRepository extends MongoRepository<SampleMetadata,Long> {
-    default public void saveSample(SampleMetadata sampleMetadata){
+    default public void saveSampleMetadata(SampleMetadata sampleMetadata){
         insert(sampleMetadata);
     }
 
-    default public void updateSample(SampleMetadata sampleMetadata){
+    default public void updateSampleMetadata(SampleMetadata sampleMetadata){
         deleteById(sampleMetadata.getSampleMetadataId());
         insert(sampleMetadata);
     }
 
-    default public void deleteBySampleId(Long sampleId){
-        deleteById(sampleId);
+    default public void deleteBySampleMetadataId(Long sampleMetadataId){
+        deleteById(sampleMetadataId);
     }
 
-    default public SampleMetadata selectBySampleId(Long sampleId){return findById(sampleId).orElse(null);}
+    default public SampleMetadata selectBySampleMetadataId(Long sampleMetadataId){
+        return findById(sampleMetadataId).orElse(null);
+    }
 }

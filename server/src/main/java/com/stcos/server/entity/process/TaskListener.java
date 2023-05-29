@@ -30,7 +30,7 @@ public class TaskListener {
     private FormMetadataRepository formMetadataRepository;
 
     @Autowired
-    public void setFromIndexRepository(FormMetadataRepository formMetadataRepository) {
+    public void setFormMetadataRepository(FormMetadataRepository formMetadataRepository) {
         this.formMetadataRepository = formMetadataRepository;
     }
 
@@ -69,13 +69,13 @@ public class TaskListener {
         List<String> readableForms = taskConfig.getReadableForms();
         for (String readableForm: readableForms) {
             Long formMetadataId = (Long) task.getVariable(readableForm);
-            FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+            FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
             formMetadata.getReadableUsers().add(task.getAssignee());
         }
         List<String> writableForms = taskConfig.getWritableForms();
         for (String writableForm: writableForms) {
             Long formMetadataId = (Long) task.getVariable(writableForm);
-            FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+            FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
             formMetadata.getReadableUsers().add(task.getAssignee());
         }
 
