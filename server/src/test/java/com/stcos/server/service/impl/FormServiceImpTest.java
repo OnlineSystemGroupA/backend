@@ -1,5 +1,6 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.database.mongo.FormMetadataRepository;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.form.TestReportForm;
@@ -16,7 +17,7 @@ import java.util.List;
 class FormServiceImpTest {
 
     @Autowired
-    private com.stcos.server.repository.FormMetadataRepository formMetadataRepository;
+    private FormMetadataRepository formMetadataRepository;
 
     @Autowired
     private FormServiceImp formServiceImp;

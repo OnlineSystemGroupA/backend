@@ -6,36 +6,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 填写申请表
+ * 质量部审核测试方案
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/21 22:43
+ * @since 2023/5/27 18:35
  */
-public class FillOutAppFormConfig implements TaskConfig { //填写申请表
+public class VerifyTestPlanConfig implements TaskConfig {
 
     @Override
     public String getEmailSubject() {
-        return null;
+        return "审核测试方案";
     }
 
     @Override
     public String getEmailText() {
-        return null;
+        return "您好！一项被指派给您的\"审核测试方案\"任务已被创建，请尽快完成！";
     }
 
     @Override
     public List<String> getReadableForms() {
         return new ArrayList<>(){{
             add("ApplicationForm");
+            add("TestPlanForm");
         }};
     }
 
     @Override
     public List<String> getWritableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
+        return new ArrayList<>();
     }
 
     @Override
@@ -45,8 +44,6 @@ public class FillOutAppFormConfig implements TaskConfig { //填写申请表
 
     @Override
     public List<String> getWillDisWritableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
+        return new ArrayList<>();
     }
 }

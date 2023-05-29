@@ -6,17 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 审核用户委托
+ * 市场部审核委托 & 测试部审核委托
  *
  * @author kura
  * @version 1.0
  * @since 2023/5/22 19:04
  */
 public class VerifyApplicationConfig implements TaskConfig {
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
-    }
 
     @Override
     public String getEmailSubject() {
@@ -42,9 +38,7 @@ public class VerifyApplicationConfig implements TaskConfig {
 
     @Override
     public List<String> getWillDisReadableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
+        return new ArrayList<>() ;
     }
 
     @Override

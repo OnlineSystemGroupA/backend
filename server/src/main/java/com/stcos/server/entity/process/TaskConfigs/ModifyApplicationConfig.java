@@ -6,19 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用户修改委托
+ * 测试部审核不通过，修改委托 & 市场部审核不通过，修改委托
  *
  * @author kura
  * @version 1.0
  * @since 2023/5/22 18:56
  */
 public class ModifyApplicationConfig implements TaskConfig {
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
-    }
 
     @Override
     public String getEmailSubject() {

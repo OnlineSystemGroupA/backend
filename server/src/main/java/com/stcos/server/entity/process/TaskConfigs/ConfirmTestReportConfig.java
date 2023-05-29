@@ -13,12 +13,6 @@ import java.util.List;
  * @since 2023/5/22 18:40
  */
 public class ConfirmTestReportConfig implements TaskConfig {
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>() {{
-            add("ReportVerifyForm");
-        }};
-    }
 
     @Override
     public String getEmailSubject() {

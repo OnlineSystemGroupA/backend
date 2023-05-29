@@ -1,15 +1,12 @@
 package com.stcos.server.database.mongo;
 
 import com.stcos.server.entity.form.AutoId;
+import com.stcos.server.snowflake.SnowflakeIdWorker;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeSaveEvent;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -21,15 +18,16 @@ import java.util.Objects;
 @Component
 public class SaveMongoEventListener extends AbstractMongoEventListener<Object> {
     private final MongoTemplate mongoTemplate;
+    private final SnowflakeIdWorker snowflakeIdWorker;
 
     @Autowired
     public SaveMongoEventListener(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+        snowflakeIdWorker = new SnowflakeIdWorker(0,0);
     }
 
-
     /**
-     * 在保存的时候进行监听，通过反射对ID进行自增
+     * 在保存的时候进行监听，通过反射对ID进行变更
      * 此时MongoDB data已经将要操作的实体类转为Document{@link Document}对象，
      * 所以这时候应该对document对象进行换ID
      * @param event
@@ -45,37 +43,20 @@ public class SaveMongoEventListener extends AbstractMongoEventListener<Object> {
             ReflectionUtils.doWithFields(source.getClass(), field -> {
                 //使操作的成员可访问
                 ReflectionUtils.makeAccessible(field);
-                //该字段是否使用自增注解且是Number类型
+                //该字段是否使用此注解且是Number类型
                 if (field.isAnnotationPresent(AutoId.class) && field.get(source) instanceof Number) {
                     String collectionName = source.getClass().getSimpleName().substring(0, 1).toLowerCase()
                             + source.getClass().getSimpleName().substring(1);
                     //判断document不能为空
                     Assert.notNull(document,"event.document must not be null");
                     //获取自增主键
-                    Long incrId = getIncrId(collectionName);
+                    Long newId = snowflakeIdWorker.nextId();
                     //对ID进行替换
-                    document.put("_id", incrId);
-                    field.set(source,incrId);
+                    document.put("_id", newId);
+                    field.set(source,newId);
                 }
             });
         }
         super.onBeforeSave(event);
-    }
-
-    /**
-     * 返回下一个自增ID
-     * @param collectionName 集合名
-     * @return
-     */
-    private Long getIncrId(String collectionName) {
-        Query query = new Query(Criteria.where("collectionName").is(collectionName));
-        var update = new Update();
-        update.inc("incrId");
-        FindAndModifyOptions options = FindAndModifyOptions.options();
-        options.upsert(true);//没有就新增
-        options.returnNew(true);//返回最新
-        Incr andModify = mongoTemplate.findAndModify(query, update, options, Incr.class);
-        Assert.notNull(andModify,"主键自增时返回参数异常");
-        return andModify.getIncrId();
     }
 }

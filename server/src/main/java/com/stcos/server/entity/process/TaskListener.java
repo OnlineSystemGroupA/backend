@@ -1,7 +1,6 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.repository.FormMetadataRepository;
-
+import com.stcos.server.database.mongo.FormMetadataRepository;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.service.EmailService;
 import org.flowable.task.service.delegate.DelegateTask;
@@ -44,7 +43,7 @@ public class TaskListener {
 
 
     public void create(DelegateTask task){
-        /*TODO 重置任务参数
+        /*TODO 其他要生成的变量（如合同）
                判断是否需要为被分配人开启样品的读或写权限
                发送邮箱通知被分配人
          */
@@ -55,16 +54,6 @@ public class TaskListener {
         task.setVariable("description", null);
         //更新流程摘要和流程详情
         task.setVariable("currentTask", task.getName());
-
-        //如果没有创建表单索引，则创建它
-        List<String> requiredForms = taskConfig.getRequiredForms();
-        for (String requiredForm : requiredForms) {
-            if(task.getVariable(requiredForm) == null){
-                FormMetadata formMetadata = new FormMetadata();
-                formMetadataRepository.saveFormMetadata(formMetadata);
-                task.setVariable(requiredForm, formMetadata.getFormMetadataId());
-            }
-        }
 
         //为被分配人开启对应的表单的读或写权限
         List<String> readableForms = taskConfig.getReadableForms();
@@ -88,11 +77,26 @@ public class TaskListener {
     }
 
     public void complete(DelegateTask task){
-        /*TODO 关闭被分配人对应表单的读/写权限
+        /*TODO
                判断是否需要关闭被分配人对样品的读或写权限
-               更新流程摘要和流程详情
         */
-//        task.
+        TaskConfig taskConfig = taskConfigMap.get(task.getName());
+
+        List<String> willDisReadableForms = taskConfig.getWillDisReadableForms();
+        for (String willDisReadableForm: willDisReadableForms) {
+            Long formIndexId = (Long) task.getVariable(willDisReadableForm);
+            FormIndex formIndex = formMapper.selectByFormIndexId(formIndexId);
+            formIndex.getReadableUsers().remove(task.getAssignee());
+        }
+        List<String> willDisWritableForms = taskConfig.getWillDisWritableForms();
+        for (String willDisWritableForm: willDisWritableForms) {
+            Long formIndexId = (Long) task.getVariable(willDisWritableForm);
+            FormIndex formIndex = formMapper.selectByFormIndexId(formIndexId);
+            formIndex.getReadableUsers().remove(task.getAssignee());
+        }
+
+        //更新流程摘要和流程详情
+        task.setVariable("currentTask", "无");
     }
 
     public void delete(DelegateTask task){

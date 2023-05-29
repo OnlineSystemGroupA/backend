@@ -6,22 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 填写申请表
+ * 用户审核报价
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/21 22:43
+ * @since 2023/5/26 15:00
  */
-public class FillOutAppFormConfig implements TaskConfig { //填写申请表
+public class VerifyQuotationConfig implements TaskConfig {
 
     @Override
     public String getEmailSubject() {
-        return null;
+        return "处理报价";
     }
 
     @Override
     public String getEmailText() {
-        return null;
+        return "您好！一份由您提起的软件测试委托已生成报价，请尽快前方确认。";
     }
 
     @Override
@@ -33,9 +33,7 @@ public class FillOutAppFormConfig implements TaskConfig { //填写申请表
 
     @Override
     public List<String> getWritableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
+        return new ArrayList<>();
     }
 
     @Override
@@ -45,8 +43,6 @@ public class FillOutAppFormConfig implements TaskConfig { //填写申请表
 
     @Override
     public List<String> getWillDisWritableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
+        return new ArrayList<>();
     }
 }

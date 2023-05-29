@@ -21,6 +21,8 @@ public interface FormService {
      *
      * @param formMetadataId 表单元数据 ID
      * @param formType 表单类型
+     * @param formIndex 表单索引 ID
+     * @param formType 表单名字
      * @param form 表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
@@ -28,4 +30,11 @@ public interface FormService {
      *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
      */
     void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException;
+    void updateForm(FormIndex formIndex, String formType, Form form) throws ServiceException;
+
+    /**
+     * 保存表单索引
+     * @param formIndex 待保存的表单索引
+     */
+    void saveFormIndex(FormIndex formIndex);
 }
