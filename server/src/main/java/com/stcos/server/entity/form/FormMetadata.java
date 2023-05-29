@@ -93,4 +93,12 @@ public class FormMetadata {
         List<String> writableUsers = getWritableUsers();
         return writableUsers != null && writableUsers.contains(userId);
     }
+
+    public void addWritePermission(String uid) {
+        writableUsers.add(uid);
+    }
+
+    public void removeWritePermission(String uid) {
+        writableUsers.remove(uid);
+    }
 }

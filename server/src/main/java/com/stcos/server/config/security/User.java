@@ -26,7 +26,7 @@ public class User implements org.springframework.security.core.userdetails.UserD
 
     private String username;
 
-    //private String email;
+    private String email;
 
     boolean accountNonExpired;
 

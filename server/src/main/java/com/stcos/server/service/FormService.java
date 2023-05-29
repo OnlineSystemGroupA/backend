@@ -28,4 +28,8 @@ public interface FormService {
      *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
      */
     void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException;
+
+    void addWritePermission(long formMetadataId, String uid);
+
+    void removeWritePermission(long formMetadataId, String uid);
 }

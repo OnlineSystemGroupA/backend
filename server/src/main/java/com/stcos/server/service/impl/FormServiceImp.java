@@ -81,4 +81,24 @@ public class FormServiceImp implements FormService {
             throw new ServiceException(1); // 无修改权限的异常
         }
     }
+
+    /**
+     * 为用户赋予指定表单的写权限
+     *
+     * @param formMetadataId 指定表单对应表单元数据的 ID
+     * @param uid 需要获取写权限的用户 ID
+     */
+    @Override
+    public void addWritePermission(long formMetadataId, String uid) {
+        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+        formMetadata.addWritePermission(uid);
+        formMetadataRepository.saveFormMetadata(formMetadata);
+    }
+
+    @Override
+    public void removeWritePermission(long formMetadataId, String uid) {
+        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+        formMetadata.removeWritePermission(uid);
+        formMetadataRepository.saveFormMetadata(formMetadata);
+    }
 }

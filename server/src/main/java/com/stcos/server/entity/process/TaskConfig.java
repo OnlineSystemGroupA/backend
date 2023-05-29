@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * description
+ * 任务配置相关的虚基类
  *
  * @author Kekwy
  * @version 1.0

@@ -46,8 +46,8 @@ spring:
     #      username: stcos
     #      password: stcosgroupa
     url: jdbc:mysql://localhost:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
-    username: root
-    password: Shi,1993,1,1
+    username: demo
+    password:
 
   mail:
     # 使用 smtp 协议
@@ -101,8 +101,8 @@ flowable:
     url: jdbc:mysql://localhost:3306/flowable_demo?serverTimezone=UTC&nullCatalogMeansCurrent=true
     #    username: stcos
     #    password: stcosgroupa
-    username: root
-    password: Shi,1993,1,1
+    username: flowable_demo
+    password:
 
 file:
   upload:
