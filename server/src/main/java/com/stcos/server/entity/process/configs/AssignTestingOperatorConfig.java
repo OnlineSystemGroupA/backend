@@ -1,4 +1,4 @@
-package com.stcos.server.entity.process.TaskConfigs;
+package com.stcos.server.entity.process.configs;
 
 import com.stcos.server.entity.process.TaskConfig;
 import com.stcos.server.service.FormService;

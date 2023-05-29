@@ -1,6 +1,6 @@
 package com.stcos.server.config.workflow;
 
-import com.stcos.server.entity.process.TaskConfigs.*;
+import com.stcos.server.entity.process.configs.*;
 import com.stcos.server.entity.process.TaskConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
