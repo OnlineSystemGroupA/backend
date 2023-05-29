@@ -37,4 +37,11 @@ public interface FormService {
      * @param formIndex 待保存的表单索引
      */
     void saveFormIndex(FormIndex formIndex);
+
+    /**
+     * 查找是否存在表单
+     * @param formIndexId 表单索引Id
+     * @return 存在表单则返回true
+     */
+    boolean existForm(Long formIndexId);
 }

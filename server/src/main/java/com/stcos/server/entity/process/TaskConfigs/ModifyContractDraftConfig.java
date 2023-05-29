@@ -1,6 +1,7 @@
 package com.stcos.server.entity.process.TaskConfigs;
 
 import com.stcos.server.entity.process.TaskConfig;
+import org.flowable.task.api.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,37 +13,15 @@ import java.util.List;
  * @version 1.0
  * @since 2023/5/26 15:19
  */
-public class ModifyContractDraftConfig implements TaskConfig {
+public class ModifyContractDraftConfig extends TaskConfig {
 
-    @Override
-    public String getEmailSubject() {
-        return "修改合同草稿";
+
+    public ModifyContractDraftConfig() {
+        super("修改合同草稿", "您好！之前提出的合同草稿不被用户接受。一项被指派给您的\"修改合同草稿\"任务已被创建，请尽快完成！");
     }
 
     @Override
-    public String getEmailText() {
-        return "您好！之前提出的合同草稿不被用户接受。一项被指派给您的\"修改合同草稿\"任务已被创建，请尽快完成！";
-    }
-
-    @Override
-    public List<String> getReadableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
-    }
-
-    @Override
-    public List<String> getWritableForms() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<String> getWillDisReadableForms() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<String> getWillDisWritableForms() {
+    public List<String> getRequiredForms() {
         return new ArrayList<>();
     }
 }

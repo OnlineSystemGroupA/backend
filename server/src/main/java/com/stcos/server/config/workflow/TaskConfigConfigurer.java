@@ -24,8 +24,8 @@ public class TaskConfigConfigurer {
         return new HashMap<>(){{
             put("填写申请表", new FillOutAppFormConfig());
 
-            put("分配市场部人员", new AssignOperatorConfig());
-            put("分配测试部人员", new AssignOperatorConfig());
+            put("分配市场部人员", new AssignMarketingOperatorConfig());
+            put("分配测试部人员", new AssignTestingOperatorConfig());
             put("市场部审核委托", new VerifyApplicationConfig());
             put("测试部审核委托", new VerifyApplicationConfig());
             put("市场部审核不通过，修改委托", new ModifyApplicationConfig());

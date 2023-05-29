@@ -174,11 +174,17 @@ public class WorkflowServiceImp implements WorkflowService {
         }};
     }
 
-    private HashMap<String, Object> getProcessVariables(String startUser){
+    private HashMap<String, Object> getProcessVariables(String startUserId){
         HashMap<String, Object> processVariables = new HashMap<>();
         processVariables.put("passable", true);              // 流程控制变量
         processVariables.put("description", null);           // 已完成的最后一个任务分配人的描述
-        processVariables.put("startUser", startUser);        // 流程发起人ID
+        processVariables.put("client", startUserId);        // 流程发起人ID
+        processVariables.put("marketingManager", null);
+        processVariables.put("testingManager", null);
+        processVariables.put("qualityManager", null);
+        processVariables.put("signatory", null);
+        processVariables.put("marketingOperator", null);
+        processVariables.put("testingOperator", null);
         processVariables.put("startDate", new LocalDateTime()); // 流程启动时间
         processVariables.put("finishDate", null);            // 流程结束时间
         processVariables.put("state", "进行中");              // 流程状态
@@ -188,7 +194,7 @@ public class WorkflowServiceImp implements WorkflowService {
         for (Map.Entry<String, Boolean> entry : allForms.entrySet()){
             String formName = entry.getKey();
             boolean userReadable = entry.getValue();
-            FormIndex formIndex = new FormIndex(formName, userReadable, startUser);
+            FormIndex formIndex = new FormIndex(formName, userReadable, startUserId);
             processVariables.put(formName, formIndex);
             formService.saveFormIndex(formIndex);
         }

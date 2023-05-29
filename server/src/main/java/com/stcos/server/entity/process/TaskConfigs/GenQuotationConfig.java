@@ -1,6 +1,7 @@
 package com.stcos.server.entity.process.TaskConfigs;
 
 import com.stcos.server.entity.process.TaskConfig;
+import org.flowable.task.api.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,37 +13,18 @@ import java.util.List;
  * @version 1.0
  * @since 2023/5/22 18:52
  */
-public class GenQuotationConfig implements TaskConfig {
+public class GenQuotationConfig extends TaskConfig {
 
-    @Override
-    public String getEmailSubject() {
-        return "生成报价";
+    public GenQuotationConfig() {
+        super("生成报价", "您好！一项被指派给您的\"生成报价\"任务已被创建，请尽快完成！");
     }
 
     @Override
-    public String getEmailText() {
-        return "您好！一项被指派给您的\"生成报价\"任务已被创建，请尽快完成！";
-    }
-
-    @Override
-    public List<String> getReadableForms() {
+    public List<String> getRequiredForms() {
         return new ArrayList<>(){{
-            add("ApplicationForm");
+            add("QuotationForm");
         }};
     }
 
-    @Override
-    public List<String> getWritableForms() {
-        return new ArrayList<>();
-    }
 
-    @Override
-    public List<String> getWillDisReadableForms() {
-         return new ArrayList<>();
-    }
-
-    @Override
-    public List<String> getWillDisWritableForms() {
-         return new ArrayList<>();
-    }
 }

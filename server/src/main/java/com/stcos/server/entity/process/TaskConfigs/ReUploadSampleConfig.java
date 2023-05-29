@@ -1,6 +1,7 @@
 package com.stcos.server.entity.process.TaskConfigs;
 
 import com.stcos.server.entity.process.TaskConfig;
+import org.flowable.task.api.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,38 +13,16 @@ import java.util.List;
  * @version 1.0
  * @since 2023/5/27 18:15
  */
-public class ReUploadSampleConfig implements TaskConfig {
+public class ReUploadSampleConfig extends TaskConfig {
 
-    @Override
-    public String getEmailSubject() {
-        return "重新上传样品";
+    public ReUploadSampleConfig() {
+        super("重新上传样品", "您好！一份由您提起的软件测试委托中上传的样品审核未通过，请尽快重新上传。");
     }
 
     @Override
-    public String getEmailText() {
-        return "您好！一份由您提起的软件测试委托中上传的样品审核未通过，请尽快重新上传。";
-    }
-
-    @Override
-    public List<String> getReadableForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-        }};
-    }
-
-    @Override
-    public List<String> getWritableForms() {
+    public List<String> getRequiredForms() {
         return new ArrayList<>();
     }
 
-    @Override
-    public List<String> getWillDisReadableForms() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<String> getWillDisWritableForms() {
-        return new ArrayList<>();
-    }
 
 }

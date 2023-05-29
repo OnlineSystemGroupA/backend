@@ -23,7 +23,7 @@ public class TaskUtil {
 
     private final Map<String, TaskConfig> TASK_CONFIG_MAP = new HashMap<>() {{
         put("填写申请表", new FillOutAppFormConfig());
-        put("分配工作人员", new AssignOperatorConfig());
+        put("分配工作人员", new AssignMarketingOperatorConfig());
         put("用户确认测试报告", new ConfirmTestReportConfig());
         put("生成合同草稿", new GenContractDraftConfig());
         put("生成报价", new GenQuotationConfig());
