@@ -81,4 +81,9 @@ public class FormServiceImp implements FormService {
             throw new ServiceException(1); // 无修改权限的异常
         }
     }
+
+    @Override
+    public void saveFormIndex(FormIndex formIndex) {
+
+    }
 }

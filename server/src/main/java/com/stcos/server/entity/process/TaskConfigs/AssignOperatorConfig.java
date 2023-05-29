@@ -6,17 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 分配工作人员
+ * 分配市场部人员 & 分配测试部人员
  *
  * @author kura
  * @version 1.0
  * @since 2023/5/21 23:37
  */
 public class AssignOperatorConfig implements TaskConfig {
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
-    }
 
     @Override
     public String getEmailSubject() {

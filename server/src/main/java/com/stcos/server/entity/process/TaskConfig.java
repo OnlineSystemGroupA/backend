@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface TaskConfig {
 
-    List<String> getRequiredForms();
-
     String getEmailSubject();
 
     String getEmailText();

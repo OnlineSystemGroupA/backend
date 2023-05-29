@@ -13,10 +13,6 @@ import java.util.List;
  * @since 2023/5/22 19:00
  */
 public class SendTestReportConfig implements TaskConfig {
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
-    }
 
     @Override
     public String getEmailSubject() {

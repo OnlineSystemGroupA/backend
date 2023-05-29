@@ -2,7 +2,9 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.entity.file.Sample;
 import com.stcos.server.entity.form.Form;
+import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.exception.ServiceException;
@@ -13,13 +15,16 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.io.File;
+import java.util.Map;
 
 @Service
 public class WorkflowServiceImp implements WorkflowService {
@@ -148,15 +153,57 @@ public class WorkflowServiceImp implements WorkflowService {
         return (Long) runtimeService.getVariable(processId, "sample");
     }
 
+    /**
+     * 所有表单
+     * @return 所有表单以及是否对用户可见
+     */
+    private HashMap<String, Boolean> getAllForms(){
+        return new HashMap<>(){{
+           put("ApplicationForm", true);
+            put("ApplicationVerifyForm",true); // 申请审核表
+            put("TestFunctionForm", true);      // 测试功能表
+            put("QuotationForm", true);      // 报价表
+            put("DocumentReviewForm", true);    // 文档审核表
+            put("TestPlanForm", false);          // 测试计划表
+            put("TestPlanVerifyForm", false);      // 测试计划审核表
+            put("TestRecordsForm", true);          // 测试记录表
+            put("TestProblemForm", true);        // 测试问题表
+            put("TestReportForm", true);        // 测试报告表
+            put("ReportVerifyForm", false);      // 测试报告检查表
+            put("TestWorkCheckForm", false);     // 测试检查表
+        }};
+    }
+
+    private HashMap<String, Object> getProcessVariables(String startUser){
+        HashMap<String, Object> processVariables = new HashMap<>();
+        processVariables.put("passable", true);              // 流程控制变量
+        processVariables.put("description", null);           // 已完成的最后一个任务分配人的描述
+        processVariables.put("startUser", startUser);        // 流程发起人ID
+        processVariables.put("startDate", new LocalDateTime()); // 流程启动时间
+        processVariables.put("finishDate", null);            // 流程结束时间
+        processVariables.put("state", "进行中");              // 流程状态
+        processVariables.put("currentTask", "填写申请表");     // 当前正在进行的任务
+        processVariables.put("Sample", null);                // 样品
+        HashMap<String, Boolean> allForms = getAllForms();
+        for (Map.Entry<String, Boolean> entry : allForms.entrySet()){
+            String formName = entry.getKey();
+            boolean userReadable = entry.getValue();
+            FormIndex formIndex = new FormIndex(formName, userReadable, startUser);
+            processVariables.put(formName, formIndex);
+            formService.saveFormIndex(formIndex);
+        }
+        return processVariables;
+    }
+
     @Override
     public String startProcess() throws ServiceException {
         // 获取当前登录用户，使用其 id 设置任务发起人
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
         // 初始化流程变量，创建
-        ProcessVariable processVariable = new ProcessVariable(userId);
+        HashMap<String, Object> processVariables = getProcessVariables(userId);
         ProcessInstance processInstance =
-                runtimeService.startProcessInstanceByKey("workflow", processVariable);
+                runtimeService.startProcessInstanceByKey("workflow", processVariables);
 
         return processInstance.getProcessInstanceId();
     }
