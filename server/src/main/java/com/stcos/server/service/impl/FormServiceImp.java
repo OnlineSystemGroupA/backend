@@ -32,7 +32,7 @@ public class FormServiceImp implements FormService {
     @Override
     public Form getForm(Long formMetadataId) throws ServiceException {
         // 根据表单元数据 ID 查询数据库
-        FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
+        FormMetadata formMetadata = formMetadataRepository.selectFormMetadataById(formMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
@@ -41,7 +41,7 @@ public class FormServiceImp implements FormService {
         // 判断当前登录用户是否具有读取权限
         if (formMetadata.hasReadPermission(userId)) {
             // 获取表单数据
-            return formRepository.selectByFormId(formMetadata.getFormId());
+            return formRepository.selectFormById(formMetadata.getFormId());
         } else {
             throw new ServiceException(1); // 无读取权限的异常
         }
@@ -50,7 +50,7 @@ public class FormServiceImp implements FormService {
     @Override
     public void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException {
         // 根据表单元数据 ID 查询数据库
-        FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
+        FormMetadata formMetadata = formMetadataRepository.selectFormMetadataById(formMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();

@@ -37,7 +37,7 @@ class FormServiceImpTest {
 //                "client",
 //                localDateTime
 //        );
-        FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(25L);
+        FormMetadata formMetadata = formMetadataRepository.selectFormMetadataById(25L);
 
         System.out.println(formMetadata);
 

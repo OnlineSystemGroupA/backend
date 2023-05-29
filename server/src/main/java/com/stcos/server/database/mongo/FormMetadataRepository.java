@@ -14,7 +14,7 @@ public interface FormMetadataRepository extends MongoRepository<FormMetadata, Lo
         insert(formMetadata);
     }
 
-    default FormMetadata selectByFormMetadataId(Long formMetadataId) {
+    default FormMetadata selectFormMetadataById(Long formMetadataId) {
         return findById(formMetadataId).orElse(null);
     }
 

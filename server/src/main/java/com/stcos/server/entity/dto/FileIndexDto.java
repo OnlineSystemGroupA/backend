@@ -6,14 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.annotation.Generated;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * FileMetadataDto
+ * FileIndexDto
  */
 
-@JsonTypeName("fileMetadata")
+@JsonTypeName("fileIndex")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
 public class FileIndexDto {
 
@@ -22,10 +21,6 @@ public class FileIndexDto {
   private String fileName;
 
   private String fileType;
-
-  private String fileSize;
-
-  private LocalDateTime updatedDate;
 
   /**
    * Default constructor

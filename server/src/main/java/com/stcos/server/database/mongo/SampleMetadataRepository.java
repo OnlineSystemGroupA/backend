@@ -17,7 +17,7 @@ public interface SampleMetadataRepository extends MongoRepository<SampleMetadata
         deleteById(sampleMetadataId);
     }
 
-    default public SampleMetadata selectBySampleMetadataId(Long sampleMetadataId){
+    default public SampleMetadata selectSampleMetadataById(Long sampleMetadataId){
         return findById(sampleMetadataId).orElse(null);
     }
 }

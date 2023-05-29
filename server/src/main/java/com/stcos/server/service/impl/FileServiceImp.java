@@ -28,7 +28,7 @@ import java.util.zip.ZipOutputStream;
 import com.stcos.server.service.FileService;
 
 @Service
-public class  FileServiceImp implements FileService {
+public class FileServiceImp implements FileService {
 
     @Value("${file.upload.directory}")
     private String uploadDirectory;
@@ -54,7 +54,7 @@ public class  FileServiceImp implements FileService {
     @Override
     public List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException {
         // 获取样品元数据
-        SampleMetadata sampleMetadata = sampleMetadataRepository.selectBySampleMetadataId(sampleMetadataId);
+        SampleMetadata sampleMetadata = sampleMetadataRepository.selectSampleMetadataById(sampleMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
@@ -125,7 +125,7 @@ public class  FileServiceImp implements FileService {
     @Override
     public File downloadSample(String processId, Long sampleMetadataId) throws ServiceException {
         // 获取样品元数据
-        SampleMetadata sampleMetadata = sampleMetadataRepository.selectBySampleMetadataId(sampleMetadataId);
+        SampleMetadata sampleMetadata = sampleMetadataRepository.selectSampleMetadataById(sampleMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
@@ -191,7 +191,7 @@ public class  FileServiceImp implements FileService {
     @Override
     public void deleteSample(Long sampleMetadataId) throws ServiceException {
         // 获取样品元数据
-        SampleMetadata sampleMetadata = sampleMetadataRepository.selectBySampleMetadataId(sampleMetadataId);
+        SampleMetadata sampleMetadata = sampleMetadataRepository.selectSampleMetadataById(sampleMetadataId);
 
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();

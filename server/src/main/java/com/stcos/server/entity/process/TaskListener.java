@@ -69,13 +69,13 @@ public class TaskListener {
         List<String> readableForms = taskConfig.getReadableForms();
         for (String readableForm: readableForms) {
             Long formMetadataId = (Long) task.getVariable(readableForm);
-            FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
+            FormMetadata formMetadata = formMetadataRepository.selectFormMetadataById(formMetadataId);
             formMetadata.getReadableUsers().add(task.getAssignee());
         }
         List<String> writableForms = taskConfig.getWritableForms();
         for (String writableForm: writableForms) {
             Long formMetadataId = (Long) task.getVariable(writableForm);
-            FormMetadata formMetadata = formMetadataRepository.selectByFormMetadataId(formMetadataId);
+            FormMetadata formMetadata = formMetadataRepository.selectFormMetadataById(formMetadataId);
             formMetadata.getReadableUsers().add(task.getAssignee());
         }
 
