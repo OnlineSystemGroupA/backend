@@ -56,4 +56,24 @@ public interface AccountService {
      */
     void register(String username, String password, String email) throws ServiceException;
 
+    /**
+     * 获取当前测试部主管的 ID
+     *
+     * @return 测试部主管 ID
+     */
+    String getTestingManagerId();
+
+    /**
+     * 获取当前市场部主管的 ID
+     *
+     * @return 市场部主管 ID
+     */
+    String getMarketingManagerId();
+
+    /**
+     * 获取当前质量部主管的 ID
+     *
+     * @return 质量部主管 ID
+     */
+    String getQualityManagerId();
 }

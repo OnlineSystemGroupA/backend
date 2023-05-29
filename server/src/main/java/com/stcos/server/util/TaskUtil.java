@@ -3,6 +3,7 @@ package com.stcos.server.util;
 import com.stcos.server.entity.process.TaskConfig;
 import com.stcos.server.entity.process.TaskConfigs.*;
 import com.stcos.server.exception.ServerErrorException;
+import com.stcos.server.service.FormService;
 import lombok.experimental.UtilityClass;
 import org.flowable.task.api.Task;
 
@@ -61,10 +62,10 @@ public class TaskUtil {
         put("用户确认测试报告", new ConfirmTestReportConfig());
     }};
 
-    public boolean isCompletable(Task task) {
+    public boolean isCompletable(Task task, FormService formService) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(task.getName());
-            return taskConfig.isCompletable(task);
+            return taskConfig.isCompletable(task, formService);
         } catch (NullPointerException e) {
             throw new ServerErrorException(e);
         }

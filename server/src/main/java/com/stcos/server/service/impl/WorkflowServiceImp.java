@@ -2,9 +2,7 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
-import com.stcos.server.entity.file.Sample;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.exception.ServiceException;
@@ -81,7 +79,13 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public List<Task> getTasks() throws ServiceException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return taskService.createTaskQuery().taskAssignee(user.getUid()).list();
+        // 获取流程变量的坑！
+        // 参考：https://blog.csdn.net/weixin_43861630/article/details/129056964
+        Set<Task> taskSet = new HashSet<>(taskService.createTaskQuery().
+                processVariableValueEquals("startUser", user.getUid()).
+                includeProcessVariables().list());
+        taskSet.addAll(taskService.createTaskQuery().taskAssignee(user.getUid()).includeProcessVariables().list());
+        return taskSet.stream().toList();
     }
 
     @Override

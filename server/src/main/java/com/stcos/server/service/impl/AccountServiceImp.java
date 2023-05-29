@@ -78,4 +78,19 @@ public class AccountServiceImp implements AccountService {
          client = new Client(username, passwordEncoder.encode(password), email);
         clientMapper.addNewUser(client);
     }
+
+    @Override
+    public String getTestingManagerId() {
+        return null;
+    }
+
+    @Override
+    public String getMarketingManagerId() {
+        return null;
+    }
+
+    @Override
+    public String getQualityManagerId() {
+        return null;
+    }
 }
