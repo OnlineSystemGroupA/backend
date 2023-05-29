@@ -115,7 +115,7 @@ public class WorkflowController implements WorkflowApi {
             List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formMetadataList.size());
             for (FormMetadata formMetadata : formMetadataList) {
                 formMetadataDtoList.add(
-                        new FormMetadataDto(formMetadata.getFormMetadataId(), formMetadata.getFormType())
+                        new FormMetadataDto(formMetadata.getFormMetadataId(), formMetadata.getFormName())
                 );
             }
             response = ResponseEntity.ok(formMetadataDtoList);

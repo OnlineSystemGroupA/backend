@@ -37,7 +37,7 @@ public class FormMetadata {
     /**
      * 表单类型
      */
-    private String formType = null;
+    private String formName = null;
 
     /**
      * 表单的创建者 (userId)
@@ -71,17 +71,14 @@ public class FormMetadata {
 
     public FormMetadata(
             Long formId,
-            String formType,
-            String createdBy,
-            LocalDateTime createdDate,
-            String lastModifiedBy,
-            LocalDateTime lastModifiedDate) {
+            String formName,
+            String createdBy) {
         this.formId = formId;
-        this.formType = formType;
+        this.formName = formName;
         this.createdBy = createdBy;
-        this.createdDate = createdDate;
-        this.lastModifiedBy = lastModifiedBy;
-        this.lastModifiedDate = lastModifiedDate;
+        this.createdDate = LocalDateTime.now();
+        this.lastModifiedBy = createdBy;
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public boolean hasReadPermission(String userId) {
@@ -100,5 +97,9 @@ public class FormMetadata {
 
     public void removeWritePermission(String uid) {
         writableUsers.remove(uid);
+    }
+
+    public void addReadPermission(String startUserId) {
+        readableUsers.add(startUserId);
     }
 }

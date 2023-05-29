@@ -63,7 +63,7 @@ public class FormServiceImp implements FormService {
 
             if(formMetadata.getFormMetadataId() == -1) {
                 // 初始化表单元数据
-                formMetadata = new FormMetadata(form.getFormId(), formType, userId, LocalDateTime.now(), userId, LocalDateTime.now());
+//                formMetadata = new FormMetadata(form.getFormId(), formType, userId, LocalDateTime.now(), userId, LocalDateTime.now());
             } else {
                 // 更新表单元数据
 
@@ -103,7 +103,12 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public void saveFormIndex(FormIndex formIndex) {
+    public void saveFormMetadata(FormMetadata formMetadata) {
 
+    }
+
+    @Override
+    public boolean existForm(long formMetadataId) {
+        return false;
     }
 }

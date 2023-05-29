@@ -4,7 +4,6 @@ import com.stcos.server.config.security.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.process.ProcessVariable;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.FormService;
@@ -19,10 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.io.File;
-import java.util.Map;
 
 @Service
 public class WorkflowServiceImp implements WorkflowService {
@@ -159,12 +156,13 @@ public class WorkflowServiceImp implements WorkflowService {
 
     /**
      * 所有表单
+     *
      * @return 所有表单以及是否对用户可见
      */
-    private HashMap<String, Boolean> getAllForms(){
-        return new HashMap<>(){{
-           put("ApplicationForm", true);
-            put("ApplicationVerifyForm",true); // 申请审核表
+    private HashMap<String, Boolean> getAllForms() {
+        return new HashMap<>() {{
+            put("ApplicationForm", true);
+            put("ApplicationVerifyForm", true); // 申请审核表
             put("TestFunctionForm", true);      // 测试功能表
             put("QuotationForm", true);      // 报价表
             put("DocumentReviewForm", true);    // 文档审核表
@@ -178,7 +176,7 @@ public class WorkflowServiceImp implements WorkflowService {
         }};
     }
 
-    private HashMap<String, Object> getProcessVariables(String startUserId){
+    private HashMap<String, Object> getProcessVariables(String startUserId) {
         HashMap<String, Object> processVariables = new HashMap<>();
         processVariables.put("passable", true);              // 流程控制变量
         processVariables.put("description", null);           // 已完成的最后一个任务分配人的描述
@@ -195,12 +193,15 @@ public class WorkflowServiceImp implements WorkflowService {
         processVariables.put("currentTask", "填写申请表");     // 当前正在进行的任务
         processVariables.put("Sample", null);                // 样品
         HashMap<String, Boolean> allForms = getAllForms();
-        for (Map.Entry<String, Boolean> entry : allForms.entrySet()){
+        for (Map.Entry<String, Boolean> entry : allForms.entrySet()) {
             String formName = entry.getKey();
-            boolean userReadable = entry.getValue();
-            FormIndex formIndex = new FormIndex(formName, userReadable, startUserId);
-            processVariables.put(formName, formIndex);
-            formService.saveFormIndex(formIndex);
+            FormMetadata formMetadata = new FormMetadata();
+            formMetadata.setFormName(formName);
+            if (entry.getValue()) {
+                formMetadata.addReadPermission(startUserId);
+            }
+            processVariables.put(formName, formMetadata);
+            formService.saveFormMetadata(formMetadata);
         }
         return processVariables;
     }
