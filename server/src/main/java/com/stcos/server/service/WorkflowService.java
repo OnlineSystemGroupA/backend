@@ -90,7 +90,7 @@ public interface WorkflowService {
      * 下载样品文件
      *
      * @param processInstanceId 指定流程实例 Id
-     * @return 样品文件
+     * @return 样品的压缩文件
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 当前流程不存在 <br>
@@ -98,7 +98,7 @@ public interface WorkflowService {
      *                          2: 文件不存在 <br>
      *                          3: 文件下载失败 <br>
      */
-    List<File> downloadSample(String processInstanceId) throws ServiceException;
+    File downloadSample(String processInstanceId) throws ServiceException;
 
     /**
      * 删除样品或部分文件
@@ -111,7 +111,7 @@ public interface WorkflowService {
      *                          2: 文件不存在 <br>
      *                          3: 文件删除失败 <br>
      */
-    void deleteFiles(String processInstanceId) throws ServiceException;
+    void deleteSample(String processInstanceId) throws ServiceException;
 
     /**
      * 开始新的委托流程
