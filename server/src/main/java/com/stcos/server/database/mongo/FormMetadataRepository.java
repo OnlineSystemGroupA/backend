@@ -1,9 +1,10 @@
-package com.stcos.server.repository;
+package com.stcos.server.database.mongo;
 
 import com.stcos.server.entity.form.FormMetadata;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FormMetadataRepository extends MongoRepository<FormMetadata,Long> {
+
     default void saveFormMetadata(FormMetadata formMetadata){
         insert(formMetadata);
     }
@@ -12,4 +13,5 @@ public interface FormMetadataRepository extends MongoRepository<FormMetadata,Lon
         return findById(formMetadata).orElse(null);
     }
 
+    default void deleteFormMetadataById(long id){deleteById(id);}
 }

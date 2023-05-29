@@ -1,7 +1,6 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.repository.FormMetadataRepository;
-
+import com.stcos.server.database.mongo.FormMetadataRepository;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.service.EmailService;
 import org.flowable.task.service.delegate.DelegateTask;

@@ -5,7 +5,7 @@ import com.stcos.server.database.mongo.FormRepository;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.repository.FormMetadataRepository;
+import com.stcos.server.database.mongo.FormMetadataRepository;
 import com.stcos.server.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
