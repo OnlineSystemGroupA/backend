@@ -1,26 +1,25 @@
 package com.stcos.server.service;
 
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
 
 public interface FormService {
     /**
      * 更新指定流程中的指定表单
      *
-     * @param formMetadata 表单元数据 ID
+     * @param formMetadataId 表单元数据 ID
      * @return 表单对象
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无读取权限 <br>
      */
-    Form getForm(FormMetadata formMetadata) throws ServiceException;
+    Form getForm(Long formMetadataId) throws ServiceException;
 
     /**
      * 更新指定流程中的指定表单
      *
-     * @param formMetadata 表单元数据 ID
+     * @param formMetadataId 表单元数据 ID
      * @param formType 表单类型
      * @param form 表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
@@ -28,5 +27,5 @@ public interface FormService {
      *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无修改权限 <br>
      */
-    void updateForm(FormMetadata formMetadata, String formType, Form form) throws ServiceException;
+    void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException;
 }

@@ -1,7 +1,6 @@
 package com.stcos.server.entity.form;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -19,14 +18,13 @@ import java.util.List;
  * @since 2023/5/17 9:51
  */
 @Data
-@Document(collection = "form_index")
+@Document(collection = "form_metadata")
 @NoArgsConstructor
 public class FormMetadata {
 
     /**
      * 表单元数据 ID，保存对象时由数据库自动赋值
      */
-    @Id
     @MongoId(targetType = FieldType.INT64)
     @AutoId
     private long formMetadataId = -1;

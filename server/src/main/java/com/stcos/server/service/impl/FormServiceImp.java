@@ -30,11 +30,13 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public Form getForm(FormMetadata formMetadata) throws ServiceException {
+    public Form getForm(Long formMetadataId) throws ServiceException {
+        // 根据表单元数据 ID 查询数据库
+        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
-        // Test:
-//         String userId = "readableUser";
+        // Test: String userId = "readableUser";
 
         // 判断当前登录用户是否具有读取权限
         if (formMetadata.hasReadPermission(userId)) {
@@ -46,11 +48,13 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public void updateForm(FormMetadata formMetadata, String formType, Form form) throws ServiceException {
+    public void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException {
+        // 根据表单元数据 ID 查询数据库
+        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(formMetadataId);
+
         // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
-        // Test:
-//         String userId = "writableUser";
+        // Test: String userId = "writableUser";
 
         // 判断当前登录用户是否具有修改权限
         if (formMetadata.hasWritePermission(userId)) {
@@ -63,8 +67,7 @@ public class FormServiceImp implements FormService {
             } else {
                 // 更新表单元数据
 
-                // Test:
-                 System.out.println("Updating");
+                // Test: System.out.println("Updating");
 
                 formMetadata.setLastModifiedBy(userId); // 设置最后修改人为当前用户
                 formMetadata.setLastModifiedDate(LocalDateTime.now()); // 设置最后修改时间为当前时间
@@ -73,8 +76,7 @@ public class FormServiceImp implements FormService {
             // 保存表单元数据
             formMetadataRepository.saveFormMetadata(formMetadata);
 
-            // Test:
-//             System.out.println("formMetadataId: " + formMetadata.getFormMetadataId());
+            // Test: System.out.println("formMetadataId: " + formMetadata.getFormMetadataId());
         } else {
             throw new ServiceException(1); // 无修改权限的异常
         }

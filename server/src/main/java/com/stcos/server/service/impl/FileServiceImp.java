@@ -45,7 +45,10 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public List<FileMetadataDto> uploadSample(String processId, SampleMetadata sampleMetadata, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadataDto> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException {
+        // 获取样品元数据
+        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
+
         // 获取当前登录用户，和当前样品的可写用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
@@ -79,7 +82,7 @@ public class FileServiceImp implements FileService {
             // 把新旧文件元数据的列表合并
             sampleMetadata.mergeFileMetadataList(fileMetadataList);
 
-            // 保存样品对象
+            // 保存样品元数据
             fileMapper.saveSample(sampleMetadata);
 
             // 返回样品文件摘要
@@ -111,7 +114,10 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public File downloadSample(String processId, SampleMetadata sampleMetadata) throws ServiceException {
+    public File downloadSample(String processId, Long sampleMetadataId) throws ServiceException {
+        // 获取样品元数据
+        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
+
         // 获取当前登录用户，和当前样品的可读用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
@@ -174,7 +180,10 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
-    public void deleteSample(SampleMetadata sampleMetadata) throws ServiceException {
+    public void deleteSample(Long sampleMetadataId) throws ServiceException {
+        // 获取样品元数据
+        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
+
         // 获取当前登录用户，和当前样品的可写用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
         List<String> writableUsers = sampleMetadata.getWritableUsers();
@@ -198,8 +207,8 @@ public class FileServiceImp implements FileService {
                 }
             }
 
-            // 删除样品对象
-            fileMapper.deleteBySampleId(sampleMetadata.getSampleId());
+            // 删除样品元数据
+            fileMapper.deleteBySampleId(sampleMetadata.getSampleMetadataId());
         } else {
             throw new ServiceException(1); // 无删除权限的异常
         }

@@ -2,7 +2,6 @@ package com.stcos.server.entity.form;
 
 import com.stcos.server.util.JSONUtil;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -21,7 +20,6 @@ import java.util.Map;
 @Data
 @Document(collection = "form")
 public abstract class Form {
-    @Id
     @MongoId(targetType = FieldType.INT64)
     @AutoId
     private long formId;
