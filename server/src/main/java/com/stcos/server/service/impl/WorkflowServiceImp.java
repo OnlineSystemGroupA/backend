@@ -8,6 +8,7 @@ import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.FormService;
 import com.stcos.server.service.WorkflowService;
+import com.stcos.server.util.TaskUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -55,9 +56,16 @@ public class WorkflowServiceImp implements WorkflowService {
     public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
         Task task = getTaskById(taskId);
 
-        // TODO 验证是否满足完成条件
-        // 若满足完成条件则完成该任务
-        taskService.complete(task.getId());
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
+            throw new ServiceException(0);
+        }
+
+        if(TaskUtil.isCompletable(task, formService)){
+            taskService.complete(task.getId());
+            task.getProcessVariables().replace("passable", passable);
+        }
+
     }
 
     @Override
