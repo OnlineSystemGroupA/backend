@@ -1,16 +1,11 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
-import com.stcos.server.database.mongo.FormRepository;
-import com.stcos.server.database.mongo.FormIndexRepository;
 import com.stcos.server.entity.dto.FileMetadataDto;
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.file.Sample;
 import com.stcos.server.entity.form.Form;
+import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariable;
-import com.stcos.server.entity.form.FormIndex;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.database.mysql.FileMapper;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.FormService;
 import com.stcos.server.service.WorkflowService;
@@ -25,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.io.File;
-import java.time.LocalDateTime;
-import java.util.*;
 
 @Service
 public class WorkflowServiceImp implements WorkflowService {
@@ -58,28 +51,6 @@ public class WorkflowServiceImp implements WorkflowService {
         this.fileService = fileService;
     }
 
-    private FormRepository formRepository;
-
-    @Autowired
-    public void setFormRepository(FormRepository formRepository) {
-        this.formRepository = formRepository;
-    }
-
-    private FormIndexRepository formIndexRepository;
-
-    @Autowired
-    public void setFormIndexRepository(FormIndexRepository formIndexRepository) {
-        this.formIndexRepository = formIndexRepository;
-    }
-
-    private FileMapper fileMapper;
-
-    @Autowired
-    public void setFileMapper(FileMapper fileMapper) {
-        this.fileMapper = fileMapper;
-    }
-
-
     @Override
     public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
         Task task = getTaskById(taskId);
@@ -110,50 +81,50 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public Form getForm(String processId, String formType) throws ServiceException {
-        // 判断 processId 对应的流程是否存在，并获取表单索引
-        FormIndex formIndex = getFormIndex(processId, formType);
+        // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
+        Long formMetadataId = getFormMetadataId(processId, formType);
 
         // 调用 FormService 接口，返回表单对象
-        return formService.getForm(formIndex);
+        return formService.getForm(formMetadataId);
     }
 
     @Override
     public void updateForm(String processId, String formType, Form form) throws ServiceException {
-        // 判断 processId 对应的流程是否存在，并获取表单索引
-        FormIndex formIndex = getFormIndex(processId, formType);
+        // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
+        Long formMetadataId = getFormMetadataId(processId, formType);
 
         // 调用 FormService 接口，完成表单更新
-        formService.updateForm(formIndex, formType, form);
+        formService.updateForm(formMetadataId, formType, form);
     }
 
     @Override
     public List<FileMetadataDto> uploadSample(String processId, List<MultipartFile> files) throws ServiceException {
-        // 判断 processId 对应的流程是否存在，并获取样品对象
-        Sample sample = getSample(processId);
+        // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
+        Long sampleMetadataId = getSampleMetadataId(processId);
 
         // 调用 FileService 接口实现样品上传，返回样品文件摘要
-        return fileService.uploadSample(processId, sample, files);
+        return fileService.uploadSample(processId, sampleMetadataId, files);
     }
 
     @Override
     public File downloadSample(String processId) throws ServiceException {
-        // 判断 processId 对应的流程是否存在，并获取样品对象
-        Sample sample = getSample(processId);
+        // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
+        Long sampleMetadataId = getSampleMetadataId(processId);
 
         // 调用 FileService 接口实现样品下载，返回样品文件列表的压缩文件
-        return fileService.downloadSample(processId, sample);
+        return fileService.downloadSample(processId, sampleMetadataId);
     }
 
     @Override
     public void deleteSample(String processId) throws ServiceException {
-        // 判断 processId 对应的流程是否存在，并获取样品对象
-        Sample sample = getSample(processId);
+        // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
+        Long sampleMetadataId = getSampleMetadataId(processId);
 
         // 调用 FileService 接口实现样品删除
-        fileService.deleteSample(sample);
+        fileService.deleteSample(sampleMetadataId);
     }
 
-    private FormIndex getFormIndex(String processId, String formType) throws ServiceException {
+    private Long getFormMetadataId(String processId, String formType) throws ServiceException {
         // 判断 processId 对应的流程是否存在
         ProcessInstance processInstance = runtimeService.
                 createProcessInstanceQuery().processInstanceId(processId).singleResult();
@@ -161,14 +132,11 @@ public class WorkflowServiceImp implements WorkflowService {
             throw new ServiceException(0); // 流程不存在的异常
         }
 
-        // 获取表单索引 ID
-        Long formIndexId = (Long) runtimeService.getVariable(processId, formType);
-
-        // 根据表单索引 ID 查询数据库
-        return formIndexRepository.findByFormIndexId(formIndexId);
+        // 获取表单元数据 ID
+        return (Long) runtimeService.getVariable(processId, formType);
     }
 
-    private Sample getSample(String processId) throws ServiceException {
+    private Long getSampleMetadataId(String processId) throws ServiceException {
         // 判断 processId 对应的流程是否存在
         ProcessInstance processInstance = runtimeService.
                 createProcessInstanceQuery().processInstanceId(processId).singleResult();
@@ -176,11 +144,8 @@ public class WorkflowServiceImp implements WorkflowService {
             throw new ServiceException(0); // 流程不存在的异常
         }
 
-        // 获取样品 ID
-        Long sampleId = (Long) runtimeService.getVariable(processId, "sample");
-
-        // 获取样品对象
-        return fileMapper.selectBySampleId(sampleId);
+        // 获取样品元数据 ID
+        return (Long) runtimeService.getVariable(processId, "sample");
     }
 
     @Override
@@ -197,8 +162,7 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public List<FormIndex> getFormMetadata(String processId) throws ServiceException {
+    public List<FormMetadata> getFormMetadata(String processId) throws ServiceException {
         return null;
     }
-
 }

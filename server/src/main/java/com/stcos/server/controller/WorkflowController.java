@@ -3,7 +3,7 @@ package com.stcos.server.controller;
 import com.stcos.server.controller.api.WorkflowApi;
 import com.stcos.server.entity.dto.*;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormIndex;
+import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
@@ -111,11 +111,11 @@ public class WorkflowController implements WorkflowApi {
     public ResponseEntity<List<FormMetadataDto>> getFormMetadata(String processId) {
         ResponseEntity<List<FormMetadataDto>> response = null;
         try {
-            List<FormIndex> formIndexList = workflowService.getFormMetadata(processId);
-            List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formIndexList.size());
-            for (FormIndex formIndex : formIndexList) {
+            List<FormMetadata> formMetadataList = workflowService.getFormMetadata(processId);
+            List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formMetadataList.size());
+            for (FormMetadata formMetadata : formMetadataList) {
                 formMetadataDtoList.add(
-                        new FormMetadataDto(formIndex.getFormIndexId(), formIndex.getFormType())
+                        new FormMetadataDto(formMetadata.getFormMetadataId(), formMetadata.getFormType())
                 );
             }
             response = ResponseEntity.ok(formMetadataDtoList);

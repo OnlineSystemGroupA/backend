@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface FormRepository extends MongoRepository<Form, Long> {
-    default void saveFrom(Form form){
+    default void saveForm(Form form){
         insert(form);
     }
 

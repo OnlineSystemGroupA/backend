@@ -1,7 +1,7 @@
 package com.stcos.server.database.mysql;
 
 import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.file.Sample;
+import com.stcos.server.entity.file.SampleMetadata;
 
 /**
  * description
@@ -15,9 +15,9 @@ public interface FileMapper {
 
     void deleteByFileMetadataId(Long fileMetadataId);
 
-    void saveSample(Sample sample);
+    void saveSample(SampleMetadata sampleMetadata);
 
     void deleteBySampleId(Long sampleId);
 
-    Sample selectBySampleId(Long sampleId);
+    SampleMetadata selectBySampleId(Long sampleId);
 }

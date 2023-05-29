@@ -75,7 +75,7 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 【注<sub>2</sub>】可在后期将每个组件的功能补充完整后直接复用至设计文档
 
-<img src="README.assets/uml-1.2.1-2-1683790332689-5.svg" alt="uml-1.2.1-2" style="zoom:80%;" />
+<img src="README.assets/1.2.1-1684845139749-2.svg" alt="1.2.1"  />
 
 ### 2.1 Front End 前端
 
@@ -166,8 +166,6 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 ![image-20230522211043773](README.assets/image-20230522211043773.png)
 
 
-
-基于 Mybatis 的 Mapper 接口实现与数据库的交互，进行数据持久化。
 
 #### 数据库表设计
 
@@ -303,6 +301,8 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 #### 4.1.1 流程变量
 
+**初始化**
+
 用于在发起流程时对整个流程中所需要的流程变量进行初始化，其中流程发起人需要根据上下文中的登录用户进行设置，其他变量均需要初始化为默认值，关于流程变量的种类和默认值详见下文流程建模。
 
 使用键值对的方式设置变量，示例：
@@ -319,6 +319,12 @@ public class ProcessVariable extends HashMap<String, Object> {
 ```
 
 其中部分默认值可以考虑放在配置文件（application.yml）中，使用 `@Value` 注解进行注入。
+
+此处流程变量的概念与 Flowable 中的定义相同，详见 Flowable 的用户手册：https://tkjohn.github.io/flowable-userguide/#_getting_started
+
+**读取与写入**
+
+// TODO
 
 #### 4.1.2 任务配置
 
@@ -428,7 +434,11 @@ public class TaskConfigConfigurer {
 
 主流程：
 
-![image-20230520091450513](README.assets/image-20230520091450513.png)
+![image-20230524102754629](README.assets/image-20230524102754629.png)
+
+【注<sub>1</sub>】“进行软件测试”任务为手动任务，表示其不在我们的系统中进行。
+
+【注<sub>2</sub>】
 
 流程变量：
 
@@ -440,7 +450,7 @@ public class TaskConfigConfigurer {
         <td><b>初始值</b></td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>任务参数</i></td>
+        <td colspan="4" align="center"><i><b>任务参数</b></i></td>
     </tr>
     <tr>
         <td>passable</td>
@@ -455,7 +465,16 @@ public class TaskConfigConfigurer {
         <td> null </td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>流程摘要</i></td>
+        <td colspan="4" align="center"><i><b>流程参与者</b></i></td>
+    </tr>
+    <tr>
+    	<td>client</td>
+        <td>发起委托流程的客户 ID</td>
+        <td>String</td>
+        <td>根据流程启动时的用户 ID 设置</td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center"><i><b>流程摘要</b></i></td>
     </tr>
     <tr>
     	<td>title</td>
@@ -465,9 +484,9 @@ public class TaskConfigConfigurer {
     </tr>
     <tr>
     	<td>startUser</td>
-        <td>流程发起人 ID</td>
+        <td>流程发起人姓名</td>
         <td>String</td>
-        <td>根据流程启动时的用户 ID 设置</td>
+        <td>根据流程启动时的用户姓名</td>
     </tr>
     <tr>
     	<td>startDate</td>
@@ -494,61 +513,61 @@ public class TaskConfigConfigurer {
         <td>设置为 "填写申请表"</td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>表单索引</i></td>
+        <td colspan="4" align="center"><i><b>表单元数据</b></i></td>
     </tr>
     <tr>
     	<td>ApplicationForm</td>
-        <td>软件项目委托测试申请表索引 ID</td>
+        <td>软件项目委托测试申请表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>ApplicationVerifyForm</td>
-        <td>软件项目委托测试申请表之审核信息索引 ID</td>
+        <td>软件项目委托测试申请表之审核信息元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>DocumentReviewForm</td>
-        <td>软件文档评审表索引 ID</td>
+        <td>软件文档评审表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>ReportVerifyForm</td>
-        <td>测试报告检查表索引 ID</td>
+        <td>测试报告检查表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestFunctionForm</td>
-        <td>委托测试软件功能列表索引 ID</td>
+        <td>委托测试软件功能列表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestPlanForm</td>
-        <td>软件测试方案索引 ID</td>
+        <td>软件测试方案元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestReportForm</td>
-        <td>软件测试报告索引 ID</td>
+        <td>软件测试报告元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>TestWorkCheckForm</td>
-        <td>软件项目委托测试工作检查表索引 ID</td>
+        <td>软件项目委托测试工作检查表元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i>测试样品</i></td>
+        <td colspan="4" align="center"><i><b>样品元数据</b></i></td>
     </tr>
     <tr>
-    	<td>sample</td>
+    	<td>sampleMetadata</td>
         <td>样品 ID</td>
         <td>Long</td>
         <td>null</td>
@@ -556,10 +575,7 @@ public class TaskConfigConfigurer {
 </table>
 
 
-
-
-#### 4.3.1 填写委托
-
+参与者：
 
 
 
@@ -568,11 +584,43 @@ public class TaskConfigConfigurer {
 
 
 
-<img src="README.assets/image-20230511173205803.png" alt="image-20230511173205803" style="zoom: 60%;" />
+#### 4.3.2 审核委托
+
+![image-20230524111645680](README.assets/image-20230524111645680.png)
+
+##### 4.3.2.1 等待市场部主管分配市场部人员：
+
+参与者：
+
+
+
+需要产生的流程变量（任务完成条件）：
+
+
+
+任务时可读的表单：
+
+任务时可写的表单：
+
+任务后不可读的表单：
+
+任务后不可写的表单：
+
+
+
+任务时是否对样品有读或写权限：
+
+任务后是否对样品有读或写权限：
+
+
+
+特殊行为：
 
 
 
 #### 3.2 生成报价
+
+![image-20230524103858802](README.assets/image-20230524103858802.png)
 
 
 
@@ -598,7 +646,7 @@ public class TaskConfigConfigurer {
 
 #### 3.8 确认测试结果
 
-<img src="README.assets/image-20230511173527411.png" alt="image-20230511173527411" style="zoom:60%;" />
+
 
 #### 3.9 后续处理
 

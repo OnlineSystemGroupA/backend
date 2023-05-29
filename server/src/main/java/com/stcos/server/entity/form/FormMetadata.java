@@ -1,7 +1,6 @@
 package com.stcos.server.entity.form;
 
 import lombok.Data;
-import org.springframework.data.annotation.Persistent;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -19,19 +18,19 @@ import java.util.List;
  * @since 2023/5/17 9:51
  */
 @Data
-@Document(collection = "form_index")
+@Document(collection = "form_metadata")
 @NoArgsConstructor
-public class FormIndex {
+public class FormMetadata {
 
     /**
-     * 表单索引 ID，保存对象时由数据库自动赋值
+     * 表单元数据 ID，保存对象时由数据库自动赋值
      */
     @MongoId(targetType = FieldType.INT64)
     @AutoId
-    private long formIndexId=-1;
+    private long formMetadataId = -1;
 
     /**
-     * 表单索引对应表单的 ID
+     * 表单元数据对应表单的 ID
      */
     private Long formId = null;
 
@@ -70,26 +69,28 @@ public class FormIndex {
      */
     private List<String> writableUsers = new ArrayList<>();
 
-    /**
-     * 表单索引对应的表单实体，懒加载
-     */
-    @Persistent
-    private Form form = null;
-
-    public FormIndex(
+    public FormMetadata(
             Long formId,
             String formType,
             String createdBy,
             LocalDateTime createdDate,
             String lastModifiedBy,
-            LocalDateTime lastModifiedDate,
-            Form form) {
+            LocalDateTime lastModifiedDate) {
         this.formId = formId;
         this.formType = formType;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
-        this.form = form;
+    }
+
+    public boolean hasReadPermission(String userId) {
+        List<String> readableUsers = getReadableUsers();
+        return readableUsers != null && readableUsers.contains(userId);
+    }
+
+    public boolean hasWritePermission(String userId) {
+        List<String> writableUsers = getWritableUsers();
+        return writableUsers != null && writableUsers.contains(userId);
     }
 }

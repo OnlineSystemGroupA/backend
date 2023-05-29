@@ -2,6 +2,7 @@ package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
  */
 @Data
 @Accessors(fluent = true)
+@NoArgsConstructor
 @TableName(value = "t_test_report_form")
 public class TestReportForm extends Form {
     private String softwareName;
@@ -46,6 +48,15 @@ public class TestReportForm extends Form {
     private List<Reference> references;
     private List<FunctionTest> functionTests;
     private Map<String, List<GeneralTest>> tests; // String = efficiencyTests, portabilityTests, usabilityTests, reliabilityTests, or maintainabilityTests
+
+    public TestReportForm(String softwareName) {
+        this.softwareName = softwareName;
+    }
+
+    public TestReportForm(String softwareName, String softwareVersion) {
+        this.softwareName = softwareName;
+        this.softwareVersion = softwareVersion;
+    }
 
     @Data
     @Accessors(fluent = true)
