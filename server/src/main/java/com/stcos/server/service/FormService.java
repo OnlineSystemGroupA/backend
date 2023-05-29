@@ -29,6 +29,20 @@ public interface FormService {
      */
     void updateForm(Long formMetadataId, String formType, Form form) throws ServiceException;
 
+
+    /**
+     * 保存表单索引
+     * @param formMetadata 待保存的表单元数据
+     */
+    void saveFormMetadata(FormMetadata formMetadata);
+
+    /**
+     * 查找是否存在表单
+     * @param formMetadataId 表单元数据Id
+     * @return 存在表单则返回true
+     */
+    boolean existForm(long formMetadataId);
+
     void addWritePermission(long formMetadataId, String uid);
 
     void removeWritePermission(long formMetadataId, String uid);

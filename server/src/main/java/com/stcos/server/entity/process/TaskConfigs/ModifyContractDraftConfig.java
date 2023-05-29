@@ -7,21 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 客户确认测试报告
+ * 市场部修改合同草稿
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/22 18:40
+ * @since 2023/5/26 15:19
  */
-public class ConfirmTestReportConfig extends TaskConfig {
+public class ModifyContractDraftConfig extends TaskConfig {
 
-    public ConfirmTestReportConfig() {
-        super("确认测试报告", "您好！您的一份测试委托的报告已经生成，请尽快前往确认。");
+
+    public ModifyContractDraftConfig() {
+        super("修改合同草稿", "您好！之前提出的合同草稿不被用户接受。一项被指派给您的\"修改合同草稿\"任务已被创建，请尽快完成！");
     }
 
     @Override
     public List<String> getRequiredForms() {
         return new ArrayList<>();
     }
-
 }

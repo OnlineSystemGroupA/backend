@@ -1,7 +1,12 @@
 package com.stcos.server.entity.process;
 
 import com.stcos.server.entity.email.EmailContent;
+import com.stcos.server.service.FormService;
+import lombok.AllArgsConstructor;
+import org.flowable.engine.RuntimeService;
 import org.flowable.task.api.Task;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +18,7 @@ import java.util.Map;
  * @version 1.0
  * @since 2023/5/19 16:45
  */
+
 public abstract class TaskConfig {
 
     /**
@@ -31,9 +37,17 @@ public abstract class TaskConfig {
      * 判断当前任务是否满足完成条件
      *
      * @param task 当前任务对象
-     * @return ture 表示可被完成，否则不满足任务完成条件，不可被完成
+     * @return true 表示可被完成，否则不满足任务完成条件，不可被完成
      */
-    public abstract boolean isCompletable(Task task);
+    public boolean isCompletable(Task task, FormService formService){
+        List<String> requiredForms = getRequiredForms();
+        Map<String, Object> processVariables = task.getProcessVariables();
+        for (String requiredForm : requiredForms){
+            if(!formService.existForm((Long) processVariables.get(requiredForm)))
+                return false;
+        }
+        return true;
+    }
 
     /**
      * 获取当前任务阶段需要填写的表单

@@ -7,17 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 测试部生成测试报告
+ * description
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/22 18:54
+ * @since 2023/5/27 20:44
  */
-public class GenTestReportConfig extends TaskConfig {
+public class ModifyTestReportConfig extends TaskConfig {
 
-
-    public GenTestReportConfig() {
-        super("生成测试方案", "您好！一项被指派给您的\"生成测试报告\"任务已被创建，请尽快完成！");
+    public ModifyTestReportConfig() {
+        super("修改测试报告", "您好！之前提出的测试方案经审核未通过。一项被指派给您的\"修改测试报告\"任务已被创建，请尽快完成！");
     }
 
     @Override

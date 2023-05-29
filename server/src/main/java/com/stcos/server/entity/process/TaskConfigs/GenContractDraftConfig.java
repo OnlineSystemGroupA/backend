@@ -1,49 +1,29 @@
 package com.stcos.server.entity.process.TaskConfigs;
 
 import com.stcos.server.entity.process.TaskConfig;
+import org.flowable.task.api.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 生成合同草稿
+ * 市场部生成合同草稿
  *
  * @author kura
  * @version 1.0
  * @since 2023/5/22 18:50
  */
-public class GenContractDraftConfig implements TaskConfig {
+public class GenContractDraftConfig extends TaskConfig {
+
+    public GenContractDraftConfig() {
+        super("生成合同草稿", "您好！一项被指派给您的\"生成合同草稿\"任务已被创建，请尽快完成！");
+    }
+
+
     @Override
     public List<String> getRequiredForms() {
-        return null;
+        return new ArrayList<>();
     }
 
-    @Override
-    public String getEmailSubject() {
-        return null;
-    }
 
-    @Override
-    public String getEmailText() {
-        return null;
-    }
-
-    @Override
-    public List<String> getReadableForms() {
-        return null;
-    }
-
-    @Override
-    public List<String> getWritableForms() {
-        return null;
-    }
-
-    @Override
-    public List<String> getWillDisReadableForms() {
-        return null;
-    }
-
-    @Override
-    public List<String> getWillDisWritableForms() {
-        return null;
-    }
 }

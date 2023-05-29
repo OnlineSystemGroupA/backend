@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 客户确认测试报告
+ * 客户审核合同草稿
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/22 18:40
+ * @since 2023/5/26 15:15
  */
-public class ConfirmTestReportConfig extends TaskConfig {
+public class VerifyContractDraftConfig extends TaskConfig {
 
-    public ConfirmTestReportConfig() {
-        super("确认测试报告", "您好！您的一份测试委托的报告已经生成，请尽快前往确认。");
+    public VerifyContractDraftConfig() {
+        super("审核合同草稿", "您好！一份由您提起的软件测试委托已生成合同草稿，请尽快前方确认。");
     }
 
     @Override

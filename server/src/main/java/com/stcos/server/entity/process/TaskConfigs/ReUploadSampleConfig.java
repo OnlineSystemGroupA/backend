@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 客户确认测试报告
+ * 客户重新上传样品
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/22 18:40
+ * @since 2023/5/27 18:15
  */
-public class ConfirmTestReportConfig extends TaskConfig {
+public class ReUploadSampleConfig extends TaskConfig {
 
-    public ConfirmTestReportConfig() {
-        super("确认测试报告", "您好！您的一份测试委托的报告已经生成，请尽快前往确认。");
+    public ReUploadSampleConfig() {
+        super("重新上传样品", "您好！一份由您提起的软件测试委托中上传的样品审核未通过，请尽快重新上传。");
     }
 
     @Override
     public List<String> getRequiredForms() {
         return new ArrayList<>();
     }
+
 
 }

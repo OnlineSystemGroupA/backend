@@ -7,24 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 填写申请表
+ * 用户审核报价
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/21 22:43
+ * @since 2023/5/26 15:00
  */
-public class FillOutAppFormConfig extends TaskConfig {
+public class VerifyQuotationConfig extends TaskConfig {
 
-    public FillOutAppFormConfig() {
-        super(null, null);
+    public VerifyQuotationConfig() {
+        super("处理报价", "您好！一份由您提起的软件测试委托已生成报价，请尽快前方确认。");
     }
-
     @Override
     public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-            add("TestFunctionForm");
-        }};
+        return new ArrayList<>();
     }
 
 }

@@ -7,24 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 填写申请表
+ * description
  *
  * @author kura
  * @version 1.0
- * @since 2023/5/21 22:43
+ * @since 2023/5/27 18:10
  */
-public class FillOutAppFormConfig extends TaskConfig {
+public class VerifySampleConfig extends TaskConfig {
 
-    public FillOutAppFormConfig() {
-        super(null, null);
+    public VerifySampleConfig() {
+        super("审核样品", "您好！一项被指派给您的\"审核样品\"任务已被创建，请尽快完成！");
     }
 
     @Override
     public List<String> getRequiredForms() {
         return new ArrayList<>(){{
-            add("ApplicationForm");
-            add("TestFunctionForm");
+            add("DocumentReviewForm");
         }};
     }
+
 
 }

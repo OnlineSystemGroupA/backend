@@ -101,4 +101,9 @@ public class FormServiceImp implements FormService {
         formMetadata.removeWritePermission(uid);
         formMetadataRepository.saveFormMetadata(formMetadata);
     }
+
+    @Override
+    public void saveFormIndex(FormIndex formIndex) {
+
+    }
 }
