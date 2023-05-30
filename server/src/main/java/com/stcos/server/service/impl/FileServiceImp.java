@@ -2,11 +2,10 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.config.security.User;
 import com.stcos.server.database.mongo.SampleMetadataRepository;
-import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.database.mysql.FileMetadataMapper;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.SampleMetadata;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.database.mysql.FileMapper;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,24 +37,26 @@ public class FileServiceImp implements FileService {
         this.uploadDirectory = uploadDirectory;
     }
 
-    private FileMapper fileMapper;
+    private FileMetadataMapper fileMetadataMapper;
 
     @Autowired
-    public void setFileMapper(FileMapper fileMapper) {
-        this.fileMapper = fileMapper;
+    public void setFileMetadataMapper(FileMetadataMapper fileMetadataMapper) {
+        this.fileMetadataMapper = fileMetadataMapper;
     }
 
     private SampleMetadataRepository sampleMetadataRepository;
 
     @Autowired
-    public void setSampleMetadataRepository(SampleMetadataRepository sampleMetadataRepository){this.sampleMetadataRepository = sampleMetadataRepository;}
+    public void setSampleMetadataRepository(SampleMetadataRepository sampleMetadataRepository) {
+        this.sampleMetadataRepository = sampleMetadataRepository;
+    }
 
     @Override
-    public List<FileMetadataDto> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException {
         // 获取样品元数据
-        SampleMetadata sampleMetadata = sampleMetadataRepository.selectBySampleId(sampleMetadataId);
+        SampleMetadata sampleMetadata = sampleMetadataRepository.selectSampleMetadataById(sampleMetadataId);
 
-        // 获取当前登录用户，和当前样品的可写用户列表
+        // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
         // 判断当前登录用户是否具有上传权限
@@ -78,7 +79,7 @@ public class FileServiceImp implements FileService {
                 try {
                     Files.write(filePath, file.getBytes());
                     FileMetadata fileMetadata = new FileMetadata(uniqueFileName, file.getContentType(), file.getSize(), userId, LocalDateTime.now(), filePath.toString());
-                    fileMapper.saveFileMetadata(fileMetadata);
+                    fileMetadataMapper.saveFileMetadata(fileMetadata);
                     fileMetadataList.add(fileMetadata);
                 } catch (IOException e) {
                     throw new ServiceException(4); // 文件上传失败
@@ -89,12 +90,14 @@ public class FileServiceImp implements FileService {
             sampleMetadata.mergeFileMetadataList(fileMetadataList);
 
             // 保存样品元数据
-            sampleMetadataRepository.saveSample(sampleMetadata);
+            if (!sampleMetadata.isSavedInDatabase()) {
+                sampleMetadataRepository.saveSampleMetadata(sampleMetadata); // 数据库首次保存
+            } else {
+                sampleMetadataRepository.updateSampleMetadata(sampleMetadata); // 数据库更新
+            }
 
             // 返回样品文件摘要
-            return fileMetadataList.stream()
-                    .map(FileMetadataDto::new)
-                    .toList();
+            return fileMetadataList;
         } else {
             throw new ServiceException(1); // 无上传权限的异常
         }
@@ -122,9 +125,9 @@ public class FileServiceImp implements FileService {
     @Override
     public File downloadSample(String processId, Long sampleMetadataId) throws ServiceException {
         // 获取样品元数据
-        SampleMetadata sampleMetadata = sampleMetadataRepository.selectBySampleId(sampleMetadataId);
+        SampleMetadata sampleMetadata = sampleMetadataRepository.selectSampleMetadataById(sampleMetadataId);
 
-        // 获取当前登录用户，和当前样品的可读用户列表
+        // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
         // 判断当前登录用户是否具有下载权限
@@ -188,23 +191,20 @@ public class FileServiceImp implements FileService {
     @Override
     public void deleteSample(Long sampleMetadataId) throws ServiceException {
         // 获取样品元数据
-        SampleMetadata sampleMetadata = sampleMetadataRepository.selectBySampleId(sampleMetadataId);
+        SampleMetadata sampleMetadata = sampleMetadataRepository.selectSampleMetadataById(sampleMetadataId);
 
-        // 获取当前登录用户，和当前样品的可写用户列表
+        // 获取当前登录用户
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
-        List<String> writableUsers = sampleMetadata.getWritableUsers();
 
         // 判断当前登录用户是否具有删除权限
-        if (writableUsers != null && writableUsers.contains(userId)) {
+        if (sampleMetadata.hasWritePermission(userId)) {
             List<FileMetadata> fileMetadataList = sampleMetadata.getFileMetadataList();
             for (FileMetadata fileMetadata : fileMetadataList) {
                 try {
                     Path filePath = Paths.get(fileMetadata.getFilePath());
                     if (Files.exists(filePath)) {
-                        // 删除文件
-                        Files.delete(filePath);
-                        // 删除文件元数据
-                        fileMapper.deleteByFileMetadataId(fileMetadata.getFileMetadataId());
+                        Files.delete(filePath); // 删除文件
+                        fileMetadataMapper.deleteByFileMetadataId(fileMetadata.getFileMetadataId()); // 删除文件元数据
                     } else {
                         throw new ServiceException(2); // 文件不存在
                     }
@@ -214,7 +214,7 @@ public class FileServiceImp implements FileService {
             }
 
             // 删除样品元数据
-            sampleMetadataRepository.deleteBySampleId(sampleMetadata.getSampleMetadataId());
+            sampleMetadataRepository.deleteBySampleMetadataId(sampleMetadata.getSampleMetadataId());
         } else {
             throw new ServiceException(1); // 无删除权限的异常
         }

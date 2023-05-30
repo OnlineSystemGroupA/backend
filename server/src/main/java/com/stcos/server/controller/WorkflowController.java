@@ -2,6 +2,7 @@ package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.WorkflowApi;
 import com.stcos.server.entity.dto.*;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServerErrorException;
@@ -133,13 +134,13 @@ public class WorkflowController implements WorkflowApi {
     public ResponseEntity<List<FileIndexDto>> uploadSample(String processId, List<MultipartFile> files) {
         ResponseEntity<List<FileIndexDto>> response = null;
         try {
-            List<FileMetadataDto> fileMetadataDtoList = workflowService.uploadSample(processId, files);
-            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataDtoList.size());
-            for (FileMetadataDto fileMetadataDto : fileMetadataDtoList) {
+            List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, files);
+            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
+            for (FileMetadata fileMetadata : fileMetadataList) {
                 fileIndexDtoList.add(
-                        new FileIndexDto(fileMetadataDto.getFileMetadataId(),
-                                fileMetadataDto.getFileName(),
-                                fileMetadataDto.getFileType())
+                        new FileIndexDto(fileMetadata.getFileMetadataId(),
+                                fileMetadata.getFileName(),
+                                fileMetadata.getFileType())
                 );
             }
             response = ResponseEntity.ok(fileIndexDtoList);

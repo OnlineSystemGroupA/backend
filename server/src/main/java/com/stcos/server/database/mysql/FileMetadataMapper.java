@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.stcos.server.entity.file.FileMetadata;
 import org.springframework.stereotype.Repository;
 
-
 /**
  * description
  *
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface FileMapper extends BaseMapper<FileMetadata> {
+public interface FileMetadataMapper extends BaseMapper<FileMetadata> {
     default void saveFileMetadata(FileMetadata fileMetadata){
         insert(fileMetadata);
     }

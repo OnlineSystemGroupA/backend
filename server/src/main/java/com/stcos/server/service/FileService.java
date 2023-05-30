@@ -1,6 +1,6 @@
 package com.stcos.server.service;
 
-import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.exception.ServiceException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +15,7 @@ public interface FileService {
      * @param processId 指定流程实例 ID
      * @param sampleMetadataId 样品元数据 ID
      * @param files 样品文件列表
-     * @return 文件元数据列表
+     * @return 样品文件元数据列表
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          1: 用户无上传权限 <br>
@@ -23,7 +23,7 @@ public interface FileService {
      *                          3: 存储空间不足 <br>
      *                          4: 文件上传失败 <br>
      */
-    List<FileMetadataDto> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException;
+    List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException;
 
     /**
      * 下载样品

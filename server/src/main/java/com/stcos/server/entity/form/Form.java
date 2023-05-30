@@ -51,4 +51,8 @@ public abstract class Form {
         if (formClass == null) return null;
         return JSONUtil.parseObject(formData, formClass);
     }
+
+    public boolean isSavedInDatabase() {
+        return formId != -1;
+    }
 }

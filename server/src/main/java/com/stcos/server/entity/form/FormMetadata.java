@@ -93,4 +93,8 @@ public class FormMetadata {
         List<String> writableUsers = getWritableUsers();
         return writableUsers != null && writableUsers.contains(userId);
     }
+
+    public boolean isSavedInDatabase() {
+        return formMetadataId != -1;
+    }
 }
