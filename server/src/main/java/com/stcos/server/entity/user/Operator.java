@@ -12,13 +12,13 @@ import java.util.UUID;
 /**
  * 工作人员（测试方）
  *
- * @author
+ * @author Kekwy
  * @version 1.0
  * @since 2023/5/3 12:40
  */
 
 @Data
-public class Operator {
+public class Operator implements User {
 
     @TableId
     private String uid;
@@ -30,8 +30,6 @@ public class Operator {
 
     private String username;
 
-
-    @TableField(exist=false)
     private String realName;
 
 

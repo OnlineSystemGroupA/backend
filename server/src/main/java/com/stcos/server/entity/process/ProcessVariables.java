@@ -1,6 +1,6 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.config.security.User;
+import com.stcos.server.entity.user.User;
 import org.joda.time.LocalDateTime;
 
 import java.util.HashMap;

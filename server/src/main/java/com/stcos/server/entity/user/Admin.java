@@ -16,7 +16,7 @@ import java.util.UUID;
  * @since 2023/5/3 12:43
  */
 @Data
-public class Admin {
+public class Admin implements User {
 
     @TableId
     private String uid;
@@ -42,4 +42,13 @@ public class Admin {
         this.username = username;
     }
 
+    @Override
+    public String getEmail() {
+        return null;
+    }
+
+    @Override
+    public String getRealName() {
+        return null;
+    }
 }

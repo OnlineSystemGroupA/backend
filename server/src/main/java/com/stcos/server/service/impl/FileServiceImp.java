@@ -1,6 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.config.security.User;
+import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.SampleMetadata;

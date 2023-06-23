@@ -2,8 +2,6 @@ CREATE DATABASE IF NOT EXISTS stcos;
 
 USE stcos;
 
-# DROP TABLE IF EXISTS user;
-
 CREATE TABLE IF NOT EXISTS t_admin
 (
     uid                     VARCHAR(64) NOT NULL,
@@ -20,8 +18,10 @@ CREATE TABLE IF NOT EXISTS t_admin
 CREATE TABLE IF NOT EXISTS t_operator
 (
     uid                     VARCHAR(64) NOT NULL,
-    password                VARCHAR(64) DEFAULT NULL,
-    username                VARCHAR(30) NOT NULL,
+    password                VARCHAR(64) DEFAULT NULL,   # 密码
+    username                VARCHAR(32) NOT NULL,       # 用户名
+    realName                VARCHAR(32) NOT NULL,       # 姓名
+    email                   VARCHAR(32) NOT NULL,       # 邮箱
     account_non_expired     BOOLEAN     DEFAULT TRUE,
     account_non_locked      BOOLEAN     DEFAULT TRUE,
     credentials_non_expired BOOLEAN     DEFAULT TRUE,
@@ -33,9 +33,10 @@ CREATE TABLE IF NOT EXISTS t_operator
 CREATE TABLE IF NOT EXISTS t_client
 (
     uid                     VARCHAR(64) NOT NULL,
-    password                VARCHAR(64) DEFAULT NULL,
-    username                VARCHAR(30) NOT NULL,
-    email                   VARCHAR(20) DEFAULT NULL,
+    password                VARCHAR(64) DEFAULT NULL,   # 密码
+    username                VARCHAR(32) NOT NULL,       # 用户名
+    realName                VARCHAR(32) NOT NULL,       # 姓名
+    email                   VARCHAR(32) NOT NULL,       # 邮箱
     account_non_expired     BOOLEAN     DEFAULT TRUE,
     account_non_locked      BOOLEAN     DEFAULT TRUE,
     credentials_non_expired BOOLEAN     DEFAULT TRUE,
@@ -44,31 +45,11 @@ CREATE TABLE IF NOT EXISTS t_client
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS t_authority
+CREATE TABLE IF NOT EXISTS t_setting
 (
-    authority_id         VARCHAR(64) NOT NULL,
-    authority_name       VARCHAR(10) NOT NULL
+    setting_key VARCHAR(64) NOT NULL,
+    setting_val VARCHAR(64) NOT NULL,
+    PRIMARY KEY (setting_key)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS t_user_authority
-(
-    uid             VARCHAR(64) NOT NULL,
-    authority_id    VARCHAR(64) NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-
-
-CREATE TABLE IF NOT EXISTS t_role
-(
-    role_id      VARCHAR(64) NOT NULL,
-    role_name    VARCHAR(10) NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-
-CREATE TABLE IF NOT EXISTS t_user_role
-(
-    uid         VARCHAR(64) NOT NULL,
-    role_id     VARCHAR(64) NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;

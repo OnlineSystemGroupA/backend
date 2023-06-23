@@ -1,6 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.config.security.User;
+import com.stcos.server.entity.user.User;
 import com.stcos.server.database.mongo.FormRepository;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;

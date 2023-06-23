@@ -4,6 +4,11 @@ package com.stcos.server.entity.user;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -15,7 +20,7 @@ import java.util.UUID;
  */
 @Data
 @NoArgsConstructor
-public class Client {
+public class Client implements User {
 
     /**
      * primary key settings
@@ -32,6 +37,11 @@ public class Client {
      * 密码
      */
     private String password;
+
+    /**
+     * 用户的真名
+     */
+    private String realName;
 
     /**
      * 邮箱
@@ -65,4 +75,10 @@ public class Client {
         this.password = password;
         this.email = email;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+    }
+
 }

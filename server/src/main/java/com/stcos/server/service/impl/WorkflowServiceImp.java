@@ -1,20 +1,17 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.config.security.User;
+import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariables;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.service.FileService;
-import com.stcos.server.service.FormService;
-import com.stcos.server.service.WorkflowService;
+import com.stcos.server.service.*;
 import com.stcos.server.util.TaskUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -52,6 +49,21 @@ public class WorkflowServiceImp implements WorkflowService {
     public void setFileService(FileService fileService) {
         this.fileService = fileService;
     }
+
+    private OperatorService operatorService;
+
+    @Autowired
+    public void setOperatorService(OperatorService operatorService) {
+        this.operatorService = operatorService;
+    }
+
+    private SettingService settingService;
+
+    @Autowired
+    public void setSettingService(SettingService settingService) {
+        this.settingService = settingService;
+    }
+
 
     @Override
     public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
@@ -222,4 +234,5 @@ public class WorkflowServiceImp implements WorkflowService {
     public List<FormMetadata> getFormMetadata(String processId) throws ServiceException {
         return null;
     }
+
 }

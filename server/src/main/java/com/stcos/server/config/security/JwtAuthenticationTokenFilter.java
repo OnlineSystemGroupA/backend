@@ -36,9 +36,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private UserDetailsFactory userDetailsFactory;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -55,11 +52,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 try {
                     switch (usertype) {
                         case "client" ->
-                                userDetails = userDetailsFactory.getUserDetails(accountService.getClient(username));
+                                userDetails = accountService.getClient(username);
                         case "operator" ->
-                                userDetails = userDetailsFactory.getUserDetails(accountService.getOperator(username));
+                                userDetails = accountService.getOperator(username);
                         case "admin" ->
-                                userDetails = userDetailsFactory.getUserDetails(accountService.getAdmin(username));
+                                userDetails = accountService.getAdmin(username);
                         default -> {
                             filterChain.doFilter(request, response);
                             return;
