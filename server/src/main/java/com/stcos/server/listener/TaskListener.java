@@ -3,6 +3,7 @@ package com.stcos.server.listener;
 import com.stcos.server.service.EmailService;
 import com.stcos.server.service.FormService;
 import com.stcos.server.util.TaskUtil;
+import org.flowable.common.engine.api.delegate.Expression;
 import org.flowable.engine.impl.el.FixedValue;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,18 +64,18 @@ public class TaskListener implements org.flowable.task.service.delegate.TaskList
         }
     }
 
-    private FixedValue assigneeExpression;
+    private Expression assigneeEmail;
 
     private void sendEmail(DelegateTask task) {
         String subject = TaskUtil.getEmailSubject(task.getName());
         String text = TaskUtil.getEmailText(task.getName(), null);
-        System.out.println(assigneeExpression.getExpressionText());
-        String to = (String) task.getVariable("${" + assigneeExpression.getExpressionText() + ".getEmail()}");
-        System.out.println(to);
+        String to = (String) assigneeEmail.getValue(task);
         emailService.sendEmail(to, subject, text);
     }
 
-    public void create(DelegateTask task) {
+    protected void create(DelegateTask task) {
+        String to = (String) assigneeEmail.getValue(task);
+        System.out.println(to);
         // 更新流程变量
         updateTaskParam(task);
         // 为被分配人开启对应表单的写权限
@@ -83,7 +84,7 @@ public class TaskListener implements org.flowable.task.service.delegate.TaskList
         sendEmail(task);
     }
 
-    public void complete(DelegateTask task) {
+    protected void complete(DelegateTask task) {
 
         // 为被分配人关闭对应表单的写权限
         closeWritePermission(task);

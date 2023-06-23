@@ -4,6 +4,7 @@ import com.stcos.server.config.security.User;
 import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.entity.process.ProcessVariables;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.FormService;
@@ -61,7 +62,7 @@ public class WorkflowServiceImp implements WorkflowService {
             throw new ServiceException(0);
         }
 
-        if(TaskUtil.isCompletable(task, formService)){
+        if (TaskUtil.isCompletable(task, formService)) {
             taskService.complete(task.getId());
             task.getProcessVariables().replace("passable", passable);
         }
@@ -184,32 +185,19 @@ public class WorkflowServiceImp implements WorkflowService {
         }};
     }
 
-    private HashMap<String, Object> getProcessVariables(String startUserId) {
+    private HashMap<String, Object> getProcessVariables(User startUser) {
         HashMap<String, Object> processVariables = new HashMap<>();
-        processVariables.put("passable", true);              // 流程控制变量
-        processVariables.put("description", null);           // 已完成的最后一个任务分配人的描述
-        processVariables.put("client", startUserId);        // 流程发起人ID
-        processVariables.put("marketingManager", null);
-        processVariables.put("testingManager", null);
-        processVariables.put("qualityManager", null);
-        processVariables.put("signatory", null);
-        processVariables.put("marketingOperator", null);
-        processVariables.put("testingOperator", null);
-        processVariables.put("startDate", new LocalDateTime()); // 流程启动时间
-        processVariables.put("finishDate", null);            // 流程结束时间
-        processVariables.put("state", "进行中");              // 流程状态
-        processVariables.put("currentTask", "填写申请表");     // 当前正在进行的任务
-        processVariables.put("Sample", null);                // 样品
+
         HashMap<String, Boolean> allForms = getAllForms();
         for (Map.Entry<String, Boolean> entry : allForms.entrySet()) {
             String formName = entry.getKey();
             FormMetadata formMetadata = new FormMetadata();
             formMetadata.setFormName(formName);
             if (entry.getValue()) {
-                formMetadata.addReadPermission(startUserId);
+                formMetadata.addReadPermission(startUser.getUid());
             }
-            processVariables.put(formName, formMetadata);
             formService.saveFormMetadata(formMetadata);
+            processVariables.put(formName, formMetadata.getFormMetadataId());
         }
         return processVariables;
     }
@@ -217,13 +205,16 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public String startProcess() throws ServiceException {
         // 获取当前登录用户，使用其 id 设置任务发起人
-        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
+        User client = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // 查找当前平台上的各主管以及授权签字人信息
 
-        // 初始化流程变量，创建
-        HashMap<String, Object> processVariables = getProcessVariables(userId);
+        // 初始化流程变量，创建 ProcessVariables 对象
+        Map<String, Object> processVariables = new ProcessVariables(client, null,
+                null, null, null);
+
+        // 使用 ProcessVariables 对象创建新流程实例
         ProcessInstance processInstance =
-                runtimeService.startProcessInstanceByKey("workflow", processVariables);
-
+                runtimeService.startProcessInstanceByKey("workfloww", processVariables);
         return processInstance.getProcessInstanceId();
     }
 

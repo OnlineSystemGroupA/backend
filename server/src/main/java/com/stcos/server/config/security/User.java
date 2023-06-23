@@ -35,4 +35,8 @@ public class User implements org.springframework.security.core.userdetails.UserD
     boolean credentialsNonExpired;
 
     boolean enabled;
+
+    public String getRealName() {
+        return null;
+    }
 }

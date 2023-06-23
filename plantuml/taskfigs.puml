@@ -1,0 +1,122 @@
+@startuml
+
+skin rose
+
+skinparam groupInheritance 1
+skinparam linetype ortho
+
+class GenContractDraftConfig {
++ List<String> getRequiredForms()
+}
+class GenTestReportConfig {
++ List<String> getRequiredForms()
+}
+abstract class TaskConfig {
++ boolean isCompletable(Task,FormService)
++ {abstract}List<String> getRequiredForms()
++ String getEmailSubject()
++ String getEmailText(Map<String,String>)
+}
+class ArchiveConfig {
++ List<String> getRequiredForms()
+}
+class ModifyQuotationConfig {
++ List<String> getRequiredForms()
+}
+class ModifyContractDraftConfig {
++ List<String> getRequiredForms()
+}
+class VerifySampleConfig {
++ List<String> getRequiredForms()
+}
+class AssignMarketingOperatorConfig {
++ boolean isCompletable(Task,FormService)
++ List<String> getRequiredForms()
+}
+class VerifyContractDraftConfig {
++ List<String> getRequiredForms()
+}
+class FillOutAppFormConfig {
++ List<String> getRequiredForms()
+}
+class ConfirmTestReportConfig {
++ List<String> getRequiredForms()
+}
+class VerifyApplicationConfig {
++ List<String> getRequiredForms()
+}
+class ReUploadSampleConfig {
++ List<String> getRequiredForms()
+}
+class VerifyQuotationConfig {
++ List<String> getRequiredForms()
+}
+class VerifyTestReportConfig {
++ List<String> getRequiredForms()
+}
+class GenTestPlanConfig {
++ List<String> getRequiredForms()
+}
+class SendTestReportConfig {
++ List<String> getRequiredForms()
+}
+class VerifyTestPlanConfig {
++ List<String> getRequiredForms()
+}
+class AssignTestingOperatorConfig {
++ boolean isCompletable(Task,FormService)
++ List<String> getRequiredForms()
+}
+class ModifyApplicationConfig {
++ List<String> getRequiredForms()
+}
+class ModifyTestPlanConfig {
++ List<String> getRequiredForms()
+}
+class GenQuotationConfig {
++ List<String> getRequiredForms()
+}
+class ModifyTestReportConfig {
++ List<String> getRequiredForms()
+}
+class ModifyContractConfig {
++ List<String> getRequiredForms()
+}
+class VerifyContractConfig {
++ List<String> getRequiredForms()
+}
+class UploadSampleConfig {
++ List<String> getRequiredForms()
+}
+class FillOutContractConfig {
++ List<String> getRequiredForms()
+}
+
+
+TaskConfig <|-- GenContractDraftConfig
+TaskConfig <|-- GenTestReportConfig
+TaskConfig <|-- ArchiveConfig
+TaskConfig <|-- ModifyQuotationConfig
+TaskConfig <|--- ModifyContractDraftConfig
+TaskConfig <|--- VerifySampleConfig
+TaskConfig <|--- AssignMarketingOperatorConfig
+TaskConfig <|--- VerifyContractDraftConfig
+TaskConfig <|---- FillOutAppFormConfig
+TaskConfig <|---- ConfirmTestReportConfig
+TaskConfig <|---- VerifyApplicationConfig
+TaskConfig <|---- ReUploadSampleConfig
+TaskConfig <|---- VerifyQuotationConfig
+TaskConfig <|---- VerifyTestReportConfig
+TaskConfig <|---- GenTestPlanConfig
+TaskConfig <|---- SendTestReportConfig
+TaskConfig <|---- VerifyTestPlanConfig
+TaskConfig <|---- AssignTestingOperatorConfig
+TaskConfig <|--- ModifyApplicationConfig
+TaskConfig <|--- ModifyTestPlanConfig
+TaskConfig <|--- GenQuotationConfig
+TaskConfig <|--- ModifyTestReportConfig
+TaskConfig <|-- ModifyContractConfig
+TaskConfig <|-- VerifyContractConfig
+TaskConfig <|-- UploadSampleConfig
+TaskConfig <|-- FillOutContractConfig
+@enduml

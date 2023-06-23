@@ -1,0 +1,28 @@
+@startuml
+
+skin rose
+
+class FillOutAppFormListener {
+# void create(DelegateTask)
+}
+class AssignMarketingOperatorListener {
+# void create(DelegateTask)
+}
+class AssignTestingOperatorListener {
+# void create(DelegateTask)
+}
+class TaskListener {
+# void create(DelegateTask)
+# void complete(DelegateTask)
++ void notify(DelegateTask)
+}
+
+interface "org.flowable.task.service.delegate.TaskListener" as a {
++ void notify(DelegateTask)
+}
+
+TaskListener <|-- FillOutAppFormListener
+TaskListener <|-- AssignMarketingOperatorListener
+TaskListener <|-- AssignTestingOperatorListener
+a <|.. TaskListener
+@enduml

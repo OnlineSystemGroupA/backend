@@ -328,9 +328,7 @@ public class ProcessVariable extends HashMap<String, Object> {
 
 #### 4.1.2 任务配置
 
-// TODO UML 图
-
-
+![taskfigs](README.assets/taskfigs-1685414579167-2.svg)
 
 **定义**
 
@@ -338,37 +336,45 @@ public class ProcessVariable extends HashMap<String, Object> {
 
 任务配置接口中的各方法以及描述如下：
 
-| 方法名                  | 描述                                                         | 返回值        |
-| ----------------------- | ------------------------------------------------------------ | ------------- |
-| getRequiredForms        | 获取完成任务需要提供的表单，用于判断当前任务是否满足完成条件 | List\<String> |
-| getEmailSubject         | 获取通知邮件的主题                                           | String        |
-| getEmailText            | 获取通知邮件的正文                                           | String        |
-| getReadableForms        | 获取任务创建时，需要为被分配人打开读权限的表单               | List\<String> |
-| getWritableForms        | 获取任务创建时，需要为被分配人打开写权限的表单               | List\<String> |
-| getWillDisReadableForms | 获取任务完成时，需要关闭被分配人读权限的表单                 | List\<String> |
-| getWillDisWritableForms | 获取任务完成时，需要关闭被分配人写权限的表单                 | List\<String> |
+| 方法名           | 描述                                                         | 返回值        |
+| ---------------- | ------------------------------------------------------------ | ------------- |
+| getRequiredForms | 获取完成任务需要提供的表单，用于判断当前任务是否满足完成条件 | List\<String> |
+| getEmailSubject  | 获取通知邮件的主题                                           | String        |
+| getEmailText     | 获取通知邮件的正文                                           | String        |
+| isCompletable    | 根据当前任务环境判断当前任务是否可被完成                     | boolean       |
 
-**部署**
+**工具类**
 
-在完成任务配置的定义之后，需要通过创建 bean 的方式建立任务名与任务配置对象的对象关系，需要获取任务配置时将通过任务名从中查询任务配置对象，代码示例如下（软件包：com.stcos.server.config.workflow）：
+在完成任务配置的定义之后，通过在工具类中创建 Map 的方式建立任务名与任务配置对象的对象关系，需要获取任务配置时将通过任务名从中查询任务配置对象并调用对应的方法，代码示例如下（软件包：com.stcos.server.util）：
 
 ```java
-@Configuration
-public class TaskConfigConfigurer {
-    
-    @Bean
-    public Map<String, List<TaskConfig>> taskConfigMap() {
-        return new HashMap<>(){{
-            put("填写委托", null); // 创建任务对象的配置类对象，并建立对应关系
-        }};
+@UtilityClass
+public class TaskUtil {
+
+    private final Map<String, TaskConfig> TASK_CONFIG_MAP = new HashMap<>() {{
+        put("填写申请表", new FillOutAppFormConfig());
+
+        put("分配市场部人员", new AssignMarketingOperatorConfig());
+        put("分配测试部人员", new AssignTestingOperatorConfig());
+        ...
+    }};
+
+    public boolean isCompletable(Task task, FormService formService) {
+        ...
     }
-    
-}
+
+    public List<String> getRequiredForms(String taskName) {
+        ...
+    }
+
+    public String getEmailSubject(String taskName) {
+        ...
+    }
+
+    public String getEmailText(String taskName, Map<String, String> variables) {
+        ...
+    }
 ```
-
-
-
-
 
 ### 4.2 基本操作
 
@@ -388,43 +394,55 @@ public class TaskConfigConfigurer {
 
 > 任务的初始化与后处理
 
-创建任务：
+<img src="README.assets/tasklistener.svg" alt="tasklistener" style="zoom: 80%;" />
 
-重置任务参数；
+1\. 任务监听器的主要职责：
 
-为被分配人开启对应的表单的读或写权限；
+​	创建任务：
 
-判断是否需要为被分配人开启样品的读或写权限；
+​	重置任务参数；
 
-更新流程摘要和流程详情；
+​	为被分配人开启对应的表单的读或写权限；
 
-发送邮箱通知被分配人。
+​	判断是否需要为被分配人开启样品的读或写权限；
 
-完成任务：
+​	更新流程摘要和流程详情；
 
-关闭被分配人对应表单的读/写权限；
+​	发送邮箱通知被分配人。
 
-判断是否需要关闭被分配人对样品的读或写权限；
+​	完成任务：
 
-更新流程摘要和流程详情。
+​	关闭被分配人对应表单的读/写权限；
+
+​	判断是否需要关闭被分配人对样品的读或写权限；
+
+​	更新流程摘要和流程详情。
+
+2\. 各任务监听器的详细职责：
+
+| 监听器\事件  | create | complete |
+| ------------ | ------ | -------- |
+| TaskListener |        |          |
+|              |        |          |
+|              |        |          |
 
 #### 4.2.4 上传表单
 
-<img src="README.assets/%E4%B8%8A%E4%BC%A0%E8%A1%A8%E5%8D%95%E5%BA%8F%E5%88%97%E5%9B%BE.svg" alt="上传表单序列图" style="zoom:67%;" />
+
 
 #### 4.2.5 查看表单
 
-<img src="README.assets/%E6%9F%A5%E7%9C%8B%E8%A1%A8%E5%8D%95%E5%BA%8F%E5%88%97%E5%9B%BE.svg" alt="查看表单序列图" style="zoom: 70%;" />
+
 
 #### 4.2.6 上传样品
 
-<img src="README.assets/%E4%B8%8A%E4%BC%A0%E6%A0%B7%E5%93%81%E5%BA%8F%E5%88%97%E5%9B%BE-1684507109584-26.svg" alt="上传样品序列图" style="zoom:80%;" />
+![上传样品序列图](README.assets/%E4%B8%8A%E4%BC%A0%E6%A0%B7%E5%93%81%E5%BA%8F%E5%88%97%E5%9B%BE-1685421167942-5.svg)
 
 
 
 #### 4.2.7 下载样品
 
-<img src="README.assets/%E4%B8%8B%E8%BD%BD%E6%A0%B7%E5%93%81%E5%BA%8F%E5%88%97%E5%9B%BE-1684506964314-24.svg" alt="下载样品序列图" style="zoom:80%;" />
+
 
 #### 4.2.8 删除样品或部分文件
 
@@ -469,52 +487,52 @@ public class TaskConfigConfigurer {
     </tr>
     <tr>
     	<td>client</td>
-        <td>发起委托流程的客户 ID</td>
-        <td>String</td>
-        <td>根据流程启动时的用户 ID 设置</td>
+        <td>发起委托流程的客户</td>
+        <td>User</td>
+        <td>根据流程启动时的用户设置</td>
     </tr>
     <tr>
     	<td>marketingManager</td>
-        <td>市场部主管 ID</td>
-        <td>String</td>
-        <td>根据当前平台的市场部主管 ID 设置</td>
+        <td>市场部主管</td>
+        <td>User</td>
+        <td>根据当前平台的市场部主管设置</td>
     </tr>
     <tr>
     	<td>testingManager</td>
-        <td>测试部主管 ID</td>
-        <td>String</td>
-        <td>根据当前平台的测试部主管 ID 设置</td>
+        <td>测试部主管</td>
+        <td>User</td>
+        <td>根据当前平台的测试部主管设置</td>
     </tr>
     <tr>
     	<td>qualityManager</td>
-        <td>质量部主管 ID</td>
-        <td>String</td>
-        <td>根据当前平台的质量部主管 ID 设置</td>
+        <td>质量部主管</td>
+        <td>SUser</td>
+        <td>根据当前平台的质量部主管设置</td>
     </tr>
     <tr>
     	<td>signatory</td>
-        <td>授权签字人 ID</td>
-        <td>String</td>
-        <td>根据当前平台的授权签字人 ID 设置</td>
+        <td>授权签字人</td>
+        <td>User</td>
+        <td>根据当前平台的授权签字人设置</td>
     </tr>
     <tr>
     	<td>marketingOperator</td>
-        <td>市场部工作人员 ID</td>
-        <td>String</td>
+        <td>市场部工作人员</td>
+        <td>User</td>
         <td>null</td>
     </tr>
     <tr>
     	<td>testingOperator</td>
-        <td>测试部工作人员 ID</td>
-        <td>String</td>
+        <td>测试部工作人员</td>
+        <td>User</td>
         <td>null</td>
     </tr>
     <tr>
-        <td colspan="4" align="center"><i><b>流程摘要</b></i></td>
+        <td colspan="4" align="center"><i><b>项目简介</b></i></td>
     </tr>
     <tr>
     	<td>title</td>
-        <td>软件项目名称</td>
+        <td>待测试的软件项目名称</td>
         <td>String</td>
         <td>null</td>
     </tr>
@@ -526,7 +544,7 @@ public class TaskConfigConfigurer {
     </tr>
     <tr>
     	<td>startDate</td>
-        <td>流程启动日期</td>
+        <td>流程发起日期</td>
         <td>LocalDateTime</td>
         <td>根据流程启动时的系统时间设置</td>
     </tr>
@@ -604,245 +622,43 @@ public class TaskConfigConfigurer {
     </tr>
     <tr>
     	<td>sampleMetadata</td>
-        <td>样品 ID</td>
+        <td>样品元数据 ID</td>
         <td>Long</td>
         <td>null</td>
     </tr>
 </table>
 
+
 #### 4.3.1 填写申请表
 
+| 任务名     | 参与者           | 需要产生的流程变量                | 备注                                                         |
+| ---------- | ---------------- | --------------------------------- | ------------------------------------------------------------ |
+| 填写申请表 | 客户#1（client） | ApplicationForm、TestFunctionForm | 更新<u>流程摘要</u>中的<u>项目标题</u><br />更新<u>流程详情</u> |
 
-
-参与者：客户
-
-
-
-需要产生的流程变量（任务完成条件）：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-
-
-
-任务时可读的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-
-任务时可写的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-
-任务后不可读的表单：无 【】
-
-任务后不可写的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-
-
-
-任务时是否对样品有读或写权限：否
-
-任务后是否对样品有读或写权限：否
-
-
-
-特殊行为：更新流程摘要
+- ApplicationForm：NST－04－JS002－2018－软件项目委托测试申请表.docx；
+- TestFunctionForm：NST－04－JS003－2018－委托测试软件功能列表.doc。
 
 
 #### 4.3.2 审核委托
 
 ![image-20230524111645680](README.assets/image-20230524111645680.png)
 
+| 任务名                       | 参与者                                | 需要产生的流程变量                | 备注                 |
+| ---------------------------- | ------------------------------------- | --------------------------------- | -------------------- |
+| 等待市场部主管分配市场部人员 | 市场部主管#2（marketingManager）      | marketingOperator                 | 定义市场部工作人员#3 |
+| 等待测试部主管分配测试部人员 | 测试部主管#4（testingManager）        | testingOperator                   | 定义测试部工作人员#5 |
+| 市场部审核委托               | 市场部工作人员#3（marketingOperator） | ApplicationVerifyForm             |                      |
+| 测试部审核委托               | 测试部工作人员#5（testingOperator）   | ApplicationVerifyForm             |                      |
+| 市场部审核不通过修改委托     | 客户#1（client）                      | ApplicationForm、TestFunctionForm |                      |
+| 测试部审核不通过修改委托     | 客户#1（client）                      | ApplicationForm、TestFunctionForm |                      |
+
+- marketingOperator：市场部工作人员；
+- testingOperator：测试部工作人员；
+- ApplicationVerifyForm：NST－04－JS002－2018－软件项目委托测试申请表.docx（审核信息部分）；
+- ApplicationForm：NST－04－JS002－2018－软件项目委托测试申请表.docx；
+- TestFunctionForm：NST－04－JS003－2018－委托测试软件功能列表.doc。
 
 
-
-
-4.3.2.1 等待市场部主管分配市场部人员：
-
-参与者：市场部主管
-
-
-
-需要产生的流程变量（任务完成条件）：市场部员工
-
-
-
-任务时可读的表单：NST－04－JS002－2018－软件项目委托测试申请表.docx
-
-任务时可写的表单：无
-
-任务后不可读的表单：无
-
-任务后不可写的表单：无
-
-
-
-任务时是否对样品有读或写权限：否
-
-任务后是否对样品有读或写权限：否
-
-
-
-特殊行为：无
-
-
-
-
-
-
-
-****
-
-等待测试部主管分配测试部人员
-
-参与者：测试部主管
-
-
-
-需要产生的流程变量（任务完成条件）：测试部员工
-
-
-
-任务时可读的表单：NST－04－JS002－2018－软件项目委托测试申请表.docx
-
-任务时可写的表单：无
-
-任务后不可读的表单：无
-
-任务后不可写的表单：无
-
-
-
-任务时是否对样品有读或写权限：否
-
-任务后是否对样品有读或写权限：否
-
-
-
-特殊行为：无
-
-****
-
-
-
-市场部审核委托
-
-参与者：市场部员工
-
-
-
-需要产生的流程变量（任务完成条件）：NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-
-
-任务时可读的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-- NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-任务时可写的表单：NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-任务后不可读的表单：无
-
-任务后不可写的表单：NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-
-
-任务时是否对样品有读或写权限：否
-
-任务后是否对样品有读或写权限：否
-
-
-
-特殊行为：无
-
-****
-
-市场部审核不通过，修改委托
-
-
-
-参与者：客户
-
-
-
-需要产生的流程变量（任务完成条件）：NST－04－JS002－2018－软件项目委托测试申请表.docx
-
-
-
-任务时可读的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-- NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-任务时可写的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-
-
-
-任务后不可读的表单：无
-
-任务后不可写的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-
-任务时是否对样品有读或写权限：否
-
-任务后是否对样品有读或写权限：否
-
-
-
-特殊行为：更新流程摘要
-
-
-
-****
-
-测试部审核委托
-
-
-
-参与者：测试部员工
-
-
-
-需要产生的流程变量（任务完成条件）：NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-
-
-任务时可读的表单：
-
-- NST－04－JS002－2018－软件项目委托测试申请表.docx
-- NST－04－JS003－2018－委托测试软件功能列表.doc
-- NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-任务时可写的表单：NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-任务后不可读的表单：无
-
-任务后不可写的表单：NST－04－JS002－2018－软件项目委托测试申请表.docx（后半
-
-
-
-任务时是否对样品有读或写权限：否
-
-任务后是否对样品有读或写权限：否
-
-
-
-特殊行为：无
 
 #### 3.2 生成报价
 
