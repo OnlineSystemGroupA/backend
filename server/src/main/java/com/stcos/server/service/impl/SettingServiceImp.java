@@ -21,7 +21,7 @@ public class SettingServiceImp extends ServiceImpl<SettingMapper, Setting> imple
     @Override
     public String getMarketingManager() {
         try {
-            return baseMapper.selectByKey("marketingManager").getVal();
+            return baseMapper.selectById("marketingManager").getSettingVal();
         } catch (NullPointerException e) {
             // 一般情况下，该返回值不能为 null，
             // 若为 null 则说明发生错误
@@ -32,7 +32,7 @@ public class SettingServiceImp extends ServiceImpl<SettingMapper, Setting> imple
     @Override
     public String getTestingManager() {
         try {
-            return baseMapper.selectByKey("testingManager").getVal();
+            return baseMapper.selectById("testingManager").getSettingVal();
         } catch (NullPointerException e) {
             throw new ServerErrorException(e);
         }
@@ -41,7 +41,7 @@ public class SettingServiceImp extends ServiceImpl<SettingMapper, Setting> imple
     @Override
     public String getQualityManager() {
         try {
-            return baseMapper.selectByKey("qualityManager").getVal();
+            return baseMapper.selectById("qualityManager").getSettingVal();
         } catch (NullPointerException e) {
             throw new ServerErrorException(e);
         }
@@ -50,7 +50,7 @@ public class SettingServiceImp extends ServiceImpl<SettingMapper, Setting> imple
     @Override
     public String getSignatory() {
         try {
-            return baseMapper.selectByKey("signatory").getVal();
+            return baseMapper.selectById("signatory").getSettingVal();
         } catch (NullPointerException e) {
             throw new ServerErrorException(e);
         }

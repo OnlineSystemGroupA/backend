@@ -1,10 +1,12 @@
 package com.stcos.server.entity.form;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.stcos.server.util.ListTypeHandler;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.apache.ibatis.type.JdbcType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,21 +20,19 @@ import java.util.List;
  * @since 2023/5/17 9:51
  */
 @Data
-@Document(collection = "form_metadata")
 @NoArgsConstructor
 public class FormMetadata {
 
     /**
      * 表单元数据 ID，保存对象时由数据库自动赋值
      */
-    @MongoId(targetType = FieldType.INT64)
-    @AutoId
-    private long formMetadataId = -1;
+    @TableId(type = IdType.AUTO)
+    private Long formMetadataId;
 
     /**
      * 表单元数据对应表单的 ID
      */
-    private Long formId = null;
+    private long formId = -1;
 
     /**
      * 表单类型
@@ -62,18 +62,18 @@ public class FormMetadata {
     /**
      * 对表单具有读权限用户的 ID 列表
      */
+    @TableField(jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> readableUsers = new ArrayList<>();
 
     /**
      * 对表单具有写权限用户的 ID 列表
      */
+    @TableField(jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> writableUsers = new ArrayList<>();
 
     public FormMetadata(
-            Long formId,
             String formName,
             String createdBy) {
-        this.formId = formId;
         this.formName = formName;
         this.createdBy = createdBy;
         this.createdDate = LocalDateTime.now();

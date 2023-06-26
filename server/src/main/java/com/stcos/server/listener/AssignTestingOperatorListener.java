@@ -12,7 +12,7 @@ import org.flowable.task.service.delegate.DelegateTask;
 public class AssignTestingOperatorListener extends TaskListener {
 
     @Override
-    protected void create(DelegateTask task) {
+    public void create(DelegateTask task) {
         super.create(task);
     }
 }

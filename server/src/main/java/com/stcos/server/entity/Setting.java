@@ -1,6 +1,7 @@
 package com.stcos.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -14,10 +15,10 @@ import lombok.Data;
 @Data
 public class Setting {
 
-    @TableField(value = "setting_key")
-    private String key;
+    @TableId(value = "setting_key")
+    private String settingKey;
 
     @TableField(value = "setting_val")
-    private String val;
+    private String settingVal;
 
 }

@@ -1,12 +1,16 @@
 package com.stcos.server.entity.user;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
+import com.stcos.server.util.ListTypeHandler;
+import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +23,7 @@ import java.util.UUID;
  * @since 2023/5/3 21:55
  */
 @Data
-@NoArgsConstructor
+@TableName(autoResultMap = true)
 public class Client implements User {
 
     /**
@@ -68,6 +72,8 @@ public class Client implements User {
      */
     private boolean credentialsNonExpired = true;
 
+    @TableField(value = "processes_active", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> processInstanceList = new ArrayList<>();
 
     public Client(String username, String password, String email) {
         this.uid = "cl-" + UUID.randomUUID();
@@ -81,4 +87,8 @@ public class Client implements User {
         return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
     }
 
+    @Override
+    public void addProcessInstance(String processInstanceId) {
+        processInstanceList.add(processInstanceId);
+    }
 }

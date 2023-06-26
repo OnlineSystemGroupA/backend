@@ -2,10 +2,11 @@ package com.stcos.server.entity.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,28 +24,25 @@ public class Operator implements User {
     @TableId
     private String uid;
 
-    @TableField(exist=false)
-    private List<GrantedAuthority> authorities;
-
     private String password;
 
-    private String username;
+    private String jobNumber;
 
     private String realName;
 
 
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String department;
 
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String position;
 
     private String email;
 
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String phone;
 
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String avatarPath;
 
     boolean accountNonExpired;
@@ -61,4 +59,13 @@ public class Operator implements User {
     }
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_OPERATOR"));
+    }
+
+    @Override
+    public String getUsername() {
+        return jobNumber;
+    }
 }

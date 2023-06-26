@@ -1,15 +1,14 @@
 package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.entity.Setting;
+import com.stcos.server.entity.form.FormMetadata;
 
 /**
  * description
  *
  * @author Kekwy
  * @version 1.0
- * @since 2023/6/23 16:44
+ * @since 2023/6/25 13:45
  */
-
-public interface SettingMapper extends BaseMapper<Setting> {
+public interface FormMetadataMapper extends BaseMapper<FormMetadata> {
 }

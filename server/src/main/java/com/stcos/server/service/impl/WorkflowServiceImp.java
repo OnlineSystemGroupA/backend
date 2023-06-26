@@ -13,6 +13,7 @@ import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -197,32 +198,22 @@ public class WorkflowServiceImp implements WorkflowService {
         }};
     }
 
-    private HashMap<String, Object> getProcessVariables(User startUser) {
-        HashMap<String, Object> processVariables = new HashMap<>();
 
-        HashMap<String, Boolean> allForms = getAllForms();
-        for (Map.Entry<String, Boolean> entry : allForms.entrySet()) {
-            String formName = entry.getKey();
-            FormMetadata formMetadata = new FormMetadata();
-            formMetadata.setFormName(formName);
-            if (entry.getValue()) {
-                formMetadata.addReadPermission(startUser.getUid());
-            }
-            formService.saveFormMetadata(formMetadata);
-            processVariables.put(formName, formMetadata.getFormMetadataId());
-        }
-        return processVariables;
-    }
-
+    @Secured("ROLE_CLIENT") // 限制只有客户可以发起流程
     @Override
     public String startProcess() throws ServiceException {
         // 获取当前登录用户，使用其 id 设置任务发起人
         User client = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         // 查找当前平台上的各主管以及授权签字人信息
+        User marketingManager = operatorService.getById(settingService.getMarketingManager());
+        User testingManager = operatorService.getById(settingService.getTestingManager());
+        User qualityManager = operatorService.getById(settingService.getQualityManager());
+        User signatory = operatorService.getById(settingService.getSignatory());
 
         // 初始化流程变量，创建 ProcessVariables 对象
-        Map<String, Object> processVariables = new ProcessVariables(client, null,
-                null, null, null);
+        Map<String, Object> processVariables = new ProcessVariables(client, marketingManager,
+                testingManager, qualityManager, signatory);
 
         // 使用 ProcessVariables 对象创建新流程实例
         ProcessInstance processInstance =

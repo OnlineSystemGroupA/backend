@@ -6,14 +6,22 @@
       <startEvent id="sid-B56A1533-0451-4EF0-A0B3-29352B93F9B5" flowable:formFieldValidation="true"></startEvent>
       <userTask id="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" name="等待市场部主管分配市场部人员" flowable:assignee="${marketingManager.getUid()}" flowable:formKey="test" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${marketingManager.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-F18D0826-AB83-40DD-9485-D76201BD6CAB" name="审核是否通过" default="sid-0AFD3BE0-A090-47CB-B33B-8CE035B3B720"></exclusiveGateway>
       <userTask id="sid-4D78A6B5-90FC-475A-91D1-78E13E18725E" name="市场部审核不通过，修改委托" flowable:assignee="${client.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${client.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -22,13 +30,21 @@
       <sequenceFlow id="sid-243B1CCC-F6CD-4D9D-AD24-09045F9C507F" name="分配完成" sourceRef="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" targetRef="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B"></sequenceFlow>
       <userTask id="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B" name="等待测试部主管分配测试部人员" flowable:assignee="${testingManager.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${testingManager.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <userTask id="sid-DE428C3F-B0C6-4442-BDEA-E49E4D3F74D2" name="市场部审核委托" flowable:assignee="${marketingOperator.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${marketingOperator.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -37,14 +53,22 @@
       <sequenceFlow id="sid-7A964D4B-B2CB-4DD4-AB10-B0E68BCDDB76" sourceRef="sid-DE428C3F-B0C6-4442-BDEA-E49E4D3F74D2" targetRef="sid-F18D0826-AB83-40DD-9485-D76201BD6CAB"></sequenceFlow>
       <userTask id="sid-097CDCF7-3D23-441E-98C1-F17809AA12CC" name="测试部审核委托" flowable:assignee="${testingOperator.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${testingOperator.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-C81762CD-2A9D-42C6-A2A0-CC101109A1A3" name="审核是否通过" default="sid-452EF9A6-7702-47A2-B88A-C821312DC85D"></exclusiveGateway>
       <userTask id="sid-1F534F53-E65F-4842-B958-D0B76AFCB4A6" name="测试部审核不通过，修改委托" flowable:assignee="${client.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${client.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -64,19 +88,31 @@
       <endEvent id="sid-70E90F91-EC5D-4EE3-BB81-4BB9FCD921B4"></endEvent>
       <userTask id="sid-70455BCB-0914-42C1-B415-6BA574C16546" name="市场部生成报价" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${marketingOperator.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
         </extensionElements>
       </userTask>
       <userTask id="sid-5C013F94-E133-4E5C-91D4-36AD1C58F46B" name="客户处理报价" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${client.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
         </extensionElements>
       </userTask>
       <sequenceFlow id="sid-8300EE24-11DC-403B-A19A-E0E7426AF7AC" name="提交报价" sourceRef="sid-70455BCB-0914-42C1-B415-6BA574C16546" targetRef="sid-5C013F94-E133-4E5C-91D4-36AD1C58F46B"></sequenceFlow>
       <exclusiveGateway id="sid-8D7716B8-757C-4687-8CBE-EE5E1E08C7DE" name="是否接收报价" default="sid-B131E63B-C73D-4B39-92AC-97E44293C782"></exclusiveGateway>
       <userTask id="sid-354A04A0-C768-4DA8-9AD8-C32397C1F748" name="市场部修改报价" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${marketingOperator.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
         </extensionElements>
       </userTask>
       <sequenceFlow id="sid-18A01CDF-DDF2-4AF2-93C3-C65E338FAA38" sourceRef="sid-5F16787E-0BFF-438C-AD44-8BE213AE2DC9" targetRef="sid-70455BCB-0914-42C1-B415-6BA574C16546"></sequenceFlow>
@@ -92,30 +128,44 @@
     </subProcess>
     <subProcess id="sid-58F6B593-7BFE-46DF-A2B2-30942D46D44C" name="生成合同草稿">
       <startEvent id="sid-86EB2E47-DD16-4D75-B041-46820F3716ED" flowable:formFieldValidation="true"></startEvent>
-      <userTask id="sid-E541EEA3-5509-47B1-9907-E4806BF174DC" name="市场部生成合同草稿" flowable:assignee="op-3" flowable:formKey="test" flowable:formFieldValidation="true">
+      <userTask id="sid-E541EEA3-5509-47B1-9907-E4806BF174DC" name="市场部生成合同草稿" flowable:assignee="${marketingOperator.getUid()}" flowable:formKey="test" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${marketingOperator.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-76C808C8-F819-491A-A98F-95F27AF1BA3E" name="客户是否接受" default="sid-840403E9-B702-414D-B108-DB23B42356CD"></exclusiveGateway>
-      <userTask id="sid-DEA4AAED-18BC-4824-B65F-9D79555F0CF2" name="市场部修改合同草稿" flowable:assignee="${user}" flowable:formFieldValidation="true">
+      <userTask id="sid-DEA4AAED-18BC-4824-B65F-9D79555F0CF2" name="市场部修改合同草稿" flowable:assignee="${marketingOperator.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${marketingOperator.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <endEvent id="sid-DA8BE477-EE42-401A-AF5D-11D9D9F84CDB"></endEvent>
-      <userTask id="sid-33166108-7CA1-460A-848E-8EF367646A5A" name="客户检查合同草稿" flowable:formFieldValidation="true">
+      <userTask id="sid-33166108-7CA1-460A-848E-8EF367646A5A" name="客户检查合同草稿" flowable:assignee="${client.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener">
+            <flowable:field name="assigneeEmail">
+              <flowable:expression><![CDATA[${client.getEmail()}]]></flowable:expression>
+            </flowable:field>
+          </flowable:taskListener>
+          <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <sequenceFlow id="sid-B58E5EEC-6139-4FC4-852E-96E6DD610C2D" name="修改后重新提交" sourceRef="sid-DEA4AAED-18BC-4824-B65F-9D79555F0CF2" targetRef="sid-33166108-7CA1-460A-848E-8EF367646A5A"></sequenceFlow>
       <sequenceFlow id="sid-DED409D4-6E11-4398-8DBC-2383638FB398" sourceRef="sid-33166108-7CA1-460A-848E-8EF367646A5A" targetRef="sid-76C808C8-F819-491A-A98F-95F27AF1BA3E"></sequenceFlow>
-      <userTask id="sid-B7280ECD-94AD-4215-8DEE-5C0D9CF2795B" name="客户填写合同" flowable:formFieldValidation="true">
+      <userTask id="sid-B7280ECD-94AD-4215-8DEE-5C0D9CF2795B" name="客户填写合同" flowable:assignee="${client.getUid()}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+          <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-CA9CDBBC-83E5-4515-AA4F-DCB1A278DEA4" name="审核是否通过" default="sid-C19A7DC5-B590-4A54-8A99-828254EC979C"></exclusiveGateway>
@@ -231,7 +281,8 @@
     <sequenceFlow id="sid-0DF06414-C4F6-46CE-9A72-D384C42675A8" sourceRef="sid-6E0BF2FE-15F6-46EA-9236-BE3E5C362AB3" targetRef="sid-FC85C9D0-AA83-4C7E-8620-9F5A44725F94"></sequenceFlow>
     <userTask id="sid-6252C992-54BE-420C-8C38-87FFFCC130E0" name="填写申请表" flowable:assignee="${client.getUid()}" flowable:formFieldValidation="true">
       <extensionElements>
-        <flowable:taskListener event="create" class="com.stcos.server.listener.TaskListener"></flowable:taskListener>
+        <flowable:taskListener event="create" expression="${fillOutAppFormListener.create(task)}"></flowable:taskListener>
+        <flowable:taskListener event="complete" expression="${fillOutAppFormListener.complete(task)}"></flowable:taskListener>
         <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
       </extensionElements>
     </userTask>

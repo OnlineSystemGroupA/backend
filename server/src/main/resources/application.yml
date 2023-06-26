@@ -26,6 +26,11 @@ spring:
     init:
       mode: always
       schema-locations: classpath:sql/schema.sql
+      data-locations:
+        - classpath:sql/data/setting.sql
+        - classpath:sql/data/admin.sql
+        - classpath:sql/data/operator.sql
+        - classpath:sql/data/client.sql
   data:
     #Java 操作 MongoDB
     mongodb:
@@ -33,8 +38,8 @@ spring:
       port: 27017
       repositories:
         enable: true
-    #  username:
-    #  password:
+      #  username:
+      #  password:
       database: test
   # 配置数据源信息
   datasource:
@@ -45,10 +50,9 @@ spring:
     #      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
     #      username: stcos
     #      password: stcosgroupa
-    url: jdbc:mysql://localhost:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
+    url: jdbc:mysql://localhost:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
     username: demo
     password:
-
   mail:
     # 使用 smtp 协议
     protocol: smtp
@@ -77,8 +81,11 @@ jwt:
 # MyBatis配置
 mybatis-plus:
   configuration:
+    # 开启自动提交事务
+    default-executor-type: SIMPLE
     # 配置MyBatis日志文件
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
   # 设置MyBatis-Plus的全局配置
   global-config:
     db-config:

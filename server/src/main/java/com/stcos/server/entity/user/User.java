@@ -1,15 +1,9 @@
 package com.stcos.server.entity.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-
 /**
- * UserDetailsImp
+ * User
  *
  * @author Kekwy
  * @version 1.0
@@ -32,5 +26,8 @@ public interface User extends UserDetails {
      * 获取用户 ID
      */
     String getUid();
+
+    default void addProcessInstance(String processInstanceId) {
+    }
 
 }

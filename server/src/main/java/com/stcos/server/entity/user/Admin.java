@@ -1,12 +1,12 @@
 package com.stcos.server.entity.user;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 平台管理员
@@ -21,26 +21,10 @@ public class Admin implements User {
     @TableId
     private String uid;
 
-    @TableField(exist=false)
-    private List<GrantedAuthority> authorities;
+    private String username;
 
     private String password;
 
-    private String username;
-
-    boolean accountNonExpired;
-
-    boolean accountNonLocked;
-
-    boolean credentialsNonExpired;
-
-    boolean enabled;
-
-
-    public Admin(String username) {
-        this.uid = "ad-" + UUID.randomUUID();
-        this.username = username;
-    }
 
     @Override
     public String getEmail() {
@@ -50,5 +34,30 @@ public class Admin implements User {
     @Override
     public String getRealName() {
         return null;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
