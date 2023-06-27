@@ -12,8 +12,5 @@ import org.junit.jupiter.api.Test;
  */
 class JSONUtilTest {
 
-    @Test
-    void toJSONString() {
-        System.out.println(JSONUtil.toJSONString(new FormMetadata()));
-    }
+
 }

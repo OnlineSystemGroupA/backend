@@ -65,3 +65,12 @@ CREATE TABLE IF NOT EXISTS t_form_metadata
     PRIMARY KEY (form_metadata_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+-- ProcessRecord
+CREATE TABLE IF NOT EXISTS t_process_record
+(
+    record_id bigint AUTO_INCREMENT, --
+    temp      VARCHAR(64) NOT NULL,  --
+    PRIMARY KEY (record_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

@@ -81,6 +81,7 @@ jwt:
 # MyBatis配置
 mybatis-plus:
   configuration:
+    local-cache-scope: statement
     # 开启自动提交事务
     default-executor-type: SIMPLE
     # 配置MyBatis日志文件

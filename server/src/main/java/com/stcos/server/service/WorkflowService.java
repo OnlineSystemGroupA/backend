@@ -42,7 +42,7 @@ public interface WorkflowService {
      * @return 获取到的任务列表
      * @throws ServiceException 一般不抛出异常
      */
-    List<Task> getTasks() throws ServiceException;
+    List<Task> getTasks(int pageIndex, int numPerPage, String orderBy) throws ServiceException;
 
     /**
      * 获取指定流程中的指定表单
@@ -122,4 +122,6 @@ public interface WorkflowService {
     String startProcess() throws ServiceException;
 
     List<FormMetadata> getFormMetadata(String processId) throws ServiceException;
+
+    int getProcessCount();
 }

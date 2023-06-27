@@ -47,6 +47,7 @@ paths:
       parameters:
         - name: user-type
           in: query
+          required: true
           description: 进行登录的用户类型：admin、operator、client.
           schema:
             type: string
@@ -103,6 +104,27 @@ paths:
       summary: 获取流程实例
       description: 获取与当前用户相关的流程实例
       operationId: getProcesses
+      parameters:
+        -  name: pageIndex
+           in: query
+           required: true
+           description: 需要查询的页号
+           schema:
+             type: integer
+             format: int32
+        - name: numPerPage
+          in: query
+          required: true
+          description: 每页的项目条目数
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          required: true
+          description: 用于排序的字段
+          schema:
+            type: string
       responses:
         '200':
           description: 成功获取流程实例列表
@@ -112,6 +134,22 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Process"
+
+  /workflow/processes/count:
+    get:
+      tags:
+        - workflow
+      summary: 流程实例总数
+      description: 获取与当前用户相关的流程实例总数
+      operationId: getProcessCount
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: integer
+                format: int32
 
   /workflow/processes/{processId}/tasks/{taskId}/complete:
     post:
@@ -356,25 +394,33 @@ components:
     Process:
       type: object
       required:
+        - projectId
         - processId
         - taskId
+        - title
         - taskName
         - assignee
         - startUser
         - startDate
       properties:
+        projectId:
+          type: string
+          description: 软件测试项目的 ID
         processId:
           type: string
-          description: 流程实例 id
+          description: 流程实例 ID
         taskId:
           type: string
-          description: 当前任务的实例 id
+          description: 当前任务的实例 ID
+        title:
+          type: string
+          description: 待测试软件名称
         taskName:
           type: string
           description: 当前任务的名称
         assignee:
           type: string
-          description: 当前任务被分配人
+          description: 当前任务被分配人姓名
         startUser:
           type: string
           description: 流程发起人姓名

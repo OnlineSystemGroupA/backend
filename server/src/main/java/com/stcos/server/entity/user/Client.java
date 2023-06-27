@@ -10,10 +10,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 客户（委托方）
@@ -90,5 +87,15 @@ public class Client implements User {
     @Override
     public void addProcessInstance(String processInstanceId) {
         processInstanceList.add(processInstanceId);
+    }
+
+    @Override
+    public Set<String> getProcessInstances() {
+        return new HashSet<>(processInstanceList);
+    }
+
+    @Override
+    public int getProcessesCount() {
+        return processInstanceList.size();
     }
 }

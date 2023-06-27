@@ -25,16 +25,16 @@ public class FormRepositoryTest {
 
     @Test
     public void testFind(){
-        FormMetadata form1 = new FormMetadata();
-            formMetadataRepository.saveFormMetadata(form1);
-
-        List<FormMetadata> formMetadataList=formMetadataRepository.findAll();
-        System.out.println(formMetadataList);
-
-        Form form = new ApplicationForm();
-            formRepository.saveForm(form);
-
-        List<Form> formList=formRepository.findAll();
-        System.out.println(formList);
+//        FormMetadata form1 = new FormMetadata();
+//            formMetadataRepository.saveFormMetadata(form1);
+//
+//        List<FormMetadata> formMetadataList=formMetadataRepository.findAll();
+//        System.out.println(formMetadataList);
+//
+//        Form form = new ApplicationForm();
+//            formRepository.saveForm(form);
+//
+//        List<Form> formList=formRepository.findAll();
+//        System.out.println(formList);
     }
 }

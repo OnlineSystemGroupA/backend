@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -67,5 +68,16 @@ public class Operator implements User {
     @Override
     public String getUsername() {
         return jobNumber;
+    }
+
+
+    @Override
+    public Set<String> getProcessInstances() {
+        return null;
+    }
+
+    @Override
+    public int getProcessesCount() {
+        return 0;
     }
 }

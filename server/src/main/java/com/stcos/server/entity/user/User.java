@@ -2,6 +2,8 @@ package com.stcos.server.entity.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Set;
+
 /**
  * User
  *
@@ -27,7 +29,10 @@ public interface User extends UserDetails {
      */
     String getUid();
 
-    default void addProcessInstance(String processInstanceId) {
-    }
+    default void addProcessInstance(String processInstanceId) {}
+
+    Set<String> getProcessInstances();
+
+    int getProcessesCount();
 
 }
