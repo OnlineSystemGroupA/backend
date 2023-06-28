@@ -1,10 +1,13 @@
 package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+
 
 /**
  * 软件项目委托测试申请表
@@ -14,9 +17,10 @@ import java.util.List;
  * @since 2023/5/15
  */
 @Data
-@Accessors(fluent = true)
-@TableName(value = "t_application_form")
+@EqualsAndHashCode(callSuper = true)
+//@Accessors(fluent = true)
 public class ApplicationForm extends Form {
+
     private List<String> testTypes;
     private String softwareName;
     private String softwareVersion;
@@ -28,7 +32,7 @@ public class ApplicationForm extends Form {
     private List<String> testStandards;
     private List<String> testAspects;
     private List<SoftwareScale> softwareScales;
-    private String softwareType;
+    private List<String> softwareType;
     private List<ClientSystem> clientSystems;
     private double clientMemory;
     private String clientOtherRequirement;
@@ -51,28 +55,29 @@ public class ApplicationForm extends Form {
     private CompanyInfo companyInfo;
 
     @Data
-    @Accessors(fluent = true)
+//    @Accessors(fluent = true)
     public static class SoftwareScale {
         private String scaleDescription;
         private int scale;
     }
 
     @Data
-    @Accessors(fluent = true)
+//    @Accessors(fluent = true)
+    @JsonIgnoreProperties(value = {"vforKey"})
     public static class ClientSystem {
         private String system;
         private String version;
     }
 
     @Data
-    @Accessors(fluent = true)
+//    @Accessors(fluent = true)
     public static class Medium {
         private String mediumType;
         private int num;
     }
 
     @Data
-    @Accessors(fluent = true)
+//    @Accessors(fluent = true)
     public static class CompanyInfo {
         private String telephone;
         private String fax;
@@ -84,4 +89,3 @@ public class ApplicationForm extends Form {
         private String website;
     }
 }
-

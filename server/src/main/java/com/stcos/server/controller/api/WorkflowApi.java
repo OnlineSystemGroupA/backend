@@ -297,7 +297,7 @@ public interface WorkflowApi {
     default ResponseEntity<Void> putForm(
             @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
             @Parameter(name = "formName", description = "期望操作的表单名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName,
-            @Parameter(name = "body", description = "") @Valid @RequestBody(required = false) String body
+            @Parameter(name = "formData", description = "表单数据") @Valid @RequestBody(required = true) String formData
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 

@@ -8,7 +8,6 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import com.stcos.server.util.JSONUtil;
-import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -235,10 +234,3 @@ public class WorkflowController implements WorkflowApi {
         return ResponseEntity.ok(workflowService.getProcessCount());
     }
 }
-
-/*
-    问题：
-    1.get/updateTaskItem中，为何传入参数是processId而非taskId？
-    2.startUserId是否是Owner
-    3.用户对资源是否有权限
- */

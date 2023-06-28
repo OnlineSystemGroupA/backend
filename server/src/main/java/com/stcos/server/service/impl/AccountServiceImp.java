@@ -62,8 +62,8 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public Operator getOperator(String username) throws ServiceException {
-        Operator operator = operatorMapper.getByUsernameOperator(username);
+    public Operator getOperator(String jobNumber) throws ServiceException {
+        Operator operator = operatorMapper.selectByJobNumber(jobNumber);
         if (operator == null) {
             throw new ServiceException(0); // Operator not found
         }

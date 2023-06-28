@@ -254,6 +254,7 @@ paths:
       description: 更新或创建表单
       operationId: putForm
       requestBody:
+        required: true
         content:
           'text/plain':
             schema:

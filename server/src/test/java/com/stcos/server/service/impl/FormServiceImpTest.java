@@ -46,7 +46,7 @@ class FormServiceImpTest {
         formMetadata.setWritableUsers(writableUsers);
 
         try {
-            formServiceImp.updateForm(25L, "TestReportForm", form);
+            formServiceImp.saveOrUpdateForm(25L, form);
         } catch (ServiceException e) {
             System.out.println("Error code: " + e.getCode());
             return;

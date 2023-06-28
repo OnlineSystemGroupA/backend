@@ -154,9 +154,9 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public Form getForm(String processId, String formType) throws ServiceException {
+    public Form getForm(String processId, String formName) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
-        Long formMetadataId = getFormMetadataId(processId, formType);
+        Long formMetadataId = getFormMetadataId(processId, formName);
 
         // 调用 FormService 接口，返回表单对象
         return formService.getForm(formMetadataId);
@@ -168,7 +168,7 @@ public class WorkflowServiceImp implements WorkflowService {
         Long formMetadataId = getFormMetadataId(processId, formType);
 
         // 调用 FormService 接口，完成表单更新
-        formService.updateForm(formMetadataId, formType, form);
+        formService.saveOrUpdateForm(formMetadataId, form);
     }
 
     @Override
@@ -201,7 +201,7 @@ public class WorkflowServiceImp implements WorkflowService {
     private Long getFormMetadataId(String processId, String formType) throws ServiceException {
         // 判断 processId 对应的流程是否存在
         ProcessInstance processInstance = runtimeService.
-                createProcessInstanceQuery().processInstanceId(processId).singleResult();
+                createProcessInstanceQuery().processInstanceId(processId).includeProcessVariables().singleResult();
         if (processInstance == null) {
             throw new ServiceException(0); // 流程不存在的异常
         }
