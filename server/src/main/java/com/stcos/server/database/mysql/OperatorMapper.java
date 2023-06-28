@@ -30,6 +30,9 @@ public interface OperatorMapper extends BaseMapper<Operator> {
             return this.selectByMap(map).get(0);
     }
 
+    @Select("SELECT * FROM t_operator WHERE job_number = #{jobNumber}")
+    Operator selectByJobNumber(String jobNumber);
+
     /**
      * 通过Uid查找干员
      *

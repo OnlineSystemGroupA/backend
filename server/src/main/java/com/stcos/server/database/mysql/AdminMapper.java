@@ -18,7 +18,6 @@ import java.util.Map;
  * @since 2023/5/3 13:21
  */
 
-@Repository
 public interface AdminMapper extends BaseMapper<Admin> {
     default Admin getByUsernameAdmin(String username){
         Map<String, Object> map = new HashMap<>();

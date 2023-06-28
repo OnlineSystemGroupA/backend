@@ -80,6 +80,8 @@ jwt:
 
 # MyBatis配置
 mybatis-plus:
+  # 在 mapper 中使用自定义方法
+  mapper-locations: classpath:mybatis/mapper/*.xml
   configuration:
     local-cache-scope: statement
     # 开启自动提交事务

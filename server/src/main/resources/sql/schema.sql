@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS t_operator
     password                VARCHAR(64) DEFAULT NULL, -- 密码
     real_name               VARCHAR(32) NOT NULL,     -- 姓名
     email                   VARCHAR(32) NOT NULL,     -- 邮箱
+    process_instances       TEXT        NOT NULL,     -- 用户可见的流程实例列表
     account_non_expired     BOOLEAN     DEFAULT TRUE,
     account_non_locked      BOOLEAN     DEFAULT TRUE,
     credentials_non_expired BOOLEAN     DEFAULT TRUE,

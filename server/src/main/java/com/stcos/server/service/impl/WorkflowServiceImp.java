@@ -115,21 +115,23 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public List<Task> getTasks(int pageIndex, int numPerPage, String orderBy) throws ServiceException {
 
+        List<Task> taskList = new ArrayList<>();
+
         // 判断待排序的键是否有效
         if (!comparatorMap.containsKey(orderBy)) throw new ServiceException(0);
 
         // 查找当前登录用户可见的流程实例
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<String> processInstanceList = user.getProcessInstances();
+        Set<String> processInstanceSet = user.getProcessInstances();
+        if (processInstanceSet.isEmpty()) return taskList;
         List<ProcessInstance> res = runtimeService.createProcessInstanceQuery()
-                .processInstanceIds(processInstanceList)
+                .processInstanceIds(processInstanceSet)
                 .includeProcessVariables()
                 .list();
 
         // 根据对应字段对流程实例进行排序，并截取部分内容
         res.sort(comparatorMap.get(orderBy));
 
-        List<Task> taskList = new ArrayList<>();
 
         // 生成索引
         int beginIndex = numPerPage * (pageIndex - 1);
