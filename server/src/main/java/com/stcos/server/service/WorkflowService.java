@@ -1,7 +1,6 @@
 package com.stcos.server.service;
 
-
-import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
@@ -84,7 +83,7 @@ public interface WorkflowService {
      *                          3: 存储空间不足 <br>
      *                          4: 文件上传失败 <br>
      */
-    List<FileMetadataDto> uploadSample(String processInstanceId, List<MultipartFile> files) throws ServiceException;
+    List<FileMetadata> uploadSample(String processInstanceId, List<MultipartFile> files) throws ServiceException;
 
     /**
      * 下载样品文件

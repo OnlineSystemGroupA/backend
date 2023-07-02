@@ -87,3 +87,15 @@ CREATE TABLE IF NOT EXISTS t_process_record
     PRIMARY KEY (record_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS t_file_metadata
+(
+    file_metadata_id    BIGINT NOT NULL,
+    file_name           VARCHAR(64) NOT NULL,
+    file_type           VARCHAR(10) NOT NULL,
+    file_size           BIGINT NOT NULL,
+    updated_by          VARCHAR(64) NOT NULL,
+    updated_date        DATETIME NOT NULL,
+    file_path           VARCHAR(64) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

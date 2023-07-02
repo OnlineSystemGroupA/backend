@@ -8,10 +8,15 @@ public interface FormRepository extends MongoRepository<Form, Long> {
         insert(form);
     }
 
-    default Form findByFormId(long formId){
+    default void updateForm(Form form){
+        deleteById(form.getFormId());
+        insert(form);
+    }
+
+    default Form selectFormById(long formId){
         return findById(formId).orElse(null);
     }
 
-    default void deleteFormById(long formId){deleteById(formId);}
+    default void deleteByFormId(long formId){deleteById(formId);}
 
 }
