@@ -2,6 +2,7 @@ package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.stcos.server.entity.Setting;
+import org.springframework.stereotype.Repository;
 
 /**
  * description
@@ -11,5 +12,6 @@ import com.stcos.server.entity.Setting;
  * @since 2023/6/23 16:44
  */
 
+@Repository
 public interface SettingMapper extends BaseMapper<Setting> {
 }
