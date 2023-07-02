@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.stcos.server.util.ListTypeHandler;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.type.JdbcType;
 
 import java.time.LocalDateTime;

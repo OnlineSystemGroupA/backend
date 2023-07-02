@@ -65,3 +65,38 @@ CREATE TABLE IF NOT EXISTS t_form_metadata
     PRIMARY KEY (form_metadata_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+-- TaskDetails
+CREATE TABLE IF NOT EXISTS t_task_details
+(
+    id          bigint          NOT NULL ,
+    process_id  VARCHAR(64)     NOT NULL ,
+    task_name   VARCHAR(64)     NOT NULL ,
+    department  VARCHAR(64)     NOT NULL ,
+    operator    VARCHAR(64)     NOT NULL ,
+    start_date  DATETIME        NOT NULL ,
+    finish_date DATETIME        NOT NULL ,
+    result      BOOLEAN         NOT NULL ,
+    description VARCHAR(128)    NOT NULL ,
+    PRIMARY KEY (id)
+)ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+-- ProcessDetails
+CREATE TABLE IF NOT EXISTS t_process_details
+(
+    id               VARCHAR(64) NOT NULL ,
+    title            VARCHAR(64) NOT NULL ,
+    version          VARCHAR(64) NOT NULL ,
+    test_type        VARCHAR(64) NOT NULL ,
+    application_date VARCHAR(64) NOT NULL ,
+    applicant        VARCHAR(64) NOT NULL ,
+    company          VARCHAR(64) NOT NULL ,
+    telephone        VARCHAR(64) NOT NULL ,
+    email            VARCHAR(64) NOT NULL ,
+    address          VARCHAR(64) NOT NULL ,
+    start_date       DATETIME NOT NULL ,
+    due_date         DATETIME NOT NULL ,
+    PRIMARY KEY (id)
+)ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

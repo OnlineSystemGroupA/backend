@@ -1,0 +1,36 @@
+<mapper namespace="com.stcos.server.database.mysql.ProcessDetailsMapper">
+    <!--返回的对象为TaskDetails-->
+    <resultMap id="task_details" type="com.stcos.server.entity.process.ProcessDetails">
+        <id column="id" property="id"/>
+        <id column="title" property="title"/>
+        <id column="version" property="version"/>
+        <id column="test_type" property="testType"/>
+        <id column="application_date" property="applicationDate"/>
+        <id column="applicant" property="applicant"/>
+        <id column="company" property="company"/>
+        <id column="telephone" property="telephone"/>
+        <id column="email" property="email"/>
+        <id column="address" property="address"/>
+        <id column="start_date" property="startDate"/>
+        <id column="due_date" property="dueDate"/>
+        <collection property="list"
+                    ofType="com.stcos.server.entity.process.TaskDetails">
+            <id column="aid" property="id"/>
+            <id column="process_id" property="processId"/>
+            <id column="task_name" property="taskName"/>
+            <id column="department" property="department"/>
+            <id column="operator" property="operator"/>
+            <id column="start_date" property="startDate"/>
+            <id column="finish_date" property="finishDate"/>
+            <id column="result" property="result"/>
+            <id column="description" property="description"/>
+        </collection>
+
+        <select id="selectTaskListById" parameterType="int" resultMap="task_details">
+            SELECT * FROM
+            t_task_details t1,t_process_details t2
+            WHERE t1.process_id=t2.id
+            AND t1.process_id=#{id}
+        </select>
+    </resultMap>
+</mapper>

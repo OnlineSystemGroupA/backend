@@ -2,6 +2,7 @@ package com.stcos.server.database.mysql;
 
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.SampleMetadata;
+import org.springframework.stereotype.Repository;
 
 /**
  * description
@@ -10,6 +11,8 @@ import com.stcos.server.entity.file.SampleMetadata;
  * @version 1.0
  * @since 2023/5/22 18:07
  */
+
+@Repository
 public interface FileMapper {
     void saveFileMetadata(FileMetadata fileMetadata);
 
