@@ -71,6 +71,11 @@ public class Client implements User {
     private String company;
 
     /**
+     * 公司电话号
+     */
+    private String companyTelephone;
+
+    /**
      * 公司传真
      */
     private String companyFax;
@@ -96,7 +101,7 @@ public class Client implements User {
     private String companyEmail;
 
     /**
-     * 公司电话
+     * 公司手机号码
      */
     private String companyPhone;
 

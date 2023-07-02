@@ -350,7 +350,7 @@ paths:
           description: 指定任务或资源不存在
 
   # 账号相关 API
-  /account/clientDetails:
+  /account/client_details:
     get:
       summary: 获取个人信息
       description: 获取当前登录账号的账号信息
@@ -511,6 +511,7 @@ components:
         - phone
         - gender
         - company
+        - companyTelephone
         - companyFax
         - companyAddress
         - companyPostcode
@@ -539,6 +540,9 @@ components:
         company:
           type: string
           description: 公司名称
+        companyTelephone:
+          type: string
+          description: 公司电话号
         companyFax:
           type: string
           description: 公司传真

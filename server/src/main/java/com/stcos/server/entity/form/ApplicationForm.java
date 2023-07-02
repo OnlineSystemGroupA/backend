@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-//@Accessors(fluent = true)
+@Accessors(chain = true)
 public class ApplicationForm extends Form {
 
     private List<String> testTypes;

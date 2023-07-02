@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
  * @since 2023/5/15
  */
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 @TableName(value = "t_report_verify_form")
 public class ReportVerifyForm extends Form {
     private String softwareName;
