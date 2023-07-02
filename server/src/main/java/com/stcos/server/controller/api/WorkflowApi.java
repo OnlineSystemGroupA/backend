@@ -314,7 +314,7 @@ public interface WorkflowApi {
         operationId = "startProcess",
         summary = "启动流程",
         description = "开启一个新的委托流程",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "启动成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessIdDto.class))

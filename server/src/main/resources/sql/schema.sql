@@ -32,9 +32,20 @@ CREATE TABLE IF NOT EXISTS t_client
     uid                     VARCHAR(64) NOT NULL,
     username                VARCHAR(32) NOT NULL,     -- 用户名
     password                VARCHAR(64) DEFAULT NULL, -- 密码
-    real_name               VARCHAR(32) NOT NULL,     -- 姓名
+    created_date            DATETIME    NOT NULL,     -- 账号创建时间
     email                   VARCHAR(32) NOT NULL,     -- 邮箱
-    processes_active        TEXT        NOT NULL,     -- 发起的正在活跃的流程列表
+    phone                   VARCHAR(16),              -- 联系电话
+    real_name               VARCHAR(32),              -- 姓名
+    gender                  VARCHAR(8),               -- 性别
+    company                 VARCHAR(64),              -- 公司名称
+    company_fax             VARCHAR(16),              -- 公司传真
+    company_address         VARCHAR(128),             -- 公司地址
+    company_postcode        VARCHAR(16),              -- 公司邮编
+    company_website         VARCHAR(64),              -- 公司网址
+    company_email           VARCHAR(32),              -- 公司邮箱
+    company_phone           VARCHAR(16),              -- 公司电话
+    processes_instance      TEXT        NOT NULL,     -- 可见的流程实例
+    processes_record        TEXT        NOT NULL,     -- 可见的流程记录
     account_non_expired     BOOLEAN     DEFAULT TRUE,
     account_non_locked      BOOLEAN     DEFAULT TRUE,
     credentials_non_expired BOOLEAN     DEFAULT TRUE,
