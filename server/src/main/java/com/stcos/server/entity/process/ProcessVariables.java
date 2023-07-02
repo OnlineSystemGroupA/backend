@@ -1,8 +1,5 @@
 package com.stcos.server.entity.process;
 
-import com.stcos.server.entity.user.User;
-
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -18,32 +15,34 @@ public class ProcessVariables extends HashMap<String, Object> {
     /**
      * ProcessVariables
      *
-     * @param client           发起委托流程的客户
-     * @param marketingManager 市场部主管
-     * @param testingManager   测试部主管
-     * @param qualityManager   质量部主管
-     * @param signatory        授权签字人
+     * @param clientId           发起委托流程的客户 ID
+     * @param marketingManagerId 市场部主管 ID
+     * @param testingManagerId   测试部主管 ID
+     * @param qualityManagerId   质量部主管 ID
+     * @param signatoryId        授权签字人 ID
      */
-    public ProcessVariables(User client, User marketingManager,
-                            User testingManager, User qualityManager, User signatory) {
+    public ProcessVariables(String clientId, String clientRealName, Long recordId,
+                            String marketingManagerId, String testingManagerId, String qualityManagerId, String signatoryId) {
         /*              任务参数                */
         put("passable", true);            // 在遇到网关时使用，用于决定流程的下一个任务，默认值为 true
         put("description", null);         // 上一个任务完成时，被分配人对任务结果的描述
         /*              流程参与者              */
-        put("client", client);                      // 发起委托流程的客户
-        put("marketingManager", marketingManager);  // 市场部主管
-        put("testingManager", testingManager);      // 测试部主管
-        put("qualityManager", qualityManager);      // 质量部主管
-        put("signatory", signatory);                // 授权签字人
-        put("marketingOperator", null);             // 市场部工作人员
-        put("testingOperator", null);               // 测试部工作人员
+        put("client", clientId);                      // 发起委托流程的客户
+        put("marketingManager", marketingManagerId);  // 市场部主管
+        put("testingManager", testingManagerId);      // 测试部主管
+        put("qualityManager", qualityManagerId);      // 质量部主管
+        put("signatory", signatoryId);                // 授权签字人
+        put("marketingOperator", null);               // 市场部工作人员
+        put("testingOperator", null);                 // 测试部工作人员
         /*              项目简介                */
-        put("title", null);                     // 待测试的软件项目名称
-        put("startUser", client.getRealName()); // 流程发起人姓名
+        put("recordId", recordId);              // 流程记录编号，对应前端项目编号
+        put("title", "");                       // 待测试的软件项目名称
+        put("startUser", clientRealName);       // 流程发起人姓名
+        put("assignee", clientRealName);        // 当前任务被分配人姓名
         put("startDate", LocalDateTime.now());  // 流程发起日期
         put("finishDate", null);                // 流程结束日期
-        put("state", "进行中");              // 流程状态
-        put("currentTask", "填写申请表");     // 当前正在进行的任务
+        put("state", "进行中");                  // 流程状态
+        put("currentTask", "填写申请表");         // 当前正在进行的任务
         /*              表单元数据              */
         put("ApplicationForm", null);        // 软件项目委托测试申请表元数据 ID
         put("ApplicationVerifyForm", null);  // 软件项目委托测试申请表之审核信息元数据 ID

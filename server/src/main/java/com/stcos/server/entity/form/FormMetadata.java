@@ -3,11 +3,11 @@ package com.stcos.server.entity.form;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.stcos.server.util.ListTypeHandler;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.type.ArrayTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2023/5/17 9:51
  */
 @Data
-@NoArgsConstructor
+@TableName(autoResultMap = true)
 public class FormMetadata {
 
     /**
@@ -64,14 +64,14 @@ public class FormMetadata {
     /**
      * 对表单具有读权限用户的 ID 列表
      */
-    @TableField(jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> readableUsers = new ArrayList<>();
+    @TableField(value = "readable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> readableUsers = null;
 
     /**
      * 对表单具有写权限用户的 ID 列表
      */
-    @TableField(jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> writableUsers = new ArrayList<>();
+    @TableField(value = "writable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> writableUsers = null;
 
     public FormMetadata(
             String formName,
@@ -81,6 +81,18 @@ public class FormMetadata {
         this.createdDate = LocalDateTime.now();
         this.lastModifiedBy = createdBy;
         this.lastModifiedDate = LocalDateTime.now();
+        readableUsers = new ArrayList<>();
+        writableUsers = new ArrayList<>();
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+        this.lastModifiedBy = createdBy;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+        this.lastModifiedDate = createdDate;
     }
 
     public boolean hasReadPermission(String userId) {

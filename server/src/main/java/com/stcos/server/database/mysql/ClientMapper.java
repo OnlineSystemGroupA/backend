@@ -49,7 +49,7 @@ public interface ClientMapper extends BaseMapper<Client> {
         this.insert(client);
     }
 
-    default boolean existUserName(String username) {
+    default boolean existUsername(String username) {
         Map<String,Object> map = new HashMap<>();
         map.put("username",username);
         return !this.selectByMap(map).isEmpty();

@@ -202,34 +202,35 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<List<ProcessDto>> getProcesses() {
-        List<Task> taskList = null;
+    public ResponseEntity<List<ProcessDto>> getProcesses(Integer pageIndex, Integer numPerPage, String orderBy) {
+        List<Task> taskList;
         try {
-            taskList = workflowService.getTasks();
+            taskList = workflowService.getTasks(pageIndex, numPerPage, orderBy);
         } catch (ServiceException e) {
-            throw new ServerErrorException(e);
+            return ResponseEntity.notFound().build();
         }
         List<ProcessDto> processDtoList = new ArrayList<>(taskList.size());
+
+        //  ProcessDto
         for (Task task : taskList) {
-            Map<String, Object> processVariables = task.getProcessVariables();
+            Map<String, Object> variables = task.getProcessVariables();
             processDtoList.add(
-                    new ProcessDto(task.getProcessInstanceId(),
+                    new ProcessDto(variables.get("recordId").toString(),
+                            task.getProcessInstanceId(),
                             task.getId(),
+                            (String) variables.get("title"),
                             task.getName(),
-                            task.getAssignee(),
-                            (String) processVariables.get("startUser"),
-                            ((LocalDateTime) processVariables.get("startDate")).toString()
+                            (String) variables.get("assignee"),
+                            (String) variables.get("startUser"),
+                            ((LocalDateTime) variables.get("startDate")).toString()
                     )
             );
         }
-        return ResponseEntity.ok(processDtoList.stream().distinct().toList());
+        return ResponseEntity.ok(processDtoList);
     }
 
+    @Override
+    public ResponseEntity<Integer> getProcessCount() {
+        return ResponseEntity.ok(workflowService.getProcessCount());
+    }
 }
-
-/*
-    问题：
-    1.get/updateTaskItem中，为何传入参数是processId而非taskId？
-    2.startUserId是否是Owner
-    3.用户对资源是否有权限
- */

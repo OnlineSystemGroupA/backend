@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 平台管理员
@@ -34,6 +35,17 @@ public class Admin implements User {
     @Override
     public String getRealName() {
         return null;
+    }
+
+    @Override
+    public Set<String> getProcessInstances() {
+        return null;
+    }
+
+
+    @Override
+    public int getProcessesCount() {
+        return 0;
     }
 
     @Override

@@ -13,12 +13,16 @@ import java.util.Objects;
  */
 
 @JsonTypeName("Process")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-06-27T16:30:13.830100300+08:00[Asia/Shanghai]")
 public class ProcessDto {
+
+  private String projectId;
 
   private String processId;
 
   private String taskId;
+
+  private String title;
 
   private String taskName;
 
@@ -30,7 +34,7 @@ public class ProcessDto {
 
   /**
    * Default constructor
-   * @deprecated Use {@link ProcessDto#ProcessDto(String, String, String, String, String, String)}
+   * @deprecated Use {@link ProcessDto#ProcessDto(String, String, String, String, String, String, String, String)}
    */
   @Deprecated
   public ProcessDto() {
@@ -40,13 +44,35 @@ public class ProcessDto {
   /**
    * Constructor with only required parameters
    */
-  public ProcessDto(String processId, String taskId, String taskName, String assignee, String startUser, String startDate) {
+  public ProcessDto(String projectId, String processId, String taskId, String title, String taskName, String assignee, String startUser, String startDate) {
+    this.projectId = projectId;
     this.processId = processId;
     this.taskId = taskId;
+    this.title = title;
     this.taskName = taskName;
     this.assignee = assignee;
     this.startUser = startUser;
     this.startDate = startDate;
+  }
+
+  public ProcessDto projectId(String projectId) {
+    this.projectId = projectId;
+    return this;
+  }
+
+  /**
+   * 软件测试项目的 ID
+   * @return projectId
+  */
+  @NotNull 
+  @Schema(name = "projectId", description = "软件测试项目的 ID", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("projectId")
+  public String getProjectId() {
+    return projectId;
+  }
+
+  public void setProjectId(String projectId) {
+    this.projectId = projectId;
   }
 
   public ProcessDto processId(String processId) {
@@ -55,11 +81,11 @@ public class ProcessDto {
   }
 
   /**
-   * 流程实例 id
+   * 流程实例 ID
    * @return processId
   */
   @NotNull 
-  @Schema(name = "processId", description = "流程实例 id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "processId", description = "流程实例 ID", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("processId")
   public String getProcessId() {
     return processId;
@@ -75,11 +101,11 @@ public class ProcessDto {
   }
 
   /**
-   * 当前任务的实例 id
+   * 当前任务的实例 ID
    * @return taskId
   */
   @NotNull 
-  @Schema(name = "taskId", description = "当前任务的实例 id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "taskId", description = "当前任务的实例 ID", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("taskId")
   public String getTaskId() {
     return taskId;
@@ -87,6 +113,26 @@ public class ProcessDto {
 
   public void setTaskId(String taskId) {
     this.taskId = taskId;
+  }
+
+  public ProcessDto title(String title) {
+    this.title = title;
+    return this;
+  }
+
+  /**
+   * 待测试软件名称
+   * @return title
+  */
+  @NotNull 
+  @Schema(name = "title", description = "待测试软件名称", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("title")
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public ProcessDto taskName(String taskName) {
@@ -115,11 +161,11 @@ public class ProcessDto {
   }
 
   /**
-   * 当前任务被分配人
+   * 当前任务被分配人姓名
    * @return assignee
   */
   @NotNull 
-  @Schema(name = "assignee", description = "当前任务被分配人", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "assignee", description = "当前任务被分配人姓名", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("assignee")
   public String getAssignee() {
     return assignee;
@@ -178,8 +224,10 @@ public class ProcessDto {
       return false;
     }
     ProcessDto process = (ProcessDto) o;
-    return Objects.equals(this.processId, process.processId) &&
+    return Objects.equals(this.projectId, process.projectId) &&
+        Objects.equals(this.processId, process.processId) &&
         Objects.equals(this.taskId, process.taskId) &&
+        Objects.equals(this.title, process.title) &&
         Objects.equals(this.taskName, process.taskName) &&
         Objects.equals(this.assignee, process.assignee) &&
         Objects.equals(this.startUser, process.startUser) &&
@@ -188,15 +236,17 @@ public class ProcessDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(processId, taskId, taskName, assignee, startUser, startDate);
+    return Objects.hash(projectId, processId, taskId, title, taskName, assignee, startUser, startDate);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ProcessDto {\n");
+    sb.append("    projectId: ").append(toIndentedString(projectId)).append("\n");
     sb.append("    processId: ").append(toIndentedString(processId)).append("\n");
     sb.append("    taskId: ").append(toIndentedString(taskId)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    taskName: ").append(toIndentedString(taskName)).append("\n");
     sb.append("    assignee: ").append(toIndentedString(assignee)).append("\n");
     sb.append("    startUser: ").append(toIndentedString(startUser)).append("\n");

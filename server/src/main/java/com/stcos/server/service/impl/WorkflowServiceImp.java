@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.io.File;
 
@@ -66,6 +67,13 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
 
+    private ProcessRecordService processRecordService;
+
+    @Autowired
+    public void setProcessRecordService(ProcessRecordService processRecordService) {
+        this.processRecordService = processRecordService;
+    }
+
     @Override
     public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
         Task task = getTaskById(taskId);
@@ -95,22 +103,60 @@ public class WorkflowServiceImp implements WorkflowService {
         return task;
     }
 
+    private final Map<String, Comparator<ProcessInstance>> comparatorMap = new HashMap<>() {{
+        put("recordId", Comparator.comparing(a -> ((Long) a.getProcessVariables().get("recordId"))));
+
+        put("title", Comparator.comparing(a -> ((String) a.getProcessVariables().get("title"))));
+        put("startDate", Comparator.comparing(a -> ((LocalDateTime) a.getProcessVariables().get("startDate"))));
+        put("assignee", Comparator.comparing(a -> ((LocalDateTime) a.getProcessVariables().get("assignee"))));
+        put("currentTask", Comparator.comparing(a -> ((String) a.getProcessVariables().get("currentTask"))));
+    }};
+
     @Override
-    public List<Task> getTasks() throws ServiceException {
+    public List<Task> getTasks(int pageIndex, int numPerPage, String orderBy) throws ServiceException {
+
+        List<Task> taskList = new ArrayList<>();
+
+        // 判断待排序的键是否有效
+        if (!comparatorMap.containsKey(orderBy)) throw new ServiceException(0);
+
+        // 查找当前登录用户可见的流程实例
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        // 获取流程变量的坑！
-        // 参考：https://blog.csdn.net/weixin_43861630/article/details/129056964
-        Set<Task> taskSet = new HashSet<>(taskService.createTaskQuery().
-                processVariableValueEquals("startUser", user.getUid()).
-                includeProcessVariables().list());
-        taskSet.addAll(taskService.createTaskQuery().taskAssignee(user.getUid()).includeProcessVariables().list());
-        return taskSet.stream().toList();
+        Set<String> processInstanceSet = user.getProcessInstances();
+        if (processInstanceSet.isEmpty()) return taskList;
+        List<ProcessInstance> res = runtimeService.createProcessInstanceQuery()
+                .processInstanceIds(processInstanceSet)
+                .includeProcessVariables()
+                .list();
+
+        // 根据对应字段对流程实例进行排序，并截取部分内容
+        res.sort(comparatorMap.get(orderBy));
+
+
+        // 生成索引
+        int beginIndex = numPerPage * (pageIndex - 1);
+        int toIndex = beginIndex + numPerPage;
+        if (beginIndex >= res.size()) return taskList;
+        if (toIndex >= res.size()) toIndex = res.size();
+
+        res = res.subList(beginIndex, toIndex);
+
+        // 针对每个流程实例找到对应正在活跃的任务
+        for (ProcessInstance processInstance : res) {
+            Task task = taskService.createTaskQuery()
+                    .processInstanceId(processInstance.getProcessInstanceId())
+                    .active().includeProcessVariables()
+                    .singleResult();
+            taskList.add(task);
+        }
+
+        return taskList;
     }
 
     @Override
-    public Form getForm(String processId, String formType) throws ServiceException {
+    public Form getForm(String processId, String formName) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
-        Long formMetadataId = getFormMetadataId(processId, formType);
+        Long formMetadataId = getFormMetadataId(processId, formName);
 
         // 调用 FormService 接口，返回表单对象
         return formService.getForm(formMetadataId);
@@ -122,7 +168,7 @@ public class WorkflowServiceImp implements WorkflowService {
         Long formMetadataId = getFormMetadataId(processId, formType);
 
         // 调用 FormService 接口，完成表单更新
-        formService.updateForm(formMetadataId, formType, form);
+        formService.saveOrUpdateForm(formMetadataId, form);
     }
 
     @Override
@@ -155,7 +201,7 @@ public class WorkflowServiceImp implements WorkflowService {
     private Long getFormMetadataId(String processId, String formType) throws ServiceException {
         // 判断 processId 对应的流程是否存在
         ProcessInstance processInstance = runtimeService.
-                createProcessInstanceQuery().processInstanceId(processId).singleResult();
+                createProcessInstanceQuery().processInstanceId(processId).includeProcessVariables().singleResult();
         if (processInstance == null) {
             throw new ServiceException(0); // 流程不存在的异常
         }
@@ -176,28 +222,6 @@ public class WorkflowServiceImp implements WorkflowService {
         return (Long) runtimeService.getVariable(processId, "sample");
     }
 
-    /**
-     * 所有表单
-     *
-     * @return 所有表单以及是否对用户可见
-     */
-    private HashMap<String, Boolean> getAllForms() {
-        return new HashMap<>() {{
-            put("ApplicationForm", true);
-            put("ApplicationVerifyForm", true); // 申请审核表
-            put("TestFunctionForm", true);      // 测试功能表
-            put("QuotationForm", true);      // 报价表
-            put("DocumentReviewForm", true);    // 文档审核表
-            put("TestPlanForm", false);          // 测试计划表
-            put("TestPlanVerifyForm", false);      // 测试计划审核表
-            put("TestRecordsForm", true);          // 测试记录表
-            put("TestProblemForm", true);        // 测试问题表
-            put("TestReportForm", true);        // 测试报告表
-            put("ReportVerifyForm", false);      // 测试报告检查表
-            put("TestWorkCheckForm", false);     // 测试检查表
-        }};
-    }
-
 
     @Secured("ROLE_CLIENT") // 限制只有客户可以发起流程
     @Override
@@ -206,14 +230,17 @@ public class WorkflowServiceImp implements WorkflowService {
         User client = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // 查找当前平台上的各主管以及授权签字人信息
-        User marketingManager = operatorService.getById(settingService.getMarketingManager());
-        User testingManager = operatorService.getById(settingService.getTestingManager());
-        User qualityManager = operatorService.getById(settingService.getQualityManager());
-        User signatory = operatorService.getById(settingService.getSignatory());
+        String marketingManagerId = settingService.getMarketingManager();
+        String testingManagerId = settingService.getTestingManager();
+        String qualityManagerId = settingService.getQualityManager();
+        String signatoryId = settingService.getSignatory();
+
+        // 创建流程记录对象，并获取其 ID
+        Long recordId = processRecordService.create();
 
         // 初始化流程变量，创建 ProcessVariables 对象
-        Map<String, Object> processVariables = new ProcessVariables(client, marketingManager,
-                testingManager, qualityManager, signatory);
+        Map<String, Object> processVariables = new ProcessVariables(client.getUid(), client.getRealName(), recordId,
+                marketingManagerId, testingManagerId, qualityManagerId, signatoryId);
 
         // 使用 ProcessVariables 对象创建新流程实例
         ProcessInstance processInstance =
@@ -225,5 +252,12 @@ public class WorkflowServiceImp implements WorkflowService {
     public List<FormMetadata> getFormMetadata(String processId) throws ServiceException {
         return null;
     }
+
+    @Override
+    public int getProcessCount() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getProcessesCount();
+    }
+
 
 }

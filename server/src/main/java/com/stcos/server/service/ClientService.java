@@ -16,4 +16,13 @@ public interface ClientService extends IService<Client> {
 
     boolean saveOrUpdate(Client client);
 
+    void addProcessInstance(String clientUid, String processInstanceId);
+
+    Client getByUsername(String username);
+
+    void register(Client client);
+
+    boolean existPhone(String phone, String uid);
+
+    boolean existEmail(String email, String uid);
 }

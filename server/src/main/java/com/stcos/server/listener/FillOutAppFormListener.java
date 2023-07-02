@@ -1,12 +1,6 @@
 package com.stcos.server.listener;
 
-import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.user.Client;
 import com.stcos.server.service.ClientService;
-import com.stcos.server.service.FormMetadataService;
-import lombok.AllArgsConstructor;
-import org.apache.ibatis.session.SqlSession;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,10 +31,7 @@ public class FillOutAppFormListener extends TaskListener {
         String clientUid = task.getAssignee();
 
         // 将当前流程实例的 ID 加入客户发起且尚未结束的流程列表中
-//        clientService.addActiveProcessIn
-        Client client = clientService.getById(clientUid);
-        client.addProcessInstance(task.getProcessInstanceId());
-        clientService.updateById(client);
+        clientService.addProcessInstance(clientUid, task.getProcessInstanceId());
 
         // 创建申请表和测试功能表元数据
         Long applicationFormMetadataId = formMetadataService.create("NST－04－JS002－2018－软件项目委托测试申请表", clientUid);

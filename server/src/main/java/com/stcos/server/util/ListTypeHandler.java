@@ -20,7 +20,6 @@ import java.util.List;
 public class ListTypeHandler extends BaseTypeHandler<List> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List parameter, JdbcType jdbcType) throws SQLException {
-        System.out.println(JSONUtil.toJSONString(parameter));
         ps.setString(i, JSONUtil.toJSONString(parameter));
     }
 

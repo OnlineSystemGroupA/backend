@@ -3,11 +3,13 @@ package com.stcos.server.service.impl;
 import com.stcos.server.database.mysql.AdminMapper;
 import com.stcos.server.database.mysql.ClientMapper;
 import com.stcos.server.database.mysql.OperatorMapper;
+import com.stcos.server.entity.dto.ClientDetailsDto;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.entity.user.Operator;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.exception.ServiceException;
+import com.stcos.server.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,11 @@ public class AccountServiceImp implements AccountService {
         this.adminMapper = adminMapper;
     }
 
-    private ClientMapper clientMapper;
+    private ClientService clientService;
 
     @Autowired
-    public void setClientMapper(ClientMapper clientMapper) {
-        this.clientMapper = clientMapper;
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     private OperatorMapper operatorMapper;
@@ -54,7 +56,7 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public Client getClient(String username) throws ServiceException {
-        Client client = clientMapper.getByUsernameClient(username);
+        Client client = clientService.getByUsername(username);
         if (client == null) {
             throw new ServiceException(0); // Client not found
         }
@@ -62,8 +64,8 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public Operator getOperator(String username) throws ServiceException {
-        Operator operator = operatorMapper.getByUsernameOperator(username);
+    public Operator getOperator(String jobNumber) throws ServiceException {
+        Operator operator = operatorMapper.selectByJobNumber(jobNumber);
         if (operator == null) {
             throw new ServiceException(0); // Operator not found
         }
@@ -72,11 +74,11 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public void register(String username, String password, String email) throws ServiceException {
-         Client client = clientMapper.getByUsernameClient(username);
-         if (client != null)
-             throw new ServiceException(0);
-         client = new Client(username, passwordEncoder.encode(password), email);
-        clientMapper.addNewUser(client);
+        Client client = clientService.getByUsername(username);
+        if (client != null)
+            throw new ServiceException(0);
+        client = new Client(username, passwordEncoder.encode(password), email);
+        clientService.register(client);
     }
 
     @Override
@@ -92,5 +94,21 @@ public class AccountServiceImp implements AccountService {
     @Override
     public String getQualityManagerId() {
         return null;
+    }
+
+    @Override
+    public void updateClientDetails(Client client, ClientDetailsDto clientDetailsDto) throws ServiceException {
+        if (clientService.existEmail(clientDetailsDto.getEmail(), client.getUid())) throw new ServiceException(0);
+        if (clientService.existPhone(clientDetailsDto.getPhone(), client.getUid())) throw new ServiceException(1);
+        client.setRealName(clientDetailsDto.getRealName());
+        client.setCompany(clientDetailsDto.getCompany());
+        client.setCompanyEmail(clientDetailsDto.getCompanyEmail());
+        client.setCompanyAddress(clientDetailsDto.getCompanyAddress());
+        client.setCompanyFax(clientDetailsDto.getCompanyFax());
+        client.setCompanyPhone(clientDetailsDto.getCompanyPhone());
+        client.setEmail(clientDetailsDto.getEmail());
+        client.setGender(clientDetailsDto.getGender());
+        client.setPhone(clientDetailsDto.getPhone());
+        clientService.updateById(client);
     }
 }

@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -226,31 +227,36 @@ public interface WorkflowApi {
      * GET /workflow/processes : 获取流程实例
      * 获取与当前用户相关的流程实例
      *
+     * @param pageIndex 需要查询的页号 (required)
+     * @param numPerPage 每页的项目条目数 (required)
+     * @param orderBy 用于排序的字段 (required)
      * @return 成功获取流程实例列表 (status code 200)
      */
     @Operation(
-        operationId = "getProcesses",
-        summary = "获取流程实例",
-        description = "获取与当前用户相关的流程实例",
-        tags = { "workflow" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "成功获取流程实例列表", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProcessDto.class)))
-            })
-        }
+            operationId = "getProcesses",
+            summary = "获取流程实例",
+            description = "获取与当前用户相关的流程实例",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功获取流程实例列表", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProcessDto.class)))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/workflow/processes",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/workflow/processes",
+            produces = { "application/json" }
     )
     default ResponseEntity<List<ProcessDto>> getProcesses(
-        
+            @NotNull @Parameter(name = "pageIndex", description = "需要查询的页号", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageIndex", required = true) Integer pageIndex,
+            @NotNull @Parameter(name = "numPerPage", description = "每页的项目条目数", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "numPerPage", required = true) Integer numPerPage,
+            @NotNull @Parameter(name = "orderBy", description = "用于排序的字段", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "orderBy", required = true) String orderBy
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"processId\" : \"processId\", \"taskName\" : \"taskName\", \"assignee\" : \"assignee\", \"startUser\" : \"startUser\", \"taskId\" : \"taskId\", \"startDate\" : \"startDate\" }, { \"processId\" : \"processId\", \"taskName\" : \"taskName\", \"assignee\" : \"assignee\", \"startUser\" : \"startUser\", \"taskId\" : \"taskId\", \"startDate\" : \"startDate\" } ]";
+                    String exampleString = "[ { \"processId\" : \"processId\", \"taskName\" : \"taskName\", \"assignee\" : \"assignee\", \"startUser\" : \"startUser\", \"title\" : \"title\", \"projectId\" : \"projectId\", \"taskId\" : \"taskId\", \"startDate\" : \"startDate\" }, { \"processId\" : \"processId\", \"taskName\" : \"taskName\", \"assignee\" : \"assignee\", \"startUser\" : \"startUser\", \"title\" : \"title\", \"projectId\" : \"projectId\", \"taskId\" : \"taskId\", \"startDate\" : \"startDate\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -291,7 +297,7 @@ public interface WorkflowApi {
     default ResponseEntity<Void> putForm(
             @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
             @Parameter(name = "formName", description = "期望操作的表单名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName,
-            @Parameter(name = "body", description = "") @Valid @RequestBody(required = false) String body
+            @Parameter(name = "formData", description = "表单数据") @Valid @RequestBody(required = true) String formData
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -308,7 +314,7 @@ public interface WorkflowApi {
         operationId = "startProcess",
         summary = "启动流程",
         description = "开启一个新的委托流程",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "启动成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessIdDto.class))
@@ -385,6 +391,35 @@ public interface WorkflowApi {
                 }
             }
         });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * GET /workflow/processes/count : 流程实例总数
+     * 获取与当前用户相关的流程实例总数
+     *
+     * @return ok (status code 200)
+     */
+    @Operation(
+            operationId = "getProcessCount",
+            summary = "流程实例总数",
+            description = "获取与当前用户相关的流程实例总数",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/workflow/processes/count",
+            produces = { "application/json" }
+    )
+    default ResponseEntity<Integer> getProcessCount(
+
+    ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

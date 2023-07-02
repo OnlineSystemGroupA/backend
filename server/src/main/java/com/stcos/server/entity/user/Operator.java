@@ -2,13 +2,13 @@ package com.stcos.server.entity.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.stcos.server.util.ListTypeHandler;
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 工作人员（测试方）
@@ -53,6 +53,8 @@ public class Operator implements User {
 
     boolean enabled;
 
+    @TableField(value = "process_instances", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> processInstanceList = new ArrayList<>();
 
     public Operator(String uid) {
         this.uid = "op-" + UUID.randomUUID();
@@ -67,5 +69,16 @@ public class Operator implements User {
     @Override
     public String getUsername() {
         return jobNumber;
+    }
+
+
+    @Override
+    public Set<String> getProcessInstances() {
+        return new HashSet<>(processInstanceList);
+    }
+
+    @Override
+    public int getProcessesCount() {
+        return processInstanceList.size();
     }
 }
