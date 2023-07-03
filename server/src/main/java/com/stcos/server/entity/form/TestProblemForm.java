@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @Accessors(fluent = true)
-public class TestProblemForm {
+public class TestProblemForm extends Form {
     private List<Problem> problemList;
 
     @Data

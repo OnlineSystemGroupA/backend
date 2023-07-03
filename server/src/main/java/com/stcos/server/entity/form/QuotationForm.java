@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(fluent = true)
-public class QuotationForm {
+public class QuotationForm extends Form {
     private String quotationDate;
     private String validDate;
     private String software;
