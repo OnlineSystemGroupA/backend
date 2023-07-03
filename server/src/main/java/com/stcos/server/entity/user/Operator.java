@@ -2,7 +2,8 @@ package com.stcos.server.entity.user;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.stcos.server.util.ListTypeHandler;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.stcos.server.database.mysql.handler.ListTypeHandler;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 
 @Data
+@TableName(autoResultMap = true)
 public class Operator implements User {
 
     @TableId
@@ -54,10 +56,10 @@ public class Operator implements User {
 
     boolean enabled;
 
-    @TableField(value = "process_instances", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> processInstanceList = new ArrayList<>();
+    @TableField(value = "process_instance", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> processInstanceList;
 
-    @TableField(value = "processes_record", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    @TableField(value = "process_record", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> processRecordList;
 
     public Operator(String uid) {
@@ -87,6 +89,11 @@ public class Operator implements User {
     @Override
     public int getProcessesCount() {
         return processInstanceList.size();
+    }
+
+    @Override
+    public void addProcessInstance(String processInstanceId) {
+        processInstanceList.add(processInstanceId);
     }
 
     @Override

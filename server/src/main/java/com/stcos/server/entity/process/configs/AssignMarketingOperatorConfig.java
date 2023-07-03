@@ -21,16 +21,13 @@ public class AssignMarketingOperatorConfig extends TaskConfig {
         super("分配工作人员", "您好！一项被指派给您的\"分配工作人员\"任务已被创建，请尽快完成！");
     }
 
-
-    @Override
-    public boolean isCompletable(Task task, FormService formService) {
-        Map<String, Object> processVariables = task.getProcessVariables();
-        return processVariables.get("marketingOperator") != null;
-    }
-
     @Override
     public List<String> getRequiredForms() {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<String> getRequiredParticipants() {
+        return List.of("testingManager");
+    }
 }

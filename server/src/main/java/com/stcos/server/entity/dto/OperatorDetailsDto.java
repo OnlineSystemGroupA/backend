@@ -13,8 +13,10 @@ import java.util.Objects;
  */
 
 @JsonTypeName("OperatorDetails")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-03T15:40:03.864702800+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-03T15:58:43.666965300+08:00[Asia/Shanghai]")
 public class OperatorDetailsDto {
+
+  private String uid;
 
   private String jobNumber;
 
@@ -30,7 +32,7 @@ public class OperatorDetailsDto {
 
   /**
    * Default constructor
-   * @deprecated Use {@link OperatorDetailsDto#OperatorDetailsDto(String, String, String, String, String, String)}
+   * @deprecated Use {@link OperatorDetailsDto#OperatorDetailsDto(String, String, String, String, String, String, String)}
    */
   @Deprecated
   public OperatorDetailsDto() {
@@ -40,13 +42,34 @@ public class OperatorDetailsDto {
   /**
    * Constructor with only required parameters
    */
-  public OperatorDetailsDto(String jobNumber, String email, String phone, String realName, String department, String position) {
+  public OperatorDetailsDto(String uid, String jobNumber, String email, String phone, String realName, String department, String position) {
+    this.uid = uid;
     this.jobNumber = jobNumber;
     this.email = email;
     this.phone = phone;
     this.realName = realName;
     this.department = department;
     this.position = position;
+  }
+
+  public OperatorDetailsDto uid(String uid) {
+    this.uid = uid;
+    return this;
+  }
+
+  /**
+   * 员工 ID
+   * @return uid
+  */
+  @NotNull 
+  @Schema(name = "uid", description = "员工 ID", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("uid")
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
   }
 
   public OperatorDetailsDto jobNumber(String jobNumber) {
@@ -178,7 +201,8 @@ public class OperatorDetailsDto {
       return false;
     }
     OperatorDetailsDto operatorDetails = (OperatorDetailsDto) o;
-    return Objects.equals(this.jobNumber, operatorDetails.jobNumber) &&
+    return Objects.equals(this.uid, operatorDetails.uid) &&
+        Objects.equals(this.jobNumber, operatorDetails.jobNumber) &&
         Objects.equals(this.email, operatorDetails.email) &&
         Objects.equals(this.phone, operatorDetails.phone) &&
         Objects.equals(this.realName, operatorDetails.realName) &&
@@ -188,13 +212,14 @@ public class OperatorDetailsDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(jobNumber, email, phone, realName, department, position);
+    return Objects.hash(uid, jobNumber, email, phone, realName, department, position);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class OperatorDetailsDto {\n");
+    sb.append("    uid: ").append(toIndentedString(uid)).append("\n");
     sb.append("    jobNumber: ").append(toIndentedString(jobNumber)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");

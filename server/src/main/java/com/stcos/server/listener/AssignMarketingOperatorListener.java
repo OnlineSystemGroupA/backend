@@ -1,6 +1,8 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.service.OperatorService;
 import org.flowable.task.service.delegate.DelegateTask;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,8 +16,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssignMarketingOperatorListener extends TaskListener {
 
+    private OperatorService operatorService;
+
+    @Autowired
+    public void setOperatorService(OperatorService operatorService) {
+        this.operatorService = operatorService;
+    }
+
     @Override
     public void create(DelegateTask task) {
+        String operatorUid = task.getAssignee();
+
+        // 使流程对市场部主管可见
+        operatorService.addProcessInstance(operatorUid, task.getProcessInstanceId());
+
         super.create(task);
     }
 
@@ -24,4 +38,6 @@ public class AssignMarketingOperatorListener extends TaskListener {
     public void complete(DelegateTask task) {
         super.complete(task);
     }
+
+
 }

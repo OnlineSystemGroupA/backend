@@ -16,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -235,5 +236,24 @@ public class WorkflowController implements WorkflowApi {
     @Override
     public ResponseEntity<Integer> getProcessCount() {
         return ResponseEntity.ok(workflowService.getProcessCount());
+    }
+
+    @Override
+    @Secured("ROLE_MANAGER") // 只有主管可以调用该 API
+    public ResponseEntity<Void> setParticipant(String processId, String role, UserIdDto userIdDto) {
+        ResponseEntity<Void> result = null;
+        try {
+            workflowService.setParticipants(processId, role, userIdDto.getUserId());
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> result = ResponseEntity.status(403).build();  // 目标流程实例当前登录用户不可见
+                case 1 -> result = ResponseEntity.status(404).build();  // 目标用户不存在
+                case 2 -> result = ResponseEntity.status(409).build();  // 当前任务阶段不允许设置该角色的参与者
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
     }
 }

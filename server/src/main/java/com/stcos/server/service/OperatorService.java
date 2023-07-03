@@ -18,4 +18,6 @@ public interface OperatorService {
     Operator getByJobNumber(String jobNumber);
 
     List<Operator> getByDepartment(String department);
+
+    void addProcessInstance(String operatorUid, String processInstanceId);
 }

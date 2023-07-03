@@ -81,6 +81,7 @@ jwt:
 # MyBatis配置
 mybatis-plus:
   # mapper相关xml文件存储位置
+  type-handlers-package: com.stcos.server.database.mysql.handler
   mapper-locations: classpath:mapper/*.xml
   configuration:
     # 开启自动提交事务

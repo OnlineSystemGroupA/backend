@@ -71,6 +71,7 @@ public class AccountController implements AccountApi {
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
         for (Operator operator : operatorList) {
             ret.add(new OperatorDetailsDto(
+                    operator.getUid(), 
                     operator.getJobNumber(),
                     operator.getEmail(),
                     operator.getPhone(),

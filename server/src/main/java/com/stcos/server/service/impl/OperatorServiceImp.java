@@ -2,7 +2,9 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.OperatorMapper;
+import com.stcos.server.entity.user.Client;
 import com.stcos.server.entity.user.Operator;
+import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.OperatorService;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,13 @@ public class OperatorServiceImp extends ServiceImpl<OperatorMapper, Operator> im
     @Override
     public List<Operator> getByDepartment(String department) {
         return baseMapper.selectByDepartment(department);
+    }
+
+    @Override
+    public void addProcessInstance(String uid, String processInstanceId) {
+        Operator operator = getById(uid);
+        operator.addProcessInstance(processInstanceId);
+        if (!updateById(operator)) throw new ServerErrorException(new RuntimeException());
     }
 
 }

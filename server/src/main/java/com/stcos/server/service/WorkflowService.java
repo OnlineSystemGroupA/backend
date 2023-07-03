@@ -123,4 +123,6 @@ public interface WorkflowService {
     List<FormMetadata> getFormMetadata(String processId) throws ServiceException;
 
     int getProcessCount();
+
+    void setParticipants(String processId, String role, String userId) throws ServiceException;
 }

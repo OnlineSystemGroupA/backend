@@ -8,6 +8,7 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,13 +40,19 @@ public abstract class TaskConfig {
      * @param task 当前任务对象
      * @return true 表示可被完成，否则不满足任务完成条件，不可被完成
      */
-    public boolean isCompletable(Task task, FormService formService){
+    public boolean isCompletable(Task task, FormService formService) {
         List<String> requiredForms = getRequiredForms();
         Map<String, Object> processVariables = task.getProcessVariables();
-        for (String requiredForm : requiredForms){
-            if(!formService.existForm((Long) processVariables.get(requiredForm)))
+        for (String requiredForm : requiredForms) {
+            if (!formService.existForm((Long) processVariables.get(requiredForm)))
                 return false;
         }
+
+        List<String> requiredParticipants = getRequiredParticipants();
+        for (String requiredParticipant : requiredParticipants) {
+            if (processVariables.get(requiredParticipant) == null) return false;
+        }
+
         return true;
     }
 
@@ -75,4 +82,11 @@ public abstract class TaskConfig {
         return emailContent.getEmailText(paramMap);
     }
 
+    public List<String> getRequiredParticipants() {
+        return new ArrayList<>();
+    }
+
+    public boolean isAllowedRole(String role) {
+        return getRequiredParticipants().contains(role);
+    }
 }

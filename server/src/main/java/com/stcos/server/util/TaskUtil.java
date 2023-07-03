@@ -98,4 +98,12 @@ public class TaskUtil {
         }
     }
 
+    public static boolean isAllowedRole(String taskName, String role) {
+        try {
+            TaskConfig taskConfig = TASK_CONFIG_MAP.get(taskName);
+            return taskConfig.isAllowedRole(role);
+        } catch (NullPointerException e) {
+            throw new ServerErrorException(e);
+        }
+    }
 }

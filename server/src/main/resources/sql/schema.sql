@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS t_operator
     department              VARCHAR(32),              -- 部门
     position                VARCHAR(32),              -- 职位
     is_manager              BOOLEAN     DEFAULT FALSE,-- 是否为主管
-    processes_instance      TEXT        NOT NULL,     -- 可见的流程实例
-    processes_record        TEXT        NOT NULL,     -- 可见的流程记录
+    process_instance        TEXT        NOT NULL,     -- 可见的流程实例
+    process_record          TEXT        NOT NULL,     -- 可见的流程记录
     account_non_expired     BOOLEAN     DEFAULT TRUE,
     account_non_locked      BOOLEAN     DEFAULT TRUE,
     credentials_non_expired BOOLEAN     DEFAULT TRUE,

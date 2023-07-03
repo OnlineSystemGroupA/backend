@@ -2,9 +2,11 @@ package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.stcos.server.database.mysql.handler.ListTypeHandler;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Operator;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -31,6 +33,8 @@ public interface OperatorMapper extends BaseMapper<Operator> {
     }
 
     @Select("SELECT * FROM t_operator WHERE job_number = #{jobNumber}")
+    @Result(column = "process_instance", property = "processInstanceList", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    @Result(column = "process_record", property = "processRecordList", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     Operator selectByJobNumber(String jobNumber);
 
     /**

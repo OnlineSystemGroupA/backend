@@ -97,6 +97,7 @@ paths:
             'application/json':
               schema:
                 $ref: "#/components/schemas/ProcessId"
+
   /workflow/processes:
     get:
       tags:
@@ -345,6 +346,41 @@ paths:
         '404':
           description: 指定任务或资源不存在
 
+  /workflow/processes/{processId}/participants/{role}:
+    post:
+      summary: 分配人员
+      description: 为指定流程设置对应的流程参与者
+      operationId: setParticipant
+      parameters:
+        - name: processId
+          in: path
+          description: 指定流程实例 ID
+          schema:
+            type: string
+          required: true
+        - name: role
+          in: path
+          description: 待设置参与者在流程中的角色（参考后端设计文档流程参与者部分）
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: 目标员工的 ID
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/UserId"
+      responses:
+        '200':
+          description: ok
+        '403':
+          description: 指定流程对当前登录用户不可见
+        '404':
+          description: 指定流程或用户不存在
+        '409':
+          description: 指定用户所在部门不符合要求
+
+
   # 账号相关 API
   /account/client_details:
     get:
@@ -393,6 +429,13 @@ paths:
 
 components:
   schemas:
+    UserId:
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+
     RegisterParam:
       type: object
       required:
@@ -489,8 +532,6 @@ components:
           type: string
           description: 文件类型
 
-
-
     ProcessId:
       required:
         - processId
@@ -572,8 +613,10 @@ components:
         companyPhone:
           type: string
           description: 公司电话
+
     OperatorDetails:
       required:
+        - uid
         - jobNumber
         - email
         - phone
@@ -581,6 +624,9 @@ components:
         - department
         - position
       properties:
+        uid:
+          type: string
+          description: 员工 ID
         jobNumber:
           type: string
           description: 员工工号

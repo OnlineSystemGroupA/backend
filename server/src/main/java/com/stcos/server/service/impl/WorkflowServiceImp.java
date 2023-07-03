@@ -1,6 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
@@ -256,5 +257,26 @@ public class WorkflowServiceImp implements WorkflowService {
         return user.getProcessesCount();
     }
 
+    private OperatorService operatorService;
 
+    @Autowired
+    public void setOperatorService(OperatorService operatorService) {
+        this.operatorService = operatorService;
+    }
+
+    @Override
+    public void setParticipants(String processId, String role, String userId) throws ServiceException {
+        // 判断指定流程实例当前登录用户是否可见
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 目标流程实例当前登录用户不可见
+        // 检查目标用户是否存在
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        Operator operator = operatorService.getById(userId);
+        if (processInstance == null || operator == null) throw new ServiceException(1); // 目标用户不存在
+        // 获取该流程实例当前活跃任务
+        Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
+        if (!TaskUtil.isAllowedRole(task.getName(), role)) throw new ServiceException(2); // 当前任务阶段不允许设置该角色的参与者
+        // 设置指定的流程参与者
+        runtimeService.setVariable(processId, role, userId);
+    }
 }
