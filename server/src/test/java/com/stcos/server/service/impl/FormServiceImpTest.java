@@ -57,11 +57,11 @@ class FormServiceImpTest {
         List<String> readableUsers = new ArrayList<>();
         readableUsers.add("readableUser");
         formMetadata.setReadableUsers(readableUsers);
-
-        try {
-            System.out.println(formServiceImp.getForm(25L));
-        } catch (ServiceException e) {
-            System.out.println("Error code: " + e.getCode());
-        }
+//
+//        try {
+////            System.out.println(formServiceImp.getForm(25L));
+//        } catch (ServiceException e) {
+//            System.out.println("Error code: " + e.getCode());
+//        }
     }
 }

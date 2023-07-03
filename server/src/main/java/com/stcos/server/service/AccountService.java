@@ -6,6 +6,8 @@ import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.entity.user.Operator;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -79,4 +81,6 @@ public interface AccountService {
 
 
     void updateClientDetails(Client client, ClientDetailsDto clientDetailsDto) throws ServiceException;
+
+    List<Operator> getOperatorsByDepartment(String department);
 }

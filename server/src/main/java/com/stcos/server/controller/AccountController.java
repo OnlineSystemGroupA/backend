@@ -2,14 +2,20 @@ package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.AccountApi;
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.entity.user.Client;
+import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * description
@@ -55,6 +61,25 @@ public class AccountController implements AccountApi {
         } else {
             return ResponseEntity.status(409).build();
         }
+    }
+
+    @Override
+    @Secured("ROLE_MANAGER") // 只有主管可以调用该 API
+    public ResponseEntity<List<OperatorDetailsDto>> getOperators() {
+        Operator user = (Operator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Operator> operatorList = accountService.getOperatorsByDepartment(user.getDepartment());
+        List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
+        for (Operator operator : operatorList) {
+            ret.add(new OperatorDetailsDto(
+                    operator.getJobNumber(),
+                    operator.getEmail(),
+                    operator.getPhone(),
+                    operator.getRealName(),
+                    operator.getDepartment(),
+                    operator.getPosition()
+            ));
+        }
+        return ResponseEntity.ok(ret);
     }
 
     @Override

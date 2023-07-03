@@ -153,8 +153,10 @@ public class WorkflowServiceImp implements WorkflowService {
         // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
         Long formMetadataId = getFormMetadataId(processId, formName);
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         // 调用 FormService 接口，返回表单对象
-        return formService.getForm(formMetadataId);
+        return formService.getForm(formMetadataId, user.getUid());
     }
 
     @Override

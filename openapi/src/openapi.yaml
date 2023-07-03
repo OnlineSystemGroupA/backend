@@ -376,6 +376,21 @@ paths:
         '409':
           description: 当前登录账号的类型不是 client
 
+  /account/operators:
+    get:
+      summary: 获取员工
+      description: 获取所在部门员工
+      operationId: getOperators
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperatorDetails'
+
 components:
   schemas:
     RegisterParam:
@@ -557,3 +572,30 @@ components:
         companyPhone:
           type: string
           description: 公司电话
+    OperatorDetails:
+      required:
+        - jobNumber
+        - email
+        - phone
+        - realName
+        - department
+        - position
+      properties:
+        jobNumber:
+          type: string
+          description: 员工工号
+        email:
+          type: string
+          description: 邮箱
+        phone:
+          type: string
+          description: 联系电话
+        realName:
+          type: string
+          description: 姓名
+        department:
+          type: string
+          description: 部门
+        position:
+          type: string
+          description: 职位

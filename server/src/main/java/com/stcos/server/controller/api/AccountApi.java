@@ -6,6 +6,7 @@
 package com.stcos.server.controller.api;
 
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,6 +25,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-02T14:00:18.018979+08:00[Asia/Shanghai]")
@@ -74,6 +76,42 @@ public interface AccountApi {
 
     }
 
+    /**
+     * GET /account/operators : 获取员工
+     * 获取所在部门员工
+     *
+     * @return ok (status code 200)
+     */
+    @Operation(
+            operationId = "getOperators",
+            summary = "获取员工",
+            description = "获取所在部门员工",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = OperatorDetailsDto.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/account/operators",
+            produces = { "application/json" }
+    )
+    default ResponseEntity<List<OperatorDetailsDto>> getOperators(
+
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"phone\" : \"phone\", \"real_name\" : \"real_name\", \"job_number\" : \"job_number\", \"position\" : \"position\", \"department\" : \"department\", \"email\" : \"email\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
 
     /**
      * POST /account/client_details : 修改个人信息

@@ -4,9 +4,10 @@
     <startEvent id="startEvent1" flowable:formFieldValidation="true"></startEvent>
     <subProcess id="sid-9AD06F00-C34E-4231-89E1-CC514982C63E" name="审核委托">
       <startEvent id="sid-B56A1533-0451-4EF0-A0B3-29352B93F9B5" flowable:formFieldValidation="true"></startEvent>
-      <userTask id="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" name="等待市场部主管分配市场部人员" flowable:assignee="${marketingManager}" flowable:formKey="test" flowable:formFieldValidation="true">
+      <userTask id="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" name="分配市场部人员" flowable:assignee="${marketingManager}" flowable:formKey="test" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${assignMarketingOperatorListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${assignMarketingOperatorListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -20,7 +21,7 @@
       <endEvent id="sid-B676F99C-E550-46BE-8021-895A803D18D4"></endEvent>
       <sequenceFlow id="sid-4DB31523-01B4-4E06-9078-3FD0813872A7" sourceRef="sid-B56A1533-0451-4EF0-A0B3-29352B93F9B5" targetRef="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C"></sequenceFlow>
       <sequenceFlow id="sid-243B1CCC-F6CD-4D9D-AD24-09045F9C507F" name="分配完成" sourceRef="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" targetRef="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B"></sequenceFlow>
-      <userTask id="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B" name="等待测试部主管分配测试部人员" flowable:assignee="${testingManager}" flowable:formFieldValidation="true">
+      <userTask id="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B" name="分配测试部人员" flowable:assignee="${testingManager}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>

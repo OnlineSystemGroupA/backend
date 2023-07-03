@@ -1,5 +1,6 @@
 package com.stcos.server.service;
 
+import com.stcos.server.entity.form.ApplicationForm;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
@@ -15,7 +16,7 @@ public interface FormService {
      *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无读取权限 <br>
      */
-    Form getForm(Long formMetadataId) throws ServiceException;
+    Form getForm(Long formMetadataId, String userId) throws ServiceException;
 
     /**
      * 更新指定流程中的指定表单
@@ -53,4 +54,5 @@ public interface FormService {
 
     void removeWritePermission(Long formMetadataId, String assignee);
 
+    Form getForm(Long metadataId);
 }

@@ -30,12 +30,9 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public Form getForm(Long formMetadataId) throws ServiceException {
+    public Form getForm(Long formMetadataId, String userId) throws ServiceException {
         // 根据表单元数据 ID 查询数据库
         FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
-
-        // 获取当前登录用户
-        String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
         // 判断当前登录用户是否具有读取权限
         if (formMetadata.hasReadPermission(userId)) {
@@ -109,5 +106,11 @@ public class FormServiceImp implements FormService {
     @Override
     public void removeWritePermission(Long formMetadataId, String userId) {
         formMetadataService.removeWritePermission(formMetadataId, userId);
+    }
+
+    @Override
+    public Form getForm(Long metadataId) {
+        Long formId = formMetadataService.getFormId(metadataId);
+        return formRepository.getFormById(formId);
     }
 }

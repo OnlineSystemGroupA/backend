@@ -2,6 +2,8 @@ package com.stcos.server.service;
 
 import com.stcos.server.entity.user.Operator;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -13,4 +15,7 @@ public interface OperatorService {
 
     Operator getById(String uid);
 
+    Operator getByJobNumber(String jobNumber);
+
+    List<Operator> getByDepartment(String department);
 }

@@ -10,9 +10,12 @@ import com.stcos.server.entity.user.Operator;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.ClientService;
+import com.stcos.server.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountServiceImp implements AccountService {
@@ -31,11 +34,11 @@ public class AccountServiceImp implements AccountService {
         this.clientService = clientService;
     }
 
-    private OperatorMapper operatorMapper;
+    private OperatorService operatorService;
 
     @Autowired
-    public void setOperatorMapper(OperatorMapper operatorMapper) {
-        this.operatorMapper = operatorMapper;
+    public void setOperatorService(OperatorService operatorService) {
+        this.operatorService = operatorService;
     }
 
     private PasswordEncoder passwordEncoder;
@@ -65,7 +68,7 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public Operator getOperator(String jobNumber) throws ServiceException {
-        Operator operator = operatorMapper.selectByJobNumber(jobNumber);
+        Operator operator = operatorService.getByJobNumber(jobNumber);
         if (operator == null) {
             throw new ServiceException(0); // Operator not found
         }
@@ -110,5 +113,10 @@ public class AccountServiceImp implements AccountService {
         client.setGender(clientDetailsDto.getGender());
         client.setPhone(clientDetailsDto.getPhone());
         clientService.updateById(client);
+    }
+
+    @Override
+    public List<Operator> getOperatorsByDepartment(String department) {
+        return operatorService.getByDepartment(department);
     }
 }

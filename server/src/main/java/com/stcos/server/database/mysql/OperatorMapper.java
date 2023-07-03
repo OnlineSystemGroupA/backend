@@ -21,10 +21,10 @@ import java.util.Map;
 
 @Repository
 public interface OperatorMapper extends BaseMapper<Operator> {
-    default Operator getByUsernameOperator(String username){
+    default Operator getByUsernameOperator(String username) {
         Map<String, Object> map = new HashMap<>();
-        map.put("username",username);
-        if(this.selectByMap(map).isEmpty())
+        map.put("username", username);
+        if (this.selectByMap(map).isEmpty())
             return null;
         else
             return this.selectByMap(map).get(0);
@@ -39,27 +39,30 @@ public interface OperatorMapper extends BaseMapper<Operator> {
      * @param uid 干员Uid
      * @return 查找到的Operator对象
      */
-    default Operator getByUidOperator(String uid){
+    default Operator getByUidOperator(String uid) {
         Map<String, Object> map = new HashMap<>();
-        map.put("uid",uid);
-        if(this.selectByMap(map).isEmpty())
+        map.put("uid", uid);
+        if (this.selectByMap(map).isEmpty())
             return null;
         else
             return this.selectByMap(map).get(0);
     }
 
     default boolean existUserName(String username) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("username",username);
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", username);
         return !this.selectByMap(map).isEmpty();
     }
 
     @Select("select * from t_operator where ${ew.SqlSegment}")
     @Results({
-            @Result(column = "uid",property = "uid"),
-            @Result(column = "uid",property = "authorities", many=@Many(
+            @Result(column = "uid", property = "uid"),
+            @Result(column = "uid", property = "authorities", many = @Many(
                     select = "com.stcos.server.mapper.RoleMapper.getAuthorityListByUid"
             ))
     })
     List<Admin> getList(@Param("ew") QueryWrapper wrapper);
+
+    @Select("SELECT * FROM t_operator WHERE department = #{department}")
+    List<Operator> selectByDepartment(String department);
 }

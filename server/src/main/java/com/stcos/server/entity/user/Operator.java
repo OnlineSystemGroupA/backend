@@ -8,6 +8,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -28,19 +29,19 @@ public class Operator implements User {
 
     private String jobNumber;
 
+    private LocalDateTime createdDate;
+
     private String realName;
 
-
-    @TableField(exist = false)
     private String department;
 
-    @TableField(exist = false)
     private String position;
 
     private String email;
 
-    @TableField(exist = false)
     private String phone;
+
+    private boolean isManager = false;
 
     @TableField(exist = false)
     private String avatarPath;
@@ -56,14 +57,20 @@ public class Operator implements User {
     @TableField(value = "process_instances", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> processInstanceList = new ArrayList<>();
 
+    @TableField(value = "processes_record", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> processRecordList;
+
     public Operator(String uid) {
         this.uid = "op-" + UUID.randomUUID();
+        this.createdDate = LocalDateTime.now();
     }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_OPERATOR"));
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_OPERATOR")));
+        if (isManager) authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        return authorities;
     }
 
     @Override

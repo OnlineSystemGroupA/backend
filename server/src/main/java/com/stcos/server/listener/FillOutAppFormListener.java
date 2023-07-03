@@ -53,7 +53,8 @@ public class FillOutAppFormListener extends TaskListener {
     public void complete(DelegateTask task) {
         // 更新任务详情
         Long metadataId = (Long) task.getVariable("ApplicationForm", false);
-        ApplicationForm form = formService.getForm(metadataId);
+        ApplicationForm form = (ApplicationForm) formService.getForm(metadataId);
+        task.setVariable("title", form.getSoftwareName(), false);
         super.complete(task);
     }
 }

@@ -6,6 +6,8 @@ import com.stcos.server.entity.user.Operator;
 import com.stcos.server.service.OperatorService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -20,6 +22,16 @@ public class OperatorServiceImp extends ServiceImpl<OperatorMapper, Operator> im
     @Override
     public Operator getById(String uid) {
         return super.getById(uid);
+    }
+
+    @Override
+    public Operator getByJobNumber(String jobNumber) {
+        return baseMapper.selectByJobNumber(jobNumber);
+    }
+
+    @Override
+    public List<Operator> getByDepartment(String department) {
+        return baseMapper.selectByDepartment(department);
     }
 
 }

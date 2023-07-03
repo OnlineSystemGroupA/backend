@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS stcos;
 
 USE stcos;
 
+-- 管理员表
 CREATE TABLE IF NOT EXISTS t_admin
 (
     uid      VARCHAR(64) NOT NULL,
@@ -11,14 +12,21 @@ CREATE TABLE IF NOT EXISTS t_admin
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
+-- 员工表
 CREATE TABLE IF NOT EXISTS t_operator
 (
     uid                     VARCHAR(64) NOT NULL,
     job_number              VARCHAR(32) NOT NULL,     -- 员工工号
     password                VARCHAR(64) DEFAULT NULL, -- 密码
-    real_name               VARCHAR(32) NOT NULL,     -- 姓名
+    created_date            DATETIME    NOT NULL,     -- 账号创建时间
     email                   VARCHAR(32) NOT NULL,     -- 邮箱
-    process_instances       TEXT        NOT NULL,     -- 用户可见的流程实例列表
+    phone                   VARCHAR(16),              -- 联系电话
+    real_name               VARCHAR(32),              -- 姓名
+    department              VARCHAR(32),              -- 部门
+    position                VARCHAR(32),              -- 职位
+    is_manager              BOOLEAN     DEFAULT FALSE,-- 是否为主管
+    processes_instance      TEXT        NOT NULL,     -- 可见的流程实例
+    processes_record        TEXT        NOT NULL,     -- 可见的流程记录
     account_non_expired     BOOLEAN     DEFAULT TRUE,
     account_non_locked      BOOLEAN     DEFAULT TRUE,
     credentials_non_expired BOOLEAN     DEFAULT TRUE,
@@ -27,6 +35,7 @@ CREATE TABLE IF NOT EXISTS t_operator
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
+-- 客户表
 CREATE TABLE IF NOT EXISTS t_client
 (
     uid                     VARCHAR(64) NOT NULL,
@@ -55,6 +64,7 @@ CREATE TABLE IF NOT EXISTS t_client
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
+-- 平台配置表
 CREATE TABLE IF NOT EXISTS t_setting
 (
     setting_key VARCHAR(64) NOT NULL,
@@ -107,7 +117,7 @@ CREATE TABLE IF NOT EXISTS t_task_details
 -- ProcessDetails
 CREATE TABLE IF NOT EXISTS t_process_details
 (
-    id               BIGINT      AUTO_INCREMENT,
+    id               BIGINT AUTO_INCREMENT,
     title            VARCHAR(64) NOT NULL,
     version          VARCHAR(64) NOT NULL,
     test_type        VARCHAR(64) NOT NULL,
@@ -125,12 +135,13 @@ CREATE TABLE IF NOT EXISTS t_process_details
 
 CREATE TABLE IF NOT EXISTS t_file_metadata
 (
-    file_metadata_id BIGINT      AUTO_INCREMENT,
+    file_metadata_id BIGINT AUTO_INCREMENT,
     file_name        VARCHAR(64) NOT NULL,
     file_type        VARCHAR(10) NOT NULL,
     file_size        BIGINT      NOT NULL,
     updated_by       VARCHAR(64) NOT NULL,
     updated_date     DATETIME    NOT NULL,
-    file_path        VARCHAR(64) NOT NULL
+    file_path        VARCHAR(64) NOT NULL,
+    PRIMARY KEY (file_metadata_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

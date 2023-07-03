@@ -51,4 +51,9 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     public boolean existForm(long formMetadataId) {
         return getById(formMetadataId).getFormId() != -1;
     }
+
+    @Override
+    public Long getFormId(Long formMetadataId) {
+        return getById(formMetadataId).getFormId();
+    }
 }
