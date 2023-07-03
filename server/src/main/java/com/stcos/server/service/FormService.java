@@ -32,15 +32,25 @@ public interface FormService {
 
     /**
      * 保存表单索引
+     *
      * @param formMetadata 待保存的表单元数据
      */
     void saveFormMetadata(FormMetadata formMetadata);
 
     /**
      * 查找是否存在表单
+     *
      * @param formMetadataId 表单元数据Id
      * @return 存在表单则返回true
      */
     boolean existForm(long formMetadataId);
+
+    void addWritePermission(Long formMetadataId, String assignee);
+
+    void addReadPermission(Long applicationFormMetadataId, String clientUid);
+
+    Long createMetadata(String s, String clientUid);
+
+    void removeWritePermission(Long formMetadataId, String assignee);
 
 }

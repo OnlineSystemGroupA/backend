@@ -1,6 +1,5 @@
 package com.stcos.server.entity.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -23,13 +22,14 @@ public class TestFunctionForm extends Form {
     private List<TestFunction> functions;
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class TestFunction {
-        private String name;
+        private String title;
         private List<TestFunctionItem> items;
+        private Integer index;
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class TestFunctionItem {
             private String name;
             private String description;

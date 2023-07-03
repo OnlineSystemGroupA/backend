@@ -160,4 +160,9 @@ public class Client implements User {
     public int getProcessesCount() {
         return processInstanceList.size();
     }
+
+    @Override
+    public boolean hasProcessInstance(String processId) {
+        return processInstanceList.contains(processId);
+    }
 }

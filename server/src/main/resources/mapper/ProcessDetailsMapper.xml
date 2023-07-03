@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.stcos.server.database.mysql.ProcessDetailsMapper">
     <!--返回的对象为TaskDetails-->
     <resultMap id="task_details" type="com.stcos.server.entity.process.ProcessDetails">
@@ -13,7 +16,7 @@
         <id column="address" property="address"/>
         <id column="start_date" property="startDate"/>
         <id column="due_date" property="dueDate"/>
-        <collection property="list"
+        <collection property="taskDetailsList"
                     ofType="com.stcos.server.entity.process.TaskDetails">
             <id column="aid" property="id"/>
             <id column="process_id" property="processId"/>
@@ -25,12 +28,11 @@
             <id column="result" property="result"/>
             <id column="description" property="description"/>
         </collection>
-
-        <select id="selectTaskListById" parameterType="int" resultMap="task_details">
-            SELECT * FROM
-            t_task_details t1,t_process_details t2
-            WHERE t1.process_id=t2.id
-            AND t1.process_id=#{id}
-        </select>
     </resultMap>
+    <select id="selectTaskListById" parameterType="int" resultMap="task_details">
+        SELECT * FROM
+        t_task_details t1,t_process_details t2
+        WHERE t1.process_id=t2.id
+        AND t1.process_id=#{id}
+    </select>
 </mapper>

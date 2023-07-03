@@ -151,23 +151,17 @@ paths:
                 type: integer
                 format: int32
 
-  /workflow/processes/{processId}/tasks/{taskId}/complete:
+  /workflow/processes/{processId}/complete_task:
     post:
       tags:
         - workflow
       summary: 完成任务
-      description: 将指定任务设置为已完成，并跳转至下一阶段
+      description: 完成现阶段任务使流程进入下一阶段
       operationId: completeTask
       parameters:
         - name: processId
           in: path
-          description: 待完成任务所属的流程实例 Id
-          required: true
-          schema:
-            type: string
-        - name: taskId
-          in: path
-          description: 待完成的任务 Id
+          description: 流程实例 Id
           required: true
           schema:
             type: string
@@ -181,9 +175,11 @@ paths:
         '200':
           description: 成功完成指定任务
         '403':
-          description: 指定任务对该用户不可见或当前用户无完成任务权限
+          description: 指定流程对该用户不可见或当前用户无完成任务权限
         '404':
-          description: 指定任务或流程不存在
+          description: 指定流程不存在
+        '460':
+          description: 未满足完成条件
 
   /workflow/processes/{processId}/details:
     get:

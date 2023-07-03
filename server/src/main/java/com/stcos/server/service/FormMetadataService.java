@@ -18,4 +18,6 @@ public interface FormMetadataService extends IService<FormMetadata> {
     void addWritePermission(Long formMetadataId, String userId);
 
     void removeWritePermission(Long formMetadataId, String userId);
+
+    boolean existForm(long formMetadataId);
 }

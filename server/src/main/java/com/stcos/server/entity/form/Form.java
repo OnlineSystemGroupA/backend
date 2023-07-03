@@ -25,7 +25,7 @@ public abstract class Form {
     @AutoId
     @JsonIgnore
     @MongoId(targetType = FieldType.INT64)
-    private long formId;
+    private long formId = -1;
 
     // TODO 酌情设计一些与表单操作有关的共用方法
 
@@ -58,7 +58,7 @@ public abstract class Form {
         return JSONUtil.parseObject(formData, formClass);
     }
 
-    public boolean isSavedInDatabase() {
-        return formId != -1;
-    }
+//    public boolean isSavedInDatabase() {
+//        return formId != -1;
+//    }
 }

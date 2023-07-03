@@ -49,6 +49,11 @@ public class Admin implements User {
     }
 
     @Override
+    public boolean hasProcessInstance(String processId) {
+        return false;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }

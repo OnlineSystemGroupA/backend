@@ -49,7 +49,7 @@ public class SampleMetadata {
         return writableUsers != null && writableUsers.contains(userId);
     }
 
-    public boolean isSavedInDatabase() {
-        return sampleMetadataId != -1;
-    }
+//    public boolean isSavedInDatabase() {
+//        return sampleMetadataId != -1;
+//    }
 }

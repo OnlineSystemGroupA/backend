@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProcessDetails {
     @TableId
-    private String id;
+    private Long id;
 
     private String title;
 

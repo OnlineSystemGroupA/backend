@@ -23,7 +23,7 @@ public class TaskListener {
 
     private EmailService emailService;
 
-    protected FormMetadataService formMetadataService;
+    protected FormService formService;
 
     @Autowired
     public void setEmailService(EmailService emailService) {
@@ -31,8 +31,8 @@ public class TaskListener {
     }
 
     @Autowired
-    public void setFormMetadataService(FormMetadataService formMetadataService) {
-        this.formMetadataService = formMetadataService;
+    public void setFormService(FormService formService) {
+        this.formService = formService;
     }
 
     /**
@@ -52,7 +52,7 @@ public class TaskListener {
         List<String> requiredForms = TaskUtil.getRequiredForms(task.getName());
         for (String formName : requiredForms) {
             Long formMetadataId = (Long) task.getVariable(formName);
-            formMetadataService.addWritePermission(formMetadataId, task.getAssignee());
+            formService.addWritePermission(formMetadataId, task.getAssignee());
         }
     }
 
@@ -60,7 +60,7 @@ public class TaskListener {
         List<String> requiredForms = TaskUtil.getRequiredForms(task.getName());
         for (String formName : requiredForms) {
             Long formMetadataId = (Long) task.getVariable(formName);
-            formMetadataService.removeWritePermission(formMetadataId, task.getAssignee());
+            formService.removeWritePermission(formMetadataId, task.getAssignee());
         }
     }
 

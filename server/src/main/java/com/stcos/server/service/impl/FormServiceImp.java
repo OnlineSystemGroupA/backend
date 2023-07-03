@@ -40,7 +40,7 @@ public class FormServiceImp implements FormService {
         // 判断当前登录用户是否具有读取权限
         if (formMetadata.hasReadPermission(userId)) {
             // 获取表单数据
-            return formRepository.findByFormId(formMetadata.getFormId());
+            return formRepository.getFormById(formMetadata.getFormId());
         } else {
             throw new ServiceException(1); // 无读取权限的异常
         }
@@ -88,6 +88,26 @@ public class FormServiceImp implements FormService {
 
     @Override
     public boolean existForm(long formMetadataId) {
-        return false;
+        return formMetadataService.existForm(formMetadataId);
+    }
+
+    @Override
+    public void addWritePermission(Long formMetadataId, String userId) {
+        formMetadataService.addWritePermission(formMetadataId, userId);
+    }
+
+    @Override
+    public void addReadPermission(Long formMetadataId, String userId) {
+        formMetadataService.addReadPermission(formMetadataId, userId);
+    }
+
+    @Override
+    public Long createMetadata(String formName, String userId) {
+        return formMetadataService.create(formName, userId);
+    }
+
+    @Override
+    public void removeWritePermission(Long formMetadataId, String userId) {
+        formMetadataService.removeWritePermission(formMetadataId, userId);
     }
 }

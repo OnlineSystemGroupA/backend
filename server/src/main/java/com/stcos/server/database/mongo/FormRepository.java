@@ -13,7 +13,7 @@ public interface FormRepository extends MongoRepository<Form, Long> {
         insert(form);
     }
 
-    default Form selectFormById(long formId){
+    default Form getFormById(long formId){
         return findById(formId).orElse(null);
     }
 

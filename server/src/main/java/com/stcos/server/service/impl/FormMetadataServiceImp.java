@@ -46,4 +46,9 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
         formMetadata.removeWritePermission(userId);
         if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
     }
+
+    @Override
+    public boolean existForm(long formMetadataId) {
+        return getById(formMetadataId).getFormId() != -1;
+    }
 }

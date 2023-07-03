@@ -21,7 +21,7 @@ public class TaskDetails {
     @TableId
     private Long id;
 
-    private String processId;
+    private Long processId;
 
     private String taskName;
 
