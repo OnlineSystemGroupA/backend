@@ -52,8 +52,10 @@ public class SaveMongoEventListener extends AbstractMongoEventListener<Object> {
                     //获取自增主键
                     Long newId = snowflakeIdWorker.nextId();
                     //对ID进行替换
-                    document.put("_id", newId);
-                    field.set(source,newId);
+                    if (document.get("_id").equals(-1L)){
+                        document.put("_id", newId);
+                        field.set(source,newId);
+                    }
                 }
             });
         }

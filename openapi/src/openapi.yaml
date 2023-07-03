@@ -105,13 +105,13 @@ paths:
       description: 获取与当前用户相关的流程实例
       operationId: getProcesses
       parameters:
-        -  name: pageIndex
-           in: query
-           required: true
-           description: 需要查询的页号
-           schema:
-             type: integer
-             format: int32
+        - name: pageIndex
+          in: query
+          required: true
+          description: 需要查询的页号
+          schema:
+            type: integer
+            format: int32
         - name: numPerPage
           in: query
           required: true
@@ -151,23 +151,17 @@ paths:
                 type: integer
                 format: int32
 
-  /workflow/processes/{processId}/tasks/{taskId}/complete:
+  /workflow/processes/{processId}/complete_task:
     post:
       tags:
         - workflow
       summary: 完成任务
-      description: 将指定任务设置为已完成，并跳转至下一阶段
+      description: 完成现阶段任务使流程进入下一阶段
       operationId: completeTask
       parameters:
         - name: processId
           in: path
-          description: 待完成任务所属的流程实例 Id
-          required: true
-          schema:
-            type: string
-        - name: taskId
-          in: path
-          description: 待完成的任务 Id
+          description: 流程实例 Id
           required: true
           schema:
             type: string
@@ -181,9 +175,11 @@ paths:
         '200':
           description: 成功完成指定任务
         '403':
-          description: 指定任务对该用户不可见或当前用户无完成任务权限
+          description: 指定流程对该用户不可见或当前用户无完成任务权限
         '404':
-          description: 指定任务或流程不存在
+          description: 指定流程不存在
+        '460':
+          description: 未满足完成条件
 
   /workflow/processes/{processId}/details:
     get:
@@ -254,6 +250,7 @@ paths:
       description: 更新或创建表单
       operationId: putForm
       requestBody:
+        required: true
         content:
           'text/plain':
             schema:
@@ -347,6 +344,37 @@ paths:
           description: 指定任务或资源对该用户不可见
         '404':
           description: 指定任务或资源不存在
+
+  # 账号相关 API
+  /account/client_details:
+    get:
+      summary: 获取个人信息
+      description: 获取当前登录账号的账号信息
+      operationId: getClientDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ClientDetails'
+        '409':
+          description: 当前登录账号的类型不是 client
+    post:
+      summary: 修改个人信息
+      description: 修改当前登录账户的个人信息
+      operationId: updateClientDetails
+      requestBody:
+        description: 修改后的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/ClientDetails'
+      responses:
+        '200':
+          description: ok
+        '409':
+          description: 当前登录账号的类型不是 client
 
 components:
   schemas:
@@ -468,3 +496,64 @@ components:
         formName:
           type: string
           description: 表单名称
+
+    # 账号相关 DTO
+    ClientDetails:
+      required:
+        - username
+        - createdDate
+        - realName
+        - email
+        - phone
+        - gender
+        - company
+        - companyTelephone
+        - companyFax
+        - companyAddress
+        - companyPostcode
+        - companyWebsite
+        - companyEmail
+        - companyPhone
+      properties:
+        username:
+          type: string
+          description: 用户名
+        createdDate:
+          type: string
+          description: 账号创建时间
+        realName:
+          type: string
+          description: 用户的真实姓名
+        email:
+          type: string
+          description: 邮箱
+        phone:
+          type: string
+          description: 联系电话
+        gender:
+          type: string
+          description: 性别
+        company:
+          type: string
+          description: 公司名称
+        companyTelephone:
+          type: string
+          description: 公司电话号
+        companyFax:
+          type: string
+          description: 公司传真
+        companyAddress:
+          type: string
+          description: 公司地址
+        companyPostcode:
+          type: string
+          description: 公司邮编
+        companyWebsite:
+          type: string
+          description: 公司网址
+        companyEmail:
+          type: string
+          description: 公司邮箱
+        companyPhone:
+          type: string
+          description: 公司电话

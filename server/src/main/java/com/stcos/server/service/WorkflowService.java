@@ -1,7 +1,6 @@
 package com.stcos.server.service;
 
-
-import com.stcos.server.entity.dto.FileMetadataDto;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
@@ -16,13 +15,13 @@ public interface WorkflowService {
     /**
      * 将一个任务标记为完成，跳转至下一阶段
      *
-     * @param taskId 指定任务Id
+     * @param processId 流程 ID
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 指定任务对该用户不可见或当前用户无完成任务权限 <br>
      *                          1: 指定任务不存在 <br>
      */
-    void completeTask(String processId, String taskId, Boolean passable) throws ServiceException;
+    void completeTask(String processId, Boolean passable) throws ServiceException;
 
     /**
      * 通过 id 查询某一个任务
@@ -48,14 +47,14 @@ public interface WorkflowService {
      * 获取指定流程中的指定表单
      *
      * @param processId 指定流程实例 Id
-     * @param formType  表单类型
+     * @param formName  表单类型
      * @return 表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无读取权限 <br>
      */
-    Form getForm(String processId, String formType) throws ServiceException;
+    Form getForm(String processId, String formName) throws ServiceException;
 
     /**
      * 更新指定流程中的指定表单
@@ -84,7 +83,7 @@ public interface WorkflowService {
      *                          3: 存储空间不足 <br>
      *                          4: 文件上传失败 <br>
      */
-    List<FileMetadataDto> uploadSample(String processInstanceId, List<MultipartFile> files) throws ServiceException;
+    List<FileMetadata> uploadSample(String processInstanceId, List<MultipartFile> files) throws ServiceException;
 
     /**
      * 下载样品文件

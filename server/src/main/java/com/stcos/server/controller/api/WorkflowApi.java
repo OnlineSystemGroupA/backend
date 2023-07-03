@@ -42,35 +42,35 @@ public interface WorkflowApi {
     }
 
     /**
-     * POST /workflow/processes/{processId}/tasks/{taskId}/complete : 完成任务
-     * 将指定任务设置为已完成，并跳转至下一阶段
+     * POST /workflow/processes/{processId}/complete_task : 完成任务
+     * 完成现阶段任务使流程进入下一阶段
      *
-     * @param processId 待完成任务所属的流程实例 Id (required)
-     * @param taskId 待完成的任务 Id (required)
+     * @param processId 流程实例 Id (required)
      * @param passable 是否通过，流程遇到网关用于决定运行方向 (optional)
      * @return 成功完成指定任务 (status code 200)
-     *         or 指定任务对该用户不可见或当前用户无完成任务权限 (status code 403)
-     *         or 指定任务或流程不存在 (status code 404)
+     *         or 指定流程对该用户不可见或当前用户无完成任务权限 (status code 403)
+     *         or 指定流程不存在 (status code 404)
+     *         or 未满足完成条件 (status code 460)
      */
     @Operation(
-        operationId = "completeTask",
-        summary = "完成任务",
-        description = "将指定任务设置为已完成，并跳转至下一阶段",
-        tags = { "workflow" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "成功完成指定任务"),
-            @ApiResponse(responseCode = "403", description = "指定任务对该用户不可见或当前用户无完成任务权限"),
-            @ApiResponse(responseCode = "404", description = "指定任务或流程不存在")
-        }
+            operationId = "completeTask",
+            summary = "完成任务",
+            description = "完成现阶段任务使流程进入下一阶段",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功完成指定任务"),
+                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见或当前用户无完成任务权限"),
+                    @ApiResponse(responseCode = "404", description = "指定流程不存在"),
+                    @ApiResponse(responseCode = "460", description = "未满足完成条件")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/workflow/processes/{processId}/tasks/{taskId}/complete"
+            method = RequestMethod.POST,
+            value = "/workflow/processes/{processId}/complete_task"
     )
     default ResponseEntity<Void> completeTask(
-        @Parameter(name = "processId", description = "待完成任务所属的流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
-        @Parameter(name = "taskId", description = "待完成的任务 Id", required = true, in = ParameterIn.PATH) @PathVariable("taskId") String taskId,
-        @Parameter(name = "passable", description = "是否通过，流程遇到网关用于决定运行方向", in = ParameterIn.QUERY) @Valid @RequestParam(value = "passable", required = false) Boolean passable
+            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+            @Parameter(name = "passable", description = "是否通过，流程遇到网关用于决定运行方向", in = ParameterIn.QUERY) @Valid @RequestParam(value = "passable", required = false) Boolean passable
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -297,7 +297,7 @@ public interface WorkflowApi {
     default ResponseEntity<Void> putForm(
             @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
             @Parameter(name = "formName", description = "期望操作的表单名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName,
-            @Parameter(name = "body", description = "") @Valid @RequestBody(required = false) String body
+            @Parameter(name = "formData", description = "表单数据") @Valid @RequestBody(required = true) String formData
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -314,7 +314,7 @@ public interface WorkflowApi {
         operationId = "startProcess",
         summary = "启动流程",
         description = "开启一个新的委托流程",
-        tags = { "process" },
+        tags = { "workflow" },
         responses = {
             @ApiResponse(responseCode = "200", description = "启动成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessIdDto.class))

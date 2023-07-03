@@ -1,7 +1,7 @@
 package com.stcos.server.entity.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
@@ -14,21 +14,22 @@ import java.util.List;
  * @since 2023/5/15
  */
 @Data
-@Accessors(fluent = true)
-@TableName(value = "t_test_function_form")
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 public class TestFunctionForm extends Form {
     private String softwareName;
     private String softwareVersion;
     private List<TestFunction> functions;
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class TestFunction {
-        private String name;
+        private String title;
         private List<TestFunctionItem> items;
+        private Integer index;
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class TestFunctionItem {
             private String name;
             private String description;

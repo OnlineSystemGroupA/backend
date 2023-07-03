@@ -1,5 +1,6 @@
 package com.stcos.server.entity.form;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stcos.server.util.JSONUtil;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,16 +21,20 @@ import java.util.Map;
 @Data
 @Document(collection = "form")
 public abstract class Form {
-    @MongoId(targetType = FieldType.INT64)
+
     @AutoId
-    private long formId;
+    @JsonIgnore
+    @MongoId(targetType = FieldType.INT64)
+    private long formId = -1;
 
     // TODO 酌情设计一些与表单操作有关的共用方法
 
     private static final Map<String, Class<?extends Form>> FORM_NAME_CLASS_MAP = new HashMap<>(){{
         put("ApplicationForm", ApplicationForm.class);
         put("ApplicationVerifyForm", ApplicationVerifyForm.class);
+        put("ContractForm", ContractForm.class);
         put("DocumentReviewForm", DocumentReviewForm.class);
+        put("QuotationForm", QuotationForm.class);
         put("ReportVerifyForm", ReportVerifyForm.class);
         put("TestFunctionForm", TestFunctionForm.class);
         put("TestPlanForm", TestPlanForm.class);
@@ -37,6 +42,7 @@ public abstract class Form {
         put("TestRecordsForm", TestRecordsForm.class);
         put("TestReportForm", TestReportForm.class);
         put("TestWorkCheckForm", TestWorkCheckForm.class);
+        put("TestProblemForm", TestProblemForm.class);
     }};
 
     /**
@@ -51,4 +57,8 @@ public abstract class Form {
         if (formClass == null) return null;
         return JSONUtil.parseObject(formData, formClass);
     }
+
+//    public boolean isSavedInDatabase() {
+//        return formId != -1;
+//    }
 }

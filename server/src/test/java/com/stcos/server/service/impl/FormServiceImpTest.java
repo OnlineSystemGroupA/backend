@@ -37,7 +37,7 @@ class FormServiceImpTest {
 //                "client",
 //                localDateTime
 //        );
-        FormMetadata formMetadata = formMetadataRepository.findByFormMetadataId(25L);
+        FormMetadata formMetadata = formMetadataRepository.selectFormMetadataById(25L);
 
         System.out.println(formMetadata);
 
@@ -46,7 +46,7 @@ class FormServiceImpTest {
         formMetadata.setWritableUsers(writableUsers);
 
         try {
-            formServiceImp.updateForm(25L, "TestReportForm", form);
+            formServiceImp.saveOrUpdateForm(25L, form);
         } catch (ServiceException e) {
             System.out.println("Error code: " + e.getCode());
             return;

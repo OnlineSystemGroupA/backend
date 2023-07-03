@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2023/5/15
  */
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 @TableName(value = "t_test_work_check_form")
 public class TestWorkCheckForm extends Form {
     private String softwareName;

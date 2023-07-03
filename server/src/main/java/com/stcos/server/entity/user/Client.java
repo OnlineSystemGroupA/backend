@@ -10,6 +10,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -40,7 +41,12 @@ public class Client implements User {
     private String password;
 
     /**
-     * 用户的真名
+     * 账号创建时间
+     */
+    private LocalDateTime createdDate;
+
+    /**
+     * 用户的真实姓名
      */
     private String realName;
 
@@ -48,6 +54,56 @@ public class Client implements User {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 联系电话
+     */
+    private String phone;
+
+    /**
+     * 性别
+     */
+    private String gender;
+
+    /**
+     * 公司名称
+     */
+    private String company;
+
+    /**
+     * 公司电话号
+     */
+    private String companyTelephone;
+
+    /**
+     * 公司传真
+     */
+    private String companyFax;
+
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
+
+    /**
+     * 公司邮编
+     */
+    private String companyPostcode;
+
+    /**
+     * 公司网址
+     */
+    private String companyWebsite;
+
+    /**
+     * 公司邮箱
+     */
+    private String companyEmail;
+
+    /**
+     * 公司手机号码
+     */
+    private String companyPhone;
 
     /**
      * 账户是否可用
@@ -69,14 +125,20 @@ public class Client implements User {
      */
     private boolean credentialsNonExpired = true;
 
-    @TableField(value = "processes_active", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> processInstanceList = new ArrayList<>();
+    @TableField(value = "processes_instance", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> processInstanceList;
+
+    @TableField(value = "processes_record", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<String> processRecordList;
 
     public Client(String username, String password, String email) {
         this.uid = "cl-" + UUID.randomUUID();
         this.username = username;
         this.password = password;
         this.email = email;
+        this.createdDate = LocalDateTime.now();
+        this.processInstanceList = new ArrayList<>();
+        this.processRecordList = new ArrayList<>();
     }
 
     @Override
@@ -97,5 +159,10 @@ public class Client implements User {
     @Override
     public int getProcessesCount() {
         return processInstanceList.size();
+    }
+
+    @Override
+    public boolean hasProcessInstance(String processId) {
+        return processInstanceList.contains(processId);
     }
 }

@@ -1,5 +1,6 @@
 package com.stcos.server.service;
 
+import com.stcos.server.entity.dto.ClientDetailsDto;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
@@ -20,7 +21,6 @@ public interface AccountService {
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 用户名对应的 Admin 对象不存在
-     *
      */
     Admin getAdmin(String username) throws ServiceException;
 
@@ -76,4 +76,7 @@ public interface AccountService {
      * @return 质量部主管 ID
      */
     String getQualityManagerId();
+
+
+    void updateClientDetails(Client client, ClientDetailsDto clientDetailsDto) throws ServiceException;
 }

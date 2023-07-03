@@ -49,7 +49,7 @@ public class FileIndexDto {
    * 文件索引 ID
    * @return fileIndexId
   */
-  @NotNull 
+  @NotNull
   @Schema(name = "fileIndexId", description = "文件索引 ID", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("fileIndexId")
   public Long getFileIndexId() {
@@ -69,7 +69,7 @@ public class FileIndexDto {
    * 文件名
    * @return fileName
   */
-  @NotNull 
+  @NotNull
   @Schema(name = "fileName", description = "文件名", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("fileName")
   public String getFileName() {
@@ -89,7 +89,7 @@ public class FileIndexDto {
    * 文件类型
    * @return fileType
   */
-  @NotNull 
+  @NotNull
   @Schema(name = "fileType", description = "文件类型", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("fileType")
   public String getFileType() {

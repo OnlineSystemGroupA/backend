@@ -1,7 +1,7 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.user.User;
-import com.stcos.server.entity.dto.FileMetadataDto;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariables;
@@ -52,13 +52,6 @@ public class WorkflowServiceImp implements WorkflowService {
         this.fileService = fileService;
     }
 
-    private OperatorService operatorService;
-
-    @Autowired
-    public void setOperatorService(OperatorService operatorService) {
-        this.operatorService = operatorService;
-    }
-
     private SettingService settingService;
 
     @Autowired
@@ -75,17 +68,19 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public void completeTask(String processId, String taskId, Boolean passable) throws ServiceException {
-        Task task = getTaskById(taskId);
+    public void completeTask(String processId, Boolean passable) throws ServiceException {
+//        Task task = getTaskById(taskId);
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
-            throw new ServiceException(0);
-        }
+
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 指定流程实例对当前用户不可见
+        Task task = taskService.createTaskQuery().processInstanceId(processId).active().includeProcessVariables().singleResult();
+        if (task == null) throw new ServiceException(1);                        // 找不到活跃的任务
+        if (!task.getAssignee().equals(user.getUid())) throw new ServiceException(0); //当前用户不是被分配到的用户（即不可见）
 
         if (TaskUtil.isCompletable(task, formService)) {
-            taskService.complete(task.getId());
             task.getProcessVariables().replace("passable", passable);
+            taskService.complete(task.getId());
         }
 
     }
@@ -154,9 +149,9 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public Form getForm(String processId, String formType) throws ServiceException {
+    public Form getForm(String processId, String formName) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
-        Long formMetadataId = getFormMetadataId(processId, formType);
+        Long formMetadataId = getFormMetadataId(processId, formName);
 
         // 调用 FormService 接口，返回表单对象
         return formService.getForm(formMetadataId);
@@ -168,11 +163,11 @@ public class WorkflowServiceImp implements WorkflowService {
         Long formMetadataId = getFormMetadataId(processId, formType);
 
         // 调用 FormService 接口，完成表单更新
-        formService.updateForm(formMetadataId, formType, form);
+        formService.saveOrUpdateForm(formMetadataId, form);
     }
 
     @Override
-    public List<FileMetadataDto> uploadSample(String processId, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadata> uploadSample(String processId, List<MultipartFile> files) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
         Long sampleMetadataId = getSampleMetadataId(processId);
 
@@ -201,7 +196,7 @@ public class WorkflowServiceImp implements WorkflowService {
     private Long getFormMetadataId(String processId, String formType) throws ServiceException {
         // 判断 processId 对应的流程是否存在
         ProcessInstance processInstance = runtimeService.
-                createProcessInstanceQuery().processInstanceId(processId).singleResult();
+                createProcessInstanceQuery().processInstanceId(processId).includeProcessVariables().singleResult();
         if (processInstance == null) {
             throw new ServiceException(0); // 流程不存在的异常
         }

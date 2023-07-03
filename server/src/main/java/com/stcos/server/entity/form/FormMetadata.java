@@ -85,6 +85,16 @@ public class FormMetadata {
         writableUsers = new ArrayList<>();
     }
 
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+        this.lastModifiedBy = createdBy;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+        this.lastModifiedDate = createdDate;
+    }
+
     public boolean hasReadPermission(String userId) {
         List<String> readableUsers = getReadableUsers();
         return readableUsers != null && readableUsers.contains(userId);

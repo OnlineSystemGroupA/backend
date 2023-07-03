@@ -35,4 +35,5 @@ public interface User extends UserDetails {
 
     int getProcessesCount();
 
+    boolean hasProcessInstance(String processId);
 }

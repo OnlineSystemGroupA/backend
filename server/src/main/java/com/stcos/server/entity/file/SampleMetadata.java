@@ -1,5 +1,7 @@
 package com.stcos.server.entity.file;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.stcos.server.entity.form.AutoId;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -10,7 +12,9 @@ public class SampleMetadata {
     /**
      * 样品元数据 ID，保存对象时由数据库自动赋值
      */
-    private Long sampleMetadataId;
+    @TableId
+    @AutoId
+    private long sampleMetadataId;
 
     /**
      * 对样品具有读权限用户的 ID 列表
@@ -44,4 +48,8 @@ public class SampleMetadata {
         List<String> writableUsers = getWritableUsers();
         return writableUsers != null && writableUsers.contains(userId);
     }
+
+//    public boolean isSavedInDatabase() {
+//        return sampleMetadataId != -1;
+//    }
 }

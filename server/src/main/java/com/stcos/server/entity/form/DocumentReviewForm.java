@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2023/5/15
  */
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 @TableName(value = "t_document_review_form")
 public class DocumentReviewForm extends Form {
     private String softwareName;

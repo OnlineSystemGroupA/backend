@@ -2,13 +2,13 @@ package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.WorkflowApi;
 import com.stcos.server.entity.dto.*;
+import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import com.stcos.server.util.JSONUtil;
-import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -54,14 +54,16 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<Void> completeTask(String processId, String taskId, Boolean passable) {
+    public ResponseEntity<Void> completeTask(String processId, Boolean passable) {
         ResponseEntity<Void> response = null;
+        if (passable == null) passable = true;
         try {
-            workflowService.completeTask(processId, taskId, passable);
+            workflowService.completeTask(processId, passable);
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(403).build(); // 指定任务对该用户不可见或当前用户无完成任务权限
                 case 1 -> response = ResponseEntity.status(404).build(); // 指定任务或流程不存在
+                case 2 -> response = ResponseEntity.status(460).build(); // 指定任务未满足完成条件
             }
         }
         if (response == null) { // 未接收到下层传入的Exception
@@ -134,13 +136,13 @@ public class WorkflowController implements WorkflowApi {
     public ResponseEntity<List<FileIndexDto>> uploadSample(String processId, List<MultipartFile> files) {
         ResponseEntity<List<FileIndexDto>> response = null;
         try {
-            List<FileMetadataDto> fileMetadataDtoList = workflowService.uploadSample(processId, files);
-            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataDtoList.size());
-            for (FileMetadataDto fileMetadataDto : fileMetadataDtoList) {
+            List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, files);
+            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
+            for (FileMetadata fileMetadata : fileMetadataList) {
                 fileIndexDtoList.add(
-                        new FileIndexDto(fileMetadataDto.getFileMetadataId(),
-                                fileMetadataDto.getFileName(),
-                                fileMetadataDto.getFileType())
+                        new FileIndexDto(fileMetadata.getFileMetadataId(),
+                                fileMetadata.getFileName(),
+                                fileMetadata.getFileType())
                 );
             }
             response = ResponseEntity.ok(fileIndexDtoList);
@@ -235,10 +237,3 @@ public class WorkflowController implements WorkflowApi {
         return ResponseEntity.ok(workflowService.getProcessCount());
     }
 }
-
-/*
-    问题：
-    1.get/updateTaskItem中，为何传入参数是processId而非taskId？
-    2.startUserId是否是Owner
-    3.用户对资源是否有权限
- */
