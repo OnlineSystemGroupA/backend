@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(fluent = true)
-public class ContractForm {
+public class ContractForm extends Form {
     private String projectName;
     private String client;
     private String trustee;
