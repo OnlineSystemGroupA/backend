@@ -1,5 +1,6 @@
 package com.stcos.server.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.stcos.server.entity.user.Operator;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * @version 1.0
  * @since 2023/6/23 20:27
  */
-public interface OperatorService {
+public interface OperatorService extends IService<Operator> {
 
     Operator getById(String uid);
 
@@ -20,4 +21,8 @@ public interface OperatorService {
     List<Operator> getByDepartment(String department);
 
     void addProcessInstance(String operatorUid, String processInstanceId);
+
+    boolean existEmail(String email, String uid);
+
+    boolean existPhone(String phone, String uid);
 }

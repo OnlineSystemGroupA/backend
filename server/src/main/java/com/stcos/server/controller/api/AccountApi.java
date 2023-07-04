@@ -142,4 +142,72 @@ public interface AccountApi {
 
     }
 
+    /**
+     * GET /account/operator_details : 获取员工个人信息
+     * 获取当前登录账号的账号信息
+     *
+     * @return ok (status code 200)
+     *         or 当前登录账号的类型不是 operator (status code 409)
+     */
+    @Operation(
+            operationId = "getOperatorDetails",
+            summary = "获取员工个人信息",
+            description = "获取当前登录账号的账号信息",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = OperatorDetailsDto.class))
+                    }),
+                    @ApiResponse(responseCode = "409", description = "当前登录账号的类型不是 operator")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/account/operator_details",
+            produces = { "application/json" }
+    )
+    default ResponseEntity<OperatorDetailsDto> getOperatorDetails(
+
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"uid\" : \"uid\", \"realName\" : \"realName\", \"phone\" : \"phone\", \"position\" : \"position\", \"department\" : \"department\", \"jobNumber\" : \"jobNumber\", \"email\" : \"email\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * POST /account/operator_details : 修改员工信息
+     * 修改当前登录账户的个人信息
+     *
+     * @param operatorDetailsDto 修改后的个人信息 (optional)
+     * @return ok (status code 200)
+     * or 当前登录账号的类型不是 operator (status code 409)
+     */
+    @Operation(
+            operationId = "updateOperatorDetails",
+            summary = "修改员工信息",
+            description = "修改当前登录账户的个人信息",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok"),
+                    @ApiResponse(responseCode = "409", description = "当前登录账号的类型不是 operator")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/account/operator_details",
+            consumes = { "application/json" }
+    )
+    default ResponseEntity<String> updateOperatorDetails(
+            @Parameter(name = "OperatorDetailsDto", description = "修改后的个人信息") @Valid @RequestBody(required = false) OperatorDetailsDto operatorDetailsDto
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 }

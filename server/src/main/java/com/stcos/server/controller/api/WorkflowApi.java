@@ -222,11 +222,14 @@ public interface WorkflowApi {
 
     /**
      * GET /workflow/processes : 获取流程实例
+     /**
+     * GET /workflow/processes : 获取流程实例
      * 获取与当前用户相关的流程实例
      *
      * @param pageIndex 需要查询的页号 (required)
      * @param numPerPage 每页的项目条目数 (required)
      * @param orderBy 用于排序的字段 (required)
+     * @param assigned 其值为 true 表示获取当前有任务被分配给当前用户的项目 (optional)
      * @return 成功获取流程实例列表 (status code 200)
      */
     @Operation(
@@ -248,7 +251,8 @@ public interface WorkflowApi {
     default ResponseEntity<List<ProcessDto>> getProcesses(
             @NotNull @Parameter(name = "pageIndex", description = "需要查询的页号", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageIndex", required = true) Integer pageIndex,
             @NotNull @Parameter(name = "numPerPage", description = "每页的项目条目数", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "numPerPage", required = true) Integer numPerPage,
-            @NotNull @Parameter(name = "orderBy", description = "用于排序的字段", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "orderBy", required = true) String orderBy
+            @NotNull @Parameter(name = "orderBy", description = "用于排序的字段", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "orderBy", required = true) String orderBy,
+            @Parameter(name = "assigned", description = "其值为 true 表示获取当前有任务被分配给当前用户的项目", in = ParameterIn.QUERY) @Valid @RequestParam(value = "assigned", required = false) Boolean assigned
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -422,11 +426,10 @@ public interface WorkflowApi {
     }
 
     /**
-     * POST /workflow/processes/{processId}/participants/{role} : 分配人员
+     * POST /workflow/processes/{processId}/participants : 分配人员
      * 为指定流程设置对应的流程参与者
      *
      * @param processId 指定流程实例 ID (required)
-     * @param role 待设置参与者在流程中的角色（参考后端设计文档流程参与者部分） (required)
      * @param userIdDto 目标员工的 ID (optional)
      * @return ok (status code 200)
      *         or 指定流程对当前登录用户不可见 (status code 403)
@@ -446,12 +449,11 @@ public interface WorkflowApi {
     )
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/workflow/processes/{processId}/participants/{role}",
+            value = "/workflow/processes/{processId}/participants",
             consumes = { "application/json" }
     )
     default ResponseEntity<Void> setParticipant(
             @Parameter(name = "processId", description = "指定流程实例 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
-            @Parameter(name = "role", description = "待设置参与者在流程中的角色（参考后端设计文档流程参与者部分）", required = true, in = ParameterIn.PATH) @PathVariable("role") String role,
             @Parameter(name = "UserIdDto", description = "目标员工的 ID") @Valid @RequestBody(required = false) UserIdDto userIdDto
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

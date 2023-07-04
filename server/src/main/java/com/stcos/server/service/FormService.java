@@ -48,7 +48,7 @@ public interface FormService {
 
     void addWritePermission(Long formMetadataId, String assignee);
 
-    void addReadPermission(Long applicationFormMetadataId, String clientUid);
+    void addReadPermission(Long formMetadataId, String userId);
 
     Long createMetadata(String s, String clientUid);
 

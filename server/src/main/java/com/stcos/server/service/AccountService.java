@@ -1,6 +1,7 @@
 package com.stcos.server.service;
 
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
@@ -83,4 +84,6 @@ public interface AccountService {
     void updateClientDetails(Client client, ClientDetailsDto clientDetailsDto) throws ServiceException;
 
     List<Operator> getOperatorsByDepartment(String department);
+
+    void updateOperatorDetails(Operator operator, OperatorDetailsDto operatorDetailsDto) throws ServiceException;
 }

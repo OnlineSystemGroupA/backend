@@ -106,6 +106,12 @@ paths:
       description: 获取与当前用户相关的流程实例
       operationId: getProcesses
       parameters:
+        - name: assigned
+          in: query
+          required: false
+          description: 其值为 true 表示获取当前有任务被分配给当前用户的项目
+          schema:
+            type: boolean
         - name: pageIndex
           in: query
           required: true
@@ -346,7 +352,9 @@ paths:
         '404':
           description: 指定任务或资源不存在
 
-  /workflow/processes/{processId}/participants/{role}:
+
+
+  /workflow/processes/{processId}/participants:
     post:
       summary: 分配人员
       description: 为指定流程设置对应的流程参与者
@@ -355,12 +363,6 @@ paths:
         - name: processId
           in: path
           description: 指定流程实例 ID
-          schema:
-            type: string
-          required: true
-        - name: role
-          in: path
-          description: 待设置参与者在流程中的角色（参考后端设计文档流程参与者部分）
           schema:
             type: string
           required: true
@@ -384,7 +386,7 @@ paths:
   # 账号相关 API
   /account/client_details:
     get:
-      summary: 获取个人信息
+      summary: 获取客户个人信息
       description: 获取当前登录账号的账号信息
       operationId: getClientDetails
       responses:
@@ -397,7 +399,7 @@ paths:
         '409':
           description: 当前登录账号的类型不是 client
     post:
-      summary: 修改个人信息
+      summary: 修改客户个人信息
       description: 修改当前登录账户的个人信息
       operationId: updateClientDetails
       requestBody:
@@ -426,6 +428,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OperatorDetails'
+
+  /account/operator_details:
+    get:
+      summary: 获取员工个人信息
+      description: 获取当前登录账号的账号信息
+      operationId: getOperatorDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/OperatorDetails'
+        '409':
+          description: 当前登录账号的类型不是 operator
+    post:
+      summary: 修改员工信息
+      description: 修改当前登录账户的个人信息
+      operationId: updateOperatorDetails
+      requestBody:
+        description: 修改后的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/OperatorDetails'
+      responses:
+        '200':
+          description: ok
+        '409':
+          description: 当前登录账号的类型不是 operator
 
 components:
   schemas:

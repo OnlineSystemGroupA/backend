@@ -26,19 +26,16 @@ public class ListTypeHandler extends BaseTypeHandler<List> {
 
     @Override
     public List getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        System.out.println(rs.getString(columnName));
         return JSONUtil.parseObject(rs.getString(columnName), List.class);
     }
 
     @Override
     public List getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        System.out.println(rs.getString(columnIndex));
         return JSONUtil.parseObject(rs.getString(columnIndex), List.class);
     }
 
     @Override
     public List getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        System.out.println(cs.getString(columnIndex));
         return JSONUtil.parseObject(cs.getString(columnIndex), List.class);
     }
 }

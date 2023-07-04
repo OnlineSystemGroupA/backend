@@ -7,14 +7,15 @@
       <userTask id="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" name="分配市场部人员" flowable:assignee="${marketingManager}" flowable:formKey="test" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${assignMarketingOperatorListener.create(task)}"></flowable:taskListener>
-          <flowable:taskListener event="create" expression="${assignMarketingOperatorListener.complete(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${assignMarketingOperatorListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-F18D0826-AB83-40DD-9485-D76201BD6CAB" name="审核是否通过" default="sid-0AFD3BE0-A090-47CB-B33B-8CE035B3B720"></exclusiveGateway>
       <userTask id="sid-4D78A6B5-90FC-475A-91D1-78E13E18725E" name="市场部审核不通过，修改委托" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -23,13 +24,15 @@
       <sequenceFlow id="sid-243B1CCC-F6CD-4D9D-AD24-09045F9C507F" name="分配完成" sourceRef="sid-DFA68516-6BFC-4159-AE8F-A4CBD077085C" targetRef="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B"></sequenceFlow>
       <userTask id="sid-8E0C11AB-BA27-4AFB-B463-804DDC43C40B" name="分配测试部人员" flowable:assignee="${testingManager}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${assignTestingOperatorListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${assignTestingOperatorListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <userTask id="sid-DE428C3F-B0C6-4442-BDEA-E49E4D3F74D2" name="市场部审核委托" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${createApplicationVerifyFormListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${createApplicationVerifyFormListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -38,14 +41,16 @@
       <sequenceFlow id="sid-7A964D4B-B2CB-4DD4-AB10-B0E68BCDDB76" sourceRef="sid-DE428C3F-B0C6-4442-BDEA-E49E4D3F74D2" targetRef="sid-F18D0826-AB83-40DD-9485-D76201BD6CAB"></sequenceFlow>
       <userTask id="sid-097CDCF7-3D23-441E-98C1-F17809AA12CC" name="测试部审核委托" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-C81762CD-2A9D-42C6-A2A0-CC101109A1A3" name="审核是否通过" default="sid-452EF9A6-7702-47A2-B88A-C821312DC85D"></exclusiveGateway>
       <userTask id="sid-1F534F53-E65F-4842-B958-D0B76AFCB4A6" name="测试部审核不通过，修改委托" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>

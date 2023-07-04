@@ -6,6 +6,7 @@ import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessVariables;
+import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.*;
 import com.stcos.server.util.TaskUtil;
@@ -81,6 +82,7 @@ public class WorkflowServiceImp implements WorkflowService {
 
         if (TaskUtil.isCompletable(task, formService)) {
             task.getProcessVariables().replace("passable", passable);
+            System.out.println("sjkdafhkjdsh");
             taskService.complete(task.getId());
         }
 
@@ -100,7 +102,7 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     private final Map<String, Comparator<ProcessInstance>> comparatorMap = new HashMap<>() {{
-        put("recordId", Comparator.comparing(a -> ((Long) a.getProcessVariables().get("recordId"))));
+        put("projectId", Comparator.comparing(a -> ((Long) a.getProcessVariables().get("projectId"))));
 
         put("title", Comparator.comparing(a -> ((String) a.getProcessVariables().get("title"))));
         put("startDate", Comparator.comparing(a -> ((LocalDateTime) a.getProcessVariables().get("startDate"))));
@@ -109,7 +111,7 @@ public class WorkflowServiceImp implements WorkflowService {
     }};
 
     @Override
-    public List<Task> getTasks(int pageIndex, int numPerPage, String orderBy) throws ServiceException {
+    public List<Task> getTasks(int pageIndex, int numPerPage, String orderBy, Boolean assigned) throws ServiceException {
 
         List<Task> taskList = new ArrayList<>();
 
@@ -143,6 +145,7 @@ public class WorkflowServiceImp implements WorkflowService {
                     .processInstanceId(processInstance.getProcessInstanceId())
                     .active().includeProcessVariables()
                     .singleResult();
+            if (assigned != null && assigned && !Objects.equals(task.getAssignee(), user.getUid())) continue;
             taskList.add(task);
         }
 
@@ -265,17 +268,20 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public void setParticipants(String processId, String role, String userId) throws ServiceException {
+    public void setParticipants(String processId, String userId) throws ServiceException {
         // 判断指定流程实例当前登录用户是否可见
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Operator user = (Operator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 目标流程实例当前登录用户不可见
         // 检查目标用户是否存在
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         Operator operator = operatorService.getById(userId);
         if (processInstance == null || operator == null) throw new ServiceException(1); // 目标用户不存在
-        // 获取该流程实例当前活跃任务
-        Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
-        if (!TaskUtil.isAllowedRole(task.getName(), role)) throw new ServiceException(2); // 当前任务阶段不允许设置该角色的参与者
+        String role;
+        switch (user.getDepartment()) {
+            case "测试部" -> role = "testingOperator";
+            case "市场部" -> role = "marketingOperator";
+            default -> throw new ServerErrorException(new RuntimeException());
+        }
         // 设置指定的流程参与者
         runtimeService.setVariable(processId, role, userId);
     }

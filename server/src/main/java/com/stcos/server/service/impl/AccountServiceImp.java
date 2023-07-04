@@ -4,6 +4,7 @@ import com.stcos.server.database.mysql.AdminMapper;
 import com.stcos.server.database.mysql.ClientMapper;
 import com.stcos.server.database.mysql.OperatorMapper;
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.entity.user.Operator;
@@ -118,5 +119,17 @@ public class AccountServiceImp implements AccountService {
     @Override
     public List<Operator> getOperatorsByDepartment(String department) {
         return operatorService.getByDepartment(department);
+    }
+
+    @Override
+    public void updateOperatorDetails(Operator operator, OperatorDetailsDto operatorDetailsDto) throws ServiceException {
+        if (operatorService.existEmail(operatorDetailsDto.getEmail(), operator.getUid())) throw new ServiceException(0);
+        if (operatorService.existPhone(operatorDetailsDto.getPhone(), operator.getUid())) throw new ServiceException(1);
+        operator.setRealName(operatorDetailsDto.getRealName());
+        operator.setDepartment(operatorDetailsDto.getDepartment());
+        operator.setPosition(operatorDetailsDto.getPosition());
+        operator.setEmail(operatorDetailsDto.getEmail());
+        operator.setPhone(operatorDetailsDto.getPhone());
+        operatorService.updateById(operator);
     }
 }

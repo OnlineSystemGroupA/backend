@@ -41,7 +41,7 @@ public interface WorkflowService {
      * @return 获取到的任务列表
      * @throws ServiceException 一般不抛出异常
      */
-    List<Task> getTasks(int pageIndex, int numPerPage, String orderBy) throws ServiceException;
+    List<Task> getTasks(int pageIndex, int numPerPage, String orderBy, Boolean assigned) throws ServiceException;
 
     /**
      * 获取指定流程中的指定表单
@@ -124,5 +124,5 @@ public interface WorkflowService {
 
     int getProcessCount();
 
-    void setParticipants(String processId, String role, String userId) throws ServiceException;
+    void setParticipants(String processId, String userId) throws ServiceException;
 }

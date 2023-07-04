@@ -206,10 +206,10 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<List<ProcessDto>> getProcesses(Integer pageIndex, Integer numPerPage, String orderBy) {
+    public ResponseEntity<List<ProcessDto>> getProcesses(Integer pageIndex, Integer numPerPage, String orderBy, Boolean assigned) {
         List<Task> taskList;
         try {
-            taskList = workflowService.getTasks(pageIndex, numPerPage, orderBy);
+            taskList = workflowService.getTasks(pageIndex, numPerPage, orderBy, assigned);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -219,7 +219,7 @@ public class WorkflowController implements WorkflowApi {
         for (Task task : taskList) {
             Map<String, Object> variables = task.getProcessVariables();
             processDtoList.add(
-                    new ProcessDto(variables.get("recordId").toString(),
+                    new ProcessDto(variables.get("projectId").toString(),
                             task.getProcessInstanceId(),
                             task.getId(),
                             (String) variables.get("title"),
@@ -240,10 +240,10 @@ public class WorkflowController implements WorkflowApi {
 
     @Override
     @Secured("ROLE_MANAGER") // 只有主管可以调用该 API
-    public ResponseEntity<Void> setParticipant(String processId, String role, UserIdDto userIdDto) {
+    public ResponseEntity<Void> setParticipant(String processId, UserIdDto userIdDto) {
         ResponseEntity<Void> result = null;
         try {
-            workflowService.setParticipants(processId, role, userIdDto.getUserId());
+            workflowService.setParticipants(processId, userIdDto.getUserId());
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> result = ResponseEntity.status(403).build();  // 目标流程实例当前登录用户不可见

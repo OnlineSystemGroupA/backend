@@ -71,7 +71,7 @@ public class AccountController implements AccountApi {
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
         for (Operator operator : operatorList) {
             ret.add(new OperatorDetailsDto(
-                    operator.getUid(), 
+                    operator.getUid(),
                     operator.getJobNumber(),
                     operator.getEmail(),
                     operator.getPhone(),
@@ -90,6 +90,49 @@ public class AccountController implements AccountApi {
         if (user instanceof Client client) {
             try {
                 accountService.updateClientDetails(client, clientDetailsDto);
+            } catch (ServiceException e) {
+                switch (e.getCode()) {
+                    case 0 -> result = ResponseEntity.ok("email");
+                    case 1 -> result = ResponseEntity.ok("phone");
+                }
+            }
+            if (result == null) {
+                result = ResponseEntity.ok("");
+            }
+        } else {
+            result = ResponseEntity.status(409).build();
+        }
+        return result;
+    }
+
+    @Override
+    public ResponseEntity<OperatorDetailsDto> getOperatorDetails() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user instanceof Operator operator) {
+            // 根据当前登录用户的信息构造 OperatorDetailsDto 对象
+            OperatorDetailsDto operatorDetailsDto = new OperatorDetailsDto(
+                    operator.getUid(),
+                    operator.getJobNumber(),
+                    operator.getEmail(),
+                    operator.getPhone(),
+                    operator.getRealName(),
+                    operator.getDepartment(),
+                    operator.getPosition()
+            );
+            // 返回 HTTP 响应
+            return ResponseEntity.ok(operatorDetailsDto);
+        } else {
+            return ResponseEntity.status(409).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> updateOperatorDetails(OperatorDetailsDto operatorDetailsDto) {
+        ResponseEntity<String> result = null;
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user instanceof Operator operator) {
+            try {
+                accountService.updateOperatorDetails(operator, operatorDetailsDto);
             } catch (ServiceException e) {
                 switch (e.getCode()) {
                     case 0 -> result = ResponseEntity.ok("email");

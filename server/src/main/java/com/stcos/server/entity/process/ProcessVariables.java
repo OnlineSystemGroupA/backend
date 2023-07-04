@@ -21,7 +21,7 @@ public class ProcessVariables extends HashMap<String, Object> {
      * @param qualityManagerId   质量部主管 ID
      * @param signatoryId        授权签字人 ID
      */
-    public ProcessVariables(String clientId, String clientRealName, Long recordId,
+    public ProcessVariables(String clientId, String clientRealName, Long projectId,
                             String marketingManagerId, String testingManagerId, String qualityManagerId, String signatoryId) {
         /*              任务参数                */
         put("passable", true);            // 在遇到网关时使用，用于决定流程的下一个任务，默认值为 true
@@ -35,7 +35,7 @@ public class ProcessVariables extends HashMap<String, Object> {
         put("marketingOperator", null);               // 市场部工作人员
         put("testingOperator", null);                 // 测试部工作人员
         /*              项目简介                */
-        put("recordId", recordId);              // 流程记录编号，对应前端项目编号
+        put("projectId", projectId);              // 流程记录编号，对应前端项目编号
         put("title", "");                       // 待测试的软件项目名称
         put("startUser", clientRealName);       // 流程发起人姓名
         put("assignee", clientRealName);        // 当前任务被分配人姓名
