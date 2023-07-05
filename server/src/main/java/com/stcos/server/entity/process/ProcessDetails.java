@@ -2,12 +2,13 @@ package com.stcos.server.entity.process;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * description
@@ -18,11 +19,10 @@ import java.util.List;
  */
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Accessors(chain = true)
 public class ProcessDetails {
     @TableId
-    private Long id;
+    private Long projectId;
 
     private String title;
 
@@ -49,4 +49,50 @@ public class ProcessDetails {
     @TableField(exist = false)
     List<TaskDetails> taskDetailsList;
 
+    public ProcessDetails() {
+        taskDetailsList = new ArrayList<>();
+    }
+
+    public void openTask(String taskName, String userName) {
+        for (TaskDetails taskDetails : taskDetailsList) {
+            if (Objects.equals(taskDetails.getTaskName(), taskName)) {
+                taskDetails.setOperator(userName);
+                taskDetails.setStartDate(LocalDateTime.now());
+                taskDetails.setFinishDate(null);
+                return;
+            }
+        }
+        TaskDetails taskDetails = new TaskDetails();
+        taskDetails.setProcessId(projectId)
+                .setTaskName(taskName)
+                .setOperator(userName)
+                .setStartDate(LocalDateTime.now());
+
+        taskDetailsList.add(new TaskDetails());
+    }
+
+    public void closeTask(String taskName) {
+        for (TaskDetails taskDetails : taskDetailsList) {
+            if (Objects.equals(taskDetails.getTaskName(), taskName)) {
+                taskDetails.setFinishDate(LocalDateTime.now());
+                return;
+            }
+        }
+    }
+
+    public void update(String softwareName,
+                       String softwareVersion,
+                       String testType,
+                       String startDate,
+                       String companyChineseName,
+                       String email,
+                       String address) {
+        this.title = softwareName;
+        this.version = softwareVersion;
+        this.testType = testType;
+        this.applicationDate = startDate;
+        this.company = companyChineseName;
+        this.email = email;
+        this.address = address;
+    }
 }

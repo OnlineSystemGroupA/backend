@@ -5,6 +5,8 @@ import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
 
+import java.util.List;
+
 public interface FormService {
     /**
      * 更新指定流程中的指定表单
@@ -51,6 +53,8 @@ public interface FormService {
     void addReadPermission(Long formMetadataId, String userId);
 
     Long createMetadata(String s, String clientUid);
+
+    Long createMetadata(String formName, List<String> users);
 
     void removeWritePermission(Long formMetadataId, String assignee);
 

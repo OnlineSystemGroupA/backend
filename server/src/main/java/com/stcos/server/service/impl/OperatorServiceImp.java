@@ -60,4 +60,11 @@ public class OperatorServiceImp extends ServiceImpl<OperatorMapper, Operator> im
         return baseMapper.exists(queryWrapper);
     }
 
+    @Override
+    public String getRealNameById(String uid) {
+        Operator opt = getById(uid);
+        if (opt == null) return null;
+        else return opt.getRealName();
+    }
+
 }

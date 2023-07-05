@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class FormServiceImp implements FormService {
@@ -101,6 +102,11 @@ public class FormServiceImp implements FormService {
     @Override
     public Long createMetadata(String formName, String userId) {
         return formMetadataService.create(formName, userId);
+    }
+
+    @Override
+    public Long createMetadata(String formName, List<String> users) {
+        return formMetadataService.create(formName, users);
     }
 
     @Override

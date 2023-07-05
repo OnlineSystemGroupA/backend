@@ -114,4 +114,8 @@ public class FormMetadata {
     public void addReadPermission(String startUserId) {
         readableUsers.add(startUserId);
     }
+
+    public void addReadPermission(List<String> users) {
+        readableUsers.addAll(users);
+    }
 }
