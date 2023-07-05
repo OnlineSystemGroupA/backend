@@ -81,8 +81,7 @@ public class WorkflowServiceImp implements WorkflowService {
         if (!task.getAssignee().equals(user.getUid())) throw new ServiceException(0); //当前用户不是被分配到的用户（即不可见）
 
         if (TaskUtil.isCompletable(task, formService)) {
-            task.getProcessVariables().replace("passable", passable);
-            System.out.println("sjkdafhkjdsh");
+            runtimeService.setVariable(processId, "passable", passable);
             taskService.complete(task.getId());
         }
 

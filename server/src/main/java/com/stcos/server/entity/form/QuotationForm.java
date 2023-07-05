@@ -1,5 +1,6 @@
 package com.stcos.server.entity.form;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 /**
  * 报价单
@@ -10,7 +11,8 @@ import lombok.experimental.Accessors;
  */
 
 @Data
-@Accessors(fluent = true)
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 public class QuotationForm extends Form {
     private String quotationDate;
     private String validDate;
