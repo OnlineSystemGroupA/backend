@@ -77,7 +77,8 @@
       </userTask>
       <userTask id="sid-5C013F94-E133-4E5C-91D4-36AD1C58F46B" name="客户处理报价" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -85,7 +86,8 @@
       <exclusiveGateway id="sid-8D7716B8-757C-4687-8CBE-EE5E1E08C7DE" name="是否接收报价" default="sid-B131E63B-C73D-4B39-92AC-97E44293C782"></exclusiveGateway>
       <userTask id="sid-354A04A0-C768-4DA8-9AD8-C32397C1F748" name="市场部修改报价" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
