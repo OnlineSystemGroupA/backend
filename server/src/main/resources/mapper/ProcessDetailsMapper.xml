@@ -4,7 +4,7 @@
 <mapper namespace="com.stcos.server.database.mysql.ProcessDetailsMapper">
     <!--返回的对象为TaskDetails-->
     <resultMap id="task_details" type="com.stcos.server.entity.process.ProcessDetails">
-        <id column="id" property="id"/>
+        <id column="project_id" property="projectId"/>
         <id column="title" property="title"/>
         <id column="version" property="version"/>
         <id column="test_type" property="testType"/>
@@ -18,7 +18,7 @@
         <id column="due_date" property="dueDate"/>
         <collection property="taskDetailsList"
                     ofType="com.stcos.server.entity.process.TaskDetails">
-            <id column="aid" property="id"/>
+            <id column="task_id" property="taskId"/>
             <id column="process_id" property="processId"/>
             <id column="task_name" property="taskName"/>
             <id column="department" property="department"/>

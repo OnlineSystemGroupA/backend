@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class TaskDetails {
     @TableId
-    private Long id;
+    private Long taskId;
 
     private Long processId;
 

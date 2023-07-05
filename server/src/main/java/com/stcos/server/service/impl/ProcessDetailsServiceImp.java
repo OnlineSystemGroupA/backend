@@ -56,7 +56,7 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
     public Long create() {
         ProcessDetails processDetails = new ProcessDetails();
         save(processDetails);
-        return processDetails.getId();
+        return processDetails.getProjectId();
     }
 
 }

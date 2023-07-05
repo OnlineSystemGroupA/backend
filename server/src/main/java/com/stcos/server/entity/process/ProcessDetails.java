@@ -24,7 +24,7 @@ import java.util.Objects;
 @Accessors(chain = true)
 public class ProcessDetails {
     @TableId
-    private Long id;
+    private Long projectId;
 
     private String title;
 
@@ -65,7 +65,7 @@ public class ProcessDetails {
             }
         }
         TaskDetails taskDetails = new TaskDetails();
-        taskDetails.setProcessId(id)
+        taskDetails.setProcessId(projectId)
                 .setTaskName(taskName)
                 .setOperator(userName)
                 .setStartDate(LocalDateTime.now());

@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS t_process_record
 -- TaskDetails
 CREATE TABLE IF NOT EXISTS t_task_details
 (
-    id          BIGINT       NOT NULL,
+    task_id          BIGINT       NOT NULL,
     process_id  BIGINT       NOT NULL,
     task_name   VARCHAR(64)  NOT NULL,
     department  VARCHAR(64)  NOT NULL,
@@ -110,14 +110,14 @@ CREATE TABLE IF NOT EXISTS t_task_details
     finish_date DATETIME     NOT NULL,
     result      BOOLEAN      NOT NULL,
     description VARCHAR(128) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (task_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
 -- ProcessDetails
 CREATE TABLE IF NOT EXISTS t_process_details
 (
-    id               BIGINT AUTO_INCREMENT,
+    project_id               BIGINT AUTO_INCREMENT,
     title            VARCHAR(64) NOT NULL,
     version          VARCHAR(64) NOT NULL,
     test_type        VARCHAR(64) NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS t_process_details
     address          VARCHAR(64) NOT NULL,
     start_date       DATETIME    NOT NULL,
     due_date         DATETIME    NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (project_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
