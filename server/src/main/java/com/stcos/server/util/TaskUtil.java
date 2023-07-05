@@ -50,6 +50,7 @@ public class TaskUtil {
         put("测试部生成测试方案", new GenTestPlanConfig());
         put("质量部审核测试方案", new VerifyTestPlanConfig());
         put("测试部修改测试方案", new ModifyTestPlanConfig());
+        put("测试部主管审核测试方案", new ManagerVerifyTestPlanConfig());
 
         put("测试部生成测试报告", new GenTestReportConfig());
         put("测试部主管审核测试报告", new VerifyTestReportConfig());

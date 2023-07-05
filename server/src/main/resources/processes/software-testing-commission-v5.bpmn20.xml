@@ -75,7 +75,7 @@
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
-      <userTask id="sid-5C013F94-E133-4E5C-91D4-36AD1C58F46B" name="客户处理报价" flowable:assignee="${client}" flowable:formFieldValidation="true">
+      <userTask id="sid-5C013F94-E133-4E5C-91D4-36AD1C58F46B" name="客户审核报价" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
           <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
@@ -118,7 +118,7 @@
         </extensionElements>
       </userTask>
       <endEvent id="sid-DA8BE477-EE42-401A-AF5D-11D9D9F84CDB"></endEvent>
-      <userTask id="sid-33166108-7CA1-460A-848E-8EF367646A5A" name="客户检查合同草稿" flowable:assignee="${client}" flowable:formFieldValidation="true">
+      <userTask id="sid-33166108-7CA1-460A-848E-8EF367646A5A" name="客户审核合同草稿" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
@@ -139,7 +139,7 @@
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
-      <userTask id="sid-20CB4848-545E-41B5-9EF3-27E57B27D6BD" name="市场部审核客户填写的草稿" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
+      <userTask id="sid-20CB4848-545E-41B5-9EF3-27E57B27D6BD" name="市场部审核合同" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
@@ -177,7 +177,7 @@
       <startEvent id="sid-EC1396BF-BB98-42F6-AA6B-73E0F2A64FFA" flowable:formFieldValidation="true"></startEvent>
       <endEvent id="sid-A79785D6-B69A-4B8F-81B5-62EDD333A811"></endEvent>
       <sequenceFlow id="sid-1659B028-2B1E-4F7F-8551-6AEE6D4CACEC" sourceRef="sid-EC1396BF-BB98-42F6-AA6B-73E0F2A64FFA" targetRef="sid-6B25670E-2891-4554-8A2E-CAEC623D5A8E"></sequenceFlow>
-      <userTask id="sid-6B25670E-2891-4554-8A2E-CAEC623D5A8E" name="测试部员工根据客户需求编写测试方案" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
+      <userTask id="sid-6B25670E-2891-4554-8A2E-CAEC623D5A8E" name="测试部生成测试方案" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
@@ -191,7 +191,7 @@
       </userTask>
       <sequenceFlow id="sid-280A7DCF-ECAE-43C2-A57A-7BC3BB02437E" name="编写完成" sourceRef="sid-6B25670E-2891-4554-8A2E-CAEC623D5A8E" targetRef="sid-6E1F2D80-40BD-4E8E-85B1-E2F542F433F5"></sequenceFlow>
       <exclusiveGateway id="sid-5610DF62-32C2-4414-A266-A5779D445CD4" default="sid-E9A10295-00EB-4492-B708-25F9D5A52F2D"></exclusiveGateway>
-      <userTask id="sid-66BC8513-6716-491D-9553-D40EC430E3D1" name="测试部主管批改测试方案" flowable:assignee="${testingManager}" flowable:formFieldValidation="true">
+      <userTask id="sid-66BC8513-6716-491D-9553-D40EC430E3D1" name="测试部主管审核测试方案" flowable:assignee="${testingManager}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
@@ -226,7 +226,7 @@
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
-      <userTask id="sid-4839ED70-2CE9-4714-91B7-1CDF4EB978E2" name="测试部检查样品" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
+      <userTask id="sid-4839ED70-2CE9-4714-91B7-1CDF4EB978E2" name="测试部审核样品" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
@@ -325,7 +325,7 @@
     </subProcess>
     <subProcess id="sid-3439B28A-4312-48C5-950F-DCBDA4A55E0D" name="确认测试报告">
       <startEvent id="sid-66F4F291-C999-4779-9020-56A8375F3F83" flowable:formFieldValidation="true"></startEvent>
-      <userTask id="sid-BF3D6E77-AC8D-4E11-B0C7-57B078587FA0" name="发送测试报告" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
+      <userTask id="sid-BF3D6E77-AC8D-4E11-B0C7-57B078587FA0" name="市场部发送测试报告" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
