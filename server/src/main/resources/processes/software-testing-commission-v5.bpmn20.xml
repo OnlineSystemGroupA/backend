@@ -106,21 +106,24 @@
       <startEvent id="sid-86EB2E47-DD16-4D75-B041-46820F3716ED" flowable:formFieldValidation="true"></startEvent>
       <userTask id="sid-E541EEA3-5509-47B1-9907-E4806BF174DC" name="市场部生成合同草稿" flowable:assignee="${marketingOperator}" flowable:formKey="test" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-76C808C8-F819-491A-A98F-95F27AF1BA3E" name="客户是否接受" default="sid-840403E9-B702-414D-B108-DB23B42356CD"></exclusiveGateway>
       <userTask id="sid-DEA4AAED-18BC-4824-B65F-9D79555F0CF2" name="市场部修改合同草稿" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <endEvent id="sid-DA8BE477-EE42-401A-AF5D-11D9D9F84CDB"></endEvent>
       <userTask id="sid-33166108-7CA1-460A-848E-8EF367646A5A" name="客户审核合同草稿" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
@@ -128,20 +131,23 @@
       <sequenceFlow id="sid-DED409D4-6E11-4398-8DBC-2383638FB398" sourceRef="sid-33166108-7CA1-460A-848E-8EF367646A5A" targetRef="sid-76C808C8-F819-491A-A98F-95F27AF1BA3E"></sequenceFlow>
       <userTask id="sid-B7280ECD-94AD-4215-8DEE-5C0D9CF2795B" name="客户填写合同" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <exclusiveGateway id="sid-CA9CDBBC-83E5-4515-AA4F-DCB1A278DEA4" name="审核是否通过" default="sid-C19A7DC5-B590-4A54-8A99-828254EC979C"></exclusiveGateway>
       <userTask id="sid-2D5F857F-24FF-44B4-8984-C84E0434BF58" name="客户修改合同" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
       <userTask id="sid-20CB4848-545E-41B5-9EF3-27E57B27D6BD" name="市场部审核合同" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
