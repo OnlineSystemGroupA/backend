@@ -22,7 +22,7 @@ public class GenContractDraftConfig extends TaskConfig {
     @Override
     public List<String> getRequiredForms() {
         return new ArrayList<>(){{
-            add("Contract");
+            add("ContractForm");
         }};
     }
 
