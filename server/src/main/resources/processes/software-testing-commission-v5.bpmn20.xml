@@ -70,7 +70,8 @@
       <endEvent id="sid-70E90F91-EC5D-4EE3-BB81-4BB9FCD921B4"></endEvent>
       <userTask id="sid-70455BCB-0914-42C1-B415-6BA574C16546" name="市场部生成报价" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${TaskListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${CreateQuotationFormListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${CreateQuotationFormListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
