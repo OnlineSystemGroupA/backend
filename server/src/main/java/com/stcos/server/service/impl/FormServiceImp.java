@@ -74,7 +74,7 @@ public class FormServiceImp implements FormService {
             // 将表单元数据写回数据库
             formMetadataService.updateById(formMetadata);
         } else {
-            throw new ServiceException(1); // 无修改权限的异常
+            throw new ServiceException(0); // 无修改权限的异常
         }
 
     }

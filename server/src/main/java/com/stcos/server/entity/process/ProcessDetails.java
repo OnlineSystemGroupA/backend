@@ -24,23 +24,23 @@ public class ProcessDetails {
     @TableId
     private Long projectId;
 
-    private String title;
+    private String title = "";
 
-    private String version;
+    private String version = "";
 
-    private String testType;
+    private String testType = "";
 
-    private String applicationDate;
+    private String applicationDate = "";
 
-    private String applicant;
+    private String applicant = "";
 
-    private String company;
+    private String company = "";
 
-    private String telephone;
+    private String telephone = "";
 
-    private String email;
+    private String email = "";
 
-    private String address;
+    private String address = "";
 
     private LocalDateTime startDate;
 
