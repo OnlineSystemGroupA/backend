@@ -25,4 +25,6 @@ public interface OperatorService extends IService<Operator> {
     boolean existEmail(String email, String uid);
 
     boolean existPhone(String phone, String uid);
+
+    String getRealNameById(String assignee);
 }

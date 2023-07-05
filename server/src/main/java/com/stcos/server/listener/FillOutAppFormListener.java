@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 /**
  * description
  *
@@ -55,6 +57,19 @@ public class FillOutAppFormListener extends TaskListener {
         Long metadataId = (Long) task.getVariable("ApplicationForm", false);
         ApplicationForm form = (ApplicationForm) formService.getForm(metadataId);
         task.setVariable("title", form.getSoftwareName(), false);
+
+
+        // 更新流程详情
+        Long projectId = (Long) task.getVariable("projectId", false);
+        processDetailsService.update(projectId,
+                form.getSoftwareName(),
+                form.getSoftwareVersion(),
+                form.getTestTypes(),
+                ((LocalDateTime) task.getVariable("startDate", false)).toString(),
+                form.getCompanyChineseName(),
+                form.getCompanyInfo().getEmail(),
+                form.getCompanyInfo().getAddress());
+
         super.complete(task);
     }
 }

@@ -7,6 +7,8 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.FormMetadataService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -55,5 +57,13 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     @Override
     public Long getFormId(Long formMetadataId) {
         return getById(formMetadataId).getFormId();
+    }
+
+    @Override
+    public Long create(String formName, List<String> users) {
+        FormMetadata formMetadata = new FormMetadata(formName, null);
+        formMetadata.addReadPermission(users);
+        if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+        return formMetadata.getFormMetadataId();
     }
 }

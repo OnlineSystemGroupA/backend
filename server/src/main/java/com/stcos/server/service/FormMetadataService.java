@@ -3,6 +3,8 @@ package com.stcos.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.stcos.server.entity.form.FormMetadata;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -22,4 +24,6 @@ public interface FormMetadataService extends IService<FormMetadata> {
     boolean existForm(long formMetadataId);
 
     Long getFormId(Long metadataId);
+
+    Long create(String formName, List<String> users);
 }

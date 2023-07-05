@@ -71,7 +71,6 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public void completeTask(String processId, Boolean passable) throws ServiceException {
-//        Task task = getTaskById(taskId);
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -222,6 +221,12 @@ public class WorkflowServiceImp implements WorkflowService {
         return (Long) runtimeService.getVariable(processId, "sample");
     }
 
+    private ProcessDetailsService processDetailsService;
+
+    @Autowired
+    public void setProcessDetailsService(ProcessDetailsService processDetailsService) {
+        this.processDetailsService = processDetailsService;
+    }
 
     @Secured("ROLE_CLIENT") // 限制只有客户可以发起流程
     @Override
@@ -239,8 +244,9 @@ public class WorkflowServiceImp implements WorkflowService {
         Long recordId = processRecordService.create();
 
         // 初始化流程变量，创建 ProcessVariables 对象
-        Map<String, Object> processVariables = new ProcessVariables(client.getUid(), client.getRealName(), recordId,
-                marketingManagerId, testingManagerId, qualityManagerId, signatoryId);
+        Map<String, Object> processVariables = new ProcessVariables(client.getUid(), client.getRealName(),
+                marketingManagerId, testingManagerId, qualityManagerId, signatoryId,
+                processDetailsService, formService);
 
         // 使用 ProcessVariables 对象创建新流程实例
         ProcessInstance processInstance =
