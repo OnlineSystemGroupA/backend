@@ -68,7 +68,9 @@ public class FillOutAppFormListener extends TaskListener {
                 ((LocalDateTime) task.getVariable("startDate", false)).toString(),
                 form.getCompanyChineseName(),
                 form.getCompanyInfo().getEmail(),
-                form.getCompanyInfo().getAddress());
+                form.getCompanyInfo().getAddress(),
+                (String) task.getVariable("startUser", false),
+                form.getCompanyInfo().getTelephone());
 
         super.complete(task);
     }

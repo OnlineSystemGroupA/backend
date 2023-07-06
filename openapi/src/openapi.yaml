@@ -290,10 +290,48 @@ paths:
           description: 指定流程或表单不存在
 
   /workflow/processes/{processId}/files/forms/{formName}:
+    parameters:
+      - name: processId
+        in: path
+        description: 目标流程实例的 ID
+        schema:
+          type: string
+        required: true
+      - name: formName
+        in: path
+        description: 目标表单的名称
+        schema:
+          type: string
+        required: true
     get:
-      summary:
-
+      summary: 下载表单
+      description: 下载表单 PDF 文件
+      operationId: downloadFileForm
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/pdf':
+              schema:
+                type: string
+                format: binary
     put:
+      operationId: uploadFileForm
+      requestBody:
+        description: 需要上传的表单 PDF 文件
+        content:
+          'multipart/form-data':
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: ok
+
 
 
   /workflow/processes/{processId}/files/sample:
@@ -309,7 +347,7 @@ paths:
         - workflow
       summary: 上传样品
       description: 上传与对应流程相关的样品文件
-      operationId: uploadSample
+      operationId: uploadFileSample
       requestBody:
         description: 需要上传的样品文件
         content:
@@ -345,7 +383,7 @@ paths:
         - workflow
       summary: 所有样品下载
       description: 获取指定任务中的指定资源
-      operationId: downloadSample
+      operationId: downloadFileSample
       responses:
         '200':
           description: 成功获取指定资源

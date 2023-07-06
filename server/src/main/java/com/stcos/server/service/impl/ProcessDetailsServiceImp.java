@@ -40,7 +40,7 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
     }
 
     @Override
-    public void update(Long projectId, String softwareName, String softwareVersion, List<String> testTypes, String startDate, String companyChineseName, String email, String address) {
+    public void update(Long projectId, String softwareName, String softwareVersion, List<String> testTypes, String startDate, String companyChineseName, String email, String address, String startUser, String telephone) {
         ProcessDetails processDetails = getById(projectId);
         processDetails.update(softwareName,
                 softwareVersion,
@@ -48,7 +48,9 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
                 startDate,
                 companyChineseName,
                 email,
-                address);
+                address,
+                startUser,
+                telephone);
         updateById(processDetails);
     }
 

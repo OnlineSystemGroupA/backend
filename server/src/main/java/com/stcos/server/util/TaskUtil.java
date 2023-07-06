@@ -110,4 +110,49 @@ public class TaskUtil {
             throw new ServerErrorException(e);
         }
     }
+
+    private final Map<String, Integer> TASK_GROUP_MAP = new HashMap<>() {{
+        put("填写申请表", 0);
+
+        put("分配市场部人员", 1);
+        put("分配测试部人员", 1);
+        put("市场部审核委托", 1);
+        put("测试部审核委托", 1);
+        put("市场部审核不通过，修改委托", 1);
+        put("测试部审核不通过，修改委托", 1);
+
+        put("市场部生成报价", 2);
+        put("客户审核报价", 2);
+        put("市场部修改报价", 2);
+
+        put("市场部生成合同草稿", 3);
+        put("客户审核合同草稿", 3);
+        put("市场部修改合同草稿", 3);
+        put("客户填写合同", 3);
+        put("市场部审核合同", 3);
+        put("客户修改合同", 3);
+
+        put("客户上传待测样品", 4);
+        put("测试部审核样品", 4);
+        put("客户重新上传样品", 4);
+
+        put("测试部生成测试方案", 5);
+        put("质量部审核测试方案", 5);
+        put("测试部修改测试方案", 5);
+        put("测试部主管审核测试方案", 5);
+
+        put("测试部生成测试报告", 6);
+        put("测试部主管审核测试报告", 6);
+        put("用户审核测试报告", 6);
+        put("授权签字人审核测试报告", 6);
+        put("测试部修改测试文档", 6);
+        put("测试文档归档", 6);
+
+        put("市场部发送测试报告", 7);
+        put("用户确认测试报告", 7);
+    }};
+
+    public int getTaskGroupIndex(String taskName) {
+        return TASK_GROUP_MAP.get(taskName);
+    }
 }

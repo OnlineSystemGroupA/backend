@@ -31,7 +31,7 @@ public interface ProcessDetailsService extends IService<ProcessDetails> {
 
     void closeTask(Long projectId, String name);
 
-    void update(Long projectId, String softwareName, String softwareVersion, List<String> testTypes, String startDate, String companyChineseName, String email, String address);
+    void update(Long projectId, String softwareName, String softwareVersion, List<String> testTypes, String startDate, String companyChineseName, String email, String address, String startUser, String telephone);
 
     Long create();
 }

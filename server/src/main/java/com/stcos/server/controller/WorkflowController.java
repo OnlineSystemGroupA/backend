@@ -5,6 +5,7 @@ import com.stcos.server.entity.dto.*;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
@@ -134,7 +135,7 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<List<FileIndexDto>> uploadSample(String processId, List<MultipartFile> files) {
+    public ResponseEntity<List<FileIndexDto>> uploadFileSample(String processId, List<MultipartFile> files) {
         ResponseEntity<List<FileIndexDto>> response = null;
         try {
             List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, files);
@@ -158,7 +159,7 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<Resource> downloadSample(String processId) {
+    public ResponseEntity<Resource> downloadFileSample(String processId) {
         ResponseEntity<Resource> response = null;
         try {
             File zipFile = workflowService.downloadSample(processId);
@@ -185,8 +186,11 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<Void> getProcessDetails(String processId) {
+    public ResponseEntity<ProcessDetails> getProcessDetails(String processId) {
         Task task = null;
+        ProcessDetails processDetails = workflowService.getProcessDetails(processId);
+
+
 //        ResponseEntity<TaskDto> response = null;
 //        try {
 //            task = service.getTaskById(taskId);
@@ -202,7 +206,7 @@ public class WorkflowController implements WorkflowApi {
 //                    (new TaskDto(task.getProcessInstanceId(), taskId, task.getName(), task.getDescription(), task.getOwner()));
 //        }
 //
-        return null;
+        return ResponseEntity.ok(processDetails);
     }
 
     @Override
@@ -255,5 +259,11 @@ public class WorkflowController implements WorkflowApi {
             result = ResponseEntity.ok().build();
         }
         return result;
+    }
+
+    @Override
+    public ResponseEntity<Resource> downloadFileForm(String processId, String formName) {
+
+        return WorkflowApi.super.downloadFileForm(processId, formName);
     }
 }
