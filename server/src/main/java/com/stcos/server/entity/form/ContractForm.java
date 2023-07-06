@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 public class ContractForm extends Form {
     private String projectName;
     private String client;
@@ -22,7 +22,7 @@ public class ContractForm extends Form {
     private TrusteeInfo trusteeInfo;
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class ClientInfo {
         private String representative;
         private String signatureDate;
@@ -36,7 +36,7 @@ public class ContractForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class TrusteeInfo {
         private String representative;
         private String signatureDate;

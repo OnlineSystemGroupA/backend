@@ -58,6 +58,8 @@ public class ProcessVariables extends HashMap<String, Object> {
                 formService.createMetadata("NST－04－JS002－2018－软件项目委托测试申请表", users));   // 软件项目委托测试申请表元数据 ID
         put("ApplicationVerifyForm",
                 formService.createMetadata("NST－04－JS002－2018－软件项目委托测试申请表（审核部分）", users));  // 软件项目委托测试申请表之审核信息元数据 ID
+        put("ContractForm",
+                formService.createMetadata("NST－04－JS004－2018－软件委托测试合同", users));
         put("DocumentReviewForm",
                 formService.createMetadata("NST－04－JS014－2018 - 软件文档评审表", users));     // 软件文档评审表元数据 ID
         put("ReportVerifyForm",
@@ -66,6 +68,10 @@ public class ProcessVariables extends HashMap<String, Object> {
                 formService.createMetadata("NST－04－JS003－2018－委托测试软件功能列表", users));  // 委托测试软件功能列表元数据 ID
         put("TestPlanForm",
                 formService.createMetadata("NST－04－JS006－2018－软件测试方案", users));         // 软件测试方案元数据 ID
+        put("TestPlanVerifyForm",
+                formService.createMetadata("NST－04－JS013－2018 - 测试方案评审表", users));
+        put("TestProblemForm",
+                formService.createMetadata("NST－04－JS011－2018－软件测试问题清单（电子记录）", users));
         put("TestReportForm",
                 formService.createMetadata("NST－04－JS007－2018－软件测试报告", users));         // 软件测试报告元数据 ID
         put("TestWorkCheckForm",

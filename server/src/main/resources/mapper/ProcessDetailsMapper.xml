@@ -32,7 +32,7 @@
     <select id="selectTaskListById" parameterType="int" resultMap="task_details">
         SELECT * FROM
         t_task_details t1,t_process_details t2
-        WHERE t1.process_id=t2.id
+        WHERE t1.process_id=t2.project_id
         AND t1.process_id=#{id}
     </select>
 </mapper>

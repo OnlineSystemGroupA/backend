@@ -79,10 +79,10 @@ CREATE TABLE IF NOT EXISTS t_form_metadata
     form_metadata_id   bigint AUTO_INCREMENT, -- 表单元数据 ID，保存对象时由数据库自动赋值
     form_id            bigint      NOT NULL,  --  表单元数据对应表单的 ID
     form_name          VARCHAR(64) NOT NULL,  -- 表单名
-    created_by         VARCHAR(64) NOT NULL,  -- 表单的创建者 (userId)
-    created_date       DATETIME    NOT NULL,  -- 表单创建时间
-    last_modified_by   VARCHAR(64) NOT NULL,  -- 表单最后一次被谁修改 (userId)
-    last_modified_date DATETIME    NOT NULL,  -- 表单最后一次被修改的时间
+    created_by         VARCHAR(64),           -- 表单的创建者 (userId)
+    created_date       DATETIME,              -- 表单创建时间
+    last_modified_by   VARCHAR(64),           -- 表单最后一次被谁修改 (userId)
+    last_modified_date DATETIME,              -- 表单最后一次被修改的时间
     readable_users     TEXT        NOT NULL,  -- 对表单具有读权限用户的 ID 列表
     writable_users     TEXT        NOT NULL,  -- 对表单具有写权限用户的 ID 列表
     PRIMARY KEY (form_metadata_id)
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS t_process_record
 -- TaskDetails
 CREATE TABLE IF NOT EXISTS t_task_details
 (
-    task_id          BIGINT       NOT NULL,
+    task_id     BIGINT       NOT NULL,
     process_id  BIGINT       NOT NULL,
     task_name   VARCHAR(64)  NOT NULL,
     department  VARCHAR(64)  NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS t_task_details
 -- ProcessDetails
 CREATE TABLE IF NOT EXISTS t_process_details
 (
-    project_id               BIGINT AUTO_INCREMENT,
+    project_id       BIGINT AUTO_INCREMENT,
     title            VARCHAR(64) NOT NULL,
     version          VARCHAR(64) NOT NULL,
     test_type        VARCHAR(64) NOT NULL,
@@ -127,8 +127,8 @@ CREATE TABLE IF NOT EXISTS t_process_details
     telephone        VARCHAR(64) NOT NULL,
     email            VARCHAR(64) NOT NULL,
     address          VARCHAR(64) NOT NULL,
-    start_date       DATETIME    NOT NULL,
-    due_date         DATETIME    NOT NULL,
+    start_date       DATETIME,
+    due_date         DATETIME,
     PRIMARY KEY (project_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

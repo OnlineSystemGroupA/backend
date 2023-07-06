@@ -289,7 +289,14 @@ paths:
         '404':
           description: 指定流程或表单不存在
 
-  /workflow/processes/{processId}/sample:
+  /workflow/processes/{processId}/files/forms/{formName}:
+    get:
+      summary:
+
+    put:
+
+
+  /workflow/processes/{processId}/files/sample:
     parameters:
       - name: processId
         in: path
