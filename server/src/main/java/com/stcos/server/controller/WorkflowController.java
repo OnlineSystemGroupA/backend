@@ -264,6 +264,8 @@ public class WorkflowController implements WorkflowApi {
     @Override
     public ResponseEntity<Resource> downloadFileForm(String processId, String formName) {
 
-        return WorkflowApi.super.downloadFileForm(processId, formName);
+        return ResponseEntity.ok(workflowService.downloadForm(processId, formName));
+
+//        return WorkflowApi.super.downloadFileForm(processId, formName);
     }
 }

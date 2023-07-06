@@ -17,6 +17,7 @@ import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
 import com.stcos.server.entity.form.ContractForm;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -27,13 +28,18 @@ import java.util.regex.Pattern;
 
 /**
  * GPT救我狗命
- * @author masterCheDan
  *
+ * @author masterCheDan
  */
 
 public class ContractUtil {
     public static void generatePDFFromContract(ContractForm contract, String outputFilePath) {
-        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputFilePath));
+        PdfDocument pdfDocument = null;
+        try {
+            pdfDocument = new PdfDocument(new PdfWriter(outputFilePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         Document document = new Document(pdfDocument, PageSize.A4);
 
         try {
@@ -113,9 +119,9 @@ public class ContractUtil {
                 new Paragraph(
                         "本合同由作为委托方的"
                                 + contract.getClient()
-                                +"（以下简称“甲方”）与作为受托方的"
-                                + contract.getTestFee()
-                                +"（以下简称“乙方”）在平等自愿的基础上，依据《中华人民共和国合同法》有关规定就项目的执行，经友好协商后订立。\n"
+                                + "（以下简称“甲方”）与作为受托方的"
+                                + contract.getTrustee()
+                                + "（以下简称“乙方”）在平等自愿的基础上，依据《中华人民共和国合同法》有关规定就项目的执行，经友好协商后订立。\n"
                 )
         );
 
@@ -123,10 +129,10 @@ public class ContractUtil {
         contentPage.add(new Paragraph("一、任务描述").setBold());
         contentPage.add(new Paragraph(
                 "乙方按照国家软件质量测试标准和测试规范，完成甲方委托的软件"
-                + contract.getSoftware()
-                + "(下称受测软件)的质量特性"
-                + contract.getQualityCharacteristic()
-                + "，进行测试，并出具相应的测试报告。\n"
+                        + contract.getSoftware()
+                        + "(下称受测软件)的质量特性"
+                        + contract.getQualityCharacteristic()
+                        + "，进行测试，并出具相应的测试报告。\n"
         )).setMarginLeft(20f);
 
         //正文第二部分
@@ -135,27 +141,27 @@ public class ContractUtil {
         list1.setSymbolIndent(20);
         list1.setPostSymbolText(".");
 
-            //甲方义务子列表
-            List list1_1 = new List(ListNumberingType.DECIMAL);
-            list1_1.setPreSymbolText("(");
-            list1_1.setPostSymbolText(")");
-            list1_1.setSymbolIndent(40);
-            list1_1.add(new ListItem("按照合同约定支付所有费用。"));
-            list1_1.add(new ListItem("按照乙方要求以书面形式出具测试需求，包括测试子特性、测试软硬件环境等。"));
-            list1_1.add(new ListItem("提供符合交付要求的受测软件产品及相关文档，包括软件功能列表、需求分析、设计文档、用户文档至乙方。"));
-            list1_1.add(new ListItem("指派专人配合乙方测试工作，并提供必要的技术培训和技术协助。"));
-            list1.add((ListItem) new ListItem("甲方的主要义务:").add(list1_1));
+        //甲方义务子列表
+        List list1_1 = new List(ListNumberingType.DECIMAL);
+        list1_1.setPreSymbolText("(");
+        list1_1.setPostSymbolText(")");
+        list1_1.setSymbolIndent(40);
+        list1_1.add(new ListItem("按照合同约定支付所有费用。"));
+        list1_1.add(new ListItem("按照乙方要求以书面形式出具测试需求，包括测试子特性、测试软硬件环境等。"));
+        list1_1.add(new ListItem("提供符合交付要求的受测软件产品及相关文档，包括软件功能列表、需求分析、设计文档、用户文档至乙方。"));
+        list1_1.add(new ListItem("指派专人配合乙方测试工作，并提供必要的技术培训和技术协助。"));
+        list1.add((ListItem) new ListItem("甲方的主要义务:").add(list1_1));
 
-            //甲方义务子列表
-            List list1_2 = new List(ListNumberingType.DECIMAL);
-            list1_1.setPreSymbolText("(");
-            list1_1.setPostSymbolText(")");
-            list1_1.setSymbolIndent(40);
-            list1_1.add(new ListItem("设计测试用例，制定和实施产品测试方案。"));
-            list1_1.add(new ListItem("在测试过程中，定期知会甲方受测软件在测试过程中出现的问题。"));
-            list1_1.add(new ListItem("按期完成甲方委托的软件测试工作。"));
-            list1_1.add(new ListItem("出具正式的测试报告。"));
-            list1.add((ListItem) new ListItem("乙方的主要义务:").add(list1_1));
+        //甲方义务子列表
+        List list1_2 = new List(ListNumberingType.DECIMAL);
+        list1_1.setPreSymbolText("(");
+        list1_1.setPostSymbolText(")");
+        list1_1.setSymbolIndent(40);
+        list1_1.add(new ListItem("设计测试用例，制定和实施产品测试方案。"));
+        list1_1.add(new ListItem("在测试过程中，定期知会甲方受测软件在测试过程中出现的问题。"));
+        list1_1.add(new ListItem("按期完成甲方委托的软件测试工作。"));
+        list1_1.add(new ListItem("出具正式的测试报告。"));
+        list1.add((ListItem) new ListItem("乙方的主要义务:").add(list1_1));
 
         contentPage.add(list1);
 
@@ -167,10 +173,10 @@ public class ContractUtil {
         contentPage.add(new Paragraph("四、合同价款").setBold());
         contentPage.add(new Paragraph(
                 "本合同软件测试费用为人民币"
-                + NumberToChinese.convertToChinese(contract.getTestFee())
-                + "（¥"
-                + contract.getTestFee()
-                + "）。\n")
+                        + NumberToChinese.convertToChinese(contract.getTestFee())
+                        + "（¥"
+                        + contract.getTestFee()
+                        + "）。\n")
                 .setFirstLineIndent(2f));
 
         //正文第五部分
@@ -184,8 +190,8 @@ public class ContractUtil {
         list2.setSymbolIndent(20);
         list2.add(new ListItem(
                 "本次测试的履行期限为合同生效之日起"
-                + contract.getTestTime()
-                + "个自然日内完成。"));
+                        + contract.getTestTime()
+                        + "个自然日内完成。"));
         list2.add(new ListItem("经甲乙双方同意，可对测试进度作适当修改，并以修改后的测试进度作为本合同执行的期限。"));
         list2.add(new ListItem("如受测软件在测试过程中出现的问题，导致继续进行测试会影响整体测试进度，则乙方暂停测试并以书面形式通知甲方进行整改。在整个测试过程中，整改次数限于"
                 + contract.getRectificationFrequency()
@@ -211,8 +217,8 @@ public class ContractUtil {
         contentPage.add(new Paragraph("十一、 其他").setBold());
         contentPage.add(new Paragraph(
                 "本合同自双方授权代表签字盖章之日起生效，自受托方的主要义务履行完毕之日起终止。\n"
-                + "本合同未尽事宜由双方协商解决。\n"
-                + "本合同的正本一式肆份，双方各执两份，具有同等法律效力。\n")
+                        + "本合同未尽事宜由双方协商解决。\n"
+                        + "本合同的正本一式肆份，双方各执两份，具有同等法律效力。\n")
                 .setFirstLineIndent(2f));
 
         return contentPage;
@@ -230,27 +236,27 @@ public class ContractUtil {
 
         tablePage.add(new Paragraph("十二、签章\n").setBold());
 
-        Table table = new Table(UnitValue.createPointArray(new float[]{1,5,10,3,15}))
+        Table table = new Table(UnitValue.createPointArray(new float[]{1, 5, 10, 3, 15}))
                 .setWidth(UnitValue.createPercentValue(100))
                 .setFixedLayout();
 
         table.addCell(
-                new Cell(7,1)
-                        .add(
-                                new Paragraph("委\n\n托\n\n方")
-                                    .setTextAlignment(TextAlignment.CENTER)
-                        )
+                        new Cell(7, 1)
+                                .add(
+                                        new Paragraph("委\n\n托\n\n方")
+                                                .setTextAlignment(TextAlignment.CENTER)
+                                )
                 )
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell("单位全称").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                new Cell(1,3)
+                new Cell(1, 3)
                         .add(
                                 new Paragraph("\n"
                                         + contract.getClient())
                                         + "\n"
                                         + "                            （签章）"
-                )
+                        )
         );
         table.addCell("授权代表").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(contract.getClientInfo().getRepresentative()).setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -260,13 +266,13 @@ public class ContractUtil {
 
         table.addCell("联系人").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                new Cell(1,3).
-                        add(contract.getClientInfo().getContact()).setTextAlignment(TextAlignment.LEFT))
+                        new Cell(1, 3).
+                                add(contract.getClientInfo().getContact()).setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("通讯地址").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                        new Cell(1,3).
+                        new Cell(1, 3).
                                 add(contract.getClientInfo().getAddress()).setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
@@ -278,7 +284,7 @@ public class ContractUtil {
 
         table.addCell("开户银行").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                        new Cell(1,3).
+                        new Cell(1, 3).
                                 add(contract.getClientInfo().getBank()).setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
@@ -289,7 +295,7 @@ public class ContractUtil {
         table.addCell(contract.getClientInfo().getPostcode()).setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell(
-                        new Cell(8,1)
+                        new Cell(8, 1)
                                 .add(
                                         new Paragraph("受\n\n托\n\n方")
                                                 .setTextAlignment(TextAlignment.CENTER)
@@ -298,7 +304,7 @@ public class ContractUtil {
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell("单位全称").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                new Cell(1,3)
+                new Cell(1, 3)
                         .add(
                                 new Paragraph("\n"
                                         + contract.getTrustee())
@@ -314,7 +320,7 @@ public class ContractUtil {
 
         table.addCell("联系人").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                        new Cell(1,3).
+                        new Cell(1, 3).
                                 add(contract.getTrusteeInfo().getContact()).setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
@@ -332,19 +338,19 @@ public class ContractUtil {
 
         table.addCell("开户银行").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                        new Cell(1,3).
+                        new Cell(1, 3).
                                 add("中国工商银行股份有限公司南京汉口路支行").setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("户名").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                        new Cell(1,3).
+                        new Cell(1, 3).
                                 add("南京大学").setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("开户银行").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
-                        new Cell(1,3).
+                        new Cell(1, 3).
                                 add("4301011309001041656").setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
@@ -430,7 +436,7 @@ public class ContractUtil {
     }
 
     //日期转换
-    private static class DateTransformer{
+    private static class DateTransformer {
         static String regex = "\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+(\\d{4})\\s+\\d{2}:\\d{2}:\\d{2}\\s+\\w+\\+\\d{4}\\s+\\([^\\)]+\\)";
 
         public static String dateTransformer(String date) {
@@ -440,14 +446,11 @@ public class ContractUtil {
             // 创建Matcher对象
             Matcher matcher = pattern.matcher(date);
 
+            String year = "", month = "", day = "";
+
             // 查找匹配项
-            String year = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
-            String month = matcher.group(2);
-            String day = matcher.group(3);
             if (matcher.find()) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM");
-                Month mon = Month.from(formatter.parse(matcher.group(1)));
-                month = mon.toString();
+                month  = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
                 day = matcher.group(2);
                 year = matcher.group(3);
             }
@@ -483,6 +486,7 @@ public class ContractUtil {
             throw new IllegalArgumentException("Invalid month abbreviation");
         }
     }
+
     private static class PageXofYPageEventHandler implements IEventHandler {
         private PdfFont footerFont;
         private int totalPages;

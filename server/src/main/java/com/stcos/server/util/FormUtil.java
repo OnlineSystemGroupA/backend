@@ -21,10 +21,15 @@ public class FormUtil {
     private static final List<String> FORM_LIST =
             List.of("ApplicationForm",
                     "ApplicationVerifyForm",
+                    "ContractForm",
                     "DocumentReviewForm",
+                    "QuotationForm",
                     "ReportVerifyForm",
                     "TestFunctionForm",
                     "TestPlanForm",
+                    "TestPlanVerifyForm",
+                    "TestProblemForm",
+                    "TestRecordsForm",
                     "TestReportForm",
                     "TestWorkCheckForm");
 

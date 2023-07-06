@@ -1,6 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.entity.form.ContractForm;
 import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
@@ -10,12 +11,15 @@ import com.stcos.server.entity.process.ProcessVariables;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.*;
+import com.stcos.server.util.ContractUtil;
 import com.stcos.server.util.TaskUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -299,5 +303,21 @@ public class WorkflowServiceImp implements WorkflowService {
         Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
         processDetails.setIndex(TaskUtil.getTaskGroupIndex(task.getName()));
         return processDetails;
+    }
+
+    @Override
+    public Resource downloadForm(String processId, String formName) {
+        if (!Objects.equals(formName, "ContractForm")) return null;
+
+        Long formMetadataId = (Long) runtimeService.getVariable(processId, "ContractForm");
+
+        ContractForm form = (ContractForm) formService.getForm(formMetadataId);
+
+        String filePath = "./files/" + processId + "-contract-form.pdf";
+
+        ContractUtil.generatePDFFromContract(form, filePath);
+
+        return new FileSystemResource(filePath);
+
     }
 }

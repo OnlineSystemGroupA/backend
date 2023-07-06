@@ -1,5 +1,6 @@
 package com.stcos.server.entity.form;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -23,12 +24,13 @@ public class TestFunctionForm extends Form {
 
     @Data
     @Accessors(chain = true)
+    @JsonIgnoreProperties(value = {"index"})
     public static class TestFunction {
         private String title;
         private List<TestFunctionItem> items;
-        private Integer index;
 
         @Data
+        @JsonIgnoreProperties(value = {"index"})
         @Accessors(chain = true)
         public static class TestFunctionItem {
             private String name;
