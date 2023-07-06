@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * description
+ * 测试部主管审核测试方案
  *
  * @author kura
  * @version 1.0

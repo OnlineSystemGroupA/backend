@@ -43,6 +43,9 @@ public class TaskUtil {
         put("市场部审核合同", new VerifyContractConfig());
         put("客户修改合同", new ModifyContractConfig());
 
+        put("客户签署合同", new SignContractConfig());
+        put("市场部盖章合同", new StampContractConfig());
+
         put("客户上传待测样品", new UploadSampleConfig());
         put("测试部审核样品", new VerifySampleConfig());
         put("客户重新上传样品", new ReUploadSampleConfig());
