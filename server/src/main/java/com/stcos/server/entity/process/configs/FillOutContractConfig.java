@@ -21,7 +21,9 @@ public class FillOutContractConfig extends TaskConfig {
 
     @Override
     public List<String> getRequiredForms() {
-        return new ArrayList<>();
+        return new ArrayList<>(){{
+            add("ContractForm");
+        }};
     }
 
 }
