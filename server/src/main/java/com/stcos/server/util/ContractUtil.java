@@ -21,6 +21,8 @@ import com.stcos.server.entity.form.ContractForm;
 import java.io.IOException;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -435,9 +437,9 @@ public class ContractUtil {
             Matcher matcher = pattern.matcher(date);
 
             // 查找匹配项
-            String year = null;
-            String month = null;
-            String day = null;
+            String year = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
+            String month = matcher.group(2);
+            String day = matcher.group(3);
             if (matcher.find()) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM");
                 Month mon = Month.from(formatter.parse(matcher.group(1)));
@@ -450,7 +452,33 @@ public class ContractUtil {
         }
     }
 
+    //月份转换为数字
+    public static class MonthAbbreviationConverter {
+        private static final Map<String, String> monthAbbreviations = new HashMap<>();
 
+        static {
+            monthAbbreviations.put("Jan", "1");
+            monthAbbreviations.put("Feb", "2");
+            monthAbbreviations.put("Mar", "3");
+            monthAbbreviations.put("Apr", "4");
+            monthAbbreviations.put("May", "5");
+            monthAbbreviations.put("Jun", "6");
+            monthAbbreviations.put("Jul", "7");
+            monthAbbreviations.put("Aug", "8");
+            monthAbbreviations.put("Sep", "9");
+            monthAbbreviations.put("Oct", "10");
+            monthAbbreviations.put("Nov", "11");
+            monthAbbreviations.put("Dec", "12");
+        }
+
+        public static String convertAbbreviationToNumber(String abbreviation) {
+            String monthNumber = monthAbbreviations.get(abbreviation);
+            if (monthNumber != null) {
+                return monthNumber;
+            }
+            throw new IllegalArgumentException("Invalid month abbreviation");
+        }
+    }
     private static class PageXofYPageEventHandler implements IEventHandler {
         private PdfFont footerFont;
         private int totalPages;
