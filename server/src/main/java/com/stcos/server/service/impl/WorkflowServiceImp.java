@@ -1,6 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.form.Form;
@@ -289,5 +290,14 @@ public class WorkflowServiceImp implements WorkflowService {
         }
         // 设置指定的流程参与者
         runtimeService.setVariable(processId, role, userId);
+    }
+
+    @Override
+    public ProcessDetails getProcessDetails(String processId) {
+        Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
+        ProcessDetails processDetails = processDetailsService.getById(projectId);
+        Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
+        processDetails.setIndex(TaskUtil.getTaskGroupIndex(task.getName()));
+        return processDetails;
     }
 }

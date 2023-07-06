@@ -47,6 +47,9 @@ public class ProcessDetails {
     private LocalDateTime dueDate;
 
     @TableField(exist = false)
+    private int index;
+
+    @TableField(exist = false)
     List<TaskDetails> taskDetailsList;
 
     public ProcessDetails() {
@@ -86,7 +89,7 @@ public class ProcessDetails {
                        String startDate,
                        String companyChineseName,
                        String email,
-                       String address) {
+                       String address, String startUser, String telephone) {
         this.title = softwareName;
         this.version = softwareVersion;
         this.testType = testType;
@@ -94,5 +97,7 @@ public class ProcessDetails {
         this.company = companyChineseName;
         this.email = email;
         this.address = address;
+        this.applicant = startUser;
+        this.telephone = telephone;
     }
 }

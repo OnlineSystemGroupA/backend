@@ -3,6 +3,7 @@ package com.stcos.server.service;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
 import org.springframework.web.multipart.MultipartFile;
@@ -125,4 +126,6 @@ public interface WorkflowService {
     int getProcessCount();
 
     void setParticipants(String processId, String userId) throws ServiceException;
+
+    ProcessDetails getProcessDetails(String processId);
 }

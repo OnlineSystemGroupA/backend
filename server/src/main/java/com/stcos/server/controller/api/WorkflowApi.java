@@ -6,6 +6,7 @@
 package com.stcos.server.controller.api;
 
 import com.stcos.server.entity.dto.*;
+import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -75,7 +76,7 @@ public interface WorkflowApi {
 
 
     /**
-     * GET /workflow/processes/{processId}/sample : 所有样品下载
+     * GET /workflow/processes/{processId}/files/sample : 所有样品下载
      * 获取指定任务中的指定资源
      *
      * @param processId 指定流程实例 id (required)
@@ -84,7 +85,7 @@ public interface WorkflowApi {
      *         or 指定任务或资源不存在 (status code 404)
      */
     @Operation(
-            operationId = "downloadSample",
+            operationId = "downloadFileSample",
             summary = "所有样品下载",
             description = "获取指定任务中的指定资源",
             tags = { "workflow" },
@@ -98,10 +99,10 @@ public interface WorkflowApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/workflow/processes/{processId}/sample",
+            value = "/workflow/processes/{processId}/files/sample",
             produces = { "application/octet-stream" }
     )
-    default ResponseEntity<org.springframework.core.io.Resource> downloadSample(
+    default ResponseEntity<org.springframework.core.io.Resource> downloadFileSample(
             @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -194,8 +195,8 @@ public interface WorkflowApi {
      *
      * @param processId 流程实例 Id (required)
      * @return 成功获取指定流程的详细信息 (status code 200)
-     *         or 指定流程对该用户不可见 (status code 403)
-     *         or 指定流程不存在 (status code 404)
+     * or 指定流程对该用户不可见 (status code 403)
+     * or 指定流程不存在 (status code 404)
      */
     @Operation(
         operationId = "getProcessDetails",
@@ -212,7 +213,7 @@ public interface WorkflowApi {
         method = RequestMethod.GET,
         value = "/workflow/processes/{processId}/details"
     )
-    default ResponseEntity<Void> getProcessDetails(
+    default ResponseEntity<ProcessDetails> getProcessDetails(
         @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -345,7 +346,7 @@ public interface WorkflowApi {
 
 
     /**
-     * POST /workflow/processes/{processId}/sample : 上传样品
+     * POST /workflow/processes/{processId}/files/sample : 上传样品
      * 上传与对应流程相关的样品文件
      *
      * @param processId 指定流程实例 id (required)
@@ -358,30 +359,30 @@ public interface WorkflowApi {
      *         or 存储空间不足 (status code 507)
      */
     @Operation(
-        operationId = "uploadSample",
-        summary = "上传样品",
-        description = "上传与对应流程相关的样品文件",
-        tags = { "workflow" },
-        responses = {
-            @ApiResponse(responseCode = "201", description = "成功上传", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FileIndexDto.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "没有上传文件"),
-            @ApiResponse(responseCode = "403", description = "该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过"),
-            @ApiResponse(responseCode = "404", description = "指定任务不存在"),
-            @ApiResponse(responseCode = "500", description = "上传文件失败"),
-            @ApiResponse(responseCode = "507", description = "存储空间不足")
-        }
+            operationId = "uploadFileSample",
+            summary = "上传样品",
+            description = "上传与对应流程相关的样品文件",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "成功上传", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FileIndexDto.class)))
+                    }),
+                    @ApiResponse(responseCode = "400", description = "没有上传文件"),
+                    @ApiResponse(responseCode = "403", description = "该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过"),
+                    @ApiResponse(responseCode = "404", description = "指定任务不存在"),
+                    @ApiResponse(responseCode = "500", description = "上传文件失败"),
+                    @ApiResponse(responseCode = "507", description = "存储空间不足")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/workflow/processes/{processId}/sample",
-        produces = { "application/json" },
-        consumes = { "multipart/form-data" }
+            method = RequestMethod.POST,
+            value = "/workflow/processes/{processId}/files/sample",
+            produces = { "application/json" },
+            consumes = { "multipart/form-data" }
     )
-    default ResponseEntity<List<FileIndexDto>> uploadSample(
-        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
-        @Parameter(name = "files", description = "") @RequestPart(value = "files", required = false) List<MultipartFile> files
+    default ResponseEntity<List<FileIndexDto>> uploadFileSample(
+            @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+            @Parameter(name = "files", description = "") @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -455,6 +456,37 @@ public interface WorkflowApi {
     default ResponseEntity<Void> setParticipant(
             @Parameter(name = "processId", description = "指定流程实例 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
             @Parameter(name = "UserIdDto", description = "目标员工的 ID") @Valid @RequestBody(required = false) UserIdDto userIdDto
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * GET /workflow/processes/{processId}/files/forms/{formName} : 下载表单
+     * 下载表单 PDF 文件
+     *
+     * @param processId 目标流程实例的 ID (required)
+     * @param formName 目标表单的名称 (required)
+     * @return ok (status code 200)
+     */
+    @Operation(
+            operationId = "downloadFileForm",
+            summary = "下载表单",
+            description = "下载表单 PDF 文件",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/pdf", schema = @Schema(implementation = org.springframework.core.io.Resource.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/workflow/processes/{processId}/files/forms/{formName}",
+            produces = { "application/pdf" }
+    )
+    default ResponseEntity<org.springframework.core.io.Resource> downloadFileForm(
+            @Parameter(name = "processId", description = "目标流程实例的 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+            @Parameter(name = "formName", description = "目标表单的名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
