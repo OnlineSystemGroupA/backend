@@ -1,6 +1,5 @@
 package com.stcos.server.util;
 
-import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
@@ -66,6 +65,7 @@ public class ContractUtil {
     // 标题页
     private static Div createTitlePage(ContractForm contract) throws IOException {
         Div titlePage = new Div();
+
         titlePage.setHeight(PageSize.A4.getHeight());
         titlePage.setWidth(PageSize.A4.getWidth());
         titlePage.setMarginTop(150);
@@ -74,7 +74,7 @@ public class ContractUtil {
         titlePage.setTextAlignment(TextAlignment.CENTER);
 
         // 创建字体对象
-        PdfFont font = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H", true);
+        PdfFont font = PdfFontFactory.createFont("STHeiti-Light", "UniGB-UCS2-H", true);
 
         // 添加大标题
         Paragraph title = new Paragraph("软件测试委托合同").setFont(font).setFontSize(28);
@@ -100,13 +100,13 @@ public class ContractUtil {
     // 正文页
     private static Div createContentPage(ContractForm contract) throws IOException {
         Div contentPage = new Div();
+
+        PdfFont chineseFont = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H", true);
+        contentPage.setFont(chineseFont).setFontSize(12);
+
         contentPage.setHeight(PageSize.A4.getHeight());
         contentPage.setWidth(PageSize.A4.getWidth());
         contentPage.setMarginTop(50);
-
-        PdfFont contentFont = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
-
-        contentPage.setFont(contentFont).setFontSize(12);
 
         //引言段落
         contentPage.add(
@@ -222,6 +222,9 @@ public class ContractUtil {
     private static Div createTablePage(ContractForm contract) throws IOException {
         Div tablePage = new Div();
 
+        PdfFont chineseFont = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H", true);
+        tablePage.setFont(chineseFont);
+
         tablePage.setHeight(PageSize.A4.getHeight());
         tablePage.setWidth(PageSize.A4.getWidth());
 
@@ -230,6 +233,7 @@ public class ContractUtil {
         Table table = new Table(UnitValue.createPointArray(new float[]{1,5,10,3,15}))
                 .setWidth(UnitValue.createPercentValue(100))
                 .setFixedLayout();
+
         table.addCell(
                 new Cell(7,1)
                         .add(
@@ -484,7 +488,7 @@ public class ContractUtil {
         private int totalPages;
 
         public PageXofYPageEventHandler(PdfDocument pdfDocument) throws IOException {
-            footerFont = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
+            footerFont = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H", true);;
             totalPages = pdfDocument.getNumberOfPages();
         }
 
