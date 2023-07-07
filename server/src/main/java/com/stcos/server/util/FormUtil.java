@@ -8,6 +8,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.flowable.task.service.delegate.DelegateTask;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,27 +54,25 @@ public class FormUtil {
 
     private final String TEMPLATE_PATH = "./files/form/template/";
 
-    public void replaceSpecialText(Form form,String fileName) throws IOException {
-        Map<String, String> map = form.toTemplateFormat();
-        XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(TEMPLATE_PATH + form.templateFormFile()));
-        Iterator<XWPFParagraph> itPara = document.getParagraphsIterator();
-        while (itPara.hasNext()) {
-            XWPFParagraph paragraph = (XWPFParagraph) itPara.next();
-            List<XWPFRun> runs = paragraph.getRuns();
-            for (int i = 0; i < runs.size(); i++) {
-                String oneparaString = runs.get(i).getText(runs.get(i).getTextPosition()).trim();
-                for (Map.Entry<String, String> entry : map.entrySet()) {
-                    if (oneparaString.equals(entry.getKey())) {
-                        oneparaString = oneparaString.replace(entry.getKey(), entry.getValue());
-                    }
+    public void replaceSpecialText(Form form,String fileName){
 
-                }
-                runs.get(i).setText(oneparaString, 0);
-            }
+        try {
+            //读文件
+            XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(TEMPLATE_PATH + form.templateFormFile()));
+
+            //替换内容
+            Map<String, String> map = form.toTemplateFormat();
+            POIWordUtil.replaceWord(document,map);
+
+            //返回流
+            FileOutputStream outStream = new FileOutputStream(fileName);
+            document.write(outStream);
+            outStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        FileOutputStream outStream = new FileOutputStream(fileName);
-        document.write(outStream);
-        outStream.close();
+
     }
 
     //数字转换为大写汉字

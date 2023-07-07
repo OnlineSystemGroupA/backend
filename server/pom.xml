@@ -198,6 +198,16 @@
       <artifactId>poi-ooxml</artifactId>
       <version>5.2.3</version>
     </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>easyexcel</artifactId>
+      <version>2.2.7</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
+      <version>5.3.6</version>
+    </dependency>
   </dependencies>
 
   <build>
