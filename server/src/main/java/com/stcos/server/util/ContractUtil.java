@@ -19,19 +19,18 @@ import com.stcos.server.entity.form.ContractForm;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * GPT救我狗命
  *
  * @author masterCheDan
  */
-
+@Deprecated
 public class ContractUtil {
     public static void generatePDFFromContract(ContractForm contract, String outputFilePath) {
         PdfDocument pdfDocument = null;

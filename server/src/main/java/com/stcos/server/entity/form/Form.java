@@ -58,7 +58,9 @@ public abstract class Form {
         return JSONUtil.parseObject(formData, formClass);
     }
 
-    public abstract Map<String, String> toTemplateFormat();
+    public Map<String, String> toTemplateFormat(){return null;}
+
+    public String templateFormFile(){return "";}
 
 //    public boolean isSavedInDatabase() {
 //        return formId != -1;
