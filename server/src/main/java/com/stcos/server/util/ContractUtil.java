@@ -17,6 +17,7 @@ import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
 import com.stcos.server.entity.form.ContractForm;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +34,12 @@ import java.util.regex.Pattern;
 
 public class ContractUtil {
     public static void generatePDFFromContract(ContractForm contract, String outputFilePath) {
-        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputFilePath));
+        PdfDocument pdfDocument = null;
+        try {
+            pdfDocument = new PdfDocument(new PdfWriter(outputFilePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         Document document = new Document(pdfDocument, PageSize.A4);
 
         try {
@@ -44,14 +50,8 @@ public class ContractUtil {
             // 封面
             document.add(createTitlePage(contract));
 
-            // 另起一页
-            document.add(new AreaBreak());
-
             // 正文
             document.add(createContentPage(contract));
-
-            // 另起一页
-            document.add(new AreaBreak());
 
             // 签章表格
             document.add(createTablePage(contract));
@@ -132,30 +132,30 @@ public class ContractUtil {
         //正文第二部分
         contentPage.add(new Paragraph("二、双方的主要义务").setBold());
         List list1 = new List(ListNumberingType.DECIMAL);
-        list1.setSymbolIndent(20);
+        list1.setSymbolIndent(10);
         list1.setPostSymbolText(".");
 
             //甲方义务子列表
             List list1_1 = new List(ListNumberingType.DECIMAL);
             list1_1.setPreSymbolText("(");
             list1_1.setPostSymbolText(")");
-            list1_1.setSymbolIndent(40);
+            list1_1.setSymbolIndent(10);
             list1_1.add(new ListItem("按照合同约定支付所有费用。"));
             list1_1.add(new ListItem("按照乙方要求以书面形式出具测试需求，包括测试子特性、测试软硬件环境等。"));
             list1_1.add(new ListItem("提供符合交付要求的受测软件产品及相关文档，包括软件功能列表、需求分析、设计文档、用户文档至乙方。"));
             list1_1.add(new ListItem("指派专人配合乙方测试工作，并提供必要的技术培训和技术协助。"));
             list1.add((ListItem) new ListItem("甲方的主要义务:").add(list1_1));
 
-            //甲方义务子列表
+            //乙方义务子列表
             List list1_2 = new List(ListNumberingType.DECIMAL);
             list1_1.setPreSymbolText("(");
             list1_1.setPostSymbolText(")");
-            list1_1.setSymbolIndent(40);
+            list1_1.setSymbolIndent(10);
             list1_1.add(new ListItem("设计测试用例，制定和实施产品测试方案。"));
             list1_1.add(new ListItem("在测试过程中，定期知会甲方受测软件在测试过程中出现的问题。"));
             list1_1.add(new ListItem("按期完成甲方委托的软件测试工作。"));
             list1_1.add(new ListItem("出具正式的测试报告。"));
-            list1.add((ListItem) new ListItem("乙方的主要义务:").add(list1_1));
+            list1.add((ListItem) new ListItem("乙方的主要义务:").add(list1_2));
 
         contentPage.add(list1);
 
@@ -181,7 +181,7 @@ public class ContractUtil {
         contentPage.add(new Paragraph("六、履行的期限").setBold());
         List list2 = new List(ListNumberingType.DECIMAL);
         list2.setPostSymbolText(".");
-        list2.setSymbolIndent(20);
+        list2.setSymbolIndent(10);
         list2.add(new ListItem(
                 "本次测试的履行期限为合同生效之日起"
                 + contract.getTestTime()
@@ -230,9 +230,11 @@ public class ContractUtil {
 
         tablePage.add(new Paragraph("十二、签章\n").setBold());
 
-        Table table = new Table(UnitValue.createPointArray(new float[]{1,5,10,3,15}))
+        Table table = new Table(UnitValue.createPointArray(new float[]{2,5,10,3,15}))
                 .setWidth(UnitValue.createPercentValue(100))
                 .setFixedLayout();
+
+        //委托方部分
 
         table.addCell(
                 new Cell(7,1)
@@ -247,21 +249,26 @@ public class ContractUtil {
                 new Cell(1,3)
                         .add(
                                 new Paragraph("\n"
-                                        + contract.getClient())
+                                        + contract.getClient()
                                         + "\n"
                                         + "                            （签章）"
+                                )
                 )
         );
-        table.addCell("授权代表").setVerticalAlignment(VerticalAlignment.MIDDLE);
-        table.addCell(contract.getClientInfo().getRepresentative()).setVerticalAlignment(VerticalAlignment.MIDDLE);
+        table.addCell("授权代表")
+                .setVerticalAlignment(VerticalAlignment.MIDDLE);
+        table.addCell(contract.getClientInfo()
+                .getRepresentative()).setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("签章\n日期").setVerticalAlignment(VerticalAlignment.MIDDLE);
-        table.addCell(contract.getClientInfo().getSignatureDate()).setVerticalAlignment(VerticalAlignment.MIDDLE);
+        table.addCell(DateTransformer.dateTransformer(contract.getClientInfo().getSignatureDate()))
+                .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("联系人").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
                 new Cell(1,3).
-                        add(contract.getClientInfo().getContact()).setTextAlignment(TextAlignment.LEFT))
+                        add(contract.getClientInfo().getContact())
+                        .setTextAlignment(TextAlignment.LEFT))
                 .setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("通讯地址").setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -288,6 +295,8 @@ public class ContractUtil {
         table.addCell("邮编").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(contract.getClientInfo().getPostcode()).setVerticalAlignment(VerticalAlignment.MIDDLE);
 
+        //受托方部分
+
         table.addCell(
                         new Cell(8,1)
                                 .add(
@@ -301,16 +310,17 @@ public class ContractUtil {
                 new Cell(1,3)
                         .add(
                                 new Paragraph("\n"
-                                        + contract.getTrustee())
+                                        + contract.getTrustee()
                                         + "\n"
                                         + "                            （签章）"
+                                )
                         )
         );
         table.addCell("授权代表").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(contract.getTrusteeInfo().getRepresentative()).setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("签章\n日期").setVerticalAlignment(VerticalAlignment.MIDDLE);
-        table.addCell(contract.getTrusteeInfo().getSignatureDate()).setVerticalAlignment(VerticalAlignment.MIDDLE);
+        table.addCell(DateTransformer.dateTransformer(contract.getTrusteeInfo().getSignatureDate())).setVerticalAlignment(VerticalAlignment.MIDDLE);
 
         table.addCell("联系人").setVerticalAlignment(VerticalAlignment.MIDDLE);
         table.addCell(
@@ -441,9 +451,9 @@ public class ContractUtil {
             Matcher matcher = pattern.matcher(date);
 
             // 查找匹配项
-            String year = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
-            String month = matcher.group(2);
-            String day = matcher.group(3);
+            String month = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
+            String day = matcher.group(2);
+            String year = matcher.group(3);
             if (matcher.find()) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM");
                 Month mon = Month.from(formatter.parse(matcher.group(1)));
@@ -483,6 +493,8 @@ public class ContractUtil {
             throw new IllegalArgumentException("Invalid month abbreviation");
         }
     }
+
+    //页脚
     private static class PageXofYPageEventHandler implements IEventHandler {
         private PdfFont footerFont;
         private int totalPages;
@@ -505,7 +517,7 @@ public class ContractUtil {
                 float y = docEvent.getPage().getPageSize().getBottom() + 20;
 
                 new Canvas(canvas, docEvent.getDocument(), docEvent.getPage().getPageSize())
-                        .setFontSize(5)
+                        .setFontSize(9)
                         .setFont(footerFont)
                         .showTextAligned(new Paragraph(text), x, y, TextAlignment.CENTER);
             }
