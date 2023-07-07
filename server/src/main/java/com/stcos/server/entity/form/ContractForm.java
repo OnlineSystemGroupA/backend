@@ -93,5 +93,5 @@ public class ContractForm extends Form {
     }
 
     @Override
-    public String templateFormFile(){return "合同模板doc.doc";}
+    public String templateFormFile(){return "合同模板doc.docx";}
 }
