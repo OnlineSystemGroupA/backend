@@ -20,6 +20,7 @@
     <spring.boot.version>3.0.5</spring.boot.version>
   </properties>
 
+
   <dependencies>
     <!-- 单元测试 -->
     <dependency>
@@ -154,7 +155,70 @@
       <artifactId>commons-text</artifactId>
       <version>1.10.0</version>
     </dependency>
+    <!-- itext -->
 
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>kernel</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>io</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>layout</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>forms</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>pdfa</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>pdftest</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>font-asian</artifactId>
+      <version>7.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>5.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>easyexcel</artifactId>
+      <version>2.2.7</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
+      <version>5.3.6</version>
+    </dependency>
+    <!-- document4j -->
+    <dependency>
+      <groupId>com.documents4j</groupId>
+      <artifactId>documents4j-local</artifactId>
+      <version>1.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.documents4j</groupId>
+      <artifactId>documents4j-transformer-msoffice-word</artifactId>
+      <version>1.0.3</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -181,9 +245,5 @@
       </resource>
     </resources>
   </build>
-
-
-
-
 
 </project>

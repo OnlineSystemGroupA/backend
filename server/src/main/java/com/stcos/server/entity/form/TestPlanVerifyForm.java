@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 测试方案评审表
@@ -23,6 +24,11 @@ public class TestPlanVerifyForm extends Form {
     private String testType;
     private List<VerifyItem> verifyItems;
     private List<VerifyEmployee> verifyEmployees;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 
     @Data
     @Accessors(fluent = true)

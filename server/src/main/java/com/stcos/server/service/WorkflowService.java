@@ -6,6 +6,7 @@ import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -128,4 +129,6 @@ public interface WorkflowService {
     void setParticipants(String processId, String userId) throws ServiceException;
 
     ProcessDetails getProcessDetails(String processId);
+
+    Resource downloadForm(String processId, String formName);
 }

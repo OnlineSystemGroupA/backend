@@ -57,6 +57,11 @@ public class TestReportForm extends Form {
         this.softwareVersion = softwareVersion;
     }
 
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
+
     @Data
     @Accessors(fluent = true)
     public static class SoftwareEnvironment {

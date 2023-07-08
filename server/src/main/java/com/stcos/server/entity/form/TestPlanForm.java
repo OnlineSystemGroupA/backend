@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 软件测试方案
@@ -37,6 +38,11 @@ public class TestPlanForm extends Form {
     private String time;
     private List<TimeTable> timeTables;
     private String traceability;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 
     @Data
     @Accessors(fluent = true)

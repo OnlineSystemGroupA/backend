@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -264,6 +267,26 @@ public class WorkflowController implements WorkflowApi {
     @Override
     public ResponseEntity<Resource> downloadFileForm(String processId, String formName) {
 
-        return WorkflowApi.super.downloadFileForm(processId, formName);
+        return ResponseEntity.ok(workflowService.downloadForm(processId, formName));
+
+//        return WorkflowApi.super.downloadFileForm(processId, formName);
+    }
+
+    @Override
+    public ResponseEntity<Void> uploadFileForm(String processId, String formName, MultipartFile file) {
+
+//        System.out.println(file.getOriginalFilename());
+//
+//        try {
+//            FileOutputStream fileOutputStream = new FileOutputStream("./" + file.getOriginalFilename());
+//            fileOutputStream.write(file.getInputStream().readAllBytes());
+//            fileOutputStream.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+        System.out.println("sjdjfhds");
+
+        return ResponseEntity.ok(null);
     }
 }

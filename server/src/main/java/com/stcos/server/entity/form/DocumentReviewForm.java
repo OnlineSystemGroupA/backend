@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 软件文档评审表
@@ -25,6 +26,11 @@ public class DocumentReviewForm extends Form {
     private String finishDate;
     private List<ReviewCategory> reviewsOnExplanation;
     private String checker;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 
     @Data
     @Accessors(fluent = true)

@@ -1,6 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.entity.form.ContractForm;
 import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
@@ -10,17 +11,23 @@ import com.stcos.server.entity.process.ProcessVariables;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.*;
+import com.stcos.server.util.ContractUtil;
+import com.stcos.server.util.FormUtil;
 import com.stcos.server.util.TaskUtil;
+import com.stcos.server.util.WordAndPdfUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.io.File;
@@ -299,5 +306,26 @@ public class WorkflowServiceImp implements WorkflowService {
         Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
         processDetails.setIndex(TaskUtil.getTaskGroupIndex(task.getName()));
         return processDetails;
+    }
+
+    @Override
+    public Resource downloadForm(String processId, String formName) {
+        if (!Objects.equals(formName, "ContractForm")) return null;
+
+        Long formMetadataId = (Long) runtimeService.getVariable(processId, "ContractForm");
+
+        ContractForm form = (ContractForm) formService.getForm(formMetadataId);
+
+        String filePath = "./files/" + processId + "jasjjaja-contract-form.docx";
+        String pdfPath = "./files/" + processId + "jasjjaja-contract-form.pdf";
+
+        FormUtil.replaceSpecialText(form, filePath);
+
+        WordAndPdfUtil.word2Pdf(filePath, pdfPath);
+
+//        ContractUtil.generatePDFFromContract(form, filePath);
+
+        return new FileSystemResource(pdfPath);
+
     }
 }
