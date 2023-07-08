@@ -2,6 +2,7 @@ package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
-@TableName(value = "t_test_records_form")
+@EqualsAndHashCode(callSuper = true)
 public class TestRecordsForm extends Form {
     private List<TestRecord> records;
 

@@ -171,9 +171,9 @@ public class FormUtil {
 
             // 查找匹配项
             if (matcher.find()) {
-                year = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
-                month = matcher.group(2);
-                day = matcher.group(3);
+                month = MonthAbbreviationConverter.convertAbbreviationToNumber(matcher.group(1));
+                day = matcher.group(2);
+                year = matcher.group(3);
             }
             // 返回提取的日期部分
             return year + " 年 " + month + " 月 " + day + " 日 ";
