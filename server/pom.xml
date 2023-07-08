@@ -208,6 +208,17 @@
       <artifactId>hutool-all</artifactId>
       <version>5.3.6</version>
     </dependency>
+    <!-- document4j -->
+    <dependency>
+      <groupId>com.documents4j</groupId>
+      <artifactId>documents4j-local</artifactId>
+      <version>1.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.documents4j</groupId>
+      <artifactId>documents4j-transformer-msoffice-word</artifactId>
+      <version>1.0.3</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -234,9 +245,5 @@
       </resource>
     </resources>
   </build>
-
-
-
-
 
 </project>

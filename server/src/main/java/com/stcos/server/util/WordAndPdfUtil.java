@@ -1,11 +1,15 @@
 package com.stcos.server.util;
 
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import cn.hutool.core.util.StrUtil;
+import com.documents4j.api.DocumentType;
+import com.documents4j.api.IConverter;
+import com.documents4j.job.LocalConverter;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -14,9 +18,9 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 /**
- * poi word工具类
+ * 生成文档的工具类
  */
-public class POIWordUtil {
+public class WordAndPdfUtil {
     /**
      * 替换内容
      *
@@ -120,5 +124,19 @@ public class POIWordUtil {
             }
         }
         return value;
+    }
+
+    public static void word2Pdf(String wordPath,String pdfPath){
+        File inputWord = new File("wordPath");
+        File outputFile = new File("pdfPath");
+        try  {
+            InputStream docxInputStream = new FileInputStream(inputWord);
+            OutputStream outputStream = new FileOutputStream(outputFile);
+            IConverter converter = LocalConverter.builder().build();
+            converter.convert(docxInputStream).as(DocumentType.DOCX).to(outputStream).as(DocumentType.PDF).execute();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

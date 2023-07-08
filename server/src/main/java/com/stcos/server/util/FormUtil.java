@@ -5,15 +5,10 @@ import com.stcos.server.service.FormService;
 import lombok.experimental.UtilityClass;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.flowable.task.service.delegate.DelegateTask;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -62,7 +57,7 @@ public class FormUtil {
 
             //替换内容
             Map<String, String> map = form.toTemplateFormat();
-            POIWordUtil.replaceWord(document,map);
+            WordAndPdfUtil.replaceWord(document,map);
 
             //返回流
             FileOutputStream outStream = new FileOutputStream(fileName);
