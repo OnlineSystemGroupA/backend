@@ -7,10 +7,14 @@ import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.flowable.task.service.delegate.DelegateTask;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,22 +51,25 @@ public class FormUtil {
         }
     }
 
-    private final String TEMPLATE_PATH = "./files/form/template/";
+    private final String TEMPLATE_PATH = "/template/";
 
-    public void replaceSpecialText(Form form,String fileName){
+    public void replaceSpecialText(Form form, String fileName) {
 
         try {
+            URI uri = Objects.requireNonNull(FormUtil.class.getResource(TEMPLATE_PATH + form.templateFormFile())).toURI();
+
             //读文件
-            XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(TEMPLATE_PATH + form.templateFormFile()));
+            XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(uri.getPath()));
 
             //替换内容
             Map<String, String> map = form.toTemplateFormat();
-            WordAndPdfUtil.replaceWord(document,map);
+            WordAndPdfUtil.replaceWord(document, map);
 
             //返回流
             FileOutputStream outStream = new FileOutputStream(fileName);
             document.write(outStream);
             outStream.close();
+            document.close();
 
         } catch (Exception e) {
             e.printStackTrace();

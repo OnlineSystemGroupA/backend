@@ -14,6 +14,7 @@ import com.stcos.server.service.*;
 import com.stcos.server.util.ContractUtil;
 import com.stcos.server.util.FormUtil;
 import com.stcos.server.util.TaskUtil;
+import com.stcos.server.util.WordAndPdfUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -315,17 +316,16 @@ public class WorkflowServiceImp implements WorkflowService {
 
         ContractForm form = (ContractForm) formService.getForm(formMetadataId);
 
-        String filePath = "./files/" + processId + "jasjjaja-contract-form.pdf";
+        String filePath = "./files/" + processId + "jasjjaja-contract-form.docx";
+        String pdfPath = "./files/" + processId + "jasjjaja-contract-form.pdf";
 
-        try {
-            FormUtil.replaceSpecialText(form, filePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        FormUtil.replaceSpecialText(form, filePath);
+
+        WordAndPdfUtil.word2Pdf(filePath, pdfPath);
 
 //        ContractUtil.generatePDFFromContract(form, filePath);
 
-        return new FileSystemResource(filePath);
+        return new FileSystemResource(pdfPath);
 
     }
 }

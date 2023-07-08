@@ -127,8 +127,8 @@ public class WordAndPdfUtil {
     }
 
     public static void word2Pdf(String wordPath,String pdfPath){
-        File inputWord = new File("wordPath");
-        File outputFile = new File("pdfPath");
+        File inputWord = new File(wordPath);
+        File outputFile = new File(pdfPath);
         try  {
             InputStream docxInputStream = new FileInputStream(inputWord);
             OutputStream outputStream = new FileOutputStream(outputFile);
