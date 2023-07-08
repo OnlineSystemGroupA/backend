@@ -492,4 +492,32 @@ public interface WorkflowApi {
 
     }
 
+    /**
+     * POST /workflow/processes/{processId}/files/forms/{formName}
+     *
+     * @param processId 目标流程实例的 ID (required)
+     * @param formName 目标表单的名称 (required)
+     * @param file 需要上传的表单 PDF 文件 (required)
+     * @return ok (status code 200)
+     */
+    @Operation(
+            operationId = "uploadFileForm",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/workflow/processes/{processId}/files/forms/{formName}",
+            consumes = { "multipart/form-data" }
+    )
+    default ResponseEntity<Void> uploadFileForm(
+            @Parameter(name = "processId", description = "目标流程实例的 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+            @Parameter(name = "formName", description = "目标表单的名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName,
+            @Parameter(name = "file", description = "需要上传的表单 PDF 文件", required = true) @RequestPart(value = "file", required = true) MultipartFile file
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 }

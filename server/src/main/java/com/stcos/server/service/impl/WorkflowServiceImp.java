@@ -12,6 +12,7 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.*;
 import com.stcos.server.util.ContractUtil;
+import com.stcos.server.util.FormUtil;
 import com.stcos.server.util.TaskUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.io.File;
@@ -313,9 +315,15 @@ public class WorkflowServiceImp implements WorkflowService {
 
         ContractForm form = (ContractForm) formService.getForm(formMetadataId);
 
-        String filePath = "./files/" + processId + "-contract-form.pdf";
+        String filePath = "./files/" + processId + "jasjjaja-contract-form.pdf";
 
-        ContractUtil.generatePDFFromContract(form, filePath);
+        try {
+            FormUtil.replaceSpecialText(form, filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+//        ContractUtil.generatePDFFromContract(form, filePath);
 
         return new FileSystemResource(filePath);
 

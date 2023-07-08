@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 委托测试软件功能列表
@@ -21,6 +22,11 @@ public class TestFunctionForm extends Form {
     private String softwareName;
     private String softwareVersion;
     private List<TestFunction> functions;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 
     @Data
     @Accessors(chain = true)

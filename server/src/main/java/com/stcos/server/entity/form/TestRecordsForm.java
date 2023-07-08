@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 软件测试记录
@@ -18,6 +19,11 @@ import java.util.List;
 @TableName(value = "t_test_records_form")
 public class TestRecordsForm extends Form {
     private List<TestRecord> records;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 
     @Data
     @Accessors(fluent = true)

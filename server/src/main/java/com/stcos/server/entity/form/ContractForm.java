@@ -7,6 +7,8 @@ import lombok.experimental.Accessors;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Map;
+
 @Data
 @Accessors(chain = true)
 public class ContractForm extends Form {
@@ -24,6 +26,7 @@ public class ContractForm extends Form {
     private int rectificationTime;
     private ClientInfo clientInfo;
     private TrusteeInfo trusteeInfo;
+
 
     @Data
     @Accessors(chain = true)

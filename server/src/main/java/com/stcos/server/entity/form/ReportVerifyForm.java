@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.Map;
+
 /**
  * 测试报告检查表
  *
@@ -31,4 +33,9 @@ public class ReportVerifyForm extends Form {
     private boolean isSentenceChecked;
     private boolean isFormatChecked;
     private boolean isReportChecked;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 }

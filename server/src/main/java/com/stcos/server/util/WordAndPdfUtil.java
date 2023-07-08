@@ -47,6 +47,7 @@ public class WordAndPdfUtil {
         for (XWPFParagraph paragraph : paragraphs) {
             //判断此段落时候需要进行替换
             String text = paragraph.getText();
+
             if (StrUtil.isNotBlank(text) && text.contains("${")) {
                 List<XWPFRun> runs = paragraph.getRuns();
                 for (XWPFRun run : runs) {
@@ -67,13 +68,12 @@ public class WordAndPdfUtil {
     public static void changeTable(XWPFDocument document, Map<String, String> textMap) {
         //获取表格对象集合
         List<XWPFTable> tables = document.getTables();
-        for (int i = 0; i < tables.size(); i++) {
+        for (XWPFTable table : tables) {
             //只处理行数大于等于2的表格，且不循环表头
-            XWPFTable table = tables.get(i);
             if (table.getRows().size() > 1) {
                 //判断表格内容是否可以替换
                 String cellText = table.getText();
-                if (StrUtil.isNotBlank(cellText) && cellText.contains("${")){
+                if (StrUtil.isNotBlank(cellText) && cellText.contains("${")) {
                     List<XWPFTableRow> rows = table.getRows();
                     //遍历表格,并替换模板
                     eachTable(rows, textMap);
@@ -119,7 +119,7 @@ public class WordAndPdfUtil {
         for (Entry<String, String> textSet : textSets) {
             //匹配模板与替换值 格式${key}
             String key = "${" + textSet.getKey() + "}";
-            if (value.indexOf(key) != -1) {
+            if (value.contains(key)) {
                 value = value.replace(key, textSet.getValue());
             }
         }
