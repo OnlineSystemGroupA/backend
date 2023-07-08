@@ -126,7 +126,7 @@ public class WordAndPdfUtil {
         return value;
     }
 
-    public static void word2Pdf(String wordPath,String pdfPath){
+    public static void word2Pdf(String wordPath,String pdfPath) {
         File inputWord = new File("wordPath");
         File outputFile = new File("pdfPath");
         try  {

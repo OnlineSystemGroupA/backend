@@ -71,7 +71,7 @@ public class ContractForm extends Form {
 
         map.put("blank15",client);
         map.put("blank16",clientInfo.representative);
-        map.put("blank17",clientInfo.signatureDate);
+        map.put("blank17",FormUtil.DateTransformer.dateTransformer(clientInfo.signatureDate));
         map.put("blank18",clientInfo.contact);
         map.put("blank19",clientInfo.address);
         map.put("blank20",clientInfo.telephone);
@@ -82,7 +82,7 @@ public class ContractForm extends Form {
 
         map.put("blank25",trustee);
         map.put("blank26",trusteeInfo.representative);
-        map.put("blank27",trusteeInfo.signatureDate);
+        map.put("blank27",FormUtil.DateTransformer.dateTransformer(trusteeInfo.signatureDate));
         map.put("blank28",trusteeInfo.contact);
         map.put("blank29",trusteeInfo.address);
         map.put("blank30",trusteeInfo.postcode);
