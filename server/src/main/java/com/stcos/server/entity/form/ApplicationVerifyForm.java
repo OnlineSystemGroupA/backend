@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 软件项目委托测试申请表之审核信息
@@ -31,4 +32,9 @@ public class ApplicationVerifyForm extends Form {
     private String acceptance;
     private String projectId;
     private String notes;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 }

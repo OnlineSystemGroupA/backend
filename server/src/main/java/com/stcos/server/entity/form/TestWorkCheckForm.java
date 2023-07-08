@@ -2,6 +2,7 @@ package com.stcos.server.entity.form;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.Map;
  * @version 1.0
  * @since 2023/5/15
  */
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName(value = "t_test_work_check_form")
 public class TestWorkCheckForm extends Form {
@@ -28,14 +31,19 @@ public class TestWorkCheckForm extends Form {
     private Map<String, List<WorkStep>> workSteps; // String = prelimWorks，assessments, or testSteps
     private String checker;
 
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
+
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class WorkStep {
         private String name;
         private List<StepContent> contents;
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class StepContent {
             private String content;
             private boolean isConfirmed;

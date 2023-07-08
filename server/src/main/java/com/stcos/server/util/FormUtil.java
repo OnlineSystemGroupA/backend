@@ -76,6 +76,7 @@ public class FormUtil {
     }
 
     //数字转换为大写汉字
+    @SuppressWarnings("DuplicatedCode")
     public static class NumberToChinese {
         private static final String[] CN_UPPER_NUMBER = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
         private static final String[] CN_UPPER_UNIT = {"", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟"};
@@ -153,6 +154,7 @@ public class FormUtil {
     }
 
     //日期转换
+    @SuppressWarnings("DuplicatedCode")
     public static class DateTransformer {
         static String regex = "\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+(\\d{4})\\s+\\d{2}:\\d{2}:\\d{2}\\s+\\w+\\+\\d{4}\\s+\\([^\\)]+\\)";
 

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -52,6 +53,11 @@ public class ApplicationForm extends Form {
     private String expireHandle;
     private String expectedDate;
     private CompanyInfo companyInfo;
+
+    @Override
+    public Map<String, String> toTemplateFormat() {
+        return null;
+    }
 
     @Data
 //    @Accessors(fluent = true)

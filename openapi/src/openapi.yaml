@@ -315,19 +315,20 @@ paths:
               schema:
                 type: string
                 format: binary
-    put:
+    post:
       operationId: uploadFileForm
       requestBody:
-        description: 需要上传的表单 PDF 文件
+
         content:
           'multipart/form-data':
             schema:
+              required:
+                - file
               properties:
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
+                file:
+                  description: 需要上传的表单 PDF 文件
+                  type: string
+                  format: binary
       responses:
         '200':
           description: ok
