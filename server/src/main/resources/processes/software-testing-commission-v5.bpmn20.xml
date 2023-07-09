@@ -319,7 +319,7 @@
       <sequenceFlow id="sid-3B3E3B54-5314-4D4F-B1B7-DE0E02F0FF37" sourceRef="sid-ABEA13AC-A7F4-47A9-9243-54EC81B43ECA" targetRef="sid-F2DCA883-55CF-45FD-B420-FFCE2AEFF0B5"></sequenceFlow>
       <exclusiveGateway id="sid-F97B9325-EE90-41B9-A814-A05B7CAFE680" name="审核是否通过" default="sid-8549FA1C-C437-4B3F-A587-907E0CA8CC87"></exclusiveGateway>
       <sequenceFlow id="sid-9F9F6FD8-CB79-495A-A1B0-981A4BE4A18C" sourceRef="sid-F510F4F6-6092-4F87-8C1C-85E23DE1E0BF" targetRef="sid-F97B9325-EE90-41B9-A814-A05B7CAFE680"></sequenceFlow>
-      <userTask id="sid-93614EFE-7E05-4E9F-98ED-C6657EDBE148" name="授权签字人审核委托" flowable:assignee="${signatory}" flowable:formFieldValidation="true">
+      <userTask id="sid-93614EFE-7E05-4E9F-98ED-C6657EDBE148" name="授权签字人审核测试报告" flowable:assignee="${signatory}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${taskListener.create(task)}"></flowable:taskListener>
           <flowable:taskListener event="complete" expression="${taskListener.complete(task)}"></flowable:taskListener>
