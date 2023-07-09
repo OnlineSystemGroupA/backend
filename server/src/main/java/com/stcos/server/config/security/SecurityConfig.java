@@ -11,6 +11,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/*
+           _____                      _ __        ______            _____
+          / ___/___  _______  _______(_) /___  __/ ____/___  ____  / __(_)___ _
+          \__ \/ _ \/ ___/ / / / ___/ / __/ / / / /   / __ \/ __ \/ /_/ / __ `/
+         ___/ /  __/ /__/ /_/ / /  / / /_/ /_/ / /___/ /_/ / / / / __/ / /_/ /
+        /____/\___/\___/\__,_/_/  /_/\__/\__, /\____/\____/_/ /_/_/ /_/\__, /
+                                        /____/                        /____/
+ */
+
 /**
  * spring-security 配置类
  *
