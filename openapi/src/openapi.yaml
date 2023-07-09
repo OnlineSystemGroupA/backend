@@ -142,6 +142,71 @@ paths:
                 items:
                   $ref: "#/components/schemas/Process"
 
+  /archive/processes:
+    get:
+      summary: 获取已完成流程实例
+      description: 获取与当前用户相关的所有已完成流程实例
+      operationId: getArchiveProcesses
+      parameters:
+        - name: assigned
+          in: query
+          required: false
+          description: 其值为 true 表示获取当前有任务被分配给当前用户的项目
+          schema:
+            type: boolean
+        - name: pageIndex
+          in: query
+          required: true
+          description: 需要查询的页号
+          schema:
+            type: integer
+            format: int32
+        - name: numPerPage
+          in: query
+          required: true
+          description: 每页的项目条目数
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          required: true
+          description: 用于排序的字段
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取流程实例列表
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Process"
+
+  /archive/processes/{processId}:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - admin
+      summary: 删除已完成流程
+      description: 管理员删除已完成流程
+      operationId: deleteArchiveProcess
+      responses:
+        '200':
+          description: 成功删除指定流程
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
+
   /workflow/processes/count:
     get:
       tags:
@@ -189,22 +254,35 @@ paths:
           description: 未满足完成条件
 
   /workflow/processes/{processId}/details:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
     get:
       tags:
         - workflow
       summary: 获取流程详情
       description: 获取流程详情
       operationId: getProcessDetails
-      parameters:
-        - name: processId
-          in: path
-          description: 流程实例 Id
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: 成功获取指定流程的详细信息
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+    delete:
+      tags:
+        - admin
+      summary: 删除流程
+      description: 管理员删除流程
+      operationId: deleteProcess
+      responses:
+        '200':
+          description: 成功删除指定流程
         '403':
           description: 指定流程对该用户不可见
         '404':
@@ -460,10 +538,119 @@ paths:
         '409':
           description: 当前登录账号的类型不是 client
 
+  /account/clients:
+    get:
+      tags:
+        - admin
+      summary: 获取用户
+      description: 管理员获取所有用户
+      operationId: getClients
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientDetails'
+
+  /account/clients/{uid}:
+    parameters:
+      - name: uid
+        in: path
+        description: 指定客户uid
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - admin
+      summary: 获取客户信息
+      description: 管理员获取指定uid客户的账号信息
+      operationId: getClientDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ClientDetails'
+        '404':
+          description: 不存在指定uid的客户
+
+    post:
+      tags:
+        - admin
+      summary: 修改客户信息
+      description: 管理员将指定uid的客户信息进行修改
+      operationId: updateClient
+      requestBody:
+        description: 待修改客户的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/ClientDetails'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的客户
+        '409':
+          description: 更改信息与其他信息冲突
+
+    delete:
+      tags:
+        - admin
+      summary: 删除客户
+      description: 管理员将指定uid的客户进行删除
+      operationId: deleteClient
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的客户
+
+  /account/clients/{uid}/locked:
+    post:
+      tags:
+        - admin
+      summary: 锁定客户
+      description: 管理员将指定uid的客户进行封禁或解封
+      operationId: lockClient
+      requestBody:
+        description: 对账户进行解封/封禁
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Lock'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的客户
+
+  /account/operators_department:
+    get:
+      summary: 获取部门员工
+      description: 获取所在部门的所有员工
+      operationId: getOperatorsDepartment
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperatorDetails'
+
   /account/operators:
     get:
+      tags:
+        - admin
       summary: 获取员工
-      description: 获取所在部门员工
+      description: 管理员获取所有员工
       operationId: getOperators
       responses:
         '200':
@@ -474,6 +661,98 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OperatorDetails'
+    post:
+      tags:
+        - admin
+      summary: 创建员工
+      description: 管理员创建一个新的员工
+      operationId: createOperator
+      requestBody:
+        description: 待创建员工的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/OperatorDetails'
+      responses:
+        '200':
+          description: ok
+        '409':
+          description: 员工的信息冲突
+
+  /account/operators/{uid}:
+    parameters:
+      - name: uid
+        in: path
+        description: 指定员工uid
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - admin
+      summary: 获取员工信息
+      description: 管理员获取指定uid员工的账号信息
+      operationId: getOperatorDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/OperatorDetails'
+        '404':
+          description: 不存在指定uid的员工
+
+    post:
+      tags:
+        - admin
+      summary: 修改员工信息
+      description: 管理员将指定uid的员工信息进行修改
+      operationId: updateOperator
+      requestBody:
+        description: 待修改员工的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/OperatorDetails'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的员工
+        '409':
+          description: 更改信息与其他信息冲突
+
+    delete:
+      tags:
+        - admin
+      summary: 删除员工
+      description: 管理员将指定uid的员工进行删除
+      operationId: deleteOperator
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的员工
+
+  /account/operators/{uid}/locked:
+    post:
+      tags:
+        - admin
+      summary: 锁定员工
+      description: 管理员将指定uid的员工进行封禁或解封
+      operationId: lockOperator
+      requestBody:
+        description: 对账户进行解封/封禁
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Lock'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的员工
 
   /account/operator_details:
     get:
@@ -634,6 +913,7 @@ components:
     # 账号相关 DTO
     ClientDetails:
       required:
+        - uid
         - username
         - createdDate
         - realName
@@ -648,7 +928,11 @@ components:
         - companyWebsite
         - companyEmail
         - companyPhone
+        - isLocked
       properties:
+        uid:
+          type: string
+          description: uid
         username:
           type: string
           description: 用户名
@@ -691,6 +975,9 @@ components:
         companyPhone:
           type: string
           description: 公司电话
+        isLocked:
+          type: boolean
+          description: 账号是否被封禁
 
     OperatorDetails:
       required:
@@ -701,6 +988,7 @@ components:
         - realName
         - department
         - position
+        - isLocked
       properties:
         uid:
           type: string
@@ -723,3 +1011,22 @@ components:
         position:
           type: string
           description: 职位
+        isLocked:
+          type: boolean
+          description: 账号是否被封禁
+
+    CurrentTask:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: 流程所在任务名称
+
+    Lock:
+      required:
+        - isLock
+      properties:
+        isLock:
+          type: boolean
+          description: 流程所在任务名称
