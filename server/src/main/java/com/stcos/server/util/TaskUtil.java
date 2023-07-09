@@ -1,6 +1,7 @@
 package com.stcos.server.util;
 
 import com.stcos.server.entity.process.TaskConfig;
+import com.stcos.server.entity.process.TaskName;
 import com.stcos.server.entity.process.configs.*;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.FormService;
@@ -22,52 +23,61 @@ import java.util.Map;
 @UtilityClass
 public class TaskUtil {
 
+    /**
+     * 任务名到任务配置对象的映射
+     */
     private final Map<String, TaskConfig> TASK_CONFIG_MAP = new HashMap<>() {{
-        put("填写申请表", new FillOutAppFormConfig());
-
-        put("分配市场部人员", new AssignMarketingOperatorConfig());
-        put("分配测试部人员", new AssignTestingOperatorConfig());
-        put("市场部审核委托", new VerifyApplicationConfig());
-        put("测试部审核委托", new VerifyApplicationConfig());
-        put("市场部审核不通过，修改委托", new ModifyApplicationConfig());
-        put("测试部审核不通过，修改委托", new ModifyApplicationConfig());
-
-        put("市场部生成报价", new GenQuotationConfig());
-        put("客户审核报价", new VerifyQuotationConfig());
-        put("市场部修改报价", new ModifyQuotationConfig());
-
-        put("市场部生成合同草稿", new GenContractDraftConfig());
-        put("客户审核合同草稿", new VerifyContractDraftConfig());
-        put("市场部修改合同草稿", new ModifyContractDraftConfig());
-        put("客户填写合同", new FillOutContractConfig());
-        put("市场部审核合同", new VerifyContractConfig());
-        put("客户修改合同", new ModifyContractConfig());
-
-        put("客户签署合同", new SignContractConfig());
-        put("市场部盖章合同", new StampContractConfig());
-
-        put("客户上传待测样品", new UploadSampleConfig());
-        put("测试部审核样品", new VerifySampleConfig());
-        put("客户重新上传样品", new ReUploadSampleConfig());
-
-        put("测试部生成测试方案", new GenTestPlanConfig());
-        put("质量部审核测试方案", new VerifyTestPlanConfig());
-        put("测试部修改测试方案", new ModifyTestPlanConfig());
-        put("测试部主管审核测试方案", new ManagerVerifyTestPlanConfig());
-
-        put("测试部生成测试报告", new GenTestReportConfig());
-
-        put("测试部主管审核测试报告", new VerifyTestReportConfig());
-        put("用户审核测试报告", new VerifyTestReportConfig());
-        put("授权签字人审核测试报告", new VerifyTestReportConfig());
-        put("测试部修改测试文档", new ModifyTestReportConfig());
-
-        put("测试文档归档", new ArchiveConfig());
-
-        put("市场部发送测试报告", new SendTestReportConfig());
-        put("用户确认测试报告", new ConfirmTestReportConfig());
+        /*    填写申请表    */
+        put(TaskName.NAME_TASK_01, new FillOutAppFormConfig());
+        /*     审核委托    */
+        put(TaskName.NAME_TASK_02, new AssignMarketingOperatorConfig());
+        put(TaskName.NAME_TASK_03, new AssignTestingOperatorConfig());
+        put(TaskName.NAME_TASK_04, new VerifyApplicationConfig());
+        put(TaskName.NAME_TASK_05, new VerifyApplicationConfig());
+        put(TaskName.NAME_TASK_06, new ModifyApplicationConfig());
+        put(TaskName.NAME_TASK_07, new ModifyApplicationConfig());
+        /*     生成报价    */
+        put(TaskName.NAME_TASK_08, new GenQuotationConfig());
+        put(TaskName.NAME_TASK_09, new VerifyQuotationConfig());
+        put(TaskName.NAME_TASK_10, new ModifyQuotationConfig());
+        /*   生成合同草稿   */
+        put(TaskName.NAME_TASK_11, new GenContractDraftConfig());
+        put(TaskName.NAME_TASK_12, new VerifyContractDraftConfig());
+        put(TaskName.NAME_TASK_13, new ModifyContractDraftConfig());
+        put(TaskName.NAME_TASK_14, new FillOutContractConfig());
+        put(TaskName.NAME_TASK_15, new VerifyContractConfig());
+        put(TaskName.NAME_TASK_16, new ModifyContractConfig());
+        /*     签署合同    */
+        put(TaskName.NAME_TASK_17, new SignContractConfig());
+        put(TaskName.NAME_TASK_18, new StampContractConfig());
+        /*     上传样品    */
+        put(TaskName.NAME_TASK_19, new UploadSampleConfig());
+        put(TaskName.NAME_TASK_20, new VerifySampleConfig());
+        put(TaskName.NAME_TASK_21, new ReUploadSampleConfig());
+        /*   生成测试方案   */
+        put(TaskName.NAME_TASK_22, new GenTestPlanConfig());
+        put(TaskName.NAME_TASK_23, new VerifyTestPlanConfig());
+        put(TaskName.NAME_TASK_24, new ModifyTestPlanConfig());
+        put(TaskName.NAME_TASK_25, new ManagerVerifyTestPlanConfig());
+        /*   生成测试报告   */
+        put(TaskName.NAME_TASK_26, new GenTestReportConfig());
+        put(TaskName.NAME_TASK_27, new VerifyTestReportConfig());
+        put(TaskName.NAME_TASK_28, new VerifyTestReportConfig());
+        put(TaskName.NAME_TASK_29, new VerifyTestReportConfig());
+        put(TaskName.NAME_TASK_30, new ModifyTestReportConfig());
+        put(TaskName.NAME_TASK_31, new ArchiveConfig());
+        /*   确认测试报告   */
+        put(TaskName.NAME_TASK_32, new SendTestReportConfig());
+        put(TaskName.NAME_TASK_33, new ConfirmTestReportConfig());
     }};
 
+    /**
+     * 判断当前任务是否满足完成条件
+     *
+     * @param task        当前任务
+     * @param formService FormService 对象
+     * @return true 表示当前任务满足完成条件，否则不满足完成条件
+     */
     public boolean isCompletable(Task task, FormService formService) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(task.getName());
@@ -77,6 +87,12 @@ public class TaskUtil {
         }
     }
 
+    /**
+     * 获取当前任务中需要被修改或创建的表单
+     *
+     * @param taskName 任务名
+     * @return 需要被修改被创建的表单列表
+     */
     public List<String> getRequiredForms(String taskName) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(taskName);
@@ -86,6 +102,7 @@ public class TaskUtil {
         }
     }
 
+/*
     public String getEmailSubject(String taskName) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(taskName);
@@ -94,7 +111,6 @@ public class TaskUtil {
             throw new ServerErrorException(e);
         }
     }
-
     public String getEmailText(String taskName, Map<String, String> variables) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(taskName);
@@ -103,7 +119,6 @@ public class TaskUtil {
             throw new ServerErrorException(e);
         }
     }
-
     public static boolean isAllowedRole(String taskName, String role) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(taskName);
@@ -112,54 +127,63 @@ public class TaskUtil {
             throw new ServerErrorException(e);
         }
     }
+*/
 
+    /**
+     * 任务名到任务所在分组序号的映射
+     */
     private final Map<String, Integer> TASK_GROUP_MAP = new HashMap<>() {{
-        put("填写申请表", 0);
-
-        put("分配市场部人员", 1);
-        put("分配测试部人员", 1);
-        put("市场部审核委托", 1);
-        put("测试部审核委托", 1);
-        put("市场部审核不通过，修改委托", 1);
-        put("测试部审核不通过，修改委托", 1);
-
-        put("市场部生成报价", 2);
-        put("客户审核报价", 2);
-        put("市场部修改报价", 2);
-
-        put("市场部生成合同草稿", 3);
-        put("客户审核合同草稿", 3);
-        put("市场部修改合同草稿", 3);
-        put("客户填写合同", 3);
-        put("市场部审核合同", 3);
-        put("客户修改合同", 3);
-
-        put("客户签署合同", 3);
-        put("市场部盖章合同", 3);
-
-        put("客户上传待测样品", 4);
-        put("测试部审核样品", 4);
-        put("客户重新上传样品", 4);
-
-        put("测试部生成测试方案", 5);
-        put("质量部审核测试方案", 5);
-        put("测试部修改测试方案", 5);
-        put("测试部主管审核测试方案", 5);
-
-        put("测试部生成测试报告", 6);
-
-        put("测试部主管审核测试报告", 7);
-        put("用户审核测试报告", 7);
-        put("授权签字人审核测试报告", 7);
-        put("测试部修改测试文档", 7);
-
-        put("测试文档归档", 8);
-
-        put("市场部发送测试报告", 9);
-        put("用户确认测试报告", 9);
-
+        /*    申请创建    */
+        put(TaskName.NAME_TASK_01, 0);
+        /*    申请审核    */
+        put(TaskName.NAME_TASK_02, 1);
+        put(TaskName.NAME_TASK_03, 1);
+        put(TaskName.NAME_TASK_04, 1);
+        put(TaskName.NAME_TASK_05, 1);
+        put(TaskName.NAME_TASK_06, 1);
+        put(TaskName.NAME_TASK_07, 1);
+        /*    报价生成   */
+        put(TaskName.NAME_TASK_08, 2);
+        put(TaskName.NAME_TASK_09, 2);
+        put(TaskName.NAME_TASK_10, 2);
+        /*    合同谈判   */
+        put(TaskName.NAME_TASK_11, 3);
+        put(TaskName.NAME_TASK_12, 3);
+        put(TaskName.NAME_TASK_13, 3);
+        put(TaskName.NAME_TASK_14, 3);
+        put(TaskName.NAME_TASK_15, 3);
+        put(TaskName.NAME_TASK_16, 3);
+        put(TaskName.NAME_TASK_17, 3);
+        put(TaskName.NAME_TASK_18, 3);
+        /*    样品上传   */
+        put(TaskName.NAME_TASK_19, 4);
+        put(TaskName.NAME_TASK_20, 4);
+        put(TaskName.NAME_TASK_21, 4);
+        /*    计划制定   */
+        put(TaskName.NAME_TASK_22, 5);
+        put(TaskName.NAME_TASK_23, 5);
+        put(TaskName.NAME_TASK_24, 5);
+        put(TaskName.NAME_TASK_25, 5);
+        /*    测试进行   */
+        put(TaskName.NAME_TASK_26, 6);
+        /*    报告审核   */
+        put(TaskName.NAME_TASK_27, 7);
+        put(TaskName.NAME_TASK_28, 7);
+        put(TaskName.NAME_TASK_29, 7);
+        put(TaskName.NAME_TASK_30, 7);
+        /*    归档处理   */
+        put(TaskName.NAME_TASK_31, 8);
+        /*    用户确认   */
+        put(TaskName.NAME_TASK_32, 9);
+        put(TaskName.NAME_TASK_33, 9);
     }};
 
+    /**
+     * 根据任务名获取任务所处于的分组
+     *
+     * @param taskName 指定任务名
+     * @return 任务所在的分组序号
+     */
     public int getTaskGroupIndex(String taskName) {
         return TASK_GROUP_MAP.get(taskName);
     }

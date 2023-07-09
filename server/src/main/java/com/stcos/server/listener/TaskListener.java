@@ -67,8 +67,8 @@ public class TaskListener {
 //    private Expression assigneeEmail;
 
     private void sendEmail(DelegateTask task) {
-        String subject = TaskUtil.getEmailSubject(task.getName());
-        String text = TaskUtil.getEmailText(task.getName(), null);
+//        String subject = TaskUtil.getEmailSubject(task.getName());
+//        String text = TaskUtil.getEmailText(task.getName(), null);
 //        String to = (String) assigneeEmail.getValue(task);
 //        emailService.sendEmail(to, subject, text);
     }
