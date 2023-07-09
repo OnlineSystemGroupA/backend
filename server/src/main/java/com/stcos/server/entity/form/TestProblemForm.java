@@ -13,7 +13,7 @@ import java.util.Map;
  */
 
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 public class TestProblemForm extends Form {
     private List<Problem> problemList;
 
@@ -23,9 +23,8 @@ public class TestProblemForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class Problem {
-        private String index;
         private String description;
         private String relatedRequirementItem;
         private String initialCondition;

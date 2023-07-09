@@ -27,7 +27,7 @@ public class TestRecordsForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class TestRecord {
         private String type;
         private String description;
@@ -37,7 +37,7 @@ public class TestRecordsForm extends Form {
         private String prediction;
         private String designer;
         private String result;
-        private boolean isMatched;
+        private boolean matched;
         private String bugIndex;
         private String executor;
         private String date;

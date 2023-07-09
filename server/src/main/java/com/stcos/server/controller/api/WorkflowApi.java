@@ -350,13 +350,13 @@ public interface WorkflowApi {
      * 上传与对应流程相关的样品文件
      *
      * @param processId 指定流程实例 id (required)
-     * @param files  (optional)
+     * @param file      (optional)
      * @return 成功上传 (status code 201)
-     *         or 没有上传文件 (status code 400)
-     *         or 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过 (status code 403)
-     *         or 指定任务不存在 (status code 404)
-     *         or 上传文件失败 (status code 500)
-     *         or 存储空间不足 (status code 507)
+     * or 没有上传文件 (status code 400)
+     * or 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过 (status code 403)
+     * or 指定任务不存在 (status code 404)
+     * or 上传文件失败 (status code 500)
+     * or 存储空间不足 (status code 507)
      */
     @Operation(
             operationId = "uploadFileSample",
@@ -382,7 +382,7 @@ public interface WorkflowApi {
     )
     default ResponseEntity<List<FileIndexDto>> uploadFileSample(
             @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
-            @Parameter(name = "files", description = "") @RequestPart(value = "files", required = false) List<MultipartFile> files
+            @Parameter(name = "file", description = "") @RequestPart(value = "file", required = false) MultipartFile file
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

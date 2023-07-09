@@ -67,6 +67,10 @@ spring:
       debug: false
       mime.splitlongparameters: false
     default-encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 500MB
 
 jwt:
   # JWT 存储的请求头

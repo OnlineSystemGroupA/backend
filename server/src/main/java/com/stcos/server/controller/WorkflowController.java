@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,22 +39,46 @@ import java.util.Map;
 @RestController
 public class WorkflowController implements WorkflowApi {
 
+    /*   AUTO_WIRED BEGIN */
     private WorkflowService workflowService;
 
     @Autowired
     public void setWorkflowService(WorkflowService service) {
         this.workflowService = service;
     }
+    /*   AUTO_WIRED END   */
+
 
     @Override
+    @Secured("ROLE_CLIENT")                                     // 限制只有客户可以发起流程
     public ResponseEntity<ProcessIdDto> startProcess() {
         String ProcessId;
         try {
-            ProcessId = workflowService.startProcess(); // 调用服务层方法开启新的流程
+            ProcessId = workflowService.startProcess();         // 调用服务层方法开启新的流程
         } catch (ServiceException e) {
-            throw new ServerErrorException(e);  // 触发意外异常
+            throw new ServerErrorException(e);                  // 触发意外异常
         }
-        return ResponseEntity.ok(new ProcessIdDto(ProcessId)); // 成功启动流程，返回流程实例 ID
+        return ResponseEntity.ok(new ProcessIdDto(ProcessId));  // 成功启动流程，返回流程实例 ID
+    }
+
+    @Override
+    public ResponseEntity<Void> putForm(String processId, String formName, String formData) {
+        ResponseEntity<Void> response = null;
+        Form form = Form.buildForm(formName, formData);
+        if (form == null) {
+            return ResponseEntity.badRequest().build();     // 表单名称不合法
+        }
+        try {
+            workflowService.updateForm(processId, formName, form);
+            response = ResponseEntity.ok().build();
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> response = ResponseEntity.status(403).build(); // 该流程实例对当前用户不可见或当前用户无修改权限
+                case 1 -> response = ResponseEntity.status(404).build(); // 指定流程实例不存在
+                default -> ResponseEntity.internalServerError();
+            }
+        }
+        return response;
     }
 
     @Override
@@ -78,25 +101,7 @@ public class WorkflowController implements WorkflowApi {
 
     }
 
-    @Override
-    public ResponseEntity<Void> putForm(String processId, String formName, String formData) {
-        ResponseEntity<Void> response = null;
-        Form form = Form.buildForm(formName, formData);
-        if (form == null) {
-            return ResponseEntity.badRequest().build();     // 表单名称不合法
-        }
-        try {
-            workflowService.updateForm(processId, formName, form);
-            response = ResponseEntity.ok().build();
-        } catch (ServiceException e) {
-            switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(403).build(); // 该流程实例对当前用户不可见或当前用户无修改权限
-                case 1 -> response = ResponseEntity.status(404).build(); // 指定流程实例不存在
-                default -> ResponseEntity.internalServerError();
-            }
-        }
-        return response;
-    }
+
 
     @Override
     public ResponseEntity<String> getForm(String processId, String formName) {
@@ -138,27 +143,36 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<List<FileIndexDto>> uploadFileSample(String processId, List<MultipartFile> files) {
+    public ResponseEntity<List<FileIndexDto>> uploadFileSample(String processId, MultipartFile file) {
         ResponseEntity<List<FileIndexDto>> response = null;
         try {
-            List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, files);
-            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
-            for (FileMetadata fileMetadata : fileMetadataList) {
-                fileIndexDtoList.add(
-                        new FileIndexDto(fileMetadata.getFileMetadataId(),
-                                fileMetadata.getFileName(),
-                                fileMetadata.getFileType())
-                );
-            }
-            response = ResponseEntity.ok(fileIndexDtoList);
-        } catch (ServiceException e) {
-            switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
-                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
-                default -> ResponseEntity.internalServerError();
-            }
+            FileOutputStream fileOutputStream = new FileOutputStream("./" + file.getOriginalFilename());
+            fileOutputStream.write(file.getInputStream().readAllBytes());
+            fileOutputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return response;
+
+        return ResponseEntity.ok(null);
+//        try {
+//            List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, file);
+//            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
+//            for (FileMetadata fileMetadata : fileMetadataList) {
+//                fileIndexDtoList.add(
+//                        new FileIndexDto(fileMetadata.getFileMetadataId(),
+//                                fileMetadata.getFileName(),
+//                                fileMetadata.getFileType())
+//                );
+//            }
+//            response = ResponseEntity.ok(fileIndexDtoList);
+//        } catch (ServiceException e) {
+//            switch (e.getCode()) {
+//                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
+//                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+//                default -> ResponseEntity.internalServerError();
+//            }
+//        }
+//        return response;
     }
 
     @Override

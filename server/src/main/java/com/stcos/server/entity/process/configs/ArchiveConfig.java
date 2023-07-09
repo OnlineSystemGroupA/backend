@@ -21,7 +21,7 @@ public class ArchiveConfig extends TaskConfig {
     @Override
     public List<String> getRequiredForms() {
         return new ArrayList<>(){{
-            add("TestWorkCheck");
+            add("TestWorkCheckForm");
         }};
     }
 

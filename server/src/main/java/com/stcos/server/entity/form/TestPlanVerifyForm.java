@@ -31,17 +31,17 @@ public class TestPlanVerifyForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class VerifyEmployee {
         private String position;
         private String suggestions;
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class VerifyItem {
         private String content;
-        private boolean isPassed;
+        private boolean passed;
         private String explanation;
     }
 }

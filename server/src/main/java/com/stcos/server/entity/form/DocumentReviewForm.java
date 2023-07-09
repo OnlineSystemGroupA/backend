@@ -16,7 +16,6 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
-@TableName(value = "t_document_review_form")
 public class DocumentReviewForm extends Form {
     private String softwareName;
     private String softwareVersion;
@@ -25,21 +24,17 @@ public class DocumentReviewForm extends Form {
     private String reviewer;
     private String finishDate;
     private List<ReviewCategory> reviewsOnExplanation;
+    private List<ReviewCategory> reviewsOnDocuments;
     private String checker;
 
-    @Override
-    public Map<String, String> toTemplateFormat() {
-        return null;
-    }
-
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class ReviewCategory {
-        private String name;
+        private String title;
         private List<ReviewItem> items;
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class ReviewItem {
             private String content;
             private String result;

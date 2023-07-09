@@ -60,14 +60,14 @@ public class ApplicationForm extends Form {
     }
 
     @Data
-//    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class SoftwareScale {
         private String scaleDescription;
         private int scale;
     }
 
     @Data
-//    @Accessors(fluent = true)
+    @Accessors(chain = true)
     @JsonIgnoreProperties(value = {"vforKey"})
     public static class ClientSystem {
         private String system;
@@ -75,14 +75,14 @@ public class ApplicationForm extends Form {
     }
 
     @Data
-//    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class Medium {
         private String mediumType;
         private int num;
     }
 
     @Data
-//    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class CompanyInfo {
         private String telephone;
         private String fax;

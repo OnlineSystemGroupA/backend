@@ -16,7 +16,6 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
-@TableName(value = "t_test_plan_form")
 public class TestPlanForm extends Form {
     private String version;
     private List<EditRecord> editRecords;
@@ -45,17 +44,17 @@ public class TestPlanForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class EditRecord {
         private String version;
         private String date;
-        private String AMD;
+        private String amd;
         private String editor;
         private String description;
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class TimeTable {
         private String task;
         private String lastTime;

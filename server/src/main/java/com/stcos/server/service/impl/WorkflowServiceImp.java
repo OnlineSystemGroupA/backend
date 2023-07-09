@@ -236,7 +236,7 @@ public class WorkflowServiceImp implements WorkflowService {
         this.processDetailsService = processDetailsService;
     }
 
-    @Secured("ROLE_CLIENT") // 限制只有客户可以发起流程
+
     @Override
     public String startProcess() throws ServiceException {
         // 获取当前登录用户，使用其 id 设置任务发起人
@@ -301,6 +301,11 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public ProcessDetails getProcessDetails(String processId) {
+
+        // 首先判断是否可见
+
+
+
         Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
         ProcessDetails processDetails = processDetailsService.getById(projectId);
         Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();

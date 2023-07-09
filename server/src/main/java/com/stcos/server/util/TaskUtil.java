@@ -56,10 +56,12 @@ public class TaskUtil {
         put("测试部主管审核测试方案", new ManagerVerifyTestPlanConfig());
 
         put("测试部生成测试报告", new GenTestReportConfig());
+
         put("测试部主管审核测试报告", new VerifyTestReportConfig());
         put("用户审核测试报告", new VerifyTestReportConfig());
-        put("授权签字人审核测试报告", new VerifyTestReportConfig());
+        put("授权签字人审核委托", new VerifyTestReportConfig());
         put("测试部修改测试文档", new ModifyTestReportConfig());
+
         put("测试文档归档", new ArchiveConfig());
 
         put("市场部发送测试报告", new SendTestReportConfig());
@@ -132,8 +134,8 @@ public class TaskUtil {
         put("市场部审核合同", 3);
         put("客户修改合同", 3);
 
-        put("客户签署合同", 4);
-        put("市场部盖章合同", 4);
+        put("客户签署合同", 3);
+        put("市场部盖章合同", 3);
 
         put("客户上传待测样品", 4);
         put("测试部审核样品", 4);
@@ -145,14 +147,17 @@ public class TaskUtil {
         put("测试部主管审核测试方案", 5);
 
         put("测试部生成测试报告", 6);
-        put("测试部主管审核测试报告", 6);
-        put("用户审核测试报告", 6);
-        put("授权签字人审核测试报告", 6);
-        put("测试部修改测试文档", 6);
-        put("测试文档归档", 6);
 
-        put("市场部发送测试报告", 7);
-        put("用户确认测试报告", 7);
+        put("测试部主管审核测试报告", 7);
+        put("用户审核测试报告", 7);
+        put("授权签字人审核委托", 7);
+        put("测试部修改测试文档", 7);
+
+        put("测试文档归档", 8);
+
+        put("市场部发送测试报告", 9);
+        put("用户确认测试报告", 9);
+
     }};
 
     public int getTaskGroupIndex(String taskName) {

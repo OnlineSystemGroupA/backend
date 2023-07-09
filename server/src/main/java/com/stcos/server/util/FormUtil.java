@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.flowable.task.service.delegate.DelegateTask;
+import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,7 +70,8 @@ public class FormUtil {
             FileOutputStream outStream = new FileOutputStream(fileName);
             document.write(outStream);
             outStream.close();
-            document.close();
+
+            /// !!!!!!!!!!!!!!!!!!!
 
         } catch (Exception e) {
             e.printStackTrace();

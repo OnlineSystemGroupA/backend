@@ -28,8 +28,10 @@ public class TestWorkCheckForm extends Form {
     private String expectedDueDate;
     private String tester;
     private String actualDueDate;
-    private Map<String, List<WorkStep>> workSteps; // String = prelimWorks，assessments, or testSteps
     private String checker;
+    private List<WorkStep> prework;
+    private List<WorkStep> assessment;
+    private List<WorkStep> testment;
 
     @Override
     public Map<String, String> toTemplateFormat() {
@@ -46,7 +48,7 @@ public class TestWorkCheckForm extends Form {
         @Accessors(chain = true)
         public static class StepContent {
             private String content;
-            private boolean isConfirmed;
+            private boolean confirmed;
         }
     }
 }

@@ -25,37 +25,40 @@ public class TestReportForm extends Form {
     private String testType;
     private String reportDate;
     private String projectId;
-    private String sampleTime;
-    private String startTime;
-    private String endTime;
+    private String sampleDate;
+    private String startDate;
+    private String endDate;
     private String sampleCondition;
     private String testStandard;
     private String sampleList;
     private String testConclusion;
     private String compiler;
-    private String compileTime;
+    private String compileDate;
     private String reviewer;
-    private String reviewTime;
+    private String reviewDate;
     private String approver;
-    private String approveTime;
+    private String approveDate;
     private String hardwareType;
     private String hardwareName;
     private String hardwareConfiguration;
     private String hardwareNum;
+    private String telephone;
+    private String fax;
+    private String address;
+    private String website;
+    private String contract;
+    private String email;
     private SoftwareEnvironment softwareEnvironment;
-    private List<TestStandard> testStandards;
-    private List<Reference> references;
+    private String networkEnvironment;
+    private List<String> testStandards;
+    private List<String> references;
     private List<FunctionTest> functionTests;
-    private Map<String, List<GeneralTest>> tests; // String = efficiencyTests, portabilityTests, usabilityTests, reliabilityTests, or maintainabilityTests
+    private List<GeneralTest> efficiencyTests;
+    private List<GeneralTest> portabilityTests;
+    private List<GeneralTest> usabilityTests;
+    private List<GeneralTest> reliabilityTests;
+    private List<GeneralTest> maintainabilityTests;
 
-    public TestReportForm(String softwareName) {
-        this.softwareName = softwareName;
-    }
-
-    public TestReportForm(String softwareName, String softwareVersion) {
-        this.softwareName = softwareName;
-        this.softwareVersion = softwareVersion;
-    }
 
     @Override
     public Map<String, String> toTemplateFormat() {
@@ -63,7 +66,7 @@ public class TestReportForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class SoftwareEnvironment {
         private OperatingSystem operatingSystem;
         private List<Software> software; // Uncountable noun
@@ -72,35 +75,35 @@ public class TestReportForm extends Form {
         private TestSample testSample;
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class OperatingSystem {
             private String name;
             private String version;
         }
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class Software {
             private String name;
             private String version;
         }
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class AncillaryTool {
             private String name;
             private String version;
         }
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class DevelopmentTool {
             private String name;
             private String version;
         }
 
         @Data
-        @Accessors(fluent = true)
+        @Accessors(chain = true)
         public static class TestSample {
             private String name;
             private String version;
@@ -108,19 +111,7 @@ public class TestReportForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
-    public static class TestStandard {
-        private String standard;
-    }
-
-    @Data
-    @Accessors(fluent = true)
-    public static class Reference {
-        private String reference;
-    }
-
-    @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class FunctionTest {
         private String functionModule;
         private String functionRequirement;
@@ -128,7 +119,7 @@ public class TestReportForm extends Form {
     }
 
     @Data
-    @Accessors(fluent = true)
+    @Accessors(chain = true)
     public static class GeneralTest {
         private String property;
         private String testExplanation;
