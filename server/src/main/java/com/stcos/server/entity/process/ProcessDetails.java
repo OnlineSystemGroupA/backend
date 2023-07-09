@@ -21,34 +21,72 @@ import java.util.Objects;
 @Data
 @Accessors(chain = true)
 public class ProcessDetails {
+
+    /**
+     *
+     */
     @TableId
     private Long projectId;
 
+    /**
+     *
+     */
     private String title = "";
 
+    /**
+     *
+     */
     private String version = "";
 
+    /**
+     *
+     */
     private String testType = "";
 
+    /**
+     *
+     */
     private String applicationDate = "";
 
+    /**
+     *
+     */
     private String applicant = "";
 
+    /**
+     *
+     */
     private String company = "";
 
+    /**
+     *
+     */
     private String telephone = "";
 
+    /**
+     *
+     */
     private String email = "";
 
+    /**
+     *
+     */
     private String address = "";
 
+    /**
+     *
+     */
     private LocalDateTime startDate;
 
+    /**
+     *
+     */
     private LocalDateTime dueDate;
 
-    @TableField(exist = false)
-    private int index;
 
+    /**
+     *
+     */
     @TableField(exist = false)
     List<TaskDetails> taskDetailsList;
 
@@ -56,6 +94,10 @@ public class ProcessDetails {
         taskDetailsList = new ArrayList<>();
     }
 
+    /**
+     * @param taskName
+     * @param userName
+     */
     public void openTask(String taskName, String userName) {
         for (TaskDetails taskDetails : taskDetailsList) {
             if (Objects.equals(taskDetails.getTaskName(), taskName)) {
@@ -74,6 +116,9 @@ public class ProcessDetails {
         taskDetailsList.add(new TaskDetails());
     }
 
+    /**
+     * @param taskName
+     */
     public void closeTask(String taskName) {
         for (TaskDetails taskDetails : taskDetailsList) {
             if (Objects.equals(taskDetails.getTaskName(), taskName)) {
@@ -83,6 +128,17 @@ public class ProcessDetails {
         }
     }
 
+    /**
+     * @param softwareName
+     * @param softwareVersion
+     * @param testType
+     * @param startDate
+     * @param companyChineseName
+     * @param email
+     * @param address
+     * @param startUser
+     * @param telephone
+     */
     public void update(String softwareName,
                        String softwareVersion,
                        String testType,
@@ -100,4 +156,13 @@ public class ProcessDetails {
         this.applicant = startUser;
         this.telephone = telephone;
     }
+
+    /**
+     * @return
+     */
+    public String getCurrentTaskName() {
+        TaskDetails taskDetails = taskDetailsList.get(taskDetailsList.size() - 1);
+        return taskDetails.getTaskName();
+    }
+
 }

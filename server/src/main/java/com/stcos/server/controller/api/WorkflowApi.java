@@ -194,28 +194,40 @@ public interface WorkflowApi {
      * 获取流程详情
      *
      * @param processId 流程实例 Id (required)
-     * @return 成功获取指定流程的详细信息 (status code 200)
-     * or 指定流程对该用户不可见 (status code 403)
-     * or 指定流程不存在 (status code 404)
+     * @return ok (status code 200)
+     *         or 指定流程对该用户不可见 (status code 403)
+     *         or 指定流程不存在 (status code 404)
      */
     @Operation(
-        operationId = "getProcessDetails",
-        summary = "获取流程详情",
-        description = "获取流程详情",
-        tags = { "workflow" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "成功获取指定流程的详细信息"),
-            @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
-            @ApiResponse(responseCode = "404", description = "指定流程不存在")
-        }
+            operationId = "getProcessDetails",
+            summary = "获取流程详情",
+            description = "获取流程详情",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessDetailsDto.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
+                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/workflow/processes/{processId}/details"
+            method = RequestMethod.GET,
+            value = "/workflow/processes/{processId}/details",
+            produces = { "application/json" }
     )
-    default ResponseEntity<ProcessDetails> getProcessDetails(
-        @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    default ResponseEntity<ProcessDetailsDto> getProcessDetails(
+            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"address\" : \"address\", \"dueDate\" : \"dueDate\", \"testType\" : \"testType\", \"index\" : 6, \"telephone\" : \"telephone\", \"title\" : \"title\", \"version\" : \"version\", \"applicant\" : \"applicant\", \"currentTaskName\" : \"currentTaskName\", \"company\" : \"company\", \"projectId\" : 0, \"email\" : \"email\", \"startDate\" : \"startDate\", \"applicationDate\" : \"applicationDate\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

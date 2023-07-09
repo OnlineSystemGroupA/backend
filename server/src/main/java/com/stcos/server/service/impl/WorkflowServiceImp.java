@@ -93,15 +93,15 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public Task getTaskById(String taskId) throws ServiceException {
-        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (tasks == null) //没有对应Id的task
-            throw new ServiceException(1);
-        Task task = tasks.get(0);
-        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
-            throw new ServiceException(0);
-        }
-        return task;
+//        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (tasks == null) //没有对应Id的task
+//            throw new ServiceException(1);
+//        Task task = tasks.get(0);
+//        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
+//            throw new ServiceException(0);
+//        }
+        return taskService.createTaskQuery().processInstanceId(taskId).active().singleResult();
     }
 
     private final Map<String, Comparator<ProcessInstance>> comparatorMap = new HashMap<>() {{
@@ -305,7 +305,6 @@ public class WorkflowServiceImp implements WorkflowService {
         Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
         ProcessDetails processDetails = processDetailsService.getById(projectId);
         Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
-        processDetails.setIndex(TaskUtil.getTaskGroupIndex(task.getName()));
         return processDetails;
     }
 

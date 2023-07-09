@@ -204,7 +204,11 @@ paths:
             type: string
       responses:
         '200':
-          description: 成功获取指定流程的详细信息
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ProcessDetails"
         '403':
           description: 指定流程对该用户不可见
         '404':
@@ -505,6 +509,8 @@ paths:
         '409':
           description: 当前登录账号的类型不是 operator
 
+
+
 components:
   schemas:
     UserId:
@@ -592,6 +598,76 @@ components:
           type: string
           description: 流程发起时间
 
+    ProcessId:
+      required:
+        - processId
+      properties:
+        processId:
+          type: string
+          description: 新委托流程的 ID
+
+    ProcessDetails:
+      required:
+        - projectId
+        - title
+        - version
+        - testType
+        - applicationDate
+        - applicant
+        - company
+        - telephone
+        - email
+        - address
+        - startDate
+        - dueDate
+        - index
+        - currentTaskName
+      properties:
+        projectId:
+          description: 测试项目号
+          type: integer
+          format: int64
+        title:
+          description: 软件项目名
+          type: string
+        version:
+          description: 软件版本
+          type: string
+        testType:
+          description: 测试类型
+          type: string
+        applicationDate:
+          description: 申请日期
+          type: string
+        applicant:
+          description: 申请人
+          type: string
+        company:
+          description: 公司名称
+          type: string
+        telephone:
+          description: 电话
+          type: string
+        email:
+          description: 邮箱
+          type: string
+        address:
+          description: 地址
+          type: string
+        startDate:
+          description: 测试开始时间
+          type: string
+        dueDate:
+          description: 预计结束时间
+          type: string
+        index:
+          description: 当前任务所在组的编号
+          type: integer
+          format: int32
+        currentTaskName:
+          description: 当前任务名称
+          type: string
+
     fileIndex:
       type: object
       required:
@@ -609,14 +685,6 @@ components:
         fileType:
           type: string
           description: 文件类型
-
-    ProcessId:
-      required:
-        - processId
-      properties:
-        processId:
-          type: string
-          description: 新委托流程的 ID
 
     FormMetadata:
       required:

@@ -10,6 +10,8 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import com.stcos.server.util.JSONUtil;
+import com.stcos.server.util.TaskUtil;
+import com.stcos.server.util.dto.ProcessDetailsMapper;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -203,9 +205,21 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<ProcessDetails> getProcessDetails(String processId) {
-        Task task = null;
+    public ResponseEntity<ProcessDetailsDto> getProcessDetails(String processId) {
+
         ProcessDetails processDetails = workflowService.getProcessDetails(processId);
+
+//        String currentTaskName = processDetails.getCurrentTaskName();
+        String currentTaskName = null;
+        try {
+            currentTaskName = workflowService.getTaskById(processId).getName();
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+        int index = TaskUtil.getTaskGroupIndex(currentTaskName);
+
+        ProcessDetailsDto processDetailsDto = ProcessDetailsMapper.toProcessDetailsDto(processDetails, currentTaskName, index);
 
 
 //        ResponseEntity<TaskDto> response = null;
@@ -223,7 +237,7 @@ public class WorkflowController implements WorkflowApi {
 //                    (new TaskDto(task.getProcessInstanceId(), taskId, task.getName(), task.getDescription(), task.getOwner()));
 //        }
 //
-        return ResponseEntity.ok(processDetails);
+        return ResponseEntity.ok(processDetailsDto);
     }
 
     @Override
