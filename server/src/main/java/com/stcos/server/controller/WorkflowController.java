@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +39,14 @@ import java.util.Map;
 @RestController
 public class WorkflowController implements WorkflowApi {
 
-    /*   AUTO_WIRED BEGIN */
     private WorkflowService workflowService;
 
+    /*   AUTO_WIRED BEGIN  */
     @Autowired
     public void setWorkflowService(WorkflowService service) {
         this.workflowService = service;
     }
-    /*   AUTO_WIRED END   */
-
+    /*   AUTO_WIRED END    */
 
     @Override
     @Secured("ROLE_CLIENT")                                     // 限制只有客户可以发起流程

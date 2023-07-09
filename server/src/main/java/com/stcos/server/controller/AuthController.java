@@ -17,12 +17,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /*
-    ___         __  __               __  _            __  _             ______            __             ____
-   /   | __  __/ /_/ /_  ___  ____  / /_(_)________ _/ /_(_)___  ____  / ____/___  ____  / /__________  / / /__  _____
-  / /| |/ / / / __/ __ \/ _ \/ __ \/ __/ / ___/ __ `/ __/ / __ \/ __ \/ /   / __ \/ __ \/ __/ ___/ __ \/ / / _ \/ ___/
- / ___ / /_/ / /_/ / / /  __/ / / / /_/ / /__/ /_/ / /_/ / /_/ / / / / /___/ /_/ / / / / /_/ /  / /_/ / / /  __/ /
-/_/  |_\__,_/\__/_/ /_/\___/_/ /_/\__/_/\___/\__,_/\__/_/\____/_/ /_/\____/\____/_/ /_/\__/_/   \____/_/_/\___/_/
-
+            ___         __  __    ______            __             ____
+           /   | __  __/ /_/ /_  / ____/___  ____  / /__________  / / /__  _____
+          / /| |/ / / / __/ __ \/ /   / __ \/ __ \/ __/ ___/ __ \/ / / _ \/ ___/
+         / ___ / /_/ / /_/ / / / /___/ /_/ / / / / /_/ /  / /_/ / / /  __/ /
+        /_/  |_\__,_/\__/_/ /_/\____/\____/_/ /_/\__/_/   \____/_/_/\___/_/
  */
 
 /**
@@ -32,36 +31,42 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @since 2023/3/29 15:27
  */
-
 @RestController
 public class AuthController implements AuthApi {
 
     private AuthService authService;
 
+    private AccountService accountService;
+
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
+
+    /*   AUTO_WIRED BEGIN  */
     @Autowired
     public void setAuthService(AuthService service) {
         this.authService = service;
     }
 
-    private AccountService accountService;
-
     @Autowired
-    public  void setAccountService(AccountService service){ this.accountService = service; }
+    public void setAccountService(AccountService service) {
+        this.accountService = service;
+    }
+    /*   AUTO_WIRED END    */
 
-    @Value("${jwt.tokenHead}")
-    private String tokenHead;
 
     @Override
     public ResponseEntity<TokenDto> login(LoginParamDto loginParamDto, String userType) {
         ResponseEntity<TokenDto> response = null;
         UserDetails userDetails = null;
         try {
+            // 调用认证服务
             userDetails = authService.login(loginParamDto.getUsername(), loginParamDto.getPassword(), userType);
         } catch (ServiceException e) {
             switch (e.getCode()) {
-                case 0, 3 -> response = ResponseEntity.status(404).build();
-                case 1 -> response = ResponseEntity.status(401).build();
-                case 2 -> response = ResponseEntity.status(403).build();
+                case 0, 3 -> response = ResponseEntity.status(404).build();     // 用户名或用户类型不存在
+                case 1 -> response = ResponseEntity.status(401).build();        // 用户名或密码错误
+                case 2 -> response = ResponseEntity.status(403).build();        // 账号被禁用
                 default -> throw new RuntimeException();
             }
         }
@@ -76,6 +81,7 @@ public class AuthController implements AuthApi {
         return response;
     }
 
+
     @Override
     public ResponseEntity<Void> register(RegisterParamDto registerParamDto) {
         ResponseEntity<Void> response = null;
@@ -83,8 +89,7 @@ public class AuthController implements AuthApi {
             accountService.register(registerParamDto.getUsername(), registerParamDto.getPassword(), registerParamDto.getEmail());
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
-                // 用户名已存在
-                response = ResponseEntity.status(409).build();
+                response = ResponseEntity.status(409).build(); // 用户名已存在
             }
         }
         if (response == null) {
@@ -92,6 +97,7 @@ public class AuthController implements AuthApi {
         }
         return response;
     }
+
 
     @Override
     public ResponseEntity<Void> logout() {
