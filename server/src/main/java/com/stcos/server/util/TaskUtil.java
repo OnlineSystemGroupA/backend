@@ -59,7 +59,7 @@ public class TaskUtil {
 
         put("测试部主管审核测试报告", new VerifyTestReportConfig());
         put("用户审核测试报告", new VerifyTestReportConfig());
-        put("授权签字人审核委托", new VerifyTestReportConfig());
+        put("授权签字人审核测试报告", new VerifyTestReportConfig());
         put("测试部修改测试文档", new ModifyTestReportConfig());
 
         put("测试文档归档", new ArchiveConfig());
@@ -150,7 +150,7 @@ public class TaskUtil {
 
         put("测试部主管审核测试报告", 7);
         put("用户审核测试报告", 7);
-        put("授权签字人审核委托", 7);
+        put("授权签字人审核测试报告", 7);
         put("测试部修改测试文档", 7);
 
         put("测试文档归档", 8);
