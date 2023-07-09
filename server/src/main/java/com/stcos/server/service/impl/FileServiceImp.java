@@ -34,7 +34,7 @@ public class FileServiceImp implements FileService {
 
 
     @Override
-    public List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, MultipartFile file) throws ServiceException {
         // 获取样品元数据
 //        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
         SampleMetadata sampleMetadata = null;
@@ -205,5 +205,10 @@ public class FileServiceImp implements FileService {
         } else {
             throw new ServiceException(1); // 无删除权限的异常
         }
+    }
+
+    @Override
+    public Long createMetadata() {
+        return null;
     }
 }

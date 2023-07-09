@@ -7,11 +7,10 @@ import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.process.ProcessVariables;
+import com.stcos.server.util.ProcessVariablesBuilder;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.*;
-import com.stcos.server.util.ContractUtil;
 import com.stcos.server.util.FormUtil;
 import com.stcos.server.util.TaskUtil;
 import com.stcos.server.util.WordAndPdfUtil;
@@ -22,12 +21,10 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.io.File;
@@ -179,12 +176,12 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public List<FileMetadata> uploadSample(String processId, List<MultipartFile> files) throws ServiceException {
+    public List<FileMetadata> uploadSample(String processId, MultipartFile file) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
         Long sampleMetadataId = getSampleMetadataId(processId);
 
         // 调用 FileService 接口实现样品上传，返回样品文件摘要
-        return fileService.uploadSample(processId, sampleMetadataId, files);
+        return fileService.uploadSample(processId, sampleMetadataId, file);
     }
 
     @Override
@@ -252,9 +249,9 @@ public class WorkflowServiceImp implements WorkflowService {
         Long recordId = processRecordService.create();
 
         // 初始化流程变量，创建 ProcessVariables 对象
-        Map<String, Object> processVariables = new ProcessVariables(client.getUid(), client.getRealName(),
+        Map<String, Object> processVariables = ProcessVariablesBuilder.build(client.getUid(), client.getRealName(),
                 marketingManagerId, testingManagerId, qualityManagerId, signatoryId,
-                processDetailsService, formService);
+                processDetailsService, formService, fileService);
 
         // 使用 ProcessVariables 对象创建新流程实例
         ProcessInstance processInstance =
@@ -303,7 +300,6 @@ public class WorkflowServiceImp implements WorkflowService {
     public ProcessDetails getProcessDetails(String processId) {
 
         // 首先判断是否可见
-
 
 
         Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
