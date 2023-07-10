@@ -155,16 +155,16 @@ public class WorkflowController implements WorkflowApi {
 //
 //        return ResponseEntity.ok(null);
         try {
-            List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, file);
-            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
-            for (FileMetadata fileMetadata : fileMetadataList) {
-                fileIndexDtoList.add(
-                        new FileIndexDto(fileMetadata.getFileMetadataId(),
-                                fileMetadata.getFileName(),
-                                fileMetadata.getFileType())
-                );
-            }
-            response = ResponseEntity.ok(fileIndexDtoList);
+            FileMetadata fileMetadata = workflowService.uploadSample(processId, file);
+//            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
+//            for (FileMetadata fileMetadata : fileMetadataList) {
+//                fileIndexDtoList.add(
+//                        new FileIndexDto(fileMetadata.getFileMetadataId(),
+//                                fileMetadata.getFileName(),
+//                                fileMetadata.getFileType())
+//                );
+//            }
+//            response = ResponseEntity.ok(fileIndexDtoList);
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见

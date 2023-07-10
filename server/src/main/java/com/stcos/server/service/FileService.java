@@ -12,10 +12,10 @@ public interface FileService {
     /**
      * 上传样品
      *
-     * @param processId        指定流程实例 ID
+     * @param processId 指定流程实例 ID
      * @param sampleMetadataId 样品元数据 ID
-     * @param file             样品文件列表
-     * @return 样品文件元数据列表
+     * @param file 样品文件
+     * @return 样品文件元数据
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          1: 用户无上传权限 <br>
@@ -23,7 +23,7 @@ public interface FileService {
      *                          3: 存储空间不足 <br>
      *                          4: 文件上传失败 <br>
      */
-    List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, MultipartFile file) throws ServiceException;
+    FileMetadata uploadSample(String processId, Long sampleMetadataId, MultipartFile file) throws ServiceException;
 
     /**
      * 下载样品
@@ -51,5 +51,17 @@ public interface FileService {
      */
     void deleteSample(Long sampleMetadataId) throws ServiceException;
 
+//    boolean existSample(long sampleMetadataId);
+
+    void addWritePermission(Long sampleMetadataId, String assignee);
+
+    void addReadPermission(Long sampleMetadataId, String userId);
+
     Long createMetadata();
+
+    Long createMetadata(List<String> users);
+
+    void removeWritePermission(Long sampleMetadataId, String assignee);
+
+//    Sample getSample(Long metadataId);
 }

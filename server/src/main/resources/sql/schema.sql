@@ -136,12 +136,23 @@ CREATE TABLE IF NOT EXISTS t_process_details
 CREATE TABLE IF NOT EXISTS t_file_metadata
 (
     file_metadata_id BIGINT AUTO_INCREMENT,
-    file_name        VARCHAR(64) NOT NULL,
-    file_type        VARCHAR(10) NOT NULL,
+    file_name        VARCHAR(128) NOT NULL,
+    file_type        VARCHAR(32) NOT NULL,
     file_size        BIGINT      NOT NULL,
     updated_by       VARCHAR(64) NOT NULL,
     updated_date     DATETIME    NOT NULL,
-    file_path        VARCHAR(64) NOT NULL,
+    file_path        VARCHAR(256) NOT NULL,
     PRIMARY KEY (file_metadata_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+-- SampleMetadata
+CREATE TABLE IF NOT EXISTS t_sample_metadata
+(
+    sample_metadata_id   BIGINT AUTO_INCREMENT, -- 样品元数据 ID，保存对象时由数据库自动赋值
+    readable_users       TEXT        NOT NULL,  -- 对样品具有读权限用户的 ID 列表
+    writable_users       TEXT        NOT NULL,  -- 对样品具有写权限用户的 ID 列表
+    file_metadata_id_list     TEXT,             -- 文件元数据 ID 列表
+    PRIMARY KEY (sample_metadata_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
