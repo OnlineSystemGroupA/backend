@@ -1,6 +1,5 @@
 package com.stcos.server.service;
 
-import com.stcos.server.entity.form.ApplicationForm;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
@@ -59,4 +58,6 @@ public interface FormService {
     void removeWritePermission(Long formMetadataId, String assignee);
 
     Form getForm(Long metadataId);
+
+    boolean hasWritePermission(Long formMetadataId, String uid);
 }

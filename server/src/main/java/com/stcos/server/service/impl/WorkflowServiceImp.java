@@ -93,15 +93,15 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public Task getTaskById(String taskId) throws ServiceException {
-        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (tasks == null) //没有对应Id的task
-            throw new ServiceException(1);
-        Task task = tasks.get(0);
-        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
-            throw new ServiceException(0);
-        }
-        return task;
+//        List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (tasks == null) //没有对应Id的task
+//            throw new ServiceException(1);
+//        Task task = tasks.get(0);
+//        if (!task.getAssignee().equals(user.getUid())) { //当前用户不是被分配到的用户（即不可见）
+//            throw new ServiceException(0);
+//        }
+        return taskService.createTaskQuery().processInstanceId(taskId).active().singleResult();
     }
 
     private final Map<String, Comparator<ProcessInstance>> comparatorMap = new HashMap<>() {{
@@ -305,28 +305,26 @@ public class WorkflowServiceImp implements WorkflowService {
         Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
         ProcessDetails processDetails = processDetailsService.getById(projectId);
         Task task = taskService.createTaskQuery().processInstanceId(processId).active().singleResult();
-        processDetails.setIndex(TaskUtil.getTaskGroupIndex(task.getName()));
         return processDetails;
     }
 
+    /* 获取 or 保存表单 PDF 文件 */
     @Override
-    public Resource downloadForm(String processId, String formName) {
-        if (!Objects.equals(formName, "ContractForm")) return null;
+    public Resource getFormFile(String processId, String formName) throws ServiceException {
+        Long formMetadataId = getFormMetadataId(processId, formName);           // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 指定流程实例对当前登录用户不可见
+        Form form = formService.getForm(formMetadataId, user.getUid());         // 获取表单内容
+        return fileService.generateFormPdf(processId, form, formName);          // 生成 PDF 文件并返回给前端
 
-        Long formMetadataId = (Long) runtimeService.getVariable(processId, "ContractForm");
+    }
 
-        ContractForm form = (ContractForm) formService.getForm(formMetadataId);
-
-        String filePath = "./files/" + processId + "jasjjaja-contract-form.docx";
-        String pdfPath = "./files/" + processId + "jasjjaja-contract-form.pdf";
-
-        FormUtil.replaceSpecialText(form, filePath);
-
-        WordAndPdfUtil.word2Pdf(filePath, pdfPath);
-
-//        ContractUtil.generatePDFFromContract(form, filePath);
-
-        return new FileSystemResource(pdfPath);
-
+    @Override
+    public void saveFileForm(String processId, String formName, MultipartFile file) throws ServiceException {
+        Long formMetadataId = getFormMetadataId(processId, formName);           // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); //指定流程实例对当前登录用户不可见
+        if (!formService.hasWritePermission(formMetadataId, user.getUid())) throw new ServiceException(1);
+        fileService.saveFormPdf(processId, file, formName);
     }
 }

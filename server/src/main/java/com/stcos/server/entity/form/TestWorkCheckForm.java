@@ -1,12 +1,20 @@
 package com.stcos.server.entity.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 import java.util.Map;
+
+/*
+          ______          __ _       __           __   ________              __   ______
+         /_  __/__  _____/ /| |     / /___  _____/ /__/ ____/ /_  ___  _____/ /__/ ____/___  _________ ___
+          / / / _ \/ ___/ __/ | /| / / __ \/ ___/ //_/ /   / __ \/ _ \/ ___/ //_/ /_  / __ \/ ___/ __ `__ \
+         / / /  __(__  ) /_ | |/ |/ / /_/ / /  / ,< / /___/ / / /  __/ /__/ ,< / __/ / /_/ / /  / / / / / /
+        /_/  \___/____/\__/ |__/|__/\____/_/  /_/|_|\____/_/ /_/\___/\___/_/|_/_/    \____/_/  /_/ /_/ /_/
+
+ */
 
 /**
  * 软件项目委托测试工作检查表
@@ -15,11 +23,9 @@ import java.util.Map;
  * @version 1.0
  * @since 2023/5/15
  */
-
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName(value = "t_test_work_check_form")
+@EqualsAndHashCode(callSuper = true)
 public class TestWorkCheckForm extends Form {
     private String softwareName;
     private String softwareVersion;

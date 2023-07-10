@@ -12,6 +12,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+                ______                     __  ___     __            __      __
+               / ____/___  _________ ___  /  |/  /__  / /_____ _____/ /___ _/ /_____ _
+              / /_  / __ \/ ___/ __ `__ \/ /|_/ / _ \/ __/ __ `/ __  / __ `/ __/ __ `/
+             / __/ / /_/ / /  / / / / / / /  / /  __/ /_/ /_/ / /_/ / /_/ / /_/ /_/ /
+            /_/    \____/_/  /_/ /_/ /_/_/  /_/\___/\__/\__,_/\__,_/\__,_/\__/\__,_/
+
+ */
+
 /**
  * 表单的索引类
  *
@@ -37,7 +46,7 @@ public class FormMetadata {
     /**
      * 表单类型
      */
-    private String formName = null;
+    private String formType;
 
     /**
      * 表单的创建者 (userId)
@@ -63,22 +72,16 @@ public class FormMetadata {
      * 对表单具有读权限用户的 ID 列表
      */
     @TableField(value = "readable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> readableUsers = null;
+    private List<String> readableUsers;
 
     /**
      * 对表单具有写权限用户的 ID 列表
      */
     @TableField(value = "writable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> writableUsers = null;
+    private List<String> writableUsers;
 
-    public FormMetadata(
-            String formName,
-            String createdBy) {
-        this.formName = formName;
-        this.createdBy = createdBy;
-        this.createdDate = LocalDateTime.now();
-        this.lastModifiedBy = createdBy;
-        this.lastModifiedDate = LocalDateTime.now();
+    public FormMetadata(String formType) {
+        this.formType = formType;
         readableUsers = new ArrayList<>();
         writableUsers = new ArrayList<>();
     }
@@ -93,28 +96,65 @@ public class FormMetadata {
         this.lastModifiedDate = createdDate;
     }
 
+    /**
+     * 判断目标用户是否具有该表单的读权限
+     *
+     * @param userId 目标用户 ID
+     */
     public boolean hasReadPermission(String userId) {
         List<String> readableUsers = getReadableUsers();
         return readableUsers != null && readableUsers.contains(userId);
     }
 
-    public boolean hasWritePermission(String userId) {
+    /**
+     * 判断目标用户是否具有该表单的写权限
+     *
+     * @param uid 目标用户 ID
+     */
+    public boolean hasWritePermission(String uid) {
         List<String> writableUsers = getWritableUsers();
-        return writableUsers != null && writableUsers.contains(userId);
+        return writableUsers != null && writableUsers.contains(uid);
     }
 
+    /**
+     * 为目标用户赋予当前表单的写权限
+     *
+     * @param uid 目标用户 ID
+     */
     public void addWritePermission(String uid) {
         writableUsers.add(uid);
     }
 
+    /**
+     * 移除目标用户对该表单的写权限
+     *
+     * @param uid 目标用户 ID
+     */
     public void removeWritePermission(String uid) {
         writableUsers.remove(uid);
     }
 
-    public void addReadPermission(String startUserId) {
-        readableUsers.add(startUserId);
+    /**
+     * 移除所有用户对该表单的写权限
+     */
+    public void removeWritePermission() {
+        writableUsers.clear();
     }
 
+    /**
+     * 为目标用户赋予当前表单的读权限
+     *
+     * @param uid 目标用户
+     */
+    public void addReadPermission(String uid) {
+        readableUsers.add(uid);
+    }
+
+    /**
+     * 为指定的所有用户赋予当前表单的读权限
+     *
+     * @param users 用户 uid 列表
+     */
     public void addReadPermission(List<String> users) {
         readableUsers.addAll(users);
     }

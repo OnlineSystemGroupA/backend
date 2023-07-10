@@ -8,17 +8,25 @@ import lombok.experimental.Accessors;
 import java.util.List;
 import java.util.Map;
 
+/*
+            ___                ___            __  _             ______
+           /   |  ____  ____  / (_)________ _/ /_(_)___  ____  / ____/___  _________ ___
+          / /| | / __ \/ __ \/ / / ___/ __ `/ __/ / __ \/ __ \/ /_  / __ \/ ___/ __ `__ \
+         / ___ |/ /_/ / /_/ / / / /__/ /_/ / /_/ / /_/ / / / / __/ / /_/ / /  / / / / / /
+        /_/  |_/ .___/ .___/_/_/\___/\__,_/\__/_/\____/_/ /_/_/    \____/_/  /_/ /_/ /_/
+              /_/   /_/
+ */
 
 /**
  * 软件项目委托测试申请表
  *
  * @author AmadeusZQK
- * @version 1.0
+ * @version 1.1 (final)
  * @since 2023/5/15
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class ApplicationForm extends Form {
 
     private List<String> testTypes;

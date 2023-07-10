@@ -18,6 +18,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/*
+       __         __  ___         __  __               __  _            __  _           ______      __              _______ ____
+      / /      __/ /_/   | __  __/ /_/ /_  ___  ____  / /_(_)________ _/ /_(_)___  ____/_  __/___  / /_____  ____  / ____(_) / /____  _____
+ __  / / | /| / / __/ /| |/ / / / __/ __ \/ _ \/ __ \/ __/ / ___/ __ `/ __/ / __ \/ __ \/ / / __ \/ //_/ _ \/ __ \/ /_  / / / __/ _ \/ ___/
+/ /_/ /| |/ |/ / /_/ ___ / /_/ / /_/ / / /  __/ / / / /_/ / /__/ /_/ / /_/ / /_/ / / / / / / /_/ / ,< /  __/ / / / __/ / / / /_/  __/ /
+\____/ |__/|__/\__/_/  |_\__,_/\__/_/ /_/\___/_/ /_/\__/_/\___/\__,_/\__/_/\____/_/ /_/_/  \____/_/|_|\___/_/ /_/_/   /_/_/\__/\___/_/
+
+ */
+
 /**
  * JWT 登录授权过滤器
  *
@@ -51,12 +60,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 // 查找用户
                 try {
                     switch (usertype) {
-                        case "client" ->
-                                userDetails = accountService.getClient(username);
-                        case "operator" ->
-                                userDetails = accountService.getOperator(username);
-                        case "admin" ->
-                                userDetails = accountService.getAdmin(username);
+                        case "client" -> userDetails = accountService.getClient(username);
+                        case "operator" -> userDetails = accountService.getOperator(username);
+                        case "admin" -> userDetails = accountService.getAdmin(username);
                         default -> {
                             filterChain.doFilter(request, response);
                             return;

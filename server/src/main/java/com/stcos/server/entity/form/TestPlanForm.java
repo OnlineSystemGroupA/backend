@@ -1,11 +1,20 @@
 package com.stcos.server.entity.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 import java.util.Map;
+
+/*
+              ______          __  ____  __            ______
+             /_  __/__  _____/ /_/ __ \/ /___ _____  / ____/___  _________ ___
+              / / / _ \/ ___/ __/ /_/ / / __ `/ __ \/ /_  / __ \/ ___/ __ `__ \
+             / / /  __(__  ) /_/ ____/ / /_/ / / / / __/ / /_/ / /  / / / / / /
+            /_/  \___/____/\__/_/   /_/\__,_/_/ /_/_/    \____/_/  /_/ /_/ /_/
+
+ */
 
 /**
  * 软件测试方案
@@ -16,6 +25,7 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class TestPlanForm extends Form {
     private String version;
     private List<EditRecord> editRecords;

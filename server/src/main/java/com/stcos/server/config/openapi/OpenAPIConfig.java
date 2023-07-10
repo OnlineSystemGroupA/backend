@@ -10,14 +10,22 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 
+/*
+           ____                   ___    ____  __________            _____
+          / __ \____  ___  ____  /   |  / __ \/  _/ ____/___  ____  / __(_)___ _
+         / / / / __ \/ _ \/ __ \/ /| | / /_/ // // /   / __ \/ __ \/ /_/ / __ `/
+        / /_/ / /_/ /  __/ / / / ___ |/ ____// // /___/ /_/ / / / / __/ / /_/ /
+        \____/ .___/\___/_/ /_/_/  |_/_/   /___/\____/\____/_/ /_/_/ /_/\__, /
+            /_/                                                        /____/
+ */
+
 /**
- * description
+ * 在线接口文档配置类
  *
  * @author Kekwy
  * @version 1.0
  * @since 2023/4/4 10:45
  */
-
 @Configuration
 public class OpenAPIConfig {
     @Bean

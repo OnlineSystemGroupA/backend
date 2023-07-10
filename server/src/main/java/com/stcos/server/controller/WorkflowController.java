@@ -10,6 +10,8 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import com.stcos.server.util.JSONUtil;
+import com.stcos.server.util.TaskUtil;
+import com.stcos.server.util.dto.ProcessDetailsMapper;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -27,8 +29,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/*
+         _       __           __   ______              ______            __             ____
+        | |     / /___  _____/ /__/ __/ /___ _      __/ ____/___  ____  / /__________  / / /__  _____
+        | | /| / / __ \/ ___/ //_/ /_/ / __ \ | /| / / /   / __ \/ __ \/ __/ ___/ __ \/ / / _ \/ ___/
+        | |/ |/ / /_/ / /  / ,< / __/ / /_/ / |/ |/ / /___/ /_/ / / / / /_/ /  / /_/ / / /  __/ /
+        |__/|__/\____/_/  /_/|_/_/ /_/\____/|__/|__/\____/\____/_/ /_/\__/_/   \____/_/_/\___/_/
+
+ */
+
 /**
- * description
+ * 实现与正常进行的流程相关的接口
  *
  * @author kura
  * @version 1.0
@@ -37,16 +48,16 @@ import java.util.Map;
 @RestController
 public class WorkflowController implements WorkflowApi {
 
-    /*   AUTO_WIRED BEGIN */
     private WorkflowService workflowService;
 
+    /*   AUTO_WIRED BEGIN  */
     @Autowired
     public void setWorkflowService(WorkflowService service) {
         this.workflowService = service;
     }
-    /*   AUTO_WIRED END   */
+    /*   AUTO_WIRED END    */
 
-
+    /* 发起流程 */
     @Override
     @Secured("ROLE_CLIENT")                                     // 限制只有客户可以发起流程
     public ResponseEntity<ProcessIdDto> startProcess() {
@@ -59,6 +70,27 @@ public class WorkflowController implements WorkflowApi {
         return ResponseEntity.ok(new ProcessIdDto(ProcessId));  // 成功启动流程，返回流程实例 ID
     }
 
+
+    /* 推进流程 */
+    @Override
+    public ResponseEntity<Void> completeTask(String processId, Boolean passable) {
+        ResponseEntity<Void> response = null;
+        if (passable == null) passable = true;
+        try {
+            workflowService.completeTask(processId, passable);
+            response = ResponseEntity.ok().build();  // 成功完成指定任务
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> response = ResponseEntity.status(403).build(); // 指定任务对该用户不可见或当前用户无完成任务权限
+                case 1 -> response = ResponseEntity.status(404).build(); // 指定任务或流程不存在
+                case 2 -> response = ResponseEntity.status(460).build(); // 指定任务未满足完成条件
+            }
+        }
+        return response;
+    }
+
+
+    /* 提交 or 获取表单 */
     @Override
     public ResponseEntity<Void> putForm(String processId, String formName, String formData) {
         ResponseEntity<Void> response = null;
@@ -79,29 +111,10 @@ public class WorkflowController implements WorkflowApi {
         return response;
     }
 
-    @Override
-    public ResponseEntity<Void> completeTask(String processId, Boolean passable) {
-        ResponseEntity<Void> response = null;
-        if (passable == null) passable = true;
-        try {
-            workflowService.completeTask(processId, passable);
-        } catch (ServiceException e) {
-            switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(403).build(); // 指定任务对该用户不可见或当前用户无完成任务权限
-                case 1 -> response = ResponseEntity.status(404).build(); // 指定任务或流程不存在
-                case 2 -> response = ResponseEntity.status(460).build(); // 指定任务未满足完成条件
-            }
-        }
-        if (response == null) { // 未接收到下层传入的Exception
-            response = ResponseEntity.ok().build(); // 成功完成指定任务
-        }
-        return response;
-
-    }
 
     @Override
     public ResponseEntity<String> getForm(String processId, String formName) {
-        ResponseEntity<String> response = null;
+        ResponseEntity<String> response;
         try {
             Form form = workflowService.getForm(processId, formName);
             String formData = JSONUtil.toJSONString(form);
@@ -110,11 +123,12 @@ public class WorkflowController implements WorkflowApi {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
                 case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
-                default -> ResponseEntity.internalServerError();
+                default -> response = ResponseEntity.internalServerError().build();
             }
         }
         return response;
     }
+
 
     @Override
     public ResponseEntity<List<FormMetadataDto>> getFormMetadata(String processId) {
@@ -124,7 +138,7 @@ public class WorkflowController implements WorkflowApi {
             List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formMetadataList.size());
             for (FormMetadata formMetadata : formMetadataList) {
                 formMetadataDtoList.add(
-                        new FormMetadataDto(formMetadata.getFormMetadataId(), formMetadata.getFormName())
+                        new FormMetadataDto(formMetadata.getFormMetadataId(), formMetadata.getFormType())
                 );
             }
             response = ResponseEntity.ok(formMetadataDtoList);
@@ -138,14 +152,52 @@ public class WorkflowController implements WorkflowApi {
         return response;
     }
 
+
+    /* 上传 or 下载表单 */
+    @Override
+    public ResponseEntity<Void> uploadFileForm(String processId, String formName, MultipartFile file) {
+
+        ResponseEntity<Void> response = null;
+        try {
+            workflowService.saveFileForm(processId, formName, file);
+            response = ResponseEntity.ok().build();
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 1 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
+                case 0 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                default -> ResponseEntity.internalServerError();
+            }
+        }
+        return response;
+    }
+
+
+    @Override
+    public ResponseEntity<Resource> downloadFileForm(String processId, String formName) {
+
+        ResponseEntity<Resource> response = null;
+        try {
+            response = ResponseEntity.ok(workflowService.getFormFile(processId, formName));
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 1 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
+                case 0 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                default -> ResponseEntity.internalServerError();
+            }
+        }
+        return response;
+    }
+
+
+    /**/
     @Override
     public ResponseEntity<FileMetadataDto> uploadFileSample(String processId, MultipartFile file) {
         ResponseEntity<FileMetadataDto> response = null;
         try {
             FileMetadata fileMetadata = workflowService.uploadSample(processId, file);
             FileMetadataDto fileMetadataDto = new FileMetadataDto(fileMetadata.getFileMetadataId(),
-                                fileMetadata.getFileName(),
-                                fileMetadata.getFileType());
+                    fileMetadata.getFileName(),
+                    fileMetadata.getFileType());
             response = ResponseEntity.ok(fileMetadataDto);
         } catch (ServiceException e) {
             switch (e.getCode()) {
@@ -185,9 +237,21 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    public ResponseEntity<ProcessDetails> getProcessDetails(String processId) {
-        Task task = null;
+    public ResponseEntity<ProcessDetailsDto> getProcessDetails(String processId) {
+
         ProcessDetails processDetails = workflowService.getProcessDetails(processId);
+
+//        String currentTaskName = processDetails.getCurrentTaskName();
+        String currentTaskName = null;
+        try {
+            currentTaskName = workflowService.getTaskById(processId).getName();
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+        int index = TaskUtil.getTaskGroupIndex(currentTaskName);
+
+        ProcessDetailsDto processDetailsDto = ProcessDetailsMapper.toProcessDetailsDto(processDetails, currentTaskName, index);
 
 
 //        ResponseEntity<TaskDto> response = null;
@@ -205,7 +269,7 @@ public class WorkflowController implements WorkflowApi {
 //                    (new TaskDto(task.getProcessInstanceId(), taskId, task.getName(), task.getDescription(), task.getOwner()));
 //        }
 //
-        return ResponseEntity.ok(processDetails);
+        return ResponseEntity.ok(processDetailsDto);
     }
 
     @Override
@@ -260,29 +324,5 @@ public class WorkflowController implements WorkflowApi {
         return result;
     }
 
-    @Override
-    public ResponseEntity<Resource> downloadFileForm(String processId, String formName) {
 
-        return ResponseEntity.ok(workflowService.downloadForm(processId, formName));
-
-//        return WorkflowApi.super.downloadFileForm(processId, formName);
-    }
-
-    @Override
-    public ResponseEntity<Void> uploadFileForm(String processId, String formName, MultipartFile file) {
-
-//        System.out.println(file.getOriginalFilename());
-//
-//        try {
-//            FileOutputStream fileOutputStream = new FileOutputStream("./" + file.getOriginalFilename());
-//            fileOutputStream.write(file.getInputStream().readAllBytes());
-//            fileOutputStream.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
-        System.out.println("sjdjfhds");
-
-        return ResponseEntity.ok(null);
-    }
 }

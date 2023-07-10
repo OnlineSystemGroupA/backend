@@ -24,7 +24,6 @@ import javax.sql.DataSource;
  * @version 1.0
  * @since 2023/4/24 22:52
  */
-
 @Component
 public class DatasourceConfigurator implements EngineConfigurator {
     @Value("${flowable.datasource.url}")

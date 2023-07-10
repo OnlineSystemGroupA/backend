@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Configuration;
  * @version 1.0
  * @since 2023/4/24 11:54
  */
-
 @Configuration
 public class ProcessEngineConfig implements EngineConfigurationConfigurer<SpringAppEngineConfiguration> {
 

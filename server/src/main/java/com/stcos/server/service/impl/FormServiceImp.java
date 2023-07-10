@@ -101,7 +101,7 @@ public class FormServiceImp implements FormService {
 
     @Override
     public Long createMetadata(String formName, String userId) {
-        return formMetadataService.create(formName, userId);
+        return formMetadataService.create(formName);
     }
 
     @Override
@@ -118,5 +118,11 @@ public class FormServiceImp implements FormService {
     public Form getForm(Long metadataId) {
         Long formId = formMetadataService.getFormId(metadataId);
         return formRepository.getFormById(formId);
+    }
+
+    @Override
+    public boolean hasWritePermission(Long formMetadataId, String uid) {
+        FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
+        return formMetadata.hasWritePermission(uid);
     }
 }

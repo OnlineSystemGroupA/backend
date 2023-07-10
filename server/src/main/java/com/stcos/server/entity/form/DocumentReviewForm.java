@@ -1,11 +1,19 @@
 package com.stcos.server.entity.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
-import java.util.Map;
+
+/*
+    ____                                        __  ____            _              ______
+   / __ \____  _______  ______ ___  ___  ____  / /_/ __ \___ _   __(_)__ _      __/ ____/___  _________ ___
+  / / / / __ \/ ___/ / / / __ `__ \/ _ \/ __ \/ __/ /_/ / _ \ | / / / _ \ | /| / / /_  / __ \/ ___/ __ `__ \
+ / /_/ / /_/ / /__/ /_/ / / / / / /  __/ / / / /_/ _, _/  __/ |/ / /  __/ |/ |/ / __/ / /_/ / /  / / / / / /
+/_____/\____/\___/\__,_/_/ /_/ /_/\___/_/ /_/\__/_/ |_|\___/|___/_/\___/|__/|__/_/    \____/_/  /_/ /_/ /_/
+
+ */
 
 /**
  * 软件文档评审表
@@ -16,6 +24,7 @@ import java.util.Map;
  */
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class DocumentReviewForm extends Form {
     private String softwareName;
     private String softwareVersion;
