@@ -160,19 +160,10 @@ public class AccountController implements AccountApi {
     public ResponseEntity<Void> createOperator(OperatorDetailsDto operatorDetailsDto) {
         ResponseEntity<Void> result = null;
         try {
-            accountService.createOperator(
-                    operatorDetailsDto.getUid(),
-                    operatorDetailsDto.getJobNumber(),
-                    operatorDetailsDto.getEmail(),
-                    operatorDetailsDto.getPhone(),
-                    operatorDetailsDto.getRealName(),
-                    operatorDetailsDto.getDepartment(),
-                    operatorDetailsDto.getPosition(),
-                    operatorDetailsDto.getIsNonLocked()
-                    );
+            accountService.createOperator(operatorDetailsDto);
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(409).build();
+                result = ResponseEntity.status(409).build();   //冲突
             }
         }
         if (result == null) {
@@ -190,7 +181,7 @@ public class AccountController implements AccountApi {
             client = accountService.getClientById(uid);
         }catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build(); //用户不存在
             }
         }
         if(result == null && client != null){
@@ -209,7 +200,7 @@ public class AccountController implements AccountApi {
             operator = accountService.getOperatorById(uid);
         }catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build(); //用户不存在
             }
         }
         if(result == null && operator != null){
@@ -227,7 +218,7 @@ public class AccountController implements AccountApi {
             accountService.deleteClient(uid);
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build(); //用户不存在
             }
         }
         if (result == null) {
@@ -244,7 +235,7 @@ public class AccountController implements AccountApi {
             accountService.deleteOperator(uid);
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build(); //用户不存在
             }
         }
         if (result == null) {
@@ -262,7 +253,7 @@ public class AccountController implements AccountApi {
             client = accountService.getClientById(uid);
         }catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build(); //用户不存在
             }
         }
         if(result == null){
@@ -270,7 +261,7 @@ public class AccountController implements AccountApi {
                 accountService.updateClientDetails(client, clientDetailsDto);
             } catch (ServiceException e) {
                 switch (e.getCode()) {
-                    case 0, 1 -> result = ResponseEntity.status(409).build();
+                    case 0, 1 -> result = ResponseEntity.status(409).build();  //更新数据冲突
                 }
             }
             if (result == null) {
@@ -289,7 +280,7 @@ public class AccountController implements AccountApi {
             operator = accountService.getOperatorById(uid);
         }catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build(); //用户不存在
             }
         }
         if(result == null){
@@ -297,7 +288,7 @@ public class AccountController implements AccountApi {
                 accountService.updateOperatorDetails(operator, operatorDetailsDto);
             } catch (ServiceException e) {
                 switch (e.getCode()) {
-                    case 0, 1 -> result = ResponseEntity.status(409).build();
+                    case 0, 1 -> result = ResponseEntity.status(409).build();  //更新数据冲突
                 }
             }
             if (result == null) {
@@ -312,10 +303,10 @@ public class AccountController implements AccountApi {
     public ResponseEntity<Void> lockOperator(String uid, LockDto lockDto) {
         ResponseEntity<Void> result = null;
         try {
-            accountService.lockOperator(uid, lockDto);
+            accountService.lockOperator(uid, lockDto.getDoLock());
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build();   //用户不存在
             }
         }
         if (result == null) {
@@ -329,10 +320,10 @@ public class AccountController implements AccountApi {
     public ResponseEntity<Void> lockClient(String uid, LockDto lockDto) {
         ResponseEntity<Void> result = null;
         try {
-            accountService.lockClient(uid, lockDto);
+            accountService.lockClient(uid, lockDto.getDoLock());
         } catch (ServiceException e) {
             if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();
+                result = ResponseEntity.status(404).build();   //用户不存在
             }
         }
         if (result == null) {
@@ -340,7 +331,5 @@ public class AccountController implements AccountApi {
         }
         return result;
     }
-
-
 
 }

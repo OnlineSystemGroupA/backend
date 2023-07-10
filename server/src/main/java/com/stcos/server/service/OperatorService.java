@@ -27,4 +27,10 @@ public interface OperatorService extends IService<Operator> {
     boolean existPhone(String phone, String uid);
 
     String getRealNameById(String assignee);
+
+    List<Operator> getAll();
+
+    void deleteOperator(Operator operator);
+
+    void createOperator(Operator operator);
 }

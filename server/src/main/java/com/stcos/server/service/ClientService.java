@@ -3,6 +3,8 @@ package com.stcos.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.stcos.server.entity.user.Client;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -25,4 +27,8 @@ public interface ClientService extends IService<Client> {
     boolean existPhone(String phone, String uid);
 
     boolean existEmail(String email, String uid);
+
+    List<Client> getAll();
+
+    void deleteClient(Client client);
 }

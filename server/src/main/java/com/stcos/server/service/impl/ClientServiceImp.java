@@ -8,6 +8,8 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.ClientService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * description
  *
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClientServiceImp extends ServiceImpl<ClientMapper, Client> implements ClientService {
+
     @Override
     public Client getById(String uid) {
         return baseMapper.selectById(uid);
@@ -54,5 +57,15 @@ public class ClientServiceImp extends ServiceImpl<ClientMapper, Client> implemen
         queryWrapper.eq("email", email);
         queryWrapper.ne("uid", uid);
         return baseMapper.exists(queryWrapper);
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return baseMapper.selectList(null);
+    }
+
+    @Override
+    public void deleteClient(Client client) {
+        baseMapper.deleteById(client);
     }
 }
