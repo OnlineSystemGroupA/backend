@@ -14,7 +14,7 @@ import java.util.Set;
  * @since 2023/6/25 13:43
  */
 public interface FormMetadataService extends IService<FormMetadata> {
-    Long create(String formName);
+    Long create(Long projectId, String formName);
 
     void addReadPermission(Long formMetadataId, String userId);
 

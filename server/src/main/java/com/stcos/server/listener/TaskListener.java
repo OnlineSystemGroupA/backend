@@ -9,7 +9,9 @@ import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * description
@@ -63,10 +65,10 @@ public class TaskListener<S extends IService<U>, U extends User> {
      */
     protected void updateTaskParam(DelegateTask task) {
         // 重置任务参数
-        task.setVariable("passable", true, false);
-        task.setVariable("description", "", false);
+        task.setVariable("passable", true);
+        task.setVariable("description", "");
         // 更新流程摘要和流程详情
-        task.setVariable("currentTask", task.getName(), false);
+        task.setVariable("currentTask", task.getName());
     }
 
     /**
@@ -108,17 +110,27 @@ public class TaskListener<S extends IService<U>, U extends User> {
 
     private void updateProcessDetailsWhenCreate(DelegateTask task, String realName) {
         // 获取项目 ID
-        Long projectId = (Long) task.getVariable("projectId", false);
+        Long projectId = (Long) task.getVariable("projectId");
         // 更新流程详情
-        if (realName == null) realName = (String) task.getVariable("startUser", false);
+        if (realName == null) realName = (String) task.getVariable("startUser");
         processDetailsService.openTask(projectId, task.getName(), realName);
     }
 
     private void updateProcessDetailsWhenComplete(DelegateTask task) {
         // 获取项目 ID
-        Long projectId = (Long) task.getVariable("projectId", false);
+        Long projectId = (Long) task.getVariable("projectId");
         // 更新流程详情
         processDetailsService.closeTask(projectId, task.getName());
+    }
+
+    protected void updateReadPermission(String formMetadata, Set<String> participants, DelegateTask task) {
+        Long formMetadataId = (Long) task.getVariable(formMetadata);
+        Set<String> uidSet = new HashSet<>();
+        for (String participant : participants) {
+            String uid = (String) task.getVariable(participant);
+            if (uid != null) uidSet.add(uid);
+        }
+        formService.addReadPermission(formMetadataId, uidSet);
     }
 
 //    private Expression assigneeEmail;
@@ -129,12 +141,6 @@ public class TaskListener<S extends IService<U>, U extends User> {
 //        String to = (String) assigneeEmail.getValue(task);
 //        emailService.sendEmail(to, subject, text);
     }
-
-
-
-
-
-
 
 
 }

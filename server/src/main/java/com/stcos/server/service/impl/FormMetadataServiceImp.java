@@ -22,8 +22,8 @@ import java.util.Set;
 public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, FormMetadata> implements FormMetadataService {
 
     @Override
-    public Long create(String formName) {
-        FormMetadata formMetadata = new FormMetadata(formName);
+    public Long create(Long projectId, String formName) {
+        FormMetadata formMetadata = new FormMetadata(projectId, formName);
         if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
         return formMetadata.getFormMetadataId();
     }

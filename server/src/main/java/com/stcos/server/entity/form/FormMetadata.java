@@ -46,6 +46,10 @@ public class FormMetadata {
     private long formId = -1;
 
     /**
+     * 所属项目的项目号
+     */
+    private Long projectId;
+    /**
      * 表单类型（中文）
      */
     private String formType;
@@ -82,7 +86,8 @@ public class FormMetadata {
     @TableField(value = "writable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> writableUsers;
 
-    public FormMetadata(String formType) {
+    public FormMetadata(Long projectId, String formType) {
+        this.projectId = projectId;
         this.formType = formType;
         readableUsers = new ArrayList<>();
         writableUsers = new ArrayList<>();

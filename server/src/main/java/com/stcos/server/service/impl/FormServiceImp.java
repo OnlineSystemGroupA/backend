@@ -110,8 +110,8 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public Long createMetadata(String formType) {
-        return formMetadataService.create(formType);
+    public Long createMetadata(Long projectId, String formType) {
+        return formMetadataService.create(projectId, formType);
     }
 
     @Override

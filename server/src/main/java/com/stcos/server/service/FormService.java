@@ -56,7 +56,7 @@ public interface FormService {
 
     void removeReadPermission(Long formMetadataId);
 
-    Long createMetadata(String formType);
+    Long createMetadata(Long projectId, String formType);
 
     void removeWritePermission(Long formMetadataId, String assignee);
 
