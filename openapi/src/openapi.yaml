@@ -253,20 +253,42 @@ paths:
         '460':
           description: 未满足完成条件
 
+  /workflow/processes/{processId}:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - admin
+      summary: 删除流程
+      description: 管理员删除流程
+      operationId: deleteProcess
+      responses:
+        '200':
+          description: 成功删除指定流程
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
   /workflow/processes/{processId}/details:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
     get:
       tags:
         - workflow
       summary: 获取流程详情
       description: 获取流程详情
       operationId: getProcessDetails
-      parameters:
-        - name: processId
-          in: path
-          description: 流程实例 Id
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: ok
@@ -993,7 +1015,7 @@ components:
         - companyWebsite
         - companyEmail
         - companyPhone
-        - isLocked
+        - isNonLocked
       properties:
         uid:
           type: string
@@ -1040,7 +1062,7 @@ components:
         companyPhone:
           type: string
           description: 公司电话
-        isLocked:
+        isNonLocked:
           type: boolean
           description: 账号是否被封禁
 
@@ -1053,7 +1075,7 @@ components:
         - realName
         - department
         - position
-        - isLocked
+        - isNonLocked
       properties:
         uid:
           type: string
@@ -1076,22 +1098,14 @@ components:
         position:
           type: string
           description: 职位
-        isLocked:
+        isNonLocked:
           type: boolean
           description: 账号是否被封禁
 
-    CurrentTask:
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: 流程所在任务名称
-
     Lock:
       required:
-        - isLock
+        - doLock
       properties:
-        isLock:
+        doLock:
           type: boolean
-          description: 流程所在任务名称
+          description: 选择对其进行封禁/解封

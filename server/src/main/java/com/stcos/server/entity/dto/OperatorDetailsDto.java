@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("OperatorDetails")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-03T15:58:43.666965300+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-10T16:14:39.919912100+08:00[Asia/Shanghai]")
 public class OperatorDetailsDto {
 
   private String uid;
@@ -30,9 +30,11 @@ public class OperatorDetailsDto {
 
   private String position;
 
+  private Boolean isNonLocked;
+
   /**
    * Default constructor
-   * @deprecated Use {@link OperatorDetailsDto#OperatorDetailsDto(String, String, String, String, String, String, String)}
+   * @deprecated Use {@link OperatorDetailsDto#OperatorDetailsDto(String, String, String, String, String, String, String, Boolean)}
    */
   @Deprecated
   public OperatorDetailsDto() {
@@ -42,7 +44,7 @@ public class OperatorDetailsDto {
   /**
    * Constructor with only required parameters
    */
-  public OperatorDetailsDto(String uid, String jobNumber, String email, String phone, String realName, String department, String position) {
+  public OperatorDetailsDto(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) {
     this.uid = uid;
     this.jobNumber = jobNumber;
     this.email = email;
@@ -50,6 +52,7 @@ public class OperatorDetailsDto {
     this.realName = realName;
     this.department = department;
     this.position = position;
+    this.isNonLocked = isNonLocked;
   }
 
   public OperatorDetailsDto uid(String uid) {
@@ -192,6 +195,26 @@ public class OperatorDetailsDto {
     this.position = position;
   }
 
+  public OperatorDetailsDto isNonLocked(Boolean isNonLocked) {
+    this.isNonLocked = isNonLocked;
+    return this;
+  }
+
+  /**
+   * 账号是否被封禁
+   * @return isNonLocked
+  */
+  @NotNull 
+  @Schema(name = "isNonLocked", description = "账号是否被封禁", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("isNonLocked")
+  public Boolean getIsNonLocked() {
+    return isNonLocked;
+  }
+
+  public void setIsNonLocked(Boolean isNonLocked) {
+    this.isNonLocked = isNonLocked;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -207,12 +230,13 @@ public class OperatorDetailsDto {
         Objects.equals(this.phone, operatorDetails.phone) &&
         Objects.equals(this.realName, operatorDetails.realName) &&
         Objects.equals(this.department, operatorDetails.department) &&
-        Objects.equals(this.position, operatorDetails.position);
+        Objects.equals(this.position, operatorDetails.position) &&
+        Objects.equals(this.isNonLocked, operatorDetails.isNonLocked);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uid, jobNumber, email, phone, realName, department, position);
+    return Objects.hash(uid, jobNumber, email, phone, realName, department, position, isNonLocked);
   }
 
   @Override
@@ -226,6 +250,7 @@ public class OperatorDetailsDto {
     sb.append("    realName: ").append(toIndentedString(realName)).append("\n");
     sb.append("    department: ").append(toIndentedString(department)).append("\n");
     sb.append("    position: ").append(toIndentedString(position)).append("\n");
+    sb.append("    isNonLocked: ").append(toIndentedString(isNonLocked)).append("\n");
     sb.append("}");
     return sb.toString();
   }

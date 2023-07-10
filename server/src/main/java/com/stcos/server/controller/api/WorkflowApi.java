@@ -6,7 +6,6 @@
 package com.stcos.server.controller.api;
 
 import com.stcos.server.entity.dto.*;
-import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,7 +29,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-10T16:31:17.361341600+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "workflow", description = "the workflow API")
 public interface WorkflowApi {
@@ -69,6 +68,70 @@ public interface WorkflowApi {
     default ResponseEntity<Void> completeTask(
             @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
             @Parameter(name = "passable", description = "是否通过，流程遇到网关用于决定运行方向", in = ParameterIn.QUERY) @Valid @RequestParam(value = "passable", required = false) Boolean passable
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * DELETE /workflow/processes/{processId} : 删除流程
+     * 管理员删除流程
+     *
+     * @param processId 流程实例 Id (required)
+     * @return 成功删除指定流程 (status code 200)
+     *         or 指定流程对该用户不可见 (status code 403)
+     *         or 指定流程不存在 (status code 404)
+     */
+    @Operation(
+        operationId = "deleteProcess",
+        summary = "删除流程",
+        description = "管理员删除流程",
+        tags = { "admin" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "成功删除指定流程"),
+            @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
+            @ApiResponse(responseCode = "404", description = "指定流程不存在")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.DELETE,
+        value = "/workflow/processes/{processId}"
+    )
+    default ResponseEntity<Void> deleteProcess(
+        @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /workflow/processes/{processId}/files/forms/{formName} : 下载表单
+     * 下载表单 PDF 文件
+     *
+     * @param processId 目标流程实例的 ID (required)
+     * @param formName 目标表单的名称 (required)
+     * @return ok (status code 200)
+     */
+    @Operation(
+        operationId = "downloadFileForm",
+        summary = "下载表单",
+        description = "下载表单 PDF 文件",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                @Content(mediaType = "application/pdf", schema = @Schema(implementation = org.springframework.core.io.Resource.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/workflow/processes/{processId}/files/forms/{formName}",
+        produces = { "application/pdf" }
+    )
+    default ResponseEntity<org.springframework.core.io.Resource> downloadFileForm(
+        @Parameter(name = "processId", description = "目标流程实例的 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+        @Parameter(name = "formName", description = "目标表单的名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -190,6 +253,36 @@ public interface WorkflowApi {
 
 
     /**
+     * GET /workflow/processes/count : 流程实例总数
+     * 获取与当前用户相关的流程实例总数
+     *
+     * @return ok (status code 200)
+     */
+    @Operation(
+        operationId = "getProcessCount",
+        summary = "流程实例总数",
+        description = "获取与当前用户相关的流程实例总数",
+        tags = { "workflow" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/workflow/processes/count",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Integer> getProcessCount(
+        
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /workflow/processes/{processId}/details : 获取流程详情
      * 获取流程详情
      *
@@ -234,8 +327,6 @@ public interface WorkflowApi {
 
 
     /**
-     * GET /workflow/processes : 获取流程实例
-     /**
      * GET /workflow/processes : 获取流程实例
      * 获取与当前用户相关的流程实例
      *
@@ -358,6 +449,35 @@ public interface WorkflowApi {
 
 
     /**
+     * POST /workflow/processes/{processId}/files/forms/{formName}
+     *
+     * @param processId 目标流程实例的 ID (required)
+     * @param formName 目标表单的名称 (required)
+     * @param file 需要上传的表单 PDF 文件 (required)
+     * @return ok (status code 200)
+     */
+    @Operation(
+        operationId = "uploadFileForm",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ok")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/workflow/processes/{processId}/files/forms/{formName}",
+        consumes = { "multipart/form-data" }
+    )
+    default ResponseEntity<Void> uploadFileForm(
+        @Parameter(name = "processId", description = "目标流程实例的 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+        @Parameter(name = "formName", description = "目标表单的名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName,
+        @Parameter(name = "file", description = "需要上传的表单 PDF 文件", required = true) @RequestPart(value = "file", required = true) MultipartFile file
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * POST /workflow/processes/{processId}/files/sample : 上传样品
      * 上传与对应流程相关的样品文件
      *
@@ -410,35 +530,6 @@ public interface WorkflowApi {
     }
 
     /**
-     * GET /workflow/processes/count : 流程实例总数
-     * 获取与当前用户相关的流程实例总数
-     *
-     * @return ok (status code 200)
-     */
-    @Operation(
-            operationId = "getProcessCount",
-            summary = "流程实例总数",
-            description = "获取与当前用户相关的流程实例总数",
-            tags = { "workflow" },
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "ok", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class))
-                    })
-            }
-    )
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/workflow/processes/count",
-            produces = { "application/json" }
-    )
-    default ResponseEntity<Integer> getProcessCount(
-
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
      * POST /workflow/processes/{processId}/participants : 分配人员
      * 为指定流程设置对应的流程参与者
      *
@@ -473,93 +564,4 @@ public interface WorkflowApi {
 
     }
 
-    /**
-     * GET /workflow/processes/{processId}/files/forms/{formName} : 下载表单
-     * 下载表单 PDF 文件
-     *
-     * @param processId 目标流程实例的 ID (required)
-     * @param formName 目标表单的名称 (required)
-     * @return ok (status code 200)
-     */
-    @Operation(
-            operationId = "downloadFileForm",
-            summary = "下载表单",
-            description = "下载表单 PDF 文件",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "ok", content = {
-                            @Content(mediaType = "application/pdf", schema = @Schema(implementation = org.springframework.core.io.Resource.class))
-                    })
-            }
-    )
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/workflow/processes/{processId}/files/forms/{formName}",
-            produces = { "application/pdf" }
-    )
-    default ResponseEntity<org.springframework.core.io.Resource> downloadFileForm(
-            @Parameter(name = "processId", description = "目标流程实例的 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
-            @Parameter(name = "formName", description = "目标表单的名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
-     * POST /workflow/processes/{processId}/files/forms/{formName}
-     *
-     * @param processId 目标流程实例的 ID (required)
-     * @param formName 目标表单的名称 (required)
-     * @param file 需要上传的表单 PDF 文件 (required)
-     * @return ok (status code 200)
-     */
-    @Operation(
-            operationId = "uploadFileForm",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "ok")
-            }
-    )
-    @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/workflow/processes/{processId}/files/forms/{formName}",
-            consumes = { "multipart/form-data" }
-    )
-    default ResponseEntity<Void> uploadFileForm(
-            @Parameter(name = "processId", description = "目标流程实例的 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
-            @Parameter(name = "formName", description = "目标表单的名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName,
-            @Parameter(name = "file", description = "需要上传的表单 PDF 文件", required = true) @RequestPart(value = "file", required = true) MultipartFile file
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
-     * DELETE /workflow/processes/{processId}/details : 删除流程
-     * 管理员删除流程
-     *
-     * @param processId 流程实例 Id (required)
-     * @return 成功删除指定流程 (status code 200)
-     *         or 指定流程对该用户不可见 (status code 403)
-     *         or 指定流程不存在 (status code 404)
-     */
-    @Operation(
-            operationId = "deleteProcess",
-            summary = "删除流程",
-            description = "管理员删除流程",
-            tags = { "admin" },
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "成功删除指定流程"),
-                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
-                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
-            }
-    )
-    @RequestMapping(
-            method = RequestMethod.DELETE,
-            value = "/workflow/processes/{processId}/details"
-    )
-    default ResponseEntity<Void> deleteProcess(
-            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
 }

@@ -4,6 +4,7 @@ import com.stcos.server.database.mysql.AdminMapper;
 import com.stcos.server.database.mysql.ClientMapper;
 import com.stcos.server.database.mysql.OperatorMapper;
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.LockDto;
 import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
@@ -131,5 +132,50 @@ public class AccountServiceImp implements AccountService {
         operator.setEmail(operatorDetailsDto.getEmail());
         operator.setPhone(operatorDetailsDto.getPhone());
         operatorService.updateById(operator);
+    }
+
+    @Override
+    public void lockOperator(String uid, LockDto lockDto) throws ServiceException {
+
+    }
+
+    @Override
+    public void lockClient(String uid, LockDto lockDto) throws ServiceException {
+
+    }
+
+    @Override
+    public Client getClientById(String uid) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public Operator getOperatorById(String uid) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public List<Operator> getOperators() {
+        return null;
+    }
+
+    @Override
+    public List<Client> getClients() {
+        return null;
+    }
+
+    @Override
+    public void createOperator(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) throws ServiceException {
+
+    }
+
+    @Override
+    public void deleteClient(String uid) throws ServiceException {
+
+    }
+
+    @Override
+    public void deleteOperator(String uid) throws ServiceException {
+
     }
 }

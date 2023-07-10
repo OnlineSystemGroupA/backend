@@ -330,7 +330,7 @@ public interface AccountApi {
     }
 
     /**
-     * GET /account/operators : 获取部门员工
+     * GET /account/operators_department : 获取部门员工
      * 获取所在部门员工
      *
      * @return ok (status code 200)
@@ -347,7 +347,7 @@ public interface AccountApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/account/operators",
+            value = "/account/operators_department",
             produces = { "application/json" }
     )
     default ResponseEntity<List<OperatorDetailsDto>> getOperatorsDepartment(

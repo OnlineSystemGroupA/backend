@@ -13,8 +13,10 @@ import java.util.Objects;
  */
 
 @JsonTypeName("ClientDetails")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-02T14:20:28.737283600+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-10T16:14:39.919912100+08:00[Asia/Shanghai]")
 public class ClientDetailsDto {
+
+  private String uid;
 
   private String username;
 
@@ -44,9 +46,11 @@ public class ClientDetailsDto {
 
   private String companyPhone;
 
+  private Boolean isNonLocked;
+
   /**
    * Default constructor
-   * @deprecated Use {@link ClientDetailsDto#ClientDetailsDto(String, String, String, String, String, String, String, String, String, String, String, String, String, String)}
+   * @deprecated Use {@link ClientDetailsDto#ClientDetailsDto(String, String, String, String, String, String, String, String, String, String, String, String, String, String, String, Boolean)}
    */
   @Deprecated
   public ClientDetailsDto() {
@@ -56,7 +60,8 @@ public class ClientDetailsDto {
   /**
    * Constructor with only required parameters
    */
-  public ClientDetailsDto(String username, String createdDate, String realName, String email, String phone, String gender, String company, String companyTelephone, String companyFax, String companyAddress, String companyPostcode, String companyWebsite, String companyEmail, String companyPhone) {
+  public ClientDetailsDto(String uid, String username, String createdDate, String realName, String email, String phone, String gender, String company, String companyTelephone, String companyFax, String companyAddress, String companyPostcode, String companyWebsite, String companyEmail, String companyPhone, Boolean isNonLocked) {
+    this.uid = uid;
     this.username = username;
     this.createdDate = createdDate;
     this.realName = realName;
@@ -71,6 +76,27 @@ public class ClientDetailsDto {
     this.companyWebsite = companyWebsite;
     this.companyEmail = companyEmail;
     this.companyPhone = companyPhone;
+    this.isNonLocked = isNonLocked;
+  }
+
+  public ClientDetailsDto uid(String uid) {
+    this.uid = uid;
+    return this;
+  }
+
+  /**
+   * uid
+   * @return uid
+  */
+  @NotNull 
+  @Schema(name = "uid", description = "uid", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("uid")
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
   }
 
   public ClientDetailsDto username(String username) {
@@ -353,6 +379,26 @@ public class ClientDetailsDto {
     this.companyPhone = companyPhone;
   }
 
+  public ClientDetailsDto isNonLocked(Boolean isNonLocked) {
+    this.isNonLocked = isNonLocked;
+    return this;
+  }
+
+  /**
+   * 账号是否被封禁
+   * @return isNonLocked
+  */
+  @NotNull 
+  @Schema(name = "isNonLocked", description = "账号是否被封禁", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("isNonLocked")
+  public Boolean getIsNonLocked() {
+    return isNonLocked;
+  }
+
+  public void setIsNonLocked(Boolean isNonLocked) {
+    this.isNonLocked = isNonLocked;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -362,7 +408,8 @@ public class ClientDetailsDto {
       return false;
     }
     ClientDetailsDto clientDetails = (ClientDetailsDto) o;
-    return Objects.equals(this.username, clientDetails.username) &&
+    return Objects.equals(this.uid, clientDetails.uid) &&
+        Objects.equals(this.username, clientDetails.username) &&
         Objects.equals(this.createdDate, clientDetails.createdDate) &&
         Objects.equals(this.realName, clientDetails.realName) &&
         Objects.equals(this.email, clientDetails.email) &&
@@ -375,18 +422,20 @@ public class ClientDetailsDto {
         Objects.equals(this.companyPostcode, clientDetails.companyPostcode) &&
         Objects.equals(this.companyWebsite, clientDetails.companyWebsite) &&
         Objects.equals(this.companyEmail, clientDetails.companyEmail) &&
-        Objects.equals(this.companyPhone, clientDetails.companyPhone);
+        Objects.equals(this.companyPhone, clientDetails.companyPhone) &&
+        Objects.equals(this.isNonLocked, clientDetails.isNonLocked);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, createdDate, realName, email, phone, gender, company, companyTelephone, companyFax, companyAddress, companyPostcode, companyWebsite, companyEmail, companyPhone);
+    return Objects.hash(uid, username, createdDate, realName, email, phone, gender, company, companyTelephone, companyFax, companyAddress, companyPostcode, companyWebsite, companyEmail, companyPhone, isNonLocked);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ClientDetailsDto {\n");
+    sb.append("    uid: ").append(toIndentedString(uid)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    createdDate: ").append(toIndentedString(createdDate)).append("\n");
     sb.append("    realName: ").append(toIndentedString(realName)).append("\n");
@@ -401,6 +450,7 @@ public class ClientDetailsDto {
     sb.append("    companyWebsite: ").append(toIndentedString(companyWebsite)).append("\n");
     sb.append("    companyEmail: ").append(toIndentedString(companyEmail)).append("\n");
     sb.append("    companyPhone: ").append(toIndentedString(companyPhone)).append("\n");
+    sb.append("    isNonLocked: ").append(toIndentedString(isNonLocked)).append("\n");
     sb.append("}");
     return sb.toString();
   }

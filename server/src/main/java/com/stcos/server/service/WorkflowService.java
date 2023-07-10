@@ -133,4 +133,6 @@ public interface WorkflowService {
     Resource getFormFile(String processId, String formName) throws ServiceException;
 
     void saveFileForm(String processId, String formName, MultipartFile file) throws ServiceException;
+
+    void deleteProcess(String processId) throws ServiceException;
 }

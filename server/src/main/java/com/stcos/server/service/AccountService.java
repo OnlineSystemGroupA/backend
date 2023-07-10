@@ -1,6 +1,7 @@
 package com.stcos.server.service;
 
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.LockDto;
 import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.entity.user.Admin;
@@ -86,4 +87,23 @@ public interface AccountService {
     List<Operator> getOperatorsByDepartment(String department);
 
     void updateOperatorDetails(Operator operator, OperatorDetailsDto operatorDetailsDto) throws ServiceException;
+
+    void lockOperator(String uid, LockDto lockDto) throws ServiceException;
+
+
+    void lockClient(String uid, LockDto lockDto) throws ServiceException;
+
+    Client getClientById(String uid) throws ServiceException;
+
+    Operator getOperatorById(String uid) throws ServiceException;
+
+    List<Operator> getOperators();
+
+    List<Client> getClients();
+
+    void createOperator(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) throws ServiceException;
+
+    void deleteClient(String uid) throws ServiceException;
+
+    void deleteOperator(String uid) throws ServiceException;
 }

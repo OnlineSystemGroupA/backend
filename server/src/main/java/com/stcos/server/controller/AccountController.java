@@ -2,6 +2,7 @@ package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.AccountApi;
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.LockDto;
 import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.entity.user.Operator;
@@ -127,16 +128,219 @@ public class AccountController implements AccountApi {
         List<Operator> operatorList = accountService.getOperatorsByDepartment(user.getDepartment());
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
         for (Operator operator : operatorList) {
-            ret.add(new OperatorDetailsDto(
-                    operator.getUid(),
-                    operator.getJobNumber(),
-                    operator.getEmail(),
-                    operator.getPhone(),
-                    operator.getRealName(),
-                    operator.getDepartment(),
-                    operator.getPosition()
-            ));
+            ret.add(OperatorDetailsMapper.toOperatorDetailsDto(operator));
         }
         return ResponseEntity.ok(ret);
     }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<List<ClientDetailsDto>> getClients() {
+        List<Client> clientList = accountService.getClients();
+        List<ClientDetailsDto> ret = new ArrayList<>(clientList.size());
+        for (Client client : clientList) {
+            ret.add(ClientDetailsMapper.toClientDetailsDto(client));
+        }
+        return ResponseEntity.ok(ret);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<List<OperatorDetailsDto>> getOperatorsDepartment() {
+        List<Operator> operatorList = accountService.getOperators();
+        List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
+        for (Operator operator : operatorList) {
+            ret.add(OperatorDetailsMapper.toOperatorDetailsDto(operator));
+        }
+        return ResponseEntity.ok(ret);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> createOperator(OperatorDetailsDto operatorDetailsDto) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.createOperator(
+                    operatorDetailsDto.getUid(),
+                    operatorDetailsDto.getJobNumber(),
+                    operatorDetailsDto.getEmail(),
+                    operatorDetailsDto.getPhone(),
+                    operatorDetailsDto.getRealName(),
+                    operatorDetailsDto.getDepartment(),
+                    operatorDetailsDto.getPosition(),
+                    operatorDetailsDto.getIsNonLocked()
+                    );
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(409).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<ClientDetailsDto> adminGetClientDetails(String uid) {
+        ResponseEntity<ClientDetailsDto> result = null;
+        Client client = null;
+        try {
+            client = accountService.getClientById(uid);
+        }catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if(result == null && client != null){
+            ClientDetailsDto clientDetailsDto = ClientDetailsMapper.toClientDetailsDto(client);
+            result = ResponseEntity.ok(clientDetailsDto);
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<OperatorDetailsDto> adminGetOperatorDetails(String uid) {
+        ResponseEntity<OperatorDetailsDto> result = null;
+        Operator operator = null;
+        try {
+            operator = accountService.getOperatorById(uid);
+        }catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if(result == null && operator != null){
+            OperatorDetailsDto operatorDetailsDto = OperatorDetailsMapper.toOperatorDetailsDto(operator);
+            result = ResponseEntity.ok(operatorDetailsDto);
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> deleteClient(String uid) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.deleteClient(uid);
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> deleteOperator(String uid) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.deleteOperator(uid);
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> updateClient(String uid, ClientDetailsDto clientDetailsDto) {
+        ResponseEntity<Void> result = null;
+        Client client = null;
+        try {
+            client = accountService.getClientById(uid);
+        }catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if(result == null){
+            try {
+                accountService.updateClientDetails(client, clientDetailsDto);
+            } catch (ServiceException e) {
+                switch (e.getCode()) {
+                    case 0, 1 -> result = ResponseEntity.status(409).build();
+                }
+            }
+            if (result == null) {
+                result = ResponseEntity.ok().build();
+            }
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> updateOperator(String uid, OperatorDetailsDto operatorDetailsDto) {
+        ResponseEntity<Void> result = null;
+        Operator operator = null;
+        try {
+            operator = accountService.getOperatorById(uid);
+        }catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if(result == null){
+            try {
+                accountService.updateOperatorDetails(operator, operatorDetailsDto);
+            } catch (ServiceException e) {
+                switch (e.getCode()) {
+                    case 0, 1 -> result = ResponseEntity.status(409).build();
+                }
+            }
+            if (result == null) {
+                result = ResponseEntity.ok().build();
+            }
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> lockOperator(String uid, LockDto lockDto) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.lockOperator(uid, lockDto);
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> lockClient(String uid, LockDto lockDto) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.lockClient(uid, lockDto);
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+
+
 }
