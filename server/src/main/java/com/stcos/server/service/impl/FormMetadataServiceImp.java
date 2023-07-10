@@ -20,7 +20,6 @@ import java.util.List;
 @Service
 public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, FormMetadata> implements FormMetadataService {
 
-
     @Override
     public Long create(String formName, String clientUid) {
         FormMetadata formMetadata = new FormMetadata(formName, clientUid);

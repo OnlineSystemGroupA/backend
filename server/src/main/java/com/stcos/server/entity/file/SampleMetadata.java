@@ -1,8 +1,11 @@
 package com.stcos.server.entity.file;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.stcos.server.database.mysql.handler.ListTypeHandler;
 import com.stcos.server.entity.form.AutoId;
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,24 +22,26 @@ public class SampleMetadata {
     /**
      * 对样品具有读权限用户的 ID 列表
      */
+    @TableField(value = "readable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> readableUsers = new ArrayList<>();
 
     /**
      * 对样品具有写权限用户的 ID 列表
      */
+    @TableField(value = "writable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> writableUsers = new ArrayList<>();
 
     /**
-     * 文件元数据列表
+     * 文件元数据 ID 列表
      */
-    private List<FileMetadata> fileMetadataList = new ArrayList<>();
+    @TableField(value = "file_metadata_id_list", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
+    private List<Long> fileMetadataIdList = new ArrayList<>();
 
-    public void mergeFileMetadataList(List<FileMetadata> newList) {
-        if (fileMetadataList == null) {
-            fileMetadataList = new ArrayList<>(newList);
-        } else {
-            fileMetadataList.addAll(newList);
+    public void updateFileMetadataList(Long newFileMetadataId) {
+        if (fileMetadataIdList == null) {
+            fileMetadataIdList = new ArrayList<>();
         }
+        fileMetadataIdList.add(newFileMetadataId);
     }
 
     public boolean hasReadPermission(String userId) {
@@ -49,7 +54,19 @@ public class SampleMetadata {
         return writableUsers != null && writableUsers.contains(userId);
     }
 
-//    public boolean isSavedInDatabase() {
-//        return sampleMetadataId != -1;
-//    }
+    public void addWritePermission(String uid) {
+        writableUsers.add(uid);
+    }
+
+    public void removeWritePermission(String uid) {
+        writableUsers.remove(uid);
+    }
+
+    public void addReadPermission(String startUserId) {
+        readableUsers.add(startUserId);
+    }
+
+    public void addReadPermission(List<String> users) {
+        readableUsers.addAll(users);
+    }
 }

@@ -176,7 +176,7 @@ public class WorkflowServiceImp implements WorkflowService {
     }
 
     @Override
-    public List<FileMetadata> uploadSample(String processId, MultipartFile file) throws ServiceException {
+    public FileMetadata uploadSample(String processId, MultipartFile file) throws ServiceException {
         // 判断 processId 对应的流程是否存在，并获取样品元数据 ID
         Long sampleMetadataId = getSampleMetadataId(processId);
 
