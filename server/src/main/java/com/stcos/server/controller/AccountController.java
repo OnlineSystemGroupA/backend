@@ -65,7 +65,7 @@ public class AccountController implements AccountApi {
 
     @Override
     @Secured("ROLE_MANAGER") // 只有主管可以调用该 API
-    public ResponseEntity<List<OperatorDetailsDto>> getOperators() {
+    public ResponseEntity<List<OperatorDetailsDto>> getOperatorsDepartment() {
         Operator user = (Operator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Operator> operatorList = accountService.getOperatorsByDepartment(user.getDepartment());
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
