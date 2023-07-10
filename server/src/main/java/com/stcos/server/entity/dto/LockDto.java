@@ -1,29 +1,22 @@
 package com.stcos.server.entity.dto;
 
-import java.net.URI;
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
-import java.util.*;
 import javax.annotation.Generated;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * LockDto
  */
 
 @JsonTypeName("Lock")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-10T14:31:57.470003700+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-10T16:14:39.919912100+08:00[Asia/Shanghai]")
 public class LockDto {
 
-  private Boolean isLock;
+  private Boolean doLock;
 
   /**
    * Default constructor
@@ -37,28 +30,28 @@ public class LockDto {
   /**
    * Constructor with only required parameters
    */
-  public LockDto(Boolean isLock) {
-    this.isLock = isLock;
+  public LockDto(Boolean doLock) {
+    this.doLock = doLock;
   }
 
-  public LockDto isLock(Boolean isLock) {
-    this.isLock = isLock;
+  public LockDto doLock(Boolean doLock) {
+    this.doLock = doLock;
     return this;
   }
 
   /**
-   * 流程所在任务名称
-   * @return isLock
+   * 选择对其进行封禁/解封
+   * @return doLock
   */
   @NotNull 
-  @Schema(name = "isLock", description = "流程所在任务名称", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("isLock")
-  public Boolean getIsLock() {
-    return isLock;
+  @Schema(name = "doLock", description = "选择对其进行封禁/解封", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("doLock")
+  public Boolean getDoLock() {
+    return doLock;
   }
 
-  public void setIsLock(Boolean isLock) {
-    this.isLock = isLock;
+  public void setDoLock(Boolean doLock) {
+    this.doLock = doLock;
   }
 
   @Override
@@ -70,19 +63,19 @@ public class LockDto {
       return false;
     }
     LockDto lock = (LockDto) o;
-    return Objects.equals(this.isLock, lock.isLock);
+    return Objects.equals(this.doLock, lock.doLock);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(isLock);
+    return Objects.hash(doLock);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LockDto {\n");
-    sb.append("    isLock: ").append(toIndentedString(isLock)).append("\n");
+    sb.append("    doLock: ").append(toIndentedString(doLock)).append("\n");
     sb.append("}");
     return sb.toString();
   }

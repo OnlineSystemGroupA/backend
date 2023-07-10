@@ -4,6 +4,7 @@ import com.stcos.server.database.mysql.AdminMapper;
 import com.stcos.server.database.mysql.ClientMapper;
 import com.stcos.server.database.mysql.OperatorMapper;
 import com.stcos.server.entity.dto.ClientDetailsDto;
+import com.stcos.server.entity.dto.LockDto;
 import com.stcos.server.entity.dto.OperatorDetailsDto;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Client;
@@ -131,5 +132,15 @@ public class AccountServiceImp implements AccountService {
         operator.setEmail(operatorDetailsDto.getEmail());
         operator.setPhone(operatorDetailsDto.getPhone());
         operatorService.updateById(operator);
+    }
+
+    @Override
+    public void lockOperator(String uid, LockDto lockDto) throws ServiceException {
+
+    }
+
+    @Override
+    public void lockClient(String uid, LockDto lockDto) throws ServiceException {
+
     }
 }
