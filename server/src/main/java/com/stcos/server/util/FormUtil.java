@@ -114,6 +114,9 @@ public class FormUtil {
         put(FormType.TYPE_TEST_PROBLEM_FORM, true);
     }};
 
+    /**
+     * 根据表单类型判断该表单是否对客户可见
+     */
     public static boolean isClientReadable(String formType) {
         return FORM_CLIENT_READABLE_MAP.get(formType);
     }

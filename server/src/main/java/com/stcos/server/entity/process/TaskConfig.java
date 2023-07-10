@@ -3,6 +3,8 @@ package com.stcos.server.entity.process;
 import com.stcos.server.entity.email.EmailContent;
 import com.stcos.server.service.FormService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.flowable.engine.RuntimeService;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 任务配置相关的虚基类
@@ -20,19 +23,14 @@ import java.util.Map;
  * @since 2023/5/19 16:45
  */
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class TaskConfig {
 
-    /**
-     * 邮件内容对象
-     */
-    private final EmailContent emailContent;
+    private Set<String> requiredForms;
 
-    /**
-     * 一般路过构造方法
-     */
-    public TaskConfig(String emailSubject, String emailTemplate) {
-        this.emailContent = new EmailContent(emailSubject, emailTemplate);
-    }
+    private Set<String> requiredParticipants;
 
     /**
      * 判断当前任务是否满足完成条件
@@ -41,52 +39,14 @@ public abstract class TaskConfig {
      * @return true 表示可被完成，否则不满足任务完成条件，不可被完成
      */
     public boolean isCompletable(Task task, FormService formService) {
-        List<String> requiredForms = getRequiredForms();
         Map<String, Object> processVariables = task.getProcessVariables();
         for (String requiredForm : requiredForms) {
             if (!formService.existForm((Long) processVariables.get(requiredForm)))
                 return false;
         }
-
-        List<String> requiredParticipants = getRequiredParticipants();
         for (String requiredParticipant : requiredParticipants) {
             if (processVariables.get(requiredParticipant) == null) return false;
         }
-
         return true;
-    }
-
-    /**
-     * 获取当前任务阶段需要填写的表单
-     *
-     * @return 需要填写表单的列表
-     */
-    public abstract List<String> getRequiredForms();
-
-    /**
-     * 获取当前任务需要发送的通知邮件的标题
-     *
-     * @return 邮件标题
-     */
-    public final String getEmailSubject() {
-        return emailContent.getEmailSubject();
-    }
-
-    /**
-     * 获取当前任务需要发送的通知邮件的正文
-     *
-     * @param paramMap 替换模板占位符的参数
-     * @return 邮件正文
-     */
-    public final String getEmailText(Map<String, String> paramMap) {
-        return emailContent.getEmailText(paramMap);
-    }
-
-    public List<String> getRequiredParticipants() {
-        return new ArrayList<>();
-    }
-
-    public boolean isAllowedRole(String role) {
-        return getRequiredParticipants().contains(role);
     }
 }

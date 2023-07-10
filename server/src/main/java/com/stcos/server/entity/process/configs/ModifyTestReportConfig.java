@@ -1,9 +1,9 @@
 package com.stcos.server.entity.process.configs;
 
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * description
@@ -15,15 +15,10 @@ import java.util.List;
 public class ModifyTestReportConfig extends TaskConfig {
 
     public ModifyTestReportConfig() {
-        super("修改测试报告", "您好！之前提出的测试方案经审核未通过。一项被指派给您的\"修改测试报告\"任务已被创建，请尽快完成！");
+        super(
+                Set.of(FormType.TYPE_TEST_REPORT_FORM, FormType.TYPE_TEST_RECORDS_FORM, FormType.TYPE_TEST_PROBLEM_FORM),
+                Set.of()
+        );
     }
 
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("TestReportForm");
-            add("TestRecordsForm");
-            add("TestProblemForm");
-        }};
-    }
 }

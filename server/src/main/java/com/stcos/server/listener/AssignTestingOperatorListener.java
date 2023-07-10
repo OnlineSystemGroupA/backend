@@ -1,5 +1,7 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.form.FormType;
+import com.stcos.server.entity.process.ProcessVariables;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
@@ -38,8 +40,11 @@ public class AssignTestingOperatorListener extends OperatorTaskListener {
     @Override
     public void complete(DelegateTask task) {
         super.complete(task);
-        // 使流程对测试部员工可见
-        String testingOperatorUid = (String) task.getVariable("testingOperator", false);
-        userService.addProcessInstance(testingOperatorUid, task.getProcessInstanceId());
+        // 使委托申请表与测试功能表对测试部员工可见
+        String testingOperatorUid = (String) task.getVariable(ProcessVariables.VAR_MARKETING_OPERATOR);
+        Long applicationFormMetadataId = (Long) task.getVariable(FormType.TYPE_APPLICATION_FORM);
+        Long testFunctionForm = (Long) task.getVariable(FormType.TYPE_TEST_FUNCTION_FORM);
+        formService.addReadPermission(applicationFormMetadataId, testingOperatorUid);
+        formService.addReadPermission(testFunctionForm, testingOperatorUid);
     }
 }

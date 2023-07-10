@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 import static com.stcos.server.entity.form.FormType.TYPE_APPLICATION_FORM;
-import static com.stcos.server.entity.form.FormType.TYPE_TEST_FUNCTION_FORM;
 import static com.stcos.server.entity.process.ProcessVariables.*;
 
 /*
@@ -37,27 +36,13 @@ public class FillOutAppFormListener extends ClientTaskListener {
     @Override
     public void create(DelegateTask task) {
         super.create(task);
-
-        String clientUid = task.getAssignee();
         // 使当前实例对用户可见
-        userService.addProcessInstance(clientUid, task.getProcessInstanceId());
-
-        // 获取表单元数据 ID
-        Long applicationFormMetadataId = (Long) task.getVariable(TYPE_APPLICATION_FORM);
-        Long testFunctionFormId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
-
-        // 为客户开放读权限
-        formService.addReadPermission(applicationFormMetadataId, clientUid);
-        formService.addReadPermission(testFunctionFormId, clientUid);
+        userService.addProcessInstance(task.getAssignee(), task.getProcessInstanceId());
     }
 
     @Override
     public void complete(DelegateTask task) {
         super.complete(task);
-
-        // 为其它流程参与者开放读权限
-        updateReadPermission(TYPE_APPLICATION_FORM, PARTICIPANT_SET, task);
-        updateReadPermission(TYPE_TEST_FUNCTION_FORM, PARTICIPANT_SET, task);
 
         // 更新任务详情
         Long metadataId = (Long) task.getVariable(TYPE_APPLICATION_FORM);

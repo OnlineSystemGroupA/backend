@@ -2,8 +2,7 @@ package com.stcos.server.entity.process.configs;
 
 import com.stcos.server.entity.process.TaskConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 发送测试报告
@@ -15,12 +14,10 @@ import java.util.List;
 public class SendTestReportConfig extends TaskConfig {
 
     public SendTestReportConfig() {
-        super("测试报告待发送", "您好！一项被指派给您的\"发送测试报告\"任务已被创建，请尽快完成！");
-    }
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
+        super(
+                Set.of(),
+                Set.of()
+        );
     }
 
 }

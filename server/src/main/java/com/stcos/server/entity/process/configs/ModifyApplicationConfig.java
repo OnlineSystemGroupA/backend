@@ -1,9 +1,9 @@
 package com.stcos.server.entity.process.configs;
 
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 测试部审核不通过，修改委托 & 市场部审核不通过，修改委托
@@ -15,14 +15,10 @@ import java.util.List;
 public class ModifyApplicationConfig extends TaskConfig {
 
     public ModifyApplicationConfig() {
-        super("修改委托", "您好！一项由您提起的软件测试委托经审核没有通过，请您修改委托并重新提交。");
+        super(
+                Set.of(FormType.TYPE_APPLICATION_FORM, FormType.TYPE_TEST_FUNCTION_FORM),
+                Set.of()
+        );
     }
 
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-            add("TestFunctionForm");
-        }};
-    }
 }

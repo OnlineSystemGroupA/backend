@@ -1,8 +1,9 @@
 package com.stcos.server.entity.process.configs;
 
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskConfig;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * 市场部修改合同草稿
@@ -13,15 +14,11 @@ import java.util.List;
  */
 public class ModifyContractDraftConfig extends TaskConfig {
 
-
     public ModifyContractDraftConfig() {
-        super("修改合同草稿", "您好！之前提出的合同草稿不被用户接受。一项被指派给您的\"修改合同草稿\"任务已被创建，请尽快完成！");
+        super(
+                Set.of(FormType.TYPE_CONTRACT_FORM),
+                Set.of()
+        );
     }
 
-    private static final List<String> REQUIRED_FORMS = List.of("ContractForm", "ConfidentialityForm");
-
-    @Override
-    public List<String> getRequiredForms() {
-        return REQUIRED_FORMS;
-    }
 }

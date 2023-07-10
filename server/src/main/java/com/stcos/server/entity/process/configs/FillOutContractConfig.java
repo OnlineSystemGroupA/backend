@@ -1,9 +1,9 @@
 package com.stcos.server.entity.process.configs;
 
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 客户填写合同
@@ -15,15 +15,10 @@ import java.util.List;
 public class FillOutContractConfig extends TaskConfig {
 
     public FillOutContractConfig() {
-        super("填写合同", "您好！一份由您提起的软件测试委托已生成合同，请尽快前方填写。");
-    }
-
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("ContractForm");
-        }};
+        super(
+                Set.of(FormType.TYPE_CONTRACT_FORM),
+                Set.of()
+        );
     }
 
 }
