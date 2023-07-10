@@ -10,7 +10,9 @@ import org.apache.ibatis.type.JdbcType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
                 ______                     __  ___     __            __      __
@@ -123,6 +125,7 @@ public class FormMetadata {
      */
     public void addWritePermission(String uid) {
         writableUsers.add(uid);
+        writableUsers = new HashSet<>(writableUsers).stream().toList();
     }
 
     /**
@@ -148,6 +151,7 @@ public class FormMetadata {
      */
     public void addReadPermission(String uid) {
         readableUsers.add(uid);
+        readableUsers = new HashSet<>(readableUsers).stream().toList();
     }
 
     /**
@@ -155,7 +159,15 @@ public class FormMetadata {
      *
      * @param users 用户 uid 列表
      */
-    public void addReadPermission(List<String> users) {
+    public void addReadPermission(Set<String> users) {
         readableUsers.addAll(users);
+        readableUsers = new HashSet<>(readableUsers).stream().toList();
+    }
+
+    /**
+     * 移除所有用户对该表单的读权限
+     */
+    public void removeReadPermission() {
+        readableUsers.clear();
     }
 }

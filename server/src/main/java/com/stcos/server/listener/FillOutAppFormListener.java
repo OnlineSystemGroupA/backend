@@ -52,6 +52,8 @@ public class FillOutAppFormListener extends ClientTaskListener {
     public void complete(DelegateTask task) {
         super.complete(task);
 
+
+
         // 更新任务详情
         Long metadataId = (Long) task.getVariable(FormType.TYPE_APPLICATION_FORM);
         ApplicationForm form = (ApplicationForm) formService.getForm(metadataId);

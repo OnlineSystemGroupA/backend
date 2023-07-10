@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.stcos.server.entity.form.FormMetadata;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * description
@@ -17,13 +18,18 @@ public interface FormMetadataService extends IService<FormMetadata> {
 
     void addReadPermission(Long formMetadataId, String userId);
 
+    void addReadPermission(Long formMetadataId, Set<String> userId);
+
+    void removeReadPermission(Long formMetadataId);
+
     void addWritePermission(Long formMetadataId, String userId);
 
     void removeWritePermission(Long formMetadataId, String userId);
+
+    void removeWritePermission(Long formMetadataId);
 
     boolean existForm(long formMetadataId);
 
     Long getFormId(Long metadataId);
 
-    Long create(String formName, List<String> users);
 }

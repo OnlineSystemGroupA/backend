@@ -8,6 +8,7 @@ import com.stcos.server.service.FormMetadataService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * description
@@ -35,6 +36,20 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     }
 
     @Override
+    public void addReadPermission(Long formMetadataId, Set<String> userId) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.addReadPermission(userId);
+        if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
+    public void removeReadPermission(Long formMetadataId) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.removeReadPermission();
+        if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
     public void addWritePermission(Long formMetadataId, String userId) {
         FormMetadata formMetadata = getById(formMetadataId);
         formMetadata.addWritePermission(userId);
@@ -49,6 +64,13 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     }
 
     @Override
+    public void removeWritePermission(Long formMetadataId) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.removeWritePermission();
+        if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
     public boolean existForm(long formMetadataId) {
         return getById(formMetadataId).getFormId() != -1;
     }
@@ -58,11 +80,4 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
         return getById(formMetadataId).getFormId();
     }
 
-    @Override
-    public Long create(String formName, List<String> users) {
-        FormMetadata formMetadata = new FormMetadata(formName);
-        formMetadata.addReadPermission(users);
-        if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
-        return formMetadata.getFormMetadataId();
-    }
 }

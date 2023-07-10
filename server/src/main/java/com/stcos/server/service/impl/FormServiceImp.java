@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class FormServiceImp implements FormService {
@@ -100,18 +100,28 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public Long createMetadata(String formName, String userId) {
-        return formMetadataService.create(formName);
+    public void addReadPermission(Long formMetadataId, Set<String> userId) {
+        formMetadataService.addReadPermission(formMetadataId, userId);
     }
 
     @Override
-    public Long createMetadata(String formType, List<String> users) {
-        return formMetadataService.create(formType, users);
+    public void removeReadPermission(Long formMetadataId) {
+        formMetadataService.removeReadPermission(formMetadataId);
+    }
+
+    @Override
+    public Long createMetadata(String formType) {
+        return formMetadataService.create(formType);
     }
 
     @Override
     public void removeWritePermission(Long formMetadataId, String userId) {
         formMetadataService.removeWritePermission(formMetadataId, userId);
+    }
+
+    @Override
+    public void removeWritePermission(Long formMetadataId) {
+        formMetadataService.removeWritePermission(formMetadataId);
     }
 
     @Override

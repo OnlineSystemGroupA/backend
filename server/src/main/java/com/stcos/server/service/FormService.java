@@ -5,6 +5,7 @@ import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface FormService {
     /**
@@ -51,11 +52,15 @@ public interface FormService {
 
     void addReadPermission(Long formMetadataId, String userId);
 
-    Long createMetadata(String s, String clientUid);
+    void addReadPermission(Long formMetadataId, Set<String> userId);
 
-    Long createMetadata(String formType, List<String> users);
+    void removeReadPermission(Long formMetadataId);
+
+    Long createMetadata(String formType);
 
     void removeWritePermission(Long formMetadataId, String assignee);
+
+    void removeWritePermission(Long formMetadataId);
 
     Form getForm(Long metadataId);
 
