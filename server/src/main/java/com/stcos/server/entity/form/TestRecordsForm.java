@@ -1,12 +1,15 @@
 package com.stcos.server.entity.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 import java.util.Map;
+
+/*
+
+ */
 
 /**
  * 软件测试记录
