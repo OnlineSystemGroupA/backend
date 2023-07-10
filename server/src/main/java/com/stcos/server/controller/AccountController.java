@@ -9,7 +9,6 @@ import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.AccountService;
-import org.apache.ibatis.jdbc.Null;
 import com.stcos.server.util.dto.ClientDetailsMapper;
 import com.stcos.server.util.dto.OperatorDetailsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,17 +128,57 @@ public class AccountController implements AccountApi {
         List<Operator> operatorList = accountService.getOperatorsByDepartment(user.getDepartment());
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
         for (Operator operator : operatorList) {
-            ret.add(new OperatorDetailsDto(
-                    operator.getUid(),
-                    operator.getJobNumber(),
-                    operator.getEmail(),
-                    operator.getPhone(),
-                    operator.getRealName(),
-                    operator.getDepartment(),
-                    operator.getPosition()
-            ));
+            ret.add(OperatorDetailsMapper.toOperatorDetailsDto(operator));
         }
         return ResponseEntity.ok(ret);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<List<ClientDetailsDto>> getClients() {
+        List<Client> clientList = accountService.getClients();
+        List<ClientDetailsDto> ret = new ArrayList<>(clientList.size());
+        for (Client client : clientList) {
+            ret.add(ClientDetailsMapper.toClientDetailsDto(client));
+        }
+        return ResponseEntity.ok(ret);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<List<OperatorDetailsDto>> getOperatorsDepartment() {
+        List<Operator> operatorList = accountService.getOperators();
+        List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
+        for (Operator operator : operatorList) {
+            ret.add(OperatorDetailsMapper.toOperatorDetailsDto(operator));
+        }
+        return ResponseEntity.ok(ret);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> createOperator(OperatorDetailsDto operatorDetailsDto) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.createOperator(
+                    operatorDetailsDto.getUid(),
+                    operatorDetailsDto.getJobNumber(),
+                    operatorDetailsDto.getEmail(),
+                    operatorDetailsDto.getPhone(),
+                    operatorDetailsDto.getRealName(),
+                    operatorDetailsDto.getDepartment(),
+                    operatorDetailsDto.getPosition(),
+                    operatorDetailsDto.getIsNonLocked()
+                    );
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(409).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
     }
 
     @Secured("ROLE_ADMIN")
@@ -155,24 +194,7 @@ public class AccountController implements AccountApi {
             }
         }
         if(result == null && client != null){
-            ClientDetailsDto clientDetailsDto = new ClientDetailsDto(
-                    client.getUid(),                    // uid
-                    client.getUsername(),               // 用户名
-                    client.getCreatedDate().toString(), // 账号创建时间
-                    client.getRealName(),               // 用户的真实姓名
-                    client.getEmail(),                  // 邮箱
-                    client.getPhone(),                  // 联系电话
-                    client.getGender(),                 // 性别
-                    client.getCompany(),                // 公司名称
-                    client.getCompanyTelephone(),       // 公司电话号
-                    client.getCompanyFax(),             // 公司传真
-                    client.getCompanyAddress(),         // 公司地址
-                    client.getCompanyPostcode(),        // 公司邮编
-                    client.getCompanyWebsite(),         // 公司网址
-                    client.getCompanyEmail(),           // 公司邮箱
-                    client.getCompanyPhone(),           // 公司手机号
-                    client.isAccountNonLocked()         // 账户是否被封禁
-            );
+            ClientDetailsDto clientDetailsDto = ClientDetailsMapper.toClientDetailsDto(client);
             result = ResponseEntity.ok(clientDetailsDto);
         }
         return result;
@@ -191,22 +213,99 @@ public class AccountController implements AccountApi {
             }
         }
         if(result == null && operator != null){
-            OperatorDetailsDto operatorDetailsDto = new OperatorDetailsDto(
-                    operator.getUid(),
-                    operator.getJobNumber(),
-                    operator.getEmail(),
-                    operator.getPhone(),
-                    operator.getRealName(),
-                    operator.getDepartment(),
-                    operator.getPosition(),
-                    operator.isAccountNonLocked()
-            );
+            OperatorDetailsDto operatorDetailsDto = OperatorDetailsMapper.toOperatorDetailsDto(operator);
             result = ResponseEntity.ok(operatorDetailsDto);
         }
         return result;
     }
 
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> deleteClient(String uid) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.deleteClient(uid);
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
 
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> deleteOperator(String uid) {
+        ResponseEntity<Void> result = null;
+        try {
+            accountService.deleteOperator(uid);
+        } catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> updateClient(String uid, ClientDetailsDto clientDetailsDto) {
+        ResponseEntity<Void> result = null;
+        Client client = null;
+        try {
+            client = accountService.getClientById(uid);
+        }catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if(result == null){
+            try {
+                accountService.updateClientDetails(client, clientDetailsDto);
+            } catch (ServiceException e) {
+                switch (e.getCode()) {
+                    case 0, 1 -> result = ResponseEntity.status(409).build();
+                }
+            }
+            if (result == null) {
+                result = ResponseEntity.ok().build();
+            }
+        }
+        return result;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> updateOperator(String uid, OperatorDetailsDto operatorDetailsDto) {
+        ResponseEntity<Void> result = null;
+        Operator operator = null;
+        try {
+            operator = accountService.getOperatorById(uid);
+        }catch (ServiceException e) {
+            if (e.getCode() == 0) {
+                result = ResponseEntity.status(404).build();
+            }
+        }
+        if(result == null){
+            try {
+                accountService.updateOperatorDetails(operator, operatorDetailsDto);
+            } catch (ServiceException e) {
+                switch (e.getCode()) {
+                    case 0, 1 -> result = ResponseEntity.status(409).build();
+                }
+            }
+            if (result == null) {
+                result = ResponseEntity.ok().build();
+            }
+        }
+        return result;
+    }
 
     @Secured("ROLE_ADMIN")
     @Override

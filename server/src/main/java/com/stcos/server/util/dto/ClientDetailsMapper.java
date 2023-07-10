@@ -16,6 +16,7 @@ public class ClientDetailsMapper {
 
     public ClientDetailsDto toClientDetailsDto(Client client) {
         return new ClientDetailsDto(
+                client.getUid(),
                 client.getUsername(),               // 用户名
                 client.getCreatedDate().toString(), // 账号创建时间
                 client.getRealName(),               // 用户的真实姓名
@@ -29,7 +30,8 @@ public class ClientDetailsMapper {
                 client.getCompanyPostcode(),        // 公司邮编
                 client.getCompanyWebsite(),         // 公司网址
                 client.getCompanyEmail(),           // 公司邮箱
-                client.getCompanyPhone()            // 公司手机号
+                client.getCompanyPhone(),           // 公司手机号
+                client.isAccountNonLocked()
         );
     }
 

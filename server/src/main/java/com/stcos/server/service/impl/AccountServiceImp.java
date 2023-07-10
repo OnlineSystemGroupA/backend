@@ -143,4 +143,39 @@ public class AccountServiceImp implements AccountService {
     public void lockClient(String uid, LockDto lockDto) throws ServiceException {
 
     }
+
+    @Override
+    public Client getClientById(String uid) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public Operator getOperatorById(String uid) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public List<Operator> getOperators() {
+        return null;
+    }
+
+    @Override
+    public List<Client> getClients() {
+        return null;
+    }
+
+    @Override
+    public void createOperator(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) throws ServiceException {
+
+    }
+
+    @Override
+    public void deleteClient(String uid) throws ServiceException {
+
+    }
+
+    @Override
+    public void deleteOperator(String uid) throws ServiceException {
+
+    }
 }

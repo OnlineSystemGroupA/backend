@@ -324,5 +324,21 @@ public class WorkflowController implements WorkflowApi {
         return result;
     }
 
-
+    @Secured("ROLE_ADMIN")
+    @Override
+    public ResponseEntity<Void> deleteProcess(String processId) {
+        ResponseEntity<Void> result = null;
+        try {
+            workflowService.deleteProcess(processId);
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> result = ResponseEntity.status(403).build();  // 目标流程实例当前登录用户不可见
+                case 1 -> result = ResponseEntity.status(404).build();  // 指定流程不存在
+            }
+        }
+        if (result == null) {
+            result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
 }

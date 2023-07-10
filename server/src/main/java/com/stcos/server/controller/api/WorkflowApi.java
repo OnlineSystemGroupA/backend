@@ -529,4 +529,39 @@ public interface WorkflowApi {
 
     }
 
+    /**
+     * POST /workflow/processes/{processId}/participants : 分配人员
+     * 为指定流程设置对应的流程参与者
+     *
+     * @param processId 指定流程实例 ID (required)
+     * @param userIdDto 目标员工的 ID (optional)
+     * @return ok (status code 200)
+     *         or 指定流程对当前登录用户不可见 (status code 403)
+     *         or 指定流程或用户不存在 (status code 404)
+     *         or 指定用户所在部门不符合要求 (status code 409)
+     */
+    @Operation(
+            operationId = "setParticipant",
+            summary = "分配人员",
+            description = "为指定流程设置对应的流程参与者",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok"),
+                    @ApiResponse(responseCode = "403", description = "指定流程对当前登录用户不可见"),
+                    @ApiResponse(responseCode = "404", description = "指定流程或用户不存在"),
+                    @ApiResponse(responseCode = "409", description = "指定用户所在部门不符合要求")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/workflow/processes/{processId}/participants",
+            consumes = { "application/json" }
+    )
+    default ResponseEntity<Void> setParticipant(
+            @Parameter(name = "processId", description = "指定流程实例 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
+            @Parameter(name = "UserIdDto", description = "目标员工的 ID") @Valid @RequestBody(required = false) UserIdDto userIdDto
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 }

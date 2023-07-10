@@ -22,7 +22,8 @@ public class OperatorDetailsMapper {
                 operator.getPhone(),
                 operator.getRealName(),
                 operator.getDepartment(),
-                operator.getPosition()
+                operator.getPosition(),
+                operator.isAccountNonLocked()
         );
     }
 

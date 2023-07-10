@@ -96,4 +96,14 @@ public interface AccountService {
     Client getClientById(String uid) throws ServiceException;
 
     Operator getOperatorById(String uid) throws ServiceException;
+
+    List<Operator> getOperators();
+
+    List<Client> getClients();
+
+    void createOperator(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) throws ServiceException;
+
+    void deleteClient(String uid) throws ServiceException;
+
+    void deleteOperator(String uid) throws ServiceException;
 }

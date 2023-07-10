@@ -327,4 +327,9 @@ public class WorkflowServiceImp implements WorkflowService {
         if (!formService.hasWritePermission(formMetadataId, user.getUid())) throw new ServiceException(1);
         fileService.saveFormPdf(processId, file, formName);
     }
+
+    @Override
+    public void deleteProcess(String processId) throws ServiceException {
+
+    }
 }
