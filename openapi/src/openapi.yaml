@@ -568,7 +568,7 @@ paths:
         - admin
       summary: 获取客户信息
       description: 管理员获取指定uid客户的账号信息
-      operationId: getClientDetails
+      operationId: adminGetClientDetails
       responses:
         '200':
           description: ok
@@ -612,6 +612,13 @@ paths:
           description: 不存在对应uid的客户
 
   /account/clients/{uid}/locked:
+    parameters:
+      - name: uid
+        in: path
+        description: 目标客户的 uid
+        schema:
+          type: string
+        required: true
     post:
       tags:
         - admin
@@ -692,7 +699,7 @@ paths:
         - admin
       summary: 获取员工信息
       description: 管理员获取指定uid员工的账号信息
-      operationId: getOperatorDetails
+      operationId: adminGetOperatorDetails
       responses:
         '200':
           description: ok
@@ -736,6 +743,13 @@ paths:
           description: 不存在对应uid的员工
 
   /account/operators/{uid}/locked:
+    parameters:
+      - name: uid
+        in: path
+        description: 目标客户的 uid
+        schema:
+          type: string
+        required: true
     post:
       tags:
         - admin
