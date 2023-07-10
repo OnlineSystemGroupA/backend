@@ -1,13 +1,21 @@
 package com.stcos.server.entity.form;
 
-/**
- * description
- *
- * @author Kekwy
- * @version 1.0
- * @since 2023/7/9 12:49
+/*
+                ______                   ______
+               / ____/___  _________ ___/_  __/_  ______  ___
+              / /_  / __ \/ ___/ __ `__ \/ / / / / / __ \/ _ \
+             / __/ / /_/ / /  / / / / / / / / /_/ / /_/ /  __/
+            /_/    \____/_/  /_/ /_/ /_/_/  \__, / .___/\___/
+                                           /____/_/
  */
 
+/**
+ * 统一定义表单类型
+ *
+ * @author AmadeusZQK
+ * @version 1.1 (final)
+ * @since 2023/7/9 12:49
+ */
 public class FormType {
 
     public final static String TYPE_APPLICATION_FORM = "ApplicationForm";
