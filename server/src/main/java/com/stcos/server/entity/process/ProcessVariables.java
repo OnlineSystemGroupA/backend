@@ -1,7 +1,9 @@
 package com.stcos.server.entity.process;
 
+import java.util.Set;
+
 /**
- * description
+ * 统一定义流程变量名
  *
  * @author Kekwy
  * @version 1.0
@@ -45,5 +47,41 @@ public class ProcessVariables {
     public static final String VAR_TEST_WORK_CHECK_FORM_METADATA = "TestWorkCheckForm";
     /*             样品元数据              */
     public static final String VAR_SAMPLE_METADATA = "sampleMetadata";
+
+    public static final Set<String> FORM_METADATA_SET = Set.of(
+            VAR_APPLICATION_FORM_METADATA,
+            VAR_APPLICATION_VERIFY_FORM_METADATA,
+            VAR_CONTRACT_FORM_METADATA,
+            VAR_CONFIDENTIALITY_FORM_METADATA,
+            VAR_DOCUMENT_REVIEW_FORM_METADATA,
+            VAR_QUOTATION_FORM_METADATA,
+            VAR_REPORT_VERIFY_FORM_METADATA,
+            VAR_TEST_FUNCTION_FORM_METADATA,
+            VAR_TEST_PLAN_FORM_METADATA,
+            VAR_TEST_PLAN_VERIFY_FORM_METADATA,
+            VAR_TEST_PROBLEM_FORM_METADATA,
+            VAR_TEST_RECORDS_FORM_METADATA,
+            VAR_TEST_REPORT_FORM_METADATA,
+            VAR_TEST_WORK_CHECK_FORM_METADATA
+    );
+
+    public static final Set<String> PARTICIPANT_SET = Set.of(
+            VAR_CLIENT,
+            VAR_MARKETING_MANAGER,
+            VAR_TESTING_MANAGER,
+            VAR_QUALITY_MANAGER,
+            VAR_SIGNATORY,
+            VAR_MARKETING_OPERATOR,
+            VAR_TESTING_OPERATOR
+    );
+
+    public static final Set<String> PARTICIPANT_WHITOUT_CLIENT_SET = Set.of(
+            VAR_MARKETING_MANAGER,
+            VAR_TESTING_MANAGER,
+            VAR_QUALITY_MANAGER,
+            VAR_SIGNATORY,
+            VAR_MARKETING_OPERATOR,
+            VAR_TESTING_OPERATOR
+    );
 
 }

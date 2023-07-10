@@ -13,6 +13,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+@Deprecated
 public class ConfidentialityUtil {
     public static void generatePDFFromForm(String outputFilePah) {
         PdfDocument pdfDocument = null;
