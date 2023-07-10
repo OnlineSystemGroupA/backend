@@ -1,19 +1,15 @@
 package com.stcos.server.util;
 
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.service.FormService;
+import com.stcos.server.entity.form.FormType;
 import lombok.experimental.UtilityClass;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.flowable.task.service.delegate.DelegateTask;
-import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -30,53 +26,75 @@ import java.util.regex.Pattern;
 @UtilityClass
 public class FormUtil {
 
-    private static final List<String> FORM_LIST =
-            List.of("ApplicationForm",
-                    "ApplicationVerifyForm",
-                    "ContractForm",
-                    "DocumentReviewForm",
-                    "QuotationForm",
-                    "ReportVerifyForm",
-                    "TestFunctionForm",
-                    "TestPlanForm",
-                    "TestPlanVerifyForm",
-                    "TestProblemForm",
-                    "TestRecordsForm",
-                    "TestReportForm",
-                    "TestWorkCheckForm");
+    /**
+     * 表单文件名到模板文件路径的映射
+     */
+    private static final Map<String, String> FORM_TEMPLATE_FILE_MAP = new HashMap<>() {{
+        put(FormType.TYPE_APPLICATION_FORM, "/template/NST－04－JS002－2018－软件项目委托测试申请表.docx");
+        put(FormType.TYPE_APPLICATION_VERIFY_FORM, "/template/NST－04－JS002－2018－软件项目委托测试申请表（审核信息部分）.docx");
+        put(FormType.TYPE_CONTRACT_FORM, "/template/NST－04－JS004－2018－软件委托测试合同.docx");
+        put(FormType.TYPE_CONFIDENTIALITY_FORM, "/template/NST－04－JS005－2018－软件项目委托测试保密协议.doc");
+        put(FormType.TYPE_DOCUMENT_REVIEW_FORM, "/template/NST－04－JS014－2018 - 软件文档评审表.docx");
+        put(FormType.TYPE_QUOTATION_FORM, "/template/1报价单.docx");
+        put(FormType.TYPE_REPORT_VERIFY_FORM, "/template/NST－04－JS010－2018－测试报告检查表.doc");
+        put(FormType.TYPE_TEST_FUNCTION_FORM, "/template/NST－04－JS003－2018－委托测试软件功能列表.doc");
+        put(FormType.TYPE_TEST_PLAN_FORM, "/template/NST－04－JS006－2018－软件测试方案.docx");
+        put(FormType.TYPE_TEST_PLAN_VERIFY_FORM, "/template/NST－04－JS013－2018 - 测试方案评审表.doc");
+//       put(FormType.TYPE_TEST_RECORDS_FORM, "/template/NST－04－JS009－2018－软件测试记录（电子记录）.xlsx");
+        put(FormType.TYPE_TEST_REPORT_FORM, "/template/NST－04－JS007－2018－软件测试报告.docx");
+        put(FormType.TYPE_TEST_WORK_CHECK_FORM, "/template/NST－04－JS012－2018－软件项目委托测试工作检查表.doc");
+//       put(FormType.TYPE_TEST_PROBLEM_FORM, "/template/NST－04－JS011－2018－软件测试问题清单（电子记录）.xlsx");
+    }};
 
-    public void addReadPermission(String userId, DelegateTask task, FormService formService) {
-        for (String formName : FORM_LIST) {
-            Long formMetadataId = (Long) task.getVariable(formName);
-            formService.addReadPermission(formMetadataId, userId);
-        }
-    }
 
-    private final String TEMPLATE_PATH = "/template/";
-
-    public void replaceSpecialText(Form form, String fileName) {
-
+    public static File replaceSpecialText(Form form, String formName, String fileName) {
         try {
-            URI uri = Objects.requireNonNull(FormUtil.class.getResource(TEMPLATE_PATH + form.templateFormFile())).toURI();
-
+            URI uri = Objects.requireNonNull(FormUtil.class.getResource(FORM_TEMPLATE_FILE_MAP.get(formName))).toURI();
             //读文件
             XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(uri.getPath()));
-
             //替换内容
             Map<String, String> map = form.toTemplateFormat();
             WordAndPdfUtil.replaceWord(document, map);
-
             //返回流
             FileOutputStream outStream = new FileOutputStream(fileName);
             document.write(outStream);
             outStream.close();
-
             /// !!!!!!!!!!!!!!!!!!!
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new File(fileName);
+    }
 
+    /**
+     * 表单名到表单原始中文文件名的映射
+     */
+    private static final Map<String, String> FORM_CHINESE_NAME_MAP = new HashMap<>() {{
+        put(FormType.TYPE_APPLICATION_FORM, "NST－04－JS002－2018－软件项目委托测试申请表");
+        put(FormType.TYPE_APPLICATION_VERIFY_FORM, "NST－04－JS002－2018－软件项目委托测试申请表（审核信息部分）");
+        put(FormType.TYPE_CONTRACT_FORM, "NST－04－JS004－2018－软件委托测试合同");
+        put(FormType.TYPE_CONFIDENTIALITY_FORM, "NST－04－JS005－2018－软件项目委托测试保密协议");
+        put(FormType.TYPE_DOCUMENT_REVIEW_FORM, "NST－04－JS014－2018 - 软件文档评审表");
+        put(FormType.TYPE_QUOTATION_FORM, "1报价单");
+        put(FormType.TYPE_REPORT_VERIFY_FORM, "NST－04－JS010－2018－测试报告检查表");
+        put(FormType.TYPE_TEST_FUNCTION_FORM, "NST－04－JS003－2018－委托测试软件功能列表");
+        put(FormType.TYPE_TEST_PLAN_FORM, "NST－04－JS006－2018－软件测试方案");
+        put(FormType.TYPE_TEST_PLAN_VERIFY_FORM, "NST－04－JS013－2018 - 测试方案评审表");
+        put(FormType.TYPE_TEST_RECORDS_FORM, "NST－04－JS009－2018－软件测试记录（电子记录）");
+        put(FormType.TYPE_TEST_REPORT_FORM, "NST－04－JS007－2018－软件测试报告");
+        put(FormType.TYPE_TEST_WORK_CHECK_FORM, "NST－04－JS012－2018－软件项目委托测试工作检查表");
+        put(FormType.TYPE_TEST_PROBLEM_FORM, "NST－04－JS011－2018－软件测试问题清单（电子记录）");
+    }};
+
+
+    /**
+     * 获取表单中文文件名
+     *
+     * @param formName 表单名
+     * @return 表单原始中文文件名
+     */
+    public static String formName2Chinese(String formName) {
+        return FORM_CHINESE_NAME_MAP.get(formName);
     }
 
     //数字转换为大写汉字

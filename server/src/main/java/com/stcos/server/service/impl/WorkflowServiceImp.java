@@ -308,24 +308,23 @@ public class WorkflowServiceImp implements WorkflowService {
         return processDetails;
     }
 
+    /* 获取 or 保存表单 PDF 文件 */
     @Override
-    public Resource downloadForm(String processId, String formName) {
-        if (!Objects.equals(formName, "ContractForm")) return null;
+    public Resource getFormFile(String processId, String formName) throws ServiceException {
+        Long formMetadataId = getFormMetadataId(processId, formName);           // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 指定流程实例对当前登录用户不可见
+        Form form = formService.getForm(formMetadataId, user.getUid());         // 获取表单内容
+        return fileService.generateFormPdf(processId, form, formName);          // 生成 PDF 文件并返回给前端
 
-        Long formMetadataId = (Long) runtimeService.getVariable(processId, "ContractForm");
+    }
 
-        ContractForm form = (ContractForm) formService.getForm(formMetadataId);
-
-        String filePath = "./files/" + processId + "jasjjaja-contract-form.docx";
-        String pdfPath = "./files/" + processId + "jasjjaja-contract-form.pdf";
-
-        FormUtil.replaceSpecialText(form, filePath);
-
-        WordAndPdfUtil.word2Pdf(filePath, pdfPath);
-
-//        ContractUtil.generatePDFFromContract(form, filePath);
-
-        return new FileSystemResource(pdfPath);
-
+    @Override
+    public void saveFileForm(String processId, String formName, MultipartFile file) throws ServiceException {
+        Long formMetadataId = getFormMetadataId(processId, formName);           // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); //指定流程实例对当前登录用户不可见
+        if (!formService.hasWritePermission(formMetadataId, user.getUid())) throw new ServiceException(1);
+        fileService.saveFormPdf(processId, file, formName);
     }
 }

@@ -119,4 +119,10 @@ public class FormServiceImp implements FormService {
         Long formId = formMetadataService.getFormId(metadataId);
         return formRepository.getFormById(formId);
     }
+
+    @Override
+    public boolean hasWritePermission(Long formMetadataId, String uid) {
+        FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
+        return formMetadata.hasWritePermission(uid);
+    }
 }

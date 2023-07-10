@@ -96,5 +96,5 @@ public class ContractForm extends Form {
     }
 
     @Override
-    public String templateFormFile(){return "合同模板doc.docx";}
+    public String templateFormFile(){return "NST－04－JS004－2018－软件委托测试合同.docx";}
 }

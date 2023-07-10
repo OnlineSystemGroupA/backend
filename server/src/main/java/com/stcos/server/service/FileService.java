@@ -1,7 +1,9 @@
 package com.stcos.server.service;
 
 import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.entity.form.Form;
 import com.stcos.server.exception.ServiceException;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -52,4 +54,9 @@ public interface FileService {
     void deleteSample(Long sampleMetadataId) throws ServiceException;
 
     Long createMetadata();
+
+
+    Resource generateFormPdf(String processId, Form form, String formName);
+
+    void saveFormPdf(String processId, MultipartFile file, String formName);
 }

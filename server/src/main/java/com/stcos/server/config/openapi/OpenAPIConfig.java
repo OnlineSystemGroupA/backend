@@ -26,7 +26,6 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 2023/4/4 10:45
  */
-
 @Configuration
 public class OpenAPIConfig {
     @Bean

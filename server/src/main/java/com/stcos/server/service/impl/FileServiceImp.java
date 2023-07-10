@@ -2,11 +2,17 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.SampleMetadata;
+import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.user.User;
+import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FileService;
+import com.stcos.server.util.FormUtil;
+import com.stcos.server.util.WordAndPdfUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -210,5 +216,35 @@ public class FileServiceImp implements FileService {
     @Override
     public Long createMetadata() {
         return null;
+    }
+
+    private final String PATH_ROOT = ".";
+
+    private final String PATH_FORM = "/forms";
+
+    @Override
+    public Resource generateFormPdf(String processId, Form form, String formName) {
+        String fileName = FormUtil.formName2Chinese(formName);  // 获取表单对应的中文文件名
+        String filePathDoc = PATH_ROOT + "/" + processId + PATH_FORM + "/" + fileName + "docx";
+        File docFile = FormUtil.replaceSpecialText(form, formName, filePathDoc);
+        String filePathPdf = PATH_ROOT + "/" + processId + PATH_FORM + "/" + fileName + "pdf";
+        WordAndPdfUtil.word2Pdf(filePathDoc, filePathPdf);      // 将 docx 文件转换为 pdf
+        //noinspection ResultOfMethodCallIgnored
+        docFile.delete();                                       // 删除生成的中间 docx 文件
+        return new FileSystemResource(filePathPdf);             // 从磁盘加载目标文件
+    }
+
+
+    @Override
+    public void saveFormPdf(String processId, MultipartFile file, String formName) {
+        String fileName = FormUtil.formName2Chinese(formName);     // 获取表单对应的中文文件名
+        String filePath = PATH_ROOT + "/" + processId + PATH_FORM + "/" + fileName + "pdf";
+        try {
+            FileOutputStream fOS = new FileOutputStream(filePath); // 创建文件输出流
+            fOS.write(file.getBytes());                            // 将数据写入目标文件
+            fOS.close();                                           // 关闭文件输出流
+        } catch (IOException e) {
+            throw new ServerErrorException(e);
+        }
     }
 }

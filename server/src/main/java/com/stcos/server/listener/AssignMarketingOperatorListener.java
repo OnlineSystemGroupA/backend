@@ -29,8 +29,7 @@ public class AssignMarketingOperatorListener extends TaskListener {
     public void complete(DelegateTask task) {
         String marketingOperatorUid = (String) task.getVariable("marketingOperator", false);
 
-        // 更新表单读权限
-        FormUtil.addReadPermission(marketingOperatorUid, task, formService);
+
 
         // 使流程对市场部员工可见
         operatorService.addProcessInstance(marketingOperatorUid, task.getProcessInstanceId());
