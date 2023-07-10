@@ -520,4 +520,34 @@ public interface WorkflowApi {
 
     }
 
+    /**
+     * DELETE /workflow/processes/{processId}/details : 删除流程
+     * 管理员删除流程
+     *
+     * @param processId 流程实例 Id (required)
+     * @return 成功删除指定流程 (status code 200)
+     *         or 指定流程对该用户不可见 (status code 403)
+     *         or 指定流程不存在 (status code 404)
+     */
+    @Operation(
+            operationId = "deleteProcess",
+            summary = "删除流程",
+            description = "管理员删除流程",
+            tags = { "admin" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功删除指定流程"),
+                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
+                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/workflow/processes/{processId}/details"
+    )
+    default ResponseEntity<Void> deleteProcess(
+            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
 }

@@ -79,7 +79,6 @@ public interface AccountApi {
             }
         });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
     }
 
 
