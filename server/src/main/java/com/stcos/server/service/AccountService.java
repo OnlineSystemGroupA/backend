@@ -88,10 +88,10 @@ public interface AccountService {
 
     void updateOperatorDetails(Operator operator, OperatorDetailsDto operatorDetailsDto) throws ServiceException;
 
-    void lockOperator(String uid, LockDto lockDto) throws ServiceException;
+    void lockOperator(String uid, Boolean doLock) throws ServiceException;
 
 
-    void lockClient(String uid, LockDto lockDto) throws ServiceException;
+    void lockClient(String uid, Boolean doLock) throws ServiceException;
 
     Client getClientById(String uid) throws ServiceException;
 
@@ -101,7 +101,7 @@ public interface AccountService {
 
     List<Client> getClients();
 
-    void createOperator(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) throws ServiceException;
+    void createOperator(OperatorDetailsDto operatorDetailsDto) throws ServiceException;
 
     void deleteClient(String uid) throws ServiceException;
 

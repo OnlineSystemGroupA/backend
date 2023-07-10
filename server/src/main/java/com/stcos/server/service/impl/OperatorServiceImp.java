@@ -67,4 +67,19 @@ public class OperatorServiceImp extends ServiceImpl<OperatorMapper, Operator> im
         else return opt.getRealName();
     }
 
+    @Override
+    public List<Operator> getAll() {
+        return baseMapper.selectList(null);
+    }
+
+    @Override
+    public void deleteOperator(Operator operator) {
+        baseMapper.deleteById(operator);
+    }
+
+    @Override
+    public void createOperator(Operator operator) {
+        this.baseMapper.insert(operator);
+    }
+
 }

@@ -20,7 +20,9 @@ public class SampleMetadataServiceImp extends ServiceImpl<SampleMetadataMapper, 
     }
 
     @Override
-    public void update(SampleMetadata sampleMetadata) {
+    public void update(Long sampleMetadataId, Long fileMetadataId) {
+        SampleMetadata sampleMetadata = getById(sampleMetadataId);
+        sampleMetadata.updateFileMetadataList(fileMetadataId);
         if (!updateById(sampleMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
     }
 
@@ -50,6 +52,18 @@ public class SampleMetadataServiceImp extends ServiceImpl<SampleMetadataMapper, 
         SampleMetadata sampleMetadata = getById(sampleMetadataId);
         sampleMetadata.removeWritePermission(userId);
         if (!updateById(sampleMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
+    public boolean hasReadPermission(Long sampleMetadataId, String userId) {
+        SampleMetadata sampleMetadata = getById(sampleMetadataId);
+        return sampleMetadata.hasReadPermission(userId);
+    }
+
+    @Override
+    public boolean hasWritePermission(Long sampleMetadataId, String userId) {
+        SampleMetadata sampleMetadata = getById(sampleMetadataId);
+        return sampleMetadata.hasWritePermission(userId);
     }
 
 //    @Override

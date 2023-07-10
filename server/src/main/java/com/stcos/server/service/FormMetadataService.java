@@ -3,7 +3,6 @@ package com.stcos.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.stcos.server.entity.form.FormMetadata;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,7 +13,7 @@ import java.util.Set;
  * @since 2023/6/25 13:43
  */
 public interface FormMetadataService extends IService<FormMetadata> {
-    Long create(Long projectId, String formName);
+    Long create(Long projectId, String formType);
 
     void addReadPermission(Long formMetadataId, String userId);
 

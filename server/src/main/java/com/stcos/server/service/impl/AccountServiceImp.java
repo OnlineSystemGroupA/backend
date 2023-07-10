@@ -135,47 +135,89 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public void lockOperator(String uid, LockDto lockDto) throws ServiceException {
+    public void lockOperator(String uid, Boolean doLock) throws ServiceException {
+
+    Operator operator = operatorService.getById(uid);
+
+        if(operator == null) throw new ServiceException(0);
+
+        operator.setAccountNonLocked(!doLock);
+
+        operatorService.updateById(operator);
 
     }
 
     @Override
-    public void lockClient(String uid, LockDto lockDto) throws ServiceException {
+    public void lockClient(String uid, Boolean doLock) throws ServiceException {
+        Client client = clientService.getById(uid);
 
+        if(client == null) throw new ServiceException(0);
+
+        client.setAccountNonLocked(!doLock);
+
+        clientService.updateById(client);
     }
 
     @Override
     public Client getClientById(String uid) throws ServiceException {
-        return null;
+        Client client = clientService.getById(uid);
+
+        if(client == null) throw new ServiceException(0);
+
+        return client;
     }
 
     @Override
     public Operator getOperatorById(String uid) throws ServiceException {
-        return null;
+        Operator operator = operatorService.getById(uid);
+
+        if(operator == null) throw new ServiceException(0);
+
+        return operator;
     }
 
     @Override
     public List<Operator> getOperators() {
-        return null;
+        return operatorService.getAll();
     }
 
     @Override
     public List<Client> getClients() {
-        return null;
+        return clientService.getAll();
     }
 
     @Override
-    public void createOperator(String uid, String jobNumber, String email, String phone, String realName, String department, String position, Boolean isNonLocked) throws ServiceException {
-
+    public void createOperator(OperatorDetailsDto operatorDetailsDto) throws ServiceException {
+        Operator operator = operatorService.getByJobNumber(operatorDetailsDto.getJobNumber());
+        if (operator != null)
+            throw new ServiceException(0);
+        operator = new Operator(operatorDetailsDto.getUid());
+        operator.setPassword("123456");
+        operator.setJobNumber(operatorDetailsDto.getJobNumber());
+        operator.setJobNumber(operatorDetailsDto.getJobNumber());
+        operator.setRealName(operatorDetailsDto.getRealName());
+        operator.setPosition(operatorDetailsDto.getPosition());
+        operator.setEmail(operatorDetailsDto.getEmail());
+        operator.setPhone(operatorDetailsDto.getPhone());
+        operator.setAccountNonLocked(operatorDetailsDto.getIsNonLocked());
+        operatorService.createOperator(operator);
     }
 
     @Override
     public void deleteClient(String uid) throws ServiceException {
+        Client client = clientService.getById(uid);
 
+        if(client == null) throw new ServiceException(0);
+
+        clientService.deleteClient(client);
     }
 
     @Override
     public void deleteOperator(String uid) throws ServiceException {
+        Operator operator = operatorService.getById(uid);
 
+        if(operator == null) throw new ServiceException(0);
+
+        operatorService.deleteOperator(operator);
     }
 }

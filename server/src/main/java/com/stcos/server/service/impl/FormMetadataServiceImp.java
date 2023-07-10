@@ -7,7 +7,6 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.FormMetadataService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,8 +21,8 @@ import java.util.Set;
 public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, FormMetadata> implements FormMetadataService {
 
     @Override
-    public Long create(Long projectId, String formName) {
-        FormMetadata formMetadata = new FormMetadata(projectId, formName);
+    public Long create(Long projectId, String formType) {
+        FormMetadata formMetadata = new FormMetadata(projectId, formType);
         if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
         return formMetadata.getFormMetadataId();
     }
