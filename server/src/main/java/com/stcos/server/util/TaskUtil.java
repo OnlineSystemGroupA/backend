@@ -72,6 +72,15 @@ public class TaskUtil {
     }};
 
     /**
+     * 根据任务名获取对应的任务配置类对象
+     *
+     * @return TaskConfig 对象
+     */
+    public static TaskConfig getTaskConfig(String taskName) {
+        return TASK_CONFIG_MAP.get(taskName);
+    }
+
+    /**
      * 判断当前任务是否满足完成条件
      *
      * @param task        当前任务
