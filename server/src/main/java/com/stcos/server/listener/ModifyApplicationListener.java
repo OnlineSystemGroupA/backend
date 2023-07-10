@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class ModifyAppFormListener extends TaskListener {
+public class ModifyApplicationListener extends TaskListener {
 
     @Override
     public void complete(DelegateTask task) {

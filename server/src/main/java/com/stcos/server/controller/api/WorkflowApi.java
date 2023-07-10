@@ -156,29 +156,29 @@ public interface WorkflowApi {
      *         or 指定流程不存在 (status code 404)
      */
     @Operation(
-        operationId = "getFormIndex",
-        summary = "获取表单",
-        description = "获取表单",
-        tags = { "workflow" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "成功获取可见表单列表", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormMetadataDto.class)))
-            }),
-            @ApiResponse(responseCode = "404", description = "指定流程不存在")
-        }
+            operationId = "getFormMetadata",
+            summary = "获取表单",
+            description = "获取表单",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功获取可见表单列表", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormMetadataDto.class)))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/workflow/processes/{processId}/forms",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/workflow/processes/{processId}/forms",
+            produces = { "application/json" }
     )
     default ResponseEntity<List<FormMetadataDto>> getFormMetadata(
-        @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+            @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"formIndexId\" : 0, \"formName\" : \"formName\" }, { \"formIndexId\" : 0, \"formName\" : \"formName\" } ]";
+                    String exampleString = "[ { \"formName\" : \"formName\", \"formMetadataId\" : 0 }, { \"formName\" : \"formName\", \"formMetadataId\" : 0 } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -362,13 +362,13 @@ public interface WorkflowApi {
      * 上传与对应流程相关的样品文件
      *
      * @param processId 指定流程实例 id (required)
-     * @param file      (optional)
+     * @param file  (optional)
      * @return 成功上传 (status code 201)
-     * or 没有上传文件 (status code 400)
-     * or 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过 (status code 403)
-     * or 指定任务不存在 (status code 404)
-     * or 上传文件失败 (status code 500)
-     * or 存储空间不足 (status code 507)
+     *         or 没有上传文件 (status code 400)
+     *         or 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过 (status code 403)
+     *         or 指定任务不存在 (status code 404)
+     *         or 上传文件失败 (status code 500)
+     *         or 存储空间不足 (status code 507)
      */
     @Operation(
             operationId = "uploadFileSample",
@@ -377,7 +377,7 @@ public interface WorkflowApi {
             tags = { "workflow" },
             responses = {
                     @ApiResponse(responseCode = "201", description = "成功上传", content = {
-                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FileIndexDto.class)))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = FileMetadataDto.class))
                     }),
                     @ApiResponse(responseCode = "400", description = "没有上传文件"),
                     @ApiResponse(responseCode = "403", description = "该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过"),
@@ -392,14 +392,14 @@ public interface WorkflowApi {
             produces = { "application/json" },
             consumes = { "multipart/form-data" }
     )
-    default ResponseEntity<List<FileIndexDto>> uploadFileSample(
+    default ResponseEntity<FileMetadataDto> uploadFileSample(
             @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId,
             @Parameter(name = "file", description = "") @RequestPart(value = "file", required = false) MultipartFile file
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"fileIndexId\" : 0, \"fileName\" : \"fileName\", \"fileType\" : \"fileType\" }, { \"fileIndexId\" : 0, \"fileName\" : \"fileName\", \"fileType\" : \"fileType\" } ]";
+                    String exampleString = "{ \"fileName\" : \"fileName\", \"fileMetadataId\" : 0, \"fileType\" : \"fileType\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -532,4 +532,34 @@ public interface WorkflowApi {
 
     }
 
+    /**
+     * DELETE /workflow/processes/{processId}/details : 删除流程
+     * 管理员删除流程
+     *
+     * @param processId 流程实例 Id (required)
+     * @return 成功删除指定流程 (status code 200)
+     *         or 指定流程对该用户不可见 (status code 403)
+     *         or 指定流程不存在 (status code 404)
+     */
+    @Operation(
+            operationId = "deleteProcess",
+            summary = "删除流程",
+            description = "管理员删除流程",
+            tags = { "admin" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功删除指定流程"),
+                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
+                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/workflow/processes/{processId}/details"
+    )
+    default ResponseEntity<Void> deleteProcess(
+            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
 }

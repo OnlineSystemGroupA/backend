@@ -75,7 +75,7 @@ public interface WorkflowService {
      * 上传样品文件
      *
      * @param processInstanceId 指定流程实例 Id
-     * @param file              样品文件
+     * @param file 样品文件
      * @return 样品文件摘要
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
@@ -85,7 +85,7 @@ public interface WorkflowService {
      *                          3: 存储空间不足 <br>
      *                          4: 文件上传失败 <br>
      */
-    List<FileMetadata> uploadSample(String processInstanceId, MultipartFile file) throws ServiceException;
+    FileMetadata uploadSample(String processInstanceId, MultipartFile file) throws ServiceException;
 
     /**
      * 下载样品文件

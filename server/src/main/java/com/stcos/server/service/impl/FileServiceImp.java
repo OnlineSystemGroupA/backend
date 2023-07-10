@@ -1,15 +1,20 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.database.mysql.FileMetadataMapper;
+import com.stcos.server.database.mysql.SampleMetadataMapper;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.file.SampleMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
+import com.stcos.server.service.FileMetadataService;
 import com.stcos.server.service.FileService;
 import com.stcos.server.util.FormUtil;
 import com.stcos.server.util.WordAndPdfUtil;
+import com.stcos.server.service.SampleMetadataService;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -23,6 +28,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -38,54 +45,77 @@ public class FileServiceImp implements FileService {
         this.uploadDirectory = uploadDirectory;
     }
 
+    private SampleMetadataMapper sampleMetadataMapper;
+
+    @Autowired
+    public void setSampleMetadataMapper(SampleMetadataMapper sampleMetadataMapper) {
+        this.sampleMetadataMapper = sampleMetadataMapper;
+    }
+
+    private FileMetadataMapper fileMetadataMapper;
+
+    @Autowired
+    public void setFileMetadataMapper(FileMetadataMapper fileMetadataMapper) {
+        this.fileMetadataMapper = fileMetadataMapper;
+    }
+
+    private FileMetadataService fileMetadataService;
+
+    @Autowired
+    public void setFileMetadataService(FileMetadataService fileMetadataService) {
+        this.fileMetadataService = fileMetadataService;
+    }
+
+    private SampleMetadataService sampleMetadataService;
+
+    @Autowired
+    public void setSampleMetadataService(SampleMetadataService sampleMetadataService) {
+        this.sampleMetadataService = sampleMetadataService;
+    }
 
     @Override
-    public List<FileMetadata> uploadSample(String processId, Long sampleMetadataId, MultipartFile file) throws ServiceException {
+    public FileMetadata uploadSample(String processId, Long sampleMetadataId, MultipartFile file) throws ServiceException {
         // 获取样品元数据
-//        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
-        SampleMetadata sampleMetadata = null;
+        SampleMetadata sampleMetadata = sampleMetadataService.getById(sampleMetadataId);
 
         // 获取当前登录用户，和当前样品的可写用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
+//        sampleMetadata.addWritePermission(userId);
         // 判断当前登录用户是否具有上传权限
         if (sampleMetadata.hasWritePermission(userId)) {
-//            List<FileMetadata> fileMetadataList = new ArrayList<>();
-//
-//            if (files == null || files.size() == 0) {
-//                throw new ServiceException(2); // 没有上传文件
-//            }
-//
-//            File dir = new File(uploadDirectory, String.join("/", processId));
-//            if (!dir.exists() && !dir.mkdirs()) {
-//                throw new ServiceException(3); // 存储空间不足
-//            }
-//
-//            for (MultipartFile file : files) {
-//                String fileName = file.getOriginalFilename();
-//                String uniqueFileName = getUniqueFileName(dir.getAbsolutePath(), fileName);
-//                Path filePath = Paths.get(dir.getAbsolutePath(), uniqueFileName);
-//                try {
-//                    Files.write(filePath, file.getBytes());
-//                    FileMetadata fileMetadata = new FileMetadata(uniqueFileName, file.getContentType(), file.getSize(), userId, LocalDateTime.now(), filePath.toString());
-//                    fileMapper.saveFileMetadata(fileMetadata);
-//                    fileMetadataList.add(fileMetadata);
-//                } catch (IOException e) {
-//                    throw new ServiceException(4); // 文件上传失败
-//                }
-//            }
-//
-//            // 把新旧文件元数据的列表合并
-//            sampleMetadata.mergeFileMetadataList(fileMetadataList);
-//
-//            // 保存样品元数据
-//            fileMapper.saveSample(sampleMetadata);
-//
-//            // 返回样品文件摘要
-//            return fileMetadataList.stream()
-//                    .map(FileMetadataDto::new)
-//                    .toList();
-            return null;
+            Long fileMetadataId = null;
+            FileMetadata fileMetadata = null;
+
+            if (file == null || file.isEmpty()) {
+                throw new ServiceException(2); // 没有上传文件
+            }
+
+            File dir = new File(uploadDirectory, String.join("/", processId));
+            if (!dir.exists() && !dir.mkdirs()) {
+                throw new ServiceException(3); // 存储空间不足
+            }
+
+            String fileName = file.getOriginalFilename();
+            String uniqueFileName = getUniqueFileName(dir.getAbsolutePath(), fileName);
+            Path filePath = Paths.get(dir.getAbsolutePath(), uniqueFileName);
+            try {
+                Files.write(filePath, file.getBytes());
+                fileMetadataId = fileMetadataService.create(uniqueFileName, file.getContentType(), file.getSize(), userId, LocalDateTime.now(), filePath.toString());
+                fileMetadata = fileMetadataService.getById(fileMetadataId);
+            } catch (IOException e) {
+                throw new ServiceException(4); // 文件上传失败
+            }
+
+            // 把新旧文件元数据的列表合并
+            sampleMetadata.updateFileMetadataList(fileMetadataId);
+
+            // 更新样品元数据
+            sampleMetadataService.update(sampleMetadata);
+
+            // 返回样品文件摘要
+            return fileMetadata;
+
         } else {
             throw new ServiceException(1); // 无上传权限的异常
         }
@@ -113,20 +143,20 @@ public class FileServiceImp implements FileService {
     @Override
     public File downloadSample(String processId, Long sampleMetadataId) throws ServiceException {
         // 获取样品元数据
-//        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
-        SampleMetadata sampleMetadata = null;
+        SampleMetadata sampleMetadata = sampleMetadataService.getById(sampleMetadataId);
 
         // 获取当前登录用户，和当前样品的可读用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
         // 判断当前登录用户是否具有下载权限
         if (sampleMetadata.hasReadPermission(userId)) {
-            List<FileMetadata> fileMetadataList = sampleMetadata.getFileMetadataList();
+            List<Long> fileMetadataIdList = sampleMetadata.getFileMetadataIdList();
             List<File> downloadedFiles = new ArrayList<>();
 
             // 下载样品文件
-            for (FileMetadata fileMetadata : fileMetadataList) {
+            for (Number fileMetadataId : fileMetadataIdList) {
                 try {
+                    FileMetadata fileMetadata = fileMetadataService.getById(fileMetadataId);
                     Path filePath = Paths.get(fileMetadata.getFilePath());
                     if (Files.exists(filePath)) {
                         // 创建一个临时文件用于存储下载的文件
@@ -135,7 +165,7 @@ public class FileServiceImp implements FileService {
                         String extension = FilenameUtils.getExtension(fileName);
                         File tempFile = File.createTempFile(baseName, extension.isEmpty() ? "" : "." + extension);
                         // 拷贝文件到临时文件中
-                        Files.copy(filePath, tempFile.toPath());
+                        Files.copy(filePath, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                         // 添加临时文件到下载文件列表中
                         downloadedFiles.add(tempFile);
                     } else {
@@ -147,7 +177,7 @@ public class FileServiceImp implements FileService {
             }
 
             try {
-                return createZipFile(processId, downloadedFiles, fileMetadataList);
+                return createZipFile(processId, downloadedFiles, fileMetadataIdList);
             } catch (IOException e) {
                 throw new ServiceException(3); // 压缩文件时发生错误（也导致文件下载失败）
             }
@@ -157,14 +187,15 @@ public class FileServiceImp implements FileService {
         }
     }
 
-    private File createZipFile(String processId, List<File> files, List<FileMetadata> fileMetadataList) throws IOException {
+    private File createZipFile(String processId, List<File> files, List<Long> fileMetadataIdList) throws IOException {
         String prefix = processId + "_";
         File zipFile = File.createTempFile(prefix, ".zip");
 
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
             for (int i = 0; i < files.size(); i++) {
                 File file = files.get(i);
-                FileMetadata fileMetadata = fileMetadataList.get(i);
+                Long fileMetadataId = fileMetadataIdList.get(i);
+                FileMetadata fileMetadata = fileMetadataService.getById(fileMetadataId);
 
                 zos.putNextEntry(new ZipEntry(fileMetadata.getFileName()));
 
@@ -180,8 +211,7 @@ public class FileServiceImp implements FileService {
     @Override
     public void deleteSample(Long sampleMetadataId) throws ServiceException {
         // 获取样品元数据
-//        SampleMetadata sampleMetadata = fileMapper.selectBySampleId(sampleMetadataId);
-        SampleMetadata sampleMetadata = null;
+        SampleMetadata sampleMetadata = sampleMetadataService.getById(sampleMetadataId);
 
         // 获取当前登录用户，和当前样品的可写用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
@@ -189,15 +219,18 @@ public class FileServiceImp implements FileService {
 
         // 判断当前登录用户是否具有删除权限
         if (writableUsers != null && writableUsers.contains(userId)) {
-            List<FileMetadata> fileMetadataList = sampleMetadata.getFileMetadataList();
-            for (FileMetadata fileMetadata : fileMetadataList) {
+            List<Long> fileMetadataIdList = sampleMetadata.getFileMetadataIdList();
+            for (Long fileMetadataId : fileMetadataIdList) {
                 try {
+                    FileMetadata fileMetadata = fileMetadataService.getById(fileMetadataId);
                     Path filePath = Paths.get(fileMetadata.getFilePath());
                     if (Files.exists(filePath)) {
                         // 删除文件
                         Files.delete(filePath);
                         // 删除文件元数据
-//                        fileMapper.deleteByFileMetadataId(fileMetadata.getFileMetadataId());
+                        fileMetadataService.removeById(fileMetadataId);
+                        // 从样品元数据中删除文件元数据 ID
+                        sampleMetadataService.removeFileMetadataById(sampleMetadataId, fileMetadataId);
                     } else {
                         throw new ServiceException(2); // 文件不存在
                     }
@@ -205,17 +238,39 @@ public class FileServiceImp implements FileService {
                     throw new ServiceException(3); // 文件删除失败
                 }
             }
-
-            // 删除样品元数据
-//            fileMapper.deleteBySampleId(sampleMetadata.getSampleMetadataId());
         } else {
             throw new ServiceException(1); // 无删除权限的异常
         }
     }
 
+//    @Override
+//    public boolean existSample(long sampleMetadataId) {
+//        return sampleMetadataService.existSample(sampleMetadataId);
+//    }
+
+    @Override
+    public void addReadPermission(Long sampleMetadataId, String userId) {
+        sampleMetadataService.addReadPermission(sampleMetadataId, userId);
+    }
+
+    @Override
+    public void addWritePermission(Long sampleMetadataId, String userId) {
+        sampleMetadataService.addWritePermission(sampleMetadataId, userId);
+    }
+
+    @Override
+    public void removeWritePermission(Long sampleMetadataId, String userId) {
+        sampleMetadataService.removeWritePermission(sampleMetadataId, userId);
+    }
+
     @Override
     public Long createMetadata() {
-        return null;
+        return sampleMetadataService.create();
+    }
+
+    @Override
+    public Long createMetadata(List<String> users) {
+        return sampleMetadataService.create(users);
     }
 
     private final String PATH_ROOT = ".";

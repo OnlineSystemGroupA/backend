@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public interface FormMapper {
     void saveForm(Form form);
 
-    void saveFormIndex(FormMetadata formMetadata);
+    void saveFormMetadata(FormMetadata formMetadata);
 
-    FormMetadata selectByFormIndexId(Long formIndexId);
+    FormMetadata selectByFormMetadataId(Long formMetadataId);
 }
