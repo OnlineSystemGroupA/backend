@@ -190,31 +190,15 @@ public class WorkflowController implements WorkflowApi {
 
 
     /**/
-
-
     @Override
-    public ResponseEntity<List<FileIndexDto>> uploadFileSample(String processId, MultipartFile file) {
-        ResponseEntity<List<FileIndexDto>> response = null;
-//        try {
-//            FileOutputStream fileOutputStream = new FileOutputStream("./" + file.getOriginalFilename());
-//            fileOutputStream.write(file.getInputStream().readAllBytes());
-//            fileOutputStream.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return ResponseEntity.ok(null);
+    public ResponseEntity<FileMetadataDto> uploadFileSample(String processId, MultipartFile file) {
+        ResponseEntity<FileMetadataDto> response = null;
         try {
-            List<FileMetadata> fileMetadataList = workflowService.uploadSample(processId, file);
-            List<FileIndexDto> fileIndexDtoList = new ArrayList<>(fileMetadataList.size());
-            for (FileMetadata fileMetadata : fileMetadataList) {
-                fileIndexDtoList.add(
-                        new FileIndexDto(fileMetadata.getFileMetadataId(),
-                                fileMetadata.getFileName(),
-                                fileMetadata.getFileType())
-                );
-            }
-            response = ResponseEntity.ok(fileIndexDtoList);
+            FileMetadata fileMetadata = workflowService.uploadSample(processId, file);
+            FileMetadataDto fileMetadataDto = new FileMetadataDto(fileMetadata.getFileMetadataId(),
+                    fileMetadata.getFileName(),
+                    fileMetadata.getFileType());
+            response = ResponseEntity.ok(fileMetadataDto);
         } catch (ServiceException e) {
             switch (e.getCode()) {
                 case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
