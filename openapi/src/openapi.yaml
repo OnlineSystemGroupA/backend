@@ -433,20 +433,16 @@ paths:
           'multipart/form-data':
             schema:
               properties:
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
+                file:
+                  type: string
+                  format: binary
       responses:
         '201':
           description: 成功上传
           content:
             'application/json':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/fileIndex"
+                $ref: "#/components/schemas/fileMetadata"
         '400':
           description: 没有上传文件
         '403':
@@ -885,17 +881,17 @@ components:
           type: string
           description: 流程发起时间
 
-    fileIndex:
+    fileMetadata:
       type: object
       required:
-        - fileIndexId
+        - fileMetadataId
         - fileName
         - fileType
       properties:
-        fileIndexId:
+        fileMetadataId:
           type: integer
           format: int64
-          description: 文件索引 ID
+          description: 文件元数据 ID
         fileName:
           type: string
           description: 文件名
@@ -913,13 +909,13 @@ components:
 
     FormMetadata:
       required:
-        - formIndexId
+        - formMetadataId
         - formName
       properties:
-        formIndexId:
+        formMetadataId:
           type: integer
           format: int64
-          description: 表单索引 ID
+          description: 表单元数据 ID
         formName:
           type: string
           description: 表单名称
