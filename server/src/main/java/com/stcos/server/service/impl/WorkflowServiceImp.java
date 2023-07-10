@@ -223,7 +223,7 @@ public class WorkflowServiceImp implements WorkflowService {
         }
 
         // 获取样品元数据 ID
-        return (Long) runtimeService.getVariable(processId, "sample");
+        return (Long) runtimeService.getVariable(processId, "sampleMetadata");
     }
 
     private ProcessDetailsService processDetailsService;

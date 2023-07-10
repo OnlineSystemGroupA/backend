@@ -9,14 +9,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * FileIndexDto
+ * FileMetadataDto
  */
 
-@JsonTypeName("fileIndex")
+@JsonTypeName("fileMetadata")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-05-21T21:36:55.308582200+08:00[Asia/Shanghai]")
-public class FileIndexDto {
+public class FileMetadataDto {
 
-  private Long fileIndexId;
+  private Long fileMetadataId;
 
   private String fileName;
 
@@ -24,43 +24,43 @@ public class FileIndexDto {
 
   /**
    * Default constructor
-   * @deprecated Use {@link FileIndexDto#FileIndexDto(Long, String, String)}
+   * @deprecated Use {@link FileMetadataDto#FileMetadataDto(Long, String, String)}
    */
   @Deprecated
-  public FileIndexDto() {
+  public FileMetadataDto() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public FileIndexDto(Long fileIndexId, String fileName, String fileType) {
-    this.fileIndexId = fileIndexId;
+  public FileMetadataDto(Long fileMetadataId, String fileName, String fileType) {
+    this.fileMetadataId = fileMetadataId;
     this.fileName = fileName;
     this.fileType = fileType;
   }
 
-  public FileIndexDto fileIndexId(Long fileIndexId) {
-    this.fileIndexId = fileIndexId;
+  public FileMetadataDto fileMetadataId(Long fileMetadataId) {
+    this.fileMetadataId = fileMetadataId;
     return this;
   }
 
   /**
-   * 文件索引 ID
-   * @return fileIndexId
+   * 文件元数据 ID
+   * @return fileMetadataId
   */
   @NotNull
-  @Schema(name = "fileIndexId", description = "文件索引 ID", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("fileIndexId")
-  public Long getFileIndexId() {
-    return fileIndexId;
+  @Schema(name = "fileMetadataId", description = "文件元数据 ID", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("fileMetadataId")
+  public Long getFileMetadataId() {
+    return fileMetadataId;
   }
 
-  public void setFileIndexId(Long fileIndexId) {
-    this.fileIndexId = fileIndexId;
+  public void setFileMetadataId(Long fileMetadataId) {
+    this.fileMetadataId = fileMetadataId;
   }
 
-  public FileIndexDto fileName(String fileName) {
+  public FileMetadataDto fileName(String fileName) {
     this.fileName = fileName;
     return this;
   }
@@ -80,7 +80,7 @@ public class FileIndexDto {
     this.fileName = fileName;
   }
 
-  public FileIndexDto fileType(String fileType) {
+  public FileMetadataDto fileType(String fileType) {
     this.fileType = fileType;
     return this;
   }
@@ -108,22 +108,22 @@ public class FileIndexDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FileIndexDto fileIndex = (FileIndexDto) o;
-    return Objects.equals(this.fileIndexId, fileIndex.fileIndexId) &&
-        Objects.equals(this.fileName, fileIndex.fileName) &&
-        Objects.equals(this.fileType, fileIndex.fileType);
+    FileMetadataDto fileMetadata = (FileMetadataDto) o;
+    return Objects.equals(this.fileMetadataId, fileMetadata.fileMetadataId) &&
+        Objects.equals(this.fileName, fileMetadata.fileName) &&
+        Objects.equals(this.fileType, fileMetadata.fileType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fileIndexId, fileName, fileType);
+    return Objects.hash(fileMetadataId, fileName, fileType);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FileIndexDto {\n");
-    sb.append("    fileIndexId: ").append(toIndentedString(fileIndexId)).append("\n");
+    sb.append("class FileMetadataDto {\n");
+    sb.append("    fileMetadataId: ").append(toIndentedString(fileMetadataId)).append("\n");
     sb.append("    fileName: ").append(toIndentedString(fileName)).append("\n");
     sb.append("    fileType: ").append(toIndentedString(fileType)).append("\n");
     sb.append("}");
