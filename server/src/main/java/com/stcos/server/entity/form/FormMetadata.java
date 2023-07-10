@@ -82,8 +82,8 @@ public class FormMetadata {
 
     public FormMetadata(String formType) {
         this.formType = formType;
-        readableUsers = new ArrayList<>();
-        writableUsers = new ArrayList<>();
+        this.readableUsers = new ArrayList<>();
+        this.writableUsers = new ArrayList<>();
     }
 
     public void setCreatedBy(String createdBy) {

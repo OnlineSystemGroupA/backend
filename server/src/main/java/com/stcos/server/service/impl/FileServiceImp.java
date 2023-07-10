@@ -83,7 +83,7 @@ public class FileServiceImp implements FileService {
 
 //        sampleMetadata.addWritePermission(userId);
         // 判断当前登录用户是否具有上传权限
-        if (sampleMetadata.hasWritePermission(userId)) {
+        if (sampleMetadataService.hasWritePermission(sampleMetadataId, userId)) {
             Long fileMetadataId = null;
             FileMetadata fileMetadata = null;
 
@@ -107,11 +107,8 @@ public class FileServiceImp implements FileService {
                 throw new ServiceException(4); // 文件上传失败
             }
 
-            // 把新旧文件元数据的列表合并
-            sampleMetadata.updateFileMetadataList(fileMetadataId);
-
             // 更新样品元数据
-            sampleMetadataService.update(sampleMetadata);
+            sampleMetadataService.update(sampleMetadataId, fileMetadataId);
 
             // 返回样品文件摘要
             return fileMetadata;
@@ -148,8 +145,9 @@ public class FileServiceImp implements FileService {
         // 获取当前登录用户，和当前样品的可读用户列表
         String userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUid();
 
+//        sampleMetadata.addReadPermission(userId);
         // 判断当前登录用户是否具有下载权限
-        if (sampleMetadata.hasReadPermission(userId)) {
+        if (sampleMetadataService.hasReadPermission(sampleMetadataId, userId)) {
             List<Long> fileMetadataIdList = sampleMetadata.getFileMetadataIdList();
             List<File> downloadedFiles = new ArrayList<>();
 

@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2023/6/25 13:43
  */
 public interface FormMetadataService extends IService<FormMetadata> {
-    Long create(String formName);
+    Long create(String formType);
 
     void addReadPermission(Long formMetadataId, String userId);
 

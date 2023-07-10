@@ -8,7 +8,7 @@ import java.util.List;
 public interface SampleMetadataService extends IService<SampleMetadata> {
     Long create();
 
-    void update(SampleMetadata sampleMetadata);
+    void update(Long sampleMetadataId, Long fileMetadataId);
 
     void removeFileMetadataById(Long SampleMetadataId, Long fileMetadataId);
 
@@ -17,6 +17,10 @@ public interface SampleMetadataService extends IService<SampleMetadata> {
     void addWritePermission(Long sampleMetadataId, String userId);
 
     void removeWritePermission(Long fileMetadataId, String userId);
+
+    boolean hasReadPermission(Long sampleMetadataId, String userId);
+
+    boolean hasWritePermission(Long sampleMetadataId, String userId);
 
 //    boolean existSample(long sampleMetadataId);
 //

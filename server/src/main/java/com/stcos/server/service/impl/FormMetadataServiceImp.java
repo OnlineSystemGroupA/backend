@@ -21,8 +21,8 @@ import java.util.List;
 public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, FormMetadata> implements FormMetadataService {
 
     @Override
-    public Long create(String formName) {
-        FormMetadata formMetadata = new FormMetadata(formName);
+    public Long create(String formType) {
+        FormMetadata formMetadata = new FormMetadata(formType);
         if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
         return formMetadata.getFormMetadataId();
     }
@@ -59,8 +59,8 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     }
 
     @Override
-    public Long create(String formName, List<String> users) {
-        FormMetadata formMetadata = new FormMetadata(formName);
+    public Long create(String formType, List<String> users) {
+        FormMetadata formMetadata = new FormMetadata(formType);
         formMetadata.addReadPermission(users);
         if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
         return formMetadata.getFormMetadataId();
