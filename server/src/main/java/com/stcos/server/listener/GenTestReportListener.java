@@ -1,5 +1,6 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.process.TaskName;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,5 +12,9 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class GenTestReportListener {
+public class GenTestReportListener extends OperatorTaskListener {
+
+    public GenTestReportListener() {
+        super(TaskName.NAME_TASK_26);
+    }
 }

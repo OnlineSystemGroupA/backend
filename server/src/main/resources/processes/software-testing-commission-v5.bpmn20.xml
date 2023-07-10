@@ -302,14 +302,14 @@
       </userTask>
       <exclusiveGateway id="sid-F2DCA883-55CF-45FD-B420-FFCE2AEFF0B5" name="审核是否通过" default="sid-2BA4EDCC-DCBE-42BE-8FA4-ED57FB88CE6A"></exclusiveGateway>
       <sequenceFlow id="sid-E1A8C344-7441-4B46-8C31-49F300A4E956" name="提交测试报告" sourceRef="sid-9304962D-F8AF-42A3-94AF-BE2E043A79BE" targetRef="sid-ABEA13AC-A7F4-47A9-9243-54EC81B43ECA"></sequenceFlow>
-      <userTask id="sid-F510F4F6-6092-4F87-8C1C-85E23DE1E0BF" name="用户审核测试报告" flowable:assignee="${client}" flowable:formFieldValidation="true">
+      <userTask id="sid-F510F4F6-6092-4F87-8C1C-85E23DE1E0BF" name="客户审核测试报告" flowable:assignee="${client}" flowable:formFieldValidation="true">
         <extensionElements>
-          <flowable:taskListener event="create" expression="${verifyTestReportListener.create(task)}"></flowable:taskListener>
-          <flowable:taskListener event="complete" expression="${verifyTestReportListener.complete(task)}"></flowable:taskListener>
+          <flowable:taskListener event="create" expression="${clientVerifyTestReportListener.create(task)}"></flowable:taskListener>
+          <flowable:taskListener event="complete" expression="${clientVerifyTestReportListener.complete(task)}"></flowable:taskListener>
           <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
         </extensionElements>
       </userTask>
-      <userTask id="sid-35ADB04B-5EFB-405D-A967-904173323D30" name="测试部修改测试文档" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
+      <userTask id="sid-35ADB04B-5EFB-405D-A967-904173323D30" name="测试部修改测试报告" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${modifyTestReportListener.create(task)}"></flowable:taskListener>
           <flowable:taskListener event="complete" expression="${modifyTestReportListener.complete(task)}"></flowable:taskListener>

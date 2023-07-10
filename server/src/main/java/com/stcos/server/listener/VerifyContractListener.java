@@ -1,5 +1,6 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.process.TaskName;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,5 +12,8 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class VerifyContractListener {
+public class VerifyContractListener extends OperatorTaskListener {
+    public VerifyContractListener() {
+        super(TaskName.NAME_TASK_15);
+    }
 }

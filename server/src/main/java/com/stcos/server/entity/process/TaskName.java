@@ -45,9 +45,9 @@ public class TaskName {
     /*   生成测试报告   */
     public final static String NAME_TASK_26 = "测试部生成测试报告";
     public final static String NAME_TASK_27 = "测试部主管审核测试报告";
-    public final static String NAME_TASK_28 = "用户审核测试报告";
+    public final static String NAME_TASK_28 = "客户审核测试报告";
     public final static String NAME_TASK_29 = "授权签字人审核测试报告";
-    public final static String NAME_TASK_30 = "测试部修改测试文档";
+    public final static String NAME_TASK_30 = "测试部修改测试报告";
     public final static String NAME_TASK_31 = "测试文档归档";
     /*   确认测试报告   */
     public final static String NAME_TASK_32 = "市场部发送测试报告";
