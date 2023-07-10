@@ -7,9 +7,9 @@ import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import static com.stcos.server.entity.form.FormType.*;
 import static com.stcos.server.entity.process.ProcessVariables.*;
 
 /*
@@ -70,33 +70,33 @@ public class ProcessVariablesBuilder {
         variableMap.put(VAR_STATE, "进行中");                    // 流程状态
         variableMap.put(VAR_CURRENT_TASK, "填写申请表");          // 当前正在进行的任务
         /*              表单元数据              */
-        variableMap.put(VAR_APPLICATION_FORM_METADATA,
+        variableMap.put(TYPE_APPLICATION_FORM,
                 formService.createMetadata(projectId, "软件项目委托测试申请表"));        // 软件项目委托测试申请表元数据 ID
-        variableMap.put(VAR_APPLICATION_VERIFY_FORM_METADATA,
+        variableMap.put(TYPE_APPLICATION_VERIFY_FORM,
                 formService.createMetadata(projectId, "软件项目委托测试申请表（审核部分）")); // 软件项目委托测试申请表之审核信息元数据 ID
-        variableMap.put(VAR_CONTRACT_FORM_METADATA,
+        variableMap.put(TYPE_CONTRACT_FORM,
                 formService.createMetadata(projectId, "软件委托测试合同"));           // 软件委托测试合同元数据 ID
-        variableMap.put(VAR_CONFIDENTIALITY_FORM_METADATA,
+        variableMap.put(TYPE_CONFIDENTIALITY_FORM,
                 formService.createMetadata(projectId, "软件项目委托测试保密协议"));    // 软件项目委托测试保密协议元数据 ID
-        variableMap.put(VAR_DOCUMENT_REVIEW_FORM_METADATA,
+        variableMap.put(TYPE_DOCUMENT_REVIEW_FORM,
                 formService.createMetadata(projectId, "软件文档评审表"));            // 软件文档评审表元数据 ID
-        variableMap.put(VAR_QUOTATION_FORM_METADATA,
+        variableMap.put(TYPE_QUOTATION_FORM,
                 formService.createMetadata(projectId, "报价单"));                  // 报价单元数据 ID
-        variableMap.put(VAR_REPORT_VERIFY_FORM_METADATA,
+        variableMap.put(TYPE_REPORT_VERIFY_FORM,
                 formService.createMetadata(projectId, "测试报告检查表"));             // 测试报告检查表元数据 ID
-        variableMap.put(VAR_TEST_FUNCTION_FORM_METADATA,
+        variableMap.put(TYPE_TEST_FUNCTION_FORM,
                 formService.createMetadata(projectId, "委托测试软件功能列表"));        // 委托测试软件功能列表元数据 ID
-        variableMap.put(VAR_TEST_PLAN_FORM_METADATA,
+        variableMap.put(TYPE_TEST_PLAN_FORM,
                 formService.createMetadata(projectId, "软件测试方案"));              // 软件测试方案元数据 ID
-        variableMap.put(VAR_TEST_PLAN_VERIFY_FORM_METADATA,
+        variableMap.put(TYPE_TEST_PLAN_VERIFY_FORM,
                 formService.createMetadata(projectId, "测试方案评审表"));            // 测试方案评审表元数据 ID
-        variableMap.put(VAR_TEST_PROBLEM_FORM_METADATA,
+        variableMap.put(TYPE_TEST_PROBLEM_FORM,
                 formService.createMetadata(projectId, "软件测试问题清单"));          // 软件测试问题清单元数据 ID
-        variableMap.put(VAR_TEST_RECORDS_FORM_METADATA,
+        variableMap.put(TYPE_TEST_RECORDS_FORM,
                 formService.createMetadata(projectId, "软件测试记录"));             // 软件测试记录元数据 ID
-        variableMap.put(VAR_TEST_REPORT_FORM_METADATA,
-                formService.createMetadata(projectId, "软件测试报告")); // 软件测试报告元数据 ID
-        variableMap.put(VAR_TEST_WORK_CHECK_FORM_METADATA,
+        variableMap.put(TYPE_TEST_REPORT_FORM,
+                formService.createMetadata(projectId, "软件测试报告"));              // 软件测试报告元数据 ID
+        variableMap.put(TYPE_TEST_WORK_CHECK_FORM,
                 formService.createMetadata(projectId, "软件项目委托测试工作检查表"));   // 软件项目委托测试工作检查表元数据 ID
         /*             样品元数据              */
         variableMap.put(VAR_SAMPLE_METADATA, fileService.createMetadata());             // 样品元数据 ID

@@ -29,6 +29,12 @@ public class VerifyApplicationListener extends OperatorTaskListener {
     }
 
     @Override
+    public void create(DelegateTask task) {
+        userService.addProcessInstance(task.getAssignee(), task.getProcessInstanceId());
+        super.create(task);
+    }
+
+    @Override
     public void complete(DelegateTask task) {
         super.complete(task);
         Long formMetadataId = (Long) task.getVariable(FormType.TYPE_APPLICATION_VERIFY_FORM);

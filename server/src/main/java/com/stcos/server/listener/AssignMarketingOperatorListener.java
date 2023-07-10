@@ -38,8 +38,7 @@ public class AssignMarketingOperatorListener extends OperatorTaskListener {
     @Override
     public void complete(DelegateTask task) {
         super.complete(task);
-        String marketingOperatorUid = (String) task.getVariable("marketingOperator", false);
-        userService.addProcessInstance(marketingOperatorUid, task.getProcessInstanceId()); // 使流程对市场部员工可见
+
     }
 
 }

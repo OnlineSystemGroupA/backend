@@ -1,13 +1,14 @@
 package com.stcos.server.listener;
 
 import com.stcos.server.entity.form.ApplicationForm;
-import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+import static com.stcos.server.entity.form.FormType.TYPE_APPLICATION_FORM;
+import static com.stcos.server.entity.form.FormType.TYPE_TEST_FUNCTION_FORM;
 import static com.stcos.server.entity.process.ProcessVariables.*;
 
 /*
@@ -42,8 +43,8 @@ public class FillOutAppFormListener extends ClientTaskListener {
         userService.addProcessInstance(clientUid, task.getProcessInstanceId());
 
         // 获取表单元数据 ID
-        Long applicationFormMetadataId = (Long) task.getVariable(VAR_APPLICATION_FORM_METADATA);
-        Long testFunctionFormId = (Long) task.getVariable(VAR_TEST_FUNCTION_FORM_METADATA);
+        Long applicationFormMetadataId = (Long) task.getVariable(TYPE_APPLICATION_FORM);
+        Long testFunctionFormId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
 
         // 为客户开放读权限
         formService.addReadPermission(applicationFormMetadataId, clientUid);
@@ -55,11 +56,11 @@ public class FillOutAppFormListener extends ClientTaskListener {
         super.complete(task);
 
         // 为其它流程参与者开放读权限
-        updateReadPermission(VAR_APPLICATION_FORM_METADATA, PARTICIPANT_SET, task);
-        updateReadPermission(VAR_TEST_FUNCTION_FORM_METADATA, PARTICIPANT_SET, task);
+        updateReadPermission(TYPE_APPLICATION_FORM, PARTICIPANT_SET, task);
+        updateReadPermission(TYPE_TEST_FUNCTION_FORM, PARTICIPANT_SET, task);
 
         // 更新任务详情
-        Long metadataId = (Long) task.getVariable(FormType.TYPE_APPLICATION_FORM);
+        Long metadataId = (Long) task.getVariable(TYPE_APPLICATION_FORM);
         ApplicationForm form = (ApplicationForm) formService.getForm(metadataId);
         task.setVariable(VAR_TITLE, form.getSoftwareName());
 
