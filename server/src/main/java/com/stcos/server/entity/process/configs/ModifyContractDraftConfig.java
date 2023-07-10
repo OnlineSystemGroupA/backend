@@ -1,7 +1,6 @@
 package com.stcos.server.entity.process.configs;
 
 import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.process.TaskConfig;
 
 import java.util.Set;
 
@@ -16,7 +15,7 @@ public class ModifyContractDraftConfig extends TaskConfig {
 
     public ModifyContractDraftConfig() {
         super(
-                Set.of(FormType.TYPE_CONTRACT_FORM),
+                Set.of(FormType.TYPE_CONTRACT_FORM, FormType.TYPE_CONFIDENTIALITY_FORM),
                 Set.of()
         );
     }

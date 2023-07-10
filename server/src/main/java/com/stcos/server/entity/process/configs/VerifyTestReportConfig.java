@@ -1,7 +1,6 @@
 package com.stcos.server.entity.process.configs;
 
 import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.process.TaskConfig;
 
 import java.util.Set;
 

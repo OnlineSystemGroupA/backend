@@ -1,4 +1,4 @@
-package com.stcos.server.entity.process;
+package com.stcos.server.entity.process.configs;
 
 import com.stcos.server.entity.email.EmailContent;
 import com.stcos.server.service.FormService;

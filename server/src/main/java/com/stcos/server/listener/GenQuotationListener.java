@@ -28,11 +28,4 @@ public class GenQuotationListener extends OperatorTaskListener {
         super(TaskName.NAME_TASK_08);
     }
 
-    @Override
-    public void complete(DelegateTask task) {
-        super.complete(task);
-        Long formMetadataId = (Long) task.getVariable(FormType.TYPE_QUOTATION_FORM);
-        formService.addReadPermission(formMetadataId, (String) task.getVariable("client")); // 为客户分配读权限
-
-    }
 }

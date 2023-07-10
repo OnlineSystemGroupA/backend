@@ -1,6 +1,6 @@
 package com.stcos.server.util;
 
-import com.stcos.server.entity.process.TaskConfig;
+import com.stcos.server.entity.process.configs.TaskConfig;
 import com.stcos.server.entity.process.TaskName;
 import com.stcos.server.entity.process.configs.*;
 import com.stcos.server.exception.ServerErrorException;
@@ -9,7 +9,6 @@ import lombok.experimental.UtilityClass;
 import org.flowable.task.api.Task;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

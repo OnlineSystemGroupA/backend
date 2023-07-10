@@ -30,14 +30,8 @@ public class VerifyApplicationListener extends OperatorTaskListener {
 
     @Override
     public void create(DelegateTask task) {
-        userService.addProcessInstance(task.getAssignee(), task.getProcessInstanceId());
         super.create(task);
+        userService.addProcessInstance(task.getAssignee(), task.getProcessInstanceId());
     }
 
-    @Override
-    public void complete(DelegateTask task) {
-        super.complete(task);
-        Long formMetadataId = (Long) task.getVariable(FormType.TYPE_APPLICATION_VERIFY_FORM);
-        formService.addReadPermission(formMetadataId, (String) task.getVariable("client")); // 为客户分配读权限
-    }
 }
