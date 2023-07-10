@@ -44,7 +44,7 @@ public class FormMetadata {
     private long formId = -1;
 
     /**
-     * 表单类型
+     * 表单类型（中文）
      */
     private String formType;
 

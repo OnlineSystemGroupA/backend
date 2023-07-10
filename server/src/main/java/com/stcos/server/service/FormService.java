@@ -53,7 +53,7 @@ public interface FormService {
 
     Long createMetadata(String s, String clientUid);
 
-    Long createMetadata(String formName, List<String> users);
+    Long createMetadata(String formType, List<String> users);
 
     void removeWritePermission(Long formMetadataId, String assignee);
 

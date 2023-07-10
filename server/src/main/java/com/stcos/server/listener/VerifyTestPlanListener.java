@@ -26,4 +26,9 @@ public class VerifyTestPlanListener extends OperatorTaskListener {
         // 使当前实例对用户可见
         userService.addProcessInstance(uid, task.getProcessInstanceId());
     }
+
+    @Override
+    public void complete(DelegateTask task) {
+        super.complete(task);
+    }
 }

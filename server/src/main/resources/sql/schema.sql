@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS t_form_metadata
 (
     form_metadata_id   bigint AUTO_INCREMENT, -- 表单元数据 ID，保存对象时由数据库自动赋值
     form_id            bigint      NOT NULL,  --  表单元数据对应表单的 ID
-    form_name          VARCHAR(64) NOT NULL,  -- 表单名
+    form_type          VARCHAR(64) NOT NULL,  -- 表单名
     created_by         VARCHAR(64),           -- 表单的创建者 (userId)
     created_date       DATETIME,              -- 表单创建时间
     last_modified_by   VARCHAR(64),           -- 表单最后一次被谁修改 (userId)

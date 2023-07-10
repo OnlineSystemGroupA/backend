@@ -4,6 +4,8 @@ import com.stcos.server.entity.dto.ProcessDetailsDto;
 import com.stcos.server.entity.process.ProcessDetails;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDateTime;
+
 /**
  * description
  *
@@ -16,13 +18,19 @@ import lombok.experimental.UtilityClass;
 public class ProcessDetailsMapper {
 
     /**
-     *
      * @param processDetails
      * @param currentTaskName
      * @param index
      * @return
      */
     public ProcessDetailsDto toProcessDetailsDto(ProcessDetails processDetails, String currentTaskName, Integer index) {
+        LocalDateTime startDate = processDetails.getStartDate();
+        LocalDateTime dueDate = processDetails.getDueDate();
+
+        String startDateStr = null, dueDateStr = null;
+        if (startDate != null) startDateStr = startDate.toString();
+        if (dueDate != null) dueDateStr = dueDate.toString();
+
         return new ProcessDetailsDto(
                 processDetails.getProjectId(),
                 processDetails.getTitle(),
@@ -34,8 +42,8 @@ public class ProcessDetailsMapper {
                 processDetails.getTelephone(),
                 processDetails.getEmail(),
                 processDetails.getAddress(),
-                processDetails.getStartDate().toString(),
-                processDetails.getDueDate().toString(),
+                startDateStr,
+                dueDateStr,
                 index,
                 currentTaskName
         );

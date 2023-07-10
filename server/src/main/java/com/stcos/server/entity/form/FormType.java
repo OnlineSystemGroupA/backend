@@ -20,7 +20,7 @@ public class FormType {
 
     public final static String TYPE_APPLICATION_FORM = "ApplicationForm";
     public final static String TYPE_APPLICATION_VERIFY_FORM = "ApplicationVerifyForm";
-    public final static String TYPE_CONTRACT_FORM = "ContractForm.java";
+    public final static String TYPE_CONTRACT_FORM = "ContractForm";
     public final static String TYPE_CONFIDENTIALITY_FORM = "ConfidentialityForm";
     public final static String TYPE_DOCUMENT_REVIEW_FORM = "DocumentReviewForm";
     public final static String TYPE_QUOTATION_FORM = "QuotationForm";
