@@ -110,6 +110,9 @@ public class AccountServiceImp implements AccountService {
         client.setCompanyEmail(clientDetailsDto.getCompanyEmail());
         client.setCompanyAddress(clientDetailsDto.getCompanyAddress());
         client.setCompanyFax(clientDetailsDto.getCompanyFax());
+        client.setCompanyTelephone(clientDetailsDto.getCompanyTelephone());
+        client.setCompanyPostcode(clientDetailsDto.getCompanyPostcode());
+        client.setCompanyWebsite(clientDetailsDto.getCompanyWebsite());
         client.setCompanyPhone(clientDetailsDto.getCompanyPhone());
         client.setEmail(clientDetailsDto.getEmail());
         client.setGender(clientDetailsDto.getGender());
