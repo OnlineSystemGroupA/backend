@@ -5,7 +5,7 @@ import com.stcos.server.entity.archive.ProcessRecord;
 import com.stcos.server.exception.ServerErrorException;
 
 /**
- * description
+ * 这个服务接口提供了管理流程记录的方法
  *
  * @author Kekwy
  * @version 1.0

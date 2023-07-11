@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
 /**
- * description
+ * 这个服务接口提供了管理 'Operator' 实体的方法啊啊啊啊啊
  *
  * @author Kekwy
  * @version 1.0
@@ -37,7 +37,4 @@ public interface SettingService {
      * @return 授权签字人 ID
      */
     String getSignatory();
-
-
-
 }

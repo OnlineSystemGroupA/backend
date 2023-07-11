@@ -37,7 +37,7 @@ class AuthServiceImpTest {
 
     // Test normal client login
     @Test
-    void clientLogin() throws ServiceException {
+    void clientLoginSuccessful() throws ServiceException {
         Random random = new Random();
         int randomNumber = random.nextInt(2147483647);
 

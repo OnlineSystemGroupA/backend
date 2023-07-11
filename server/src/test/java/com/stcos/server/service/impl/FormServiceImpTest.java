@@ -65,7 +65,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void saveOrUpdateForm_WithoutWritePermission_ThrowsServiceException() {
+    void saveOrUpdateFormWithInvalidPermission() {
         // Expect a ServiceException to be thrown
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             formService.saveOrUpdateForm(formMetadataId, form);
@@ -74,7 +74,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void saveOrUpdateForm_WithWritePermission() throws ServiceException {
+    void saveOrUpdateFormSuccessful() throws ServiceException {
         // Simulate the current logged-in user having write permission
         formMetadataService.addWritePermission(formMetadataId, testUid); // Test "addWritePermission()"
 
@@ -87,7 +87,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void getForm_WithoutReadPermission_ThrowsServiceException() throws Exception {
+    void getFormWithInvalidPermission() {
         // Expect a ServiceException to be thrown
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             formService.getForm(formMetadataId, mockUser.getUid());
@@ -96,7 +96,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void getForm_WithReadPermission_ThrowsServiceException() throws Exception {
+    void getFormSuccessful() throws Exception {
         // Simulate the current logged-in user having write permission
         formService.addWritePermission(formMetadataId, testUid);
 
