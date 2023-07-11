@@ -238,37 +238,15 @@ public class WorkflowController implements WorkflowApi {
 
     @Override
     public ResponseEntity<ProcessDetailsDto> getProcessDetails(String processId) {
-
-        ProcessDetails processDetails = workflowService.getProcessDetails(processId);
-
-//        String currentTaskName = processDetails.getCurrentTaskName();
-        String currentTaskName = null;
+        ProcessDetails processDetails = null;
         try {
-            currentTaskName = workflowService.getTaskById(processId).getName();
+            processDetails = workflowService.getProcessDetails(processId);
         } catch (ServiceException e) {
-            throw new RuntimeException(e);
+            if (e.getCode() == 0) return ResponseEntity.status(404).build();
         }
-
+        String currentTaskName = workflowService.getTaskById(processId).getName();
         int index = TaskUtil.getTaskGroupIndex(currentTaskName);
-
         ProcessDetailsDto processDetailsDto = ProcessDetailsMapper.toProcessDetailsDto(processDetails, currentTaskName, index);
-
-
-//        ResponseEntity<TaskDto> response = null;
-//        try {
-//            task = service.getTaskById(taskId);
-//        } catch (ServiceException e) {
-//            switch (e.getCode()) {
-//                case 0 -> response = ResponseEntity.status(403).build();
-//                case 1 -> response = ResponseEntity.status(404).build();
-//            }
-//        }
-//        if (response == null) { //未接收到下层传入的Exception
-//            if (task == null || !task.getId().equals(taskId)) throw new RuntimeException("Error At getTaskById");
-//            response = ResponseEntity.ok
-//                    (new TaskDto(task.getProcessInstanceId(), taskId, task.getName(), task.getDescription(), task.getOwner()));
-//        }
-//
         return ResponseEntity.ok(processDetailsDto);
     }
 

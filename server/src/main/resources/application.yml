@@ -92,8 +92,8 @@ mybatis-plus:
     # 开启自动提交事务
     default-executor-type: SIMPLE
     # 配置MyBatis日志文件
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
 
   # 设置MyBatis-Plus的全局配置
   global-config:

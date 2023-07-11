@@ -47,6 +47,7 @@ public class FormUtil {
     }};
 
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static File replaceSpecialText(Form form, String formName, String fileName) {
         try {
             URI uri = Objects.requireNonNull(FormUtil.class.getResource(FORM_TEMPLATE_FILE_MAP.get(formName))).toURI();
@@ -55,6 +56,13 @@ public class FormUtil {
             //替换内容
             Map<String, String> map = form.toTemplateFormat();
             WordAndPdfUtil.replaceWord(document, map);
+
+            File file = new File(fileName);
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+
             //返回流
             FileOutputStream outStream = new FileOutputStream(fileName);
             document.write(outStream);

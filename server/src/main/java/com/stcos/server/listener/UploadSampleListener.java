@@ -1,6 +1,7 @@
 package com.stcos.server.listener;
 
 import com.stcos.server.entity.file.SampleMetadata;
+import com.stcos.server.entity.process.ProcessVariables;
 import com.stcos.server.entity.process.TaskName;
 import com.stcos.server.service.SampleMetadataService;
 import org.flowable.task.service.delegate.DelegateTask;
@@ -29,14 +30,12 @@ public class UploadSampleListener extends ClientTaskListener {
         super(TaskName.NAME_TASK_19);
     }
 
-
-
     @Override
     public void create(DelegateTask task) {
         super.create(task);
 
         // 为用户开启样品上传权限
-        Long sampleMetadataId = (Long) task.getVariable("sampleMetadata");
+        Long sampleMetadataId = (Long) task.getVariable(ProcessVariables.VAR_SAMPLE_METADATA);
         sampleMetadataService.addWritePermission(sampleMetadataId, task.getAssignee());
     }
 
@@ -45,6 +44,13 @@ public class UploadSampleListener extends ClientTaskListener {
         super.complete(task);
 
         // 关闭样品上传权限，开启所有用户对样品的下载权限
+        Long sampleMetadataId = (Long) task.getVariable(ProcessVariables.VAR_SAMPLE_METADATA);
+        sampleMetadataService.removeWritePermission(sampleMetadataId, task.getAssignee());
 
+        // 为所有用户添加读权限
+        for (String s : ProcessVariables.PARTICIPANT_SET) {
+            String uid = (String) task.getVariable(s);
+            sampleMetadataService.addReadPermission(sampleMetadataId, uid);
+        }
     }
 }

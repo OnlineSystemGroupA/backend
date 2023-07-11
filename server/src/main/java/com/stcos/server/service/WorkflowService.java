@@ -29,13 +29,9 @@ public interface WorkflowService {
      * 通过 id 查询某一个任务
      *
      * @param taskId 任务Id
-     * @return 对应任务
-     * @throws ServiceException 各异常状态码含义如下 <br>
-     *                          code: <br>
-     *                          0: 指定任务对该用户不可见 <br>
-     *                          1: 指定任务不存在 <br>
+     * @return 对应任务实例
      */
-    Task getTaskById(String taskId) throws ServiceException;
+    Task getTaskById(String taskId);
 
     /**
      * 获取与当前用户可见的任务列表
@@ -128,7 +124,7 @@ public interface WorkflowService {
 
     void setParticipants(String processId, String userId) throws ServiceException;
 
-    ProcessDetails getProcessDetails(String processId);
+    ProcessDetails getProcessDetails(String processId) throws ServiceException;
 
     Resource getFormFile(String processId, String formName) throws ServiceException;
 
