@@ -26,30 +26,30 @@ public class OperatorServiceImpTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    Operator operator = null;
+    private Operator testOperator = null;
 
     @BeforeEach
     void setUp() {
-        operator = new Operator();
-        operator.setJobNumber("20xxx0100");
-        operator.setPassword(passwordEncoder.encode("testPassword"));
-        operator.setCreatedDate(LocalDateTime.now());
-        operator.setEmail("testEmail@test.com");
-        operator.setPhone("1234567890");
-        operator.setRealName("testRealName");
-        operator.setDepartment("testDepartment");
-        operator.setPosition("testPosition");
-        operator.setAccountNonExpired(true);
-        operator.setAccountNonLocked(true);
-        operator.setCredentialsNonExpired(true);
-        operator.setEnabled(true);
+        testOperator = new Operator();
+        testOperator.setJobNumber("20xxx0100");
+        testOperator.setPassword(passwordEncoder.encode("testPassword"));
+        testOperator.setCreatedDate(LocalDateTime.now());
+        testOperator.setEmail("testEmail@test.com");
+        testOperator.setPhone("1234567890");
+        testOperator.setRealName("testRealName");
+        testOperator.setDepartment("testDepartment");
+        testOperator.setPosition("testPosition");
+        testOperator.setAccountNonExpired(true);
+        testOperator.setAccountNonLocked(true);
+        testOperator.setCredentialsNonExpired(true);
+        testOperator.setEnabled(true);
     }
 
     @Test
     void getById() {
-        operatorService.createOperator(operator);
+        operatorService.createOperator(testOperator);
 
-        Operator retrievedOperator = operatorService.getById(operator);
+        Operator retrievedOperator = operatorService.getById(testOperator);
         assertEquals("20xxx0100", retrievedOperator.getJobNumber());
 
         retrievedOperator = operatorService.getById("op-2");
@@ -58,14 +58,14 @@ public class OperatorServiceImpTest {
 
     @Test
     void getByJobNumber() {
-        operatorService.createOperator(operator);
+        operatorService.createOperator(testOperator);
         Operator retrievedOperator = operatorService.getByJobNumber("20xxx0100");
         assertEquals("testDepartment", retrievedOperator.getDepartment());
     }
 
     @Test
     void getByDepartment() {
-        operatorService.createOperator(operator);
+        operatorService.createOperator(testOperator);
         List<Operator> operators = operatorService.getByDepartment("testDepartment");
         assertTrue(operators.size() > 0);
         assertEquals("20xxx0100", operators.get(0).getJobNumber());
@@ -73,48 +73,48 @@ public class OperatorServiceImpTest {
 
     @Test
     void addProcessInstance() {
-        operatorService.createOperator(operator);
-        operatorService.addProcessInstance(operator.getUid(), "testProcessInstance");
-        Operator updatedOperator = operatorService.getById(operator.getUid());
+        operatorService.createOperator(testOperator);
+        operatorService.addProcessInstance(testOperator.getUid(), "testProcessInstance");
+        Operator updatedOperator = operatorService.getById(testOperator.getUid());
         assertTrue(updatedOperator.getProcessInstances().contains("testProcessInstance"));
     }
 
     @Test
     void existEmail() {
-        operatorService.createOperator(operator);
-        assertFalse(operatorService.existEmail("testEmail@test.com", operator.getUid()));
+        operatorService.createOperator(testOperator);
+        assertFalse(operatorService.existEmail("testEmail@test.com", testOperator.getUid()));
     }
 
     @Test
     void existPhone() {
-        operatorService.createOperator(operator);
-        assertFalse(operatorService.existPhone("1234567890", operator.getUid()));
+        operatorService.createOperator(testOperator);
+        assertFalse(operatorService.existPhone("1234567890", testOperator.getUid()));
     }
 
     @Test
     void getRealNameById() {
-        operatorService.createOperator(operator);
-        assertEquals("testRealName", operatorService.getRealNameById(operator.getUid()));
+        operatorService.createOperator(testOperator);
+        assertEquals("testRealName", operatorService.getRealNameById(testOperator.getUid()));
     }
 
     @Test
     void getAll() {
-        operatorService.createOperator(operator);
+        operatorService.createOperator(testOperator);
         List<Operator> operators = operatorService.getAll();
         assertTrue(operators.size() > 0);
     }
 
     @Test
     void deleteOperator() {
-        operatorService.createOperator(operator);
-        assertNotNull(operatorService.getById(operator));
-        operatorService.deleteOperator(operator);
-        assertNull(operatorService.getById(operator));
+        operatorService.createOperator(testOperator);
+        assertNotNull(operatorService.getById(testOperator));
+        operatorService.deleteOperator(testOperator);
+        assertNull(operatorService.getById(testOperator));
     }
 
     @Test
     void createOperator() {
-        operatorService.createOperator(operator);
-        assertNotNull(operatorService.getById(operator));
+        operatorService.createOperator(testOperator);
+        assertNotNull(operatorService.getById(testOperator));
     }
 }

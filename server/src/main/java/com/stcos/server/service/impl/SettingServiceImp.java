@@ -55,6 +55,4 @@ public class SettingServiceImp extends ServiceImpl<SettingMapper, Setting> imple
             throw new ServerErrorException(e);
         }
     }
-
-
 }

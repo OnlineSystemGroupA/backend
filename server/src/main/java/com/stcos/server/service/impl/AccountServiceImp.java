@@ -103,8 +103,6 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public void updateClientDetails(Client client, ClientDetailsDto clientDetailsDto) throws ServiceException {
-        if (clientService.existEmail(clientDetailsDto.getEmail(), client.getUid())) throw new ServiceException(0);
-        if (clientService.existPhone(clientDetailsDto.getPhone(), client.getUid())) throw new ServiceException(1);
         client.setRealName(clientDetailsDto.getRealName());
         client.setCompany(clientDetailsDto.getCompany());
         client.setCompanyEmail(clientDetailsDto.getCompanyEmail());
@@ -127,8 +125,6 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public void updateOperatorDetails(Operator operator, OperatorDetailsDto operatorDetailsDto) throws ServiceException {
-        if (operatorService.existEmail(operatorDetailsDto.getEmail(), operator.getUid())) throw new ServiceException(0);
-        if (operatorService.existPhone(operatorDetailsDto.getPhone(), operator.getUid())) throw new ServiceException(1);
         operator.setRealName(operatorDetailsDto.getRealName());
         operator.setDepartment(operatorDetailsDto.getDepartment());
         operator.setPosition(operatorDetailsDto.getPosition());

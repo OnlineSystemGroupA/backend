@@ -25,66 +25,66 @@ public class ClientServiceImpTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    Client client = null;
+    private Client testClient = null;
 
     @BeforeEach
     void setUp() {
-        client = new Client("testUsername", passwordEncoder.encode("testPassword"), "testEmail@test.com");
+        testClient = new Client("testUsername", passwordEncoder.encode("testPassword"), "testEmail@test.com");
     }
 
     @Test
     void getById() {
-        clientService.register(client);
+        clientService.register(testClient);
 
-        Client retrievedClient = clientService.getById(client.getUid());
+        Client retrievedClient = clientService.getById(testClient.getUid());
         assertEquals("testUsername", retrievedClient.getUsername());
     }
 
     @Test
     void getByUsername() {
-        clientService.register(client);
+        clientService.register(testClient);
         Client retrievedClient = clientService.getByUsername("testUsername");
         assertEquals("testUsername", retrievedClient.getUsername());
     }
 
     @Test
     void addProcessInstance() {
-        clientService.register(client);
-        clientService.addProcessInstance(client.getUid(), "testProcessInstance");
-        Client updatedClient = clientService.getById(client.getUid());
+        clientService.register(testClient);
+        clientService.addProcessInstance(testClient.getUid(), "testProcessInstance");
+        Client updatedClient = clientService.getById(testClient.getUid());
         assertTrue(updatedClient.getProcessInstances().contains("testProcessInstance"));
     }
 
     @Test
     void existEmail() {
-        clientService.register(client);
-        assertFalse(clientService.existEmail("testEmail@test.com", client.getUid()));
+        clientService.register(testClient);
+        assertFalse(clientService.existEmail("testEmail@test.com", testClient.getUid()));
     }
 
     @Test
     void existPhone() {
-        clientService.register(client);
-        assertFalse(clientService.existPhone("testPhone", client.getUid()));
+        clientService.register(testClient);
+        assertFalse(clientService.existPhone("testPhone", testClient.getUid()));
     }
 
     @Test
     void getAll() {
-        clientService.register(client);
+        clientService.register(testClient);
         List<Client> clients = clientService.getAll();
         assertTrue(clients.size() > 0);
     }
 
     @Test
     void deleteClient() {
-        clientService.register(client);
-        assertNotNull(clientService.getById(client.getUid()));
-        clientService.deleteClient(client);
-        assertNull(clientService.getById(client.getUid()));
+        clientService.register(testClient);
+        assertNotNull(clientService.getById(testClient.getUid()));
+        clientService.deleteClient(testClient);
+        assertNull(clientService.getById(testClient.getUid()));
     }
 
     @Test
     void register() {
-        clientService.register(client);
-        assertNotNull(clientService.getById(client.getUid()));
+        clientService.register(testClient);
+        assertNotNull(clientService.getById(testClient.getUid()));
     }
 }

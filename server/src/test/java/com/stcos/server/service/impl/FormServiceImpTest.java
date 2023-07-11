@@ -1,6 +1,5 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.database.mongo.FormRepository;
 import com.stcos.server.entity.form.*;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.exception.ServiceException;
@@ -34,9 +33,6 @@ public class FormServiceImpTest {
     @Autowired
     private FormMetadataService formMetadataService;
 
-    @Autowired
-    private FormRepository formRepository;
-
     Long formMetadataId = null;
 
     TestReportForm form = null;
@@ -47,30 +43,30 @@ public class FormServiceImpTest {
 
     @BeforeEach
     void setUp() {
-        // 准备测试数据
+        // Prepare test data
         formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
         form = new TestReportForm();
         form.setSoftwareName("testSoftwareName");
 
-        // 创建一个 User 对象
+        // Create a User object
         mockUser = new Client("testUser", "testPassword", "testEmail@test.com");
         mockUser.setUid(testUid);
 
-        // 创建一个模拟的 Authentication 对象
+        // Create a mock Authentication object
         Authentication authentication = Mockito.mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(mockUser);
 
-        // 创建一个模拟的 SecurityContext 对象
+        // Create a mock SecurityContext object
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
 
-        // 将模拟的 SecurityContext 对象设置到 SecurityContextHolder 中
+        // Set the mock SecurityContext object to SecurityContextHolder
         SecurityContextHolder.setContext(securityContext);
     }
 
     @Test
     void saveOrUpdateForm_WithoutWritePermission_ThrowsServiceException() {
-        // 期望抛出 ServiceException
+        // Expect a ServiceException to be thrown
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             formService.saveOrUpdateForm(formMetadataId, form);
         });
@@ -79,12 +75,12 @@ public class FormServiceImpTest {
 
     @Test
     void saveOrUpdateForm_WithWritePermission() throws ServiceException {
-        // 模拟当前登录用户有修改权限的情况
+        // Simulate the current logged-in user having write permission
         formMetadataService.addWritePermission(formMetadataId, testUid); // Test "addWritePermission()"
 
         formService.saveOrUpdateForm(formMetadataId, form);
 
-        // 更新表单
+        // Update the form
         form.setSoftwareVersion("Version 1.0");
 
         formService.saveOrUpdateForm(formMetadataId, form);
@@ -92,7 +88,7 @@ public class FormServiceImpTest {
 
     @Test
     void getForm_WithoutReadPermission_ThrowsServiceException() throws Exception {
-        // 期望抛出 ServiceException
+        // Expect a ServiceException to be thrown
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             formService.getForm(formMetadataId, mockUser.getUid());
         });
@@ -101,12 +97,12 @@ public class FormServiceImpTest {
 
     @Test
     void getForm_WithReadPermission_ThrowsServiceException() throws Exception {
-        // 模拟当前登录用户有修改权限的情况
+        // Simulate the current logged-in user having write permission
         formService.addWritePermission(formMetadataId, testUid);
 
         formService.saveOrUpdateForm(formMetadataId, form);
 
-        // 模拟当前登录用户有读取权限的情况
+        // Simulate the current logged-in user having read permission
         formService.addReadPermission(formMetadataId, testUid);
 
         TestReportForm retrievedForm = (TestReportForm) formService.getForm(formMetadataId, mockUser.getUid());
@@ -246,7 +242,7 @@ public class FormServiceImpTest {
         formMetadataService.addWritePermission(formMetadataId, testUid);
         formService.saveOrUpdateForm(formMetadataId, form);
 
-        String newState = FormState.STATE_PASSED;
+        String newState = FormState.STATE_COMPLETED;
         formService.setFormState(formMetadataId, newState);
 
         FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
