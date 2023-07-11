@@ -141,4 +141,21 @@ public class FormServiceImp implements FormService {
         FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
         return formMetadata.hasReadPermission(userId);
     }
+
+    @Override
+    public LocalDateTime getCreatedDate(Long formMetadataId) {
+        FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
+        return formMetadata.getCreatedDate();
+    }
+
+    @Override
+    public String getFormState(Long formMetadataId) {
+        FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
+        return formMetadata.getFormState();
+    }
+
+    @Override
+    public void setFormState(Long formMetadataId, String formState) {
+        formMetadataService.setFormState(formMetadataId, formState);
+    }
 }

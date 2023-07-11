@@ -49,10 +49,17 @@ public class FormMetadata {
      * 所属项目的项目号
      */
     private Long projectId;
+
+
     /**
      * 表单类型（中文）
      */
     private String formType;
+
+    /**
+     * 表单的状态：未填写、已通过、审核中、已驳回
+     */
+    private String formState;
 
     /**
      * 表单的创建者 (userId)
@@ -89,6 +96,7 @@ public class FormMetadata {
     public FormMetadata(Long projectId, String formType) {
         this.projectId = projectId;
         this.formType = formType;
+        this.formState = FormState.STATE_NULL;
         this.readableUsers = new ArrayList<>();
         this.writableUsers = new ArrayList<>();
     }

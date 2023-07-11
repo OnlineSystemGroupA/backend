@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface ProcessDetailsService extends IService<ProcessDetails> {
 
-    void openTask(Long projectId, String name, String userName);
+    void openTask(Long projectId, String name, String realName);
 
     void closeTask(Long projectId, String name);
 

@@ -4,7 +4,6 @@ import com.stcos.server.controller.api.WorkflowApi;
 import com.stcos.server.entity.dto.*;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
@@ -130,28 +129,6 @@ public class WorkflowController implements WorkflowApi {
     }
 
 
-    @Override
-    public ResponseEntity<List<FormMetadataDto>> getFormMetadata(String processId) {
-        ResponseEntity<List<FormMetadataDto>> response = null;
-        try {
-            List<FormMetadata> formMetadataList = workflowService.getFormMetadata(processId);
-            List<FormMetadataDto> formMetadataDtoList = new ArrayList<>(formMetadataList.size());
-            for (FormMetadata formMetadata : formMetadataList) {
-                formMetadataDtoList.add(
-                        new FormMetadataDto(formMetadata.getFormMetadataId(), formMetadata.getFormType())
-                );
-            }
-            response = ResponseEntity.ok(formMetadataDtoList);
-        } catch (ServiceException e) {
-            switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
-                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
-                default -> ResponseEntity.internalServerError();
-            }
-        }
-        return response;
-    }
-
 
     /* 上传 or 下载表单 */
     @Override
@@ -238,37 +215,15 @@ public class WorkflowController implements WorkflowApi {
 
     @Override
     public ResponseEntity<ProcessDetailsDto> getProcessDetails(String processId) {
-
-        ProcessDetails processDetails = workflowService.getProcessDetails(processId);
-
-//        String currentTaskName = processDetails.getCurrentTaskName();
-        String currentTaskName = null;
+        ProcessDetails processDetails = null;
         try {
-            currentTaskName = workflowService.getTaskById(processId).getName();
+            processDetails = workflowService.getProcessDetails(processId);
         } catch (ServiceException e) {
-            throw new RuntimeException(e);
+            if (e.getCode() == 0) return ResponseEntity.status(404).build();
         }
-
+        String currentTaskName = workflowService.getTaskById(processId).getName();
         int index = TaskUtil.getTaskGroupIndex(currentTaskName);
-
         ProcessDetailsDto processDetailsDto = ProcessDetailsMapper.toProcessDetailsDto(processDetails, currentTaskName, index);
-
-
-//        ResponseEntity<TaskDto> response = null;
-//        try {
-//            task = service.getTaskById(taskId);
-//        } catch (ServiceException e) {
-//            switch (e.getCode()) {
-//                case 0 -> response = ResponseEntity.status(403).build();
-//                case 1 -> response = ResponseEntity.status(404).build();
-//            }
-//        }
-//        if (response == null) { //未接收到下层传入的Exception
-//            if (task == null || !task.getId().equals(taskId)) throw new RuntimeException("Error At getTaskById");
-//            response = ResponseEntity.ok
-//                    (new TaskDto(task.getProcessInstanceId(), taskId, task.getName(), task.getDescription(), task.getOwner()));
-//        }
-//
         return ResponseEntity.ok(processDetailsDto);
     }
 
@@ -337,6 +292,20 @@ public class WorkflowController implements WorkflowApi {
         }
         if (result == null) {
             result = ResponseEntity.ok().build();
+        }
+        return result;
+    }
+
+    @Override
+    public ResponseEntity<List<FormInfoDto>> getFormInfo(String processId) {
+        ResponseEntity<List<FormInfoDto>> result = null;
+        try {
+            result = ResponseEntity.ok(workflowService.getFormInfo(processId));
+        } catch (ServiceException e) {
+            switch (e.getCode()) {
+                case 0 -> result = ResponseEntity.status(404).build();
+                case 1 -> result = ResponseEntity.status(403).build();
+            }
         }
         return result;
     }

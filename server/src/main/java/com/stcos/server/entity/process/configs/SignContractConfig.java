@@ -1,5 +1,7 @@
 package com.stcos.server.entity.process.configs;
 
+import com.stcos.server.entity.form.FormType;
+
 import java.util.Set;
 
 /**
@@ -13,7 +15,7 @@ public class SignContractConfig extends TaskConfig {
 
     public SignContractConfig() {
         super(
-                Set.of(),
+                Set.of(FormType.TYPE_CONTRACT_FORM),
                 Set.of()
         );
     }

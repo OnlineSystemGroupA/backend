@@ -79,4 +79,11 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
         return getById(formMetadataId).getFormId();
     }
 
+    @Override
+    public void setFormState(Long formMetadataId, String formState) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.setFormState(formState);
+        updateById(formMetadata);
+    }
+
 }

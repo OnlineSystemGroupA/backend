@@ -192,14 +192,18 @@ public class AccountServiceImp implements AccountService {
         if (operator != null)
             throw new ServiceException(0);
         operator = new Operator();
-        operator.setPassword("123456");
+        operator.setPassword(passwordEncoder.encode("123456"));
         operator.setJobNumber(operatorDetailsDto.getJobNumber());
         operator.setJobNumber(operatorDetailsDto.getJobNumber());
         operator.setRealName(operatorDetailsDto.getRealName());
+        operator.setDepartment(operatorDetailsDto.getDepartment());
         operator.setPosition(operatorDetailsDto.getPosition());
         operator.setEmail(operatorDetailsDto.getEmail());
         operator.setPhone(operatorDetailsDto.getPhone());
         operator.setAccountNonLocked(operatorDetailsDto.getIsNonLocked());
+        operator.setAccountNonExpired(true);
+        operator.setCredentialsNonExpired(true);
+        operator.setEnabled(true);
         operatorService.createOperator(operator);
     }
 

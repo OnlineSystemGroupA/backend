@@ -1,5 +1,6 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.process.TaskName;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Component;
  * @since 2023/7/9 15:58
  */
 @Component
-public class ArchiveListener {
+public class ArchiveListener extends OperatorTaskListener {
 
+    public ArchiveListener() {
+        super(TaskName.NAME_TASK_31);
+    }
 }

@@ -9,6 +9,8 @@ package com.stcos.server.entity.form;
                                                /____/_/
  */
 
+import java.util.Set;
+
 /**
  * 统一定义表单类型
  *
@@ -32,5 +34,21 @@ public class FormType {
     public final static String TYPE_TEST_RECORDS_FORM = "TestRecordsForm";
     public final static String TYPE_TEST_REPORT_FORM = "TestReportForm";
     public final static String TYPE_TEST_WORK_CHECK_FORM = "TestWorkCheckForm";
+    public final static Set<String> FORM_TYPE_SET = Set.of(
+            TYPE_APPLICATION_FORM,
+            TYPE_APPLICATION_VERIFY_FORM,
+            TYPE_CONTRACT_FORM,
+            TYPE_CONFIDENTIALITY_FORM,
+            TYPE_DOCUMENT_REVIEW_FORM,
+            TYPE_QUOTATION_FORM,
+            TYPE_REPORT_VERIFY_FORM,
+            TYPE_TEST_FUNCTION_FORM,
+            TYPE_TEST_PLAN_FORM,
+            TYPE_TEST_PLAN_VERIFY_FORM,
+            TYPE_TEST_PROBLEM_FORM,
+            TYPE_TEST_RECORDS_FORM,
+            TYPE_TEST_REPORT_FORM,
+            TYPE_TEST_WORK_CHECK_FORM
+    );
 
 }

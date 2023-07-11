@@ -65,6 +65,8 @@ public class Operator implements User {
     public Operator() {
         this.uid = "op-" + UUID.randomUUID();
         this.createdDate = LocalDateTime.now();
+        this.processInstanceList = new ArrayList<>();
+        this.processRecordList = new ArrayList<>();
     }
 
 

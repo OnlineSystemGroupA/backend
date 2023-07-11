@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--suppress CheckTagEmptyBody -->
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
   <process id="workfloww" name="software-testing-commission-v5" isExecutable="true">
     <startEvent id="startEvent1" flowable:formFieldValidation="true"></startEvent>
@@ -352,7 +353,7 @@
     </subProcess>
     <subProcess id="sid-3439B28A-4312-48C5-950F-DCBDA4A55E0D" name="确认测试报告">
       <startEvent id="sid-66F4F291-C999-4779-9020-56A8375F3F83" flowable:formFieldValidation="true"></startEvent>
-      <userTask id="sid-BF3D6E77-AC8D-4E11-B0C7-57B078587FA0" name="市场部发送测试报告" flowable:assignee="${testingOperator}" flowable:formFieldValidation="true">
+      <userTask id="sid-BF3D6E77-AC8D-4E11-B0C7-57B078587FA0" name="市场部发送测试报告" flowable:assignee="${marketingOperator}" flowable:formFieldValidation="true">
         <extensionElements>
           <flowable:taskListener event="create" expression="${sendTestReportListener.create(task)}"></flowable:taskListener>
           <flowable:taskListener event="complete" expression="${sendTestReportListener.complete(task)}"></flowable:taskListener>
