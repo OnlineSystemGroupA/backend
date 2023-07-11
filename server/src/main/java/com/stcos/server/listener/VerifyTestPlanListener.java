@@ -1,5 +1,7 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.form.FormState;
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
@@ -25,10 +27,19 @@ public class VerifyTestPlanListener extends OperatorTaskListener {
         String uid = task.getAssignee();
         // 使当前实例对用户可见
         userService.addProcessInstance(uid, task.getProcessInstanceId());
+
+        Long formMetadataId = (Long) task.getVariable(FormType.TYPE_TEST_PLAN_FORM);
+        formService.setFormState(formMetadataId, FormState.STATE_VERIFYING);
+
+        formMetadataId = (Long) task.getVariable(FormType.TYPE_TEST_PLAN_VERIFY_FORM);
+        formService.setFormState(formMetadataId, FormState.STATE_WRITING);
     }
 
     @Override
     public void complete(DelegateTask task) {
         super.complete(task);
+
+        Long formMetadataId = (Long) task.getVariable(FormType.TYPE_TEST_PLAN_VERIFY_FORM);
+        formService.setFormState(formMetadataId, FormState.STATE_COMPLETED);
     }
 }

@@ -1,9 +1,11 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.form.FormType;
+import com.stcos.server.entity.form.FormState;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
+
+import static com.stcos.server.entity.form.FormType.*;
 
 /*
  _    __          _ ____      ___                ___            __  _             __    _      __
@@ -32,6 +34,26 @@ public class VerifyApplicationListener extends OperatorTaskListener {
     public void create(DelegateTask task) {
         super.create(task);
         userService.addProcessInstance(task.getAssignee(), task.getProcessInstanceId());
+
+        Long metadataId = (Long) task.getVariable(TYPE_APPLICATION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_VERIFYING);
+        metadataId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_VERIFYING);
+
+        metadataId = (Long) task.getVariable(TYPE_APPLICATION_VERIFY_FORM);
+        formService.setFormState(metadataId, FormState.STATE_WRITING);
     }
 
+    @Override
+    public void complete(DelegateTask task) {
+        super.complete(task);
+
+        Long metadataId = (Long) task.getVariable(TYPE_APPLICATION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_COMPLETED);
+        metadataId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_COMPLETED);
+
+        metadataId = (Long) task.getVariable(TYPE_APPLICATION_VERIFY_FORM);
+        formService.setFormState(metadataId, FormState.STATE_COMPLETED);
+    }
 }
