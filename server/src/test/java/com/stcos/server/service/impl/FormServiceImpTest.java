@@ -1,6 +1,5 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.database.mongo.FormRepository;
 import com.stcos.server.entity.form.*;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.exception.ServiceException;
@@ -33,9 +32,6 @@ public class FormServiceImpTest {
 
     @Autowired
     private FormMetadataService formMetadataService;
-
-    @Autowired
-    private FormRepository formRepository;
 
     Long formMetadataId = null;
 
@@ -246,7 +242,7 @@ public class FormServiceImpTest {
         formMetadataService.addWritePermission(formMetadataId, testUid);
         formService.saveOrUpdateForm(formMetadataId, form);
 
-        String newState = FormState.STATE_PASSED;
+        String newState = FormState.STATE_COMPLETED;
         formService.setFormState(formMetadataId, newState);
 
         FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
