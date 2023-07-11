@@ -33,7 +33,7 @@ class AuthServiceImpTest {
 
     // 测试客户端正常登录
     @Test
-    void clientLogin() {
+    void clientLogin() throws ServiceException {
         Random random = new Random();
         int randomNumber = random.nextInt(2147483647); 
 
@@ -41,11 +41,8 @@ class AuthServiceImpTest {
         
         Client testClient = new Client("testClient" + uid, passwordEncoder.encode("testPassword"), "testEmail");
         clientMapper.insert(testClient);
-        try {
-            authServiceImp.login("testClient" + uid, "testPassword", "client");
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
+
+        authServiceImp.login("testClient" + uid, "testPassword", "client");
     }
 
     // 测试客户端密码错误
@@ -66,9 +63,9 @@ class AuthServiceImpTest {
 
     // 测试用户不存在
     @Test
-    void userNotExist() {
+    void clientNotExist() {
         ServiceException exception = assertThrows(ServiceException.class, () -> {
-            authServiceImp.login("nonexistentUser", "testPassword", "client");
+            authServiceImp.login("nonexistentClient", "testPassword", "client");
         });
         assertEquals(0, exception.getCode());
     }
@@ -125,12 +122,8 @@ class AuthServiceImpTest {
 
     // 测试员工正常登录
     @Test
-    void operatorLogin() {
-        try {
-            authServiceImp.login("20xxx0001", "123456", "operator");
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
+    void operatorLogin() throws ServiceException {
+        authServiceImp.login("20xxx0001", "123456", "operator");
     }
 
     // 测试员工密码错误
@@ -142,14 +135,19 @@ class AuthServiceImpTest {
         assertEquals(1, exception.getCode());
     }
 
+    // 测试员工不存在
+    @Test
+    void operatorNotExist() {
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            authServiceImp.login("nonexistentOperator", "123456", "operator");
+        });
+        assertEquals(0, exception.getCode());
+    }
+
     // 测试管理员正常登录
     @Test
-    void adminLogin() {
-        try {
-            authServiceImp.login("admin", "123456", "admin");
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
+    void adminLogin() throws ServiceException {
+        authServiceImp.login("admin", "123456", "admin");
     }
 
     // 测试管理员密码错误
@@ -159,5 +157,14 @@ class AuthServiceImpTest {
             authServiceImp.login("admin", "wrongPassword", "admin");
         });
         assertEquals(1, exception.getCode());
+    }
+
+    // 测试管理员不存在
+    @Test
+    void adminNotExist() {
+        ServiceException exception = assertThrows(ServiceException.class, () -> {
+            authServiceImp.login("nonexistentAdmin", "123456", "admin");
+        });
+        assertEquals(0, exception.getCode());
     }
 }
