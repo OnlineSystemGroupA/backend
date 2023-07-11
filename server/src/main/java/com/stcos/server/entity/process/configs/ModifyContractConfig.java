@@ -1,9 +1,8 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
+import com.stcos.server.entity.form.FormType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 用户修改合同
@@ -15,11 +14,10 @@ import java.util.List;
 public class ModifyContractConfig extends TaskConfig {
 
     public ModifyContractConfig() {
-        super("修改合同", "您好！一份由您提起的软件测试委托的合同审核未通过，请尽快前往修改。");
+        super(
+                Set.of(FormType.TYPE_CONTRACT_FORM),
+                Set.of()
+        );
     }
 
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
-    }
 }

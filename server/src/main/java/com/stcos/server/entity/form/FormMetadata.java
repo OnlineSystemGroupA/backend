@@ -10,7 +10,9 @@ import org.apache.ibatis.type.JdbcType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
                 ______                     __  ___     __            __      __
@@ -44,7 +46,11 @@ public class FormMetadata {
     private long formId = -1;
 
     /**
-     * 表单类型
+     * 所属项目的项目号
+     */
+    private Long projectId;
+    /**
+     * 表单类型（中文）
      */
     private String formType;
 
@@ -80,10 +86,11 @@ public class FormMetadata {
     @TableField(value = "writable_users", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> writableUsers;
 
-    public FormMetadata(String formType) {
+    public FormMetadata(Long projectId, String formType) {
+        this.projectId = projectId;
         this.formType = formType;
-        readableUsers = new ArrayList<>();
-        writableUsers = new ArrayList<>();
+        this.readableUsers = new ArrayList<>();
+        this.writableUsers = new ArrayList<>();
     }
 
     public void setCreatedBy(String createdBy) {
@@ -123,6 +130,7 @@ public class FormMetadata {
      */
     public void addWritePermission(String uid) {
         writableUsers.add(uid);
+        writableUsers = new ArrayList<>(new HashSet<>(writableUsers));
     }
 
     /**
@@ -148,6 +156,7 @@ public class FormMetadata {
      */
     public void addReadPermission(String uid) {
         readableUsers.add(uid);
+        readableUsers = new ArrayList<>(new HashSet<>(readableUsers));
     }
 
     /**
@@ -155,7 +164,15 @@ public class FormMetadata {
      *
      * @param users 用户 uid 列表
      */
-    public void addReadPermission(List<String> users) {
+    public void addReadPermission(Set<String> users) {
         readableUsers.addAll(users);
+        readableUsers = new ArrayList<>(new HashSet<>(readableUsers));
+    }
+
+    /**
+     * 移除所有用户对该表单的读权限
+     */
+    public void removeReadPermission() {
+        readableUsers.clear();
     }
 }

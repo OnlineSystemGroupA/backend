@@ -47,9 +47,9 @@ public class FormUtil {
     }};
 
 
-    public static File replaceSpecialText(Form form, String formName, String fileName) {
+    public static File replaceSpecialText(Form form, String formType, String fileName) {
         try {
-            URI uri = Objects.requireNonNull(FormUtil.class.getResource(FORM_TEMPLATE_FILE_MAP.get(formName))).toURI();
+            URI uri = Objects.requireNonNull(FormUtil.class.getResource(FORM_TEMPLATE_FILE_MAP.get(formType))).toURI();
             //读文件
             XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(uri.getPath()));
             //替换内容
@@ -90,11 +90,35 @@ public class FormUtil {
     /**
      * 获取表单中文文件名
      *
-     * @param formName 表单名
+     * @param formType 表单类型
      * @return 表单原始中文文件名
      */
-    public static String formName2Chinese(String formName) {
-        return FORM_CHINESE_NAME_MAP.get(formName);
+    public static String formName2Chinese(String formType) {
+        return FORM_CHINESE_NAME_MAP.get(formType);
+    }
+
+    private static final Map<String, Boolean> FORM_CLIENT_READABLE_MAP = new HashMap<>() {{
+        put(FormType.TYPE_APPLICATION_FORM, true);
+        put(FormType.TYPE_APPLICATION_VERIFY_FORM, true);
+        put(FormType.TYPE_CONTRACT_FORM, true);
+        put(FormType.TYPE_CONFIDENTIALITY_FORM, true);
+        put(FormType.TYPE_DOCUMENT_REVIEW_FORM, true);
+        put(FormType.TYPE_QUOTATION_FORM, true);
+        put(FormType.TYPE_REPORT_VERIFY_FORM, true);
+        put(FormType.TYPE_TEST_FUNCTION_FORM, true);
+        put(FormType.TYPE_TEST_PLAN_FORM, false);
+        put(FormType.TYPE_TEST_PLAN_VERIFY_FORM, false);
+        put(FormType.TYPE_TEST_RECORDS_FORM, true);
+        put(FormType.TYPE_TEST_REPORT_FORM, true);
+        put(FormType.TYPE_TEST_WORK_CHECK_FORM, false);
+        put(FormType.TYPE_TEST_PROBLEM_FORM, true);
+    }};
+
+    /**
+     * 根据表单类型判断该表单是否对客户可见
+     */
+    public static boolean isClientReadable(String formType) {
+        return FORM_CLIENT_READABLE_MAP.get(formType);
     }
 
     //数字转换为大写汉字

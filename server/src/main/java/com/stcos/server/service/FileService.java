@@ -2,6 +2,7 @@ package com.stcos.server.service;
 
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
+import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,22 +54,62 @@ public interface FileService {
      */
     void deleteSample(Long sampleMetadataId) throws ServiceException;
 
-//    boolean existSample(long sampleMetadataId);
+    /**
+     * 为给定用户赋予样品的写权限
+     * 
+     * @param sampleMetadataId 样品元数据 ID
+     * @param userId 用户 ID
+     */
+    void addWritePermission(Long sampleMetadataId, String userId);
 
-    void addWritePermission(Long sampleMetadataId, String assignee);
-
+    /**
+     * 为给定用户赋予样品的读取权限
+     * 
+     * @param sampleMetadataId 样品元数据 ID
+     * @param userId 用户 ID
+     */
     void addReadPermission(Long sampleMetadataId, String userId);
 
+    /**
+     * 创建新的样品元数据
+     * 
+     * @return 被创建的样品元数据 ID
+     */
     Long createMetadata();
 
+    /**
+     * 生成并返回指定表单的 PDF 文件
+     *
+     * @param processId  流程 ID
+     * @param form       表单数据
+     * @param formType   表单类型
+     * @return           返回文件系统资源，即生成的 PDF文件
+     */
+    Resource generateFormPdf(String processId, Form form, String formType);
 
-    Resource generateFormPdf(String processId, Form form, String formName);
+    /**
+     * 保存上传的表单的 PDF 文件到指定位置
+     *
+     * @param processId  流程 ID
+     * @param file       上传的 MultipartFile 文件
+     * @param formType   表单类型
+     * @throws ServerErrorException 如果在保存 PDF 文件时发生错误
+     */
+    void saveFormPdf(String processId, MultipartFile file, String formType);
 
-    void saveFormPdf(String processId, MultipartFile file, String formName);
+    /**
+     * 删除给定用户对样品的写权限
+     *
+     * @param sampleMetadataId 样品元数据 ID
+     * @param userId 用户 ID
+     */
+    void removeWritePermission(Long sampleMetadataId, String userId);
 
+    /**
+     * 创建一个新的样品元数据，并为给定的用户列表赋予读取权限
+     *
+     * @param users 用户列表
+     * @return 新创建的样品元数据的 ID
+     */
     Long createMetadata(List<String> users);
-
-    void removeWritePermission(Long sampleMetadataId, String assignee);
-
-//    Sample getSample(Long metadataId);
 }

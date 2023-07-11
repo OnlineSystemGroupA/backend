@@ -7,7 +7,7 @@ import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.FormMetadataService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * description
@@ -21,8 +21,8 @@ import java.util.List;
 public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, FormMetadata> implements FormMetadataService {
 
     @Override
-    public Long create(String formName) {
-        FormMetadata formMetadata = new FormMetadata(formName);
+    public Long create(Long projectId, String formType) {
+        FormMetadata formMetadata = new FormMetadata(projectId, formType);
         if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
         return formMetadata.getFormMetadataId();
     }
@@ -31,6 +31,20 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     public void addReadPermission(Long formMetadataId, String userId) {
         FormMetadata formMetadata = getById(formMetadataId);
         formMetadata.addReadPermission(userId);
+        if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
+    public void addReadPermission(Long formMetadataId, Set<String> userId) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.addReadPermission(userId);
+        if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
+    public void removeReadPermission(Long formMetadataId) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.removeReadPermission();
         if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
     }
 
@@ -49,6 +63,13 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     }
 
     @Override
+    public void removeWritePermission(Long formMetadataId) {
+        FormMetadata formMetadata = getById(formMetadataId);
+        formMetadata.removeWritePermission();
+        if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
+    }
+
+    @Override
     public boolean existForm(long formMetadataId) {
         return getById(formMetadataId).getFormId() != -1;
     }
@@ -58,11 +79,4 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
         return getById(formMetadataId).getFormId();
     }
 
-    @Override
-    public Long create(String formName, List<String> users) {
-        FormMetadata formMetadata = new FormMetadata(formName);
-        formMetadata.addReadPermission(users);
-        if (!save(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
-        return formMetadata.getFormMetadataId();
-    }
 }

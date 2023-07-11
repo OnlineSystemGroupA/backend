@@ -1,9 +1,8 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
+import com.stcos.server.entity.form.FormType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 市场部生成合同草稿
@@ -15,16 +14,10 @@ import java.util.List;
 public class GenContractDraftConfig extends TaskConfig {
 
     public GenContractDraftConfig() {
-        super("生成合同草稿", "您好！一项被指派给您的\"生成合同草稿\"任务已被创建，请尽快完成！");
+        super(
+                Set.of(FormType.TYPE_CONTRACT_FORM),
+                Set.of()
+        );
     }
-
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("ContractForm");
-        }};
-    }
-
 
 }

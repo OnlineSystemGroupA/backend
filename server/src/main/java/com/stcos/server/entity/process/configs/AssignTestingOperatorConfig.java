@@ -1,12 +1,8 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
-import com.stcos.server.service.FormService;
-import org.flowable.task.api.Task;
+import com.stcos.server.entity.process.ProcessVariables;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * 分配测试部人员
@@ -18,17 +14,10 @@ import java.util.Map;
 public class AssignTestingOperatorConfig extends TaskConfig {
 
     public AssignTestingOperatorConfig() {
-        super("分配工作人员", "您好！一项被指派给您的\"分配工作人员\"任务已被创建，请尽快完成！");
-    }
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<String> getRequiredParticipants() {
-        return List.of("marketingOperator");
+        super(
+                Set.of(),
+                Set.of(ProcessVariables.VAR_TESTING_OPERATOR)
+        );
     }
 
 }

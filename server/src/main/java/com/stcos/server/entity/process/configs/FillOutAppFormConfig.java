@@ -1,9 +1,9 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.stcos.server.entity.form.FormType.TYPE_APPLICATION_FORM;
+import static com.stcos.server.entity.form.FormType.TYPE_TEST_FUNCTION_FORM;
 
 /**
  * 填写申请表
@@ -15,15 +15,10 @@ import java.util.List;
 public class FillOutAppFormConfig extends TaskConfig {
 
     public FillOutAppFormConfig() {
-        super(null, null);
-    }
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>(){{
-            add("ApplicationForm");
-            add("TestFunctionForm");
-        }};
+        super(
+                Set.of(TYPE_APPLICATION_FORM, TYPE_TEST_FUNCTION_FORM),
+                Set.of()
+        );
     }
 
 }

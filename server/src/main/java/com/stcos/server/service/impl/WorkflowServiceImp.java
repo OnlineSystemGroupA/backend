@@ -209,7 +209,6 @@ public class WorkflowServiceImp implements WorkflowService {
         if (processInstance == null) {
             throw new ServiceException(0); // 流程不存在的异常
         }
-
         // 获取表单元数据 ID
         return (Long) runtimeService.getVariable(processId, formType);
     }

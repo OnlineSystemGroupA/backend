@@ -1,9 +1,6 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 用户审核报价
@@ -15,11 +12,10 @@ import java.util.List;
 public class VerifyQuotationConfig extends TaskConfig {
 
     public VerifyQuotationConfig() {
-        super("处理报价", "您好！一份由您提起的软件测试委托已生成报价，请尽快前方确认。");
-    }
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
+        super(
+                Set.of(),
+                Set.of()
+        );
     }
 
 }

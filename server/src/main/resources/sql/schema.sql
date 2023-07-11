@@ -76,9 +76,10 @@ CREATE TABLE IF NOT EXISTS t_setting
 -- FormMetadata
 CREATE TABLE IF NOT EXISTS t_form_metadata
 (
-    form_metadata_id   bigint AUTO_INCREMENT, -- 表单元数据 ID，保存对象时由数据库自动赋值
-    form_id            bigint      NOT NULL,  --  表单元数据对应表单的 ID
-    form_name          VARCHAR(64) NOT NULL,  -- 表单名
+    form_metadata_id   BIGINT AUTO_INCREMENT, -- 表单元数据 ID，保存对象时由数据库自动赋值
+    form_id            BIGINT      NOT NULL,  --  表单元数据对应表单的 ID
+    project_id         BIGINT      NOT NULL,  -- 项目号
+    form_type          VARCHAR(64) NOT NULL,  -- 表单名
     created_by         VARCHAR(64),           -- 表单的创建者 (userId)
     created_date       DATETIME,              -- 表单创建时间
     last_modified_by   VARCHAR(64),           -- 表单最后一次被谁修改 (userId)
@@ -137,10 +138,10 @@ CREATE TABLE IF NOT EXISTS t_file_metadata
 (
     file_metadata_id BIGINT AUTO_INCREMENT,
     file_name        VARCHAR(128) NOT NULL,
-    file_type        VARCHAR(32) NOT NULL,
-    file_size        BIGINT      NOT NULL,
-    updated_by       VARCHAR(64) NOT NULL,
-    updated_date     DATETIME    NOT NULL,
+    file_type        VARCHAR(32)  NOT NULL,
+    file_size        BIGINT       NOT NULL,
+    updated_by       VARCHAR(64)  NOT NULL,
+    updated_date     DATETIME     NOT NULL,
     file_path        VARCHAR(256) NOT NULL,
     PRIMARY KEY (file_metadata_id)
 ) ENGINE = InnoDB
@@ -149,10 +150,10 @@ CREATE TABLE IF NOT EXISTS t_file_metadata
 -- SampleMetadata
 CREATE TABLE IF NOT EXISTS t_sample_metadata
 (
-    sample_metadata_id   BIGINT AUTO_INCREMENT, -- 样品元数据 ID，保存对象时由数据库自动赋值
-    readable_users       TEXT        NOT NULL,  -- 对样品具有读权限用户的 ID 列表
-    writable_users       TEXT        NOT NULL,  -- 对样品具有写权限用户的 ID 列表
-    file_metadata_id_list     TEXT,             -- 文件元数据 ID 列表
+    sample_metadata_id    BIGINT AUTO_INCREMENT, -- 样品元数据 ID，保存对象时由数据库自动赋值
+    readable_users        TEXT NOT NULL,         -- 对样品具有读权限用户的 ID 列表
+    writable_users        TEXT NOT NULL,         -- 对样品具有写权限用户的 ID 列表
+    file_metadata_id_list TEXT,                  -- 文件元数据 ID 列表
     PRIMARY KEY (sample_metadata_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

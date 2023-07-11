@@ -1,9 +1,6 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 客户审核合同草稿
@@ -15,12 +12,10 @@ import java.util.List;
 public class VerifyContractDraftConfig extends TaskConfig {
 
     public VerifyContractDraftConfig() {
-        super("审核合同草稿", "您好！一份由您提起的软件测试委托已生成合同草稿，请尽快前方确认。");
-    }
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
+        super(
+                Set.of(),
+                Set.of()
+        );
     }
 
 }

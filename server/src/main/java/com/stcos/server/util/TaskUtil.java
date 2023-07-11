@@ -1,6 +1,6 @@
 package com.stcos.server.util;
 
-import com.stcos.server.entity.process.TaskConfig;
+import com.stcos.server.entity.process.configs.TaskConfig;
 import com.stcos.server.entity.process.TaskName;
 import com.stcos.server.entity.process.configs.*;
 import com.stcos.server.exception.ServerErrorException;
@@ -9,8 +9,8 @@ import lombok.experimental.UtilityClass;
 import org.flowable.task.api.Task;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Task 工具类，用于获取任务配置信息
@@ -72,6 +72,15 @@ public class TaskUtil {
     }};
 
     /**
+     * 根据任务名获取对应的任务配置类对象
+     *
+     * @return TaskConfig 对象
+     */
+    public static TaskConfig getTaskConfig(String taskName) {
+        return TASK_CONFIG_MAP.get(taskName);
+    }
+
+    /**
      * 判断当前任务是否满足完成条件
      *
      * @param task        当前任务
@@ -93,7 +102,7 @@ public class TaskUtil {
      * @param taskName 任务名
      * @return 需要被修改被创建的表单列表
      */
-    public List<String> getRequiredForms(String taskName) {
+    public Set<String> getRequiredForms(String taskName) {
         try {
             TaskConfig taskConfig = TASK_CONFIG_MAP.get(taskName);
             return taskConfig.getRequiredForms();

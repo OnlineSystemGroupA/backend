@@ -94,6 +94,7 @@ public class Operator implements User {
     @Override
     public void addProcessInstance(String processInstanceId) {
         processInstanceList.add(processInstanceId);
+        processInstanceList = new HashSet<>(processInstanceList).stream().toList();
     }
 
     @Override

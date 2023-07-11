@@ -1,5 +1,7 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.process.TaskName;
+import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,5 +13,22 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class VerifyTestPlanListener {
+public class VerifyTestPlanListener extends OperatorTaskListener {
+
+    public VerifyTestPlanListener() {
+        super(TaskName.NAME_TASK_23);
+    }
+
+    @Override
+    public void create(DelegateTask task) {
+        super.create(task);
+        String uid = task.getAssignee();
+        // 使当前实例对用户可见
+        userService.addProcessInstance(uid, task.getProcessInstanceId());
+    }
+
+    @Override
+    public void complete(DelegateTask task) {
+        super.complete(task);
+    }
 }

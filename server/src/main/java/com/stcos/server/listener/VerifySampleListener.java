@@ -1,5 +1,6 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.process.TaskName;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,5 +12,8 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class VerifySampleListener {
+public class VerifySampleListener extends OperatorTaskListener {
+    public VerifySampleListener() {
+        super(TaskName.NAME_TASK_20);
+    }
 }

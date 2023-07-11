@@ -1,9 +1,6 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.process.TaskConfig;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 客户重新上传样品
@@ -15,13 +12,10 @@ import java.util.List;
 public class ReUploadSampleConfig extends TaskConfig {
 
     public ReUploadSampleConfig() {
-        super("重新上传样品", "您好！一份由您提起的软件测试委托中上传的样品审核未通过，请尽快重新上传。");
+        super(
+                Set.of(),
+                Set.of()
+        );
     }
-
-    @Override
-    public List<String> getRequiredForms() {
-        return new ArrayList<>();
-    }
-
 
 }

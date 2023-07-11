@@ -52,7 +52,7 @@ public class AuthServiceImp implements AuthService {
     @Override
     public UserDetails login(String username, String password, String userType) throws ServiceException {
         UserDetails userDetails = null;
-        if (userType == null) //未传入userType
+        if (userType == null) // 未传入 userType
             throw new ServiceException(3);
         switch (userType) {
             case "admin" -> userDetails = adminMapper.getByUsernameAdmin(username);
@@ -63,10 +63,10 @@ public class AuthServiceImp implements AuthService {
 
         if (userDetails == null) throw new ServiceException(0);
 
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) //用户名与密码不匹配
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) // 用户名与密码不匹配
             throw new ServiceException(1);
 
-        else if (!userDetails.isEnabled()) //用户被禁用
+        else if (!userDetails.isEnabled()) // 用户被禁用
             throw new ServiceException(2);
 
         return userDetails;

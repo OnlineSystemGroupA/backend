@@ -1,5 +1,6 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.process.TaskName;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,5 +12,10 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class SignContractListener {
+public class SignContractListener extends ClientTaskListener {
+
+
+    public SignContractListener() {
+        super(TaskName.NAME_TASK_17);
+    }
 }
