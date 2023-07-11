@@ -51,7 +51,7 @@ public interface FormService {
 
     void addReadPermission(Long formMetadataId, String userId);
 
-    void addReadPermission(Long formMetadataId, Set<String> userId);
+    void addReadPermission(Long formMetadataId, Set<String> userIds);
 
     void removeReadPermission(Long formMetadataId);
 

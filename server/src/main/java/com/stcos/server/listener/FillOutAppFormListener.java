@@ -1,13 +1,15 @@
 package com.stcos.server.listener;
 
 import com.stcos.server.entity.form.ApplicationForm;
+import com.stcos.server.entity.form.FormState;
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-import static com.stcos.server.entity.form.FormType.TYPE_APPLICATION_FORM;
+import static com.stcos.server.entity.form.FormType.*;
 import static com.stcos.server.entity.process.ProcessVariables.*;
 
 /*
@@ -62,15 +64,11 @@ public class FillOutAppFormListener extends ClientTaskListener {
                 (String) task.getVariable(VAR_START_USER),
                 form.getCompanyInfo().getTelephone());
 
+        formService.setFormState(metadataId, FormState.STATE_VERIFYING);
+        metadataId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_VERIFYING);
 
-
-
-
-
-
-
-
-
-
+        metadataId = (Long) task.getVariable(TYPE_TEST_WORK_CHECK_FORM);
+        formService.setFormState(metadataId, FormState.STATE_WRITING);
     }
 }

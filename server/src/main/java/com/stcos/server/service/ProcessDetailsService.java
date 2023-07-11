@@ -15,7 +15,7 @@ import java.util.List;
  * @since 2023/5/20 14:03
  */
 public interface ProcessDetailsService extends IService<ProcessDetails> {
-    
+
     void openTask(Long projectId, String name, String realName);
 
     void closeTask(Long projectId, String name);

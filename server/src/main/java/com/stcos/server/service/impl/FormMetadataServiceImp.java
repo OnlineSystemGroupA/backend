@@ -35,9 +35,9 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
     }
 
     @Override
-    public void addReadPermission(Long formMetadataId, Set<String> userId) {
+    public void addReadPermission(Long formMetadataId, Set<String> userIds) {
         FormMetadata formMetadata = getById(formMetadataId);
-        formMetadata.addReadPermission(userId);
+        formMetadata.addReadPermission(userIds);
         if (!updateById(formMetadata)) throw new ServerErrorException(new RuntimeException("数据库写入错误！"));
     }
 
@@ -85,5 +85,4 @@ public class FormMetadataServiceImp extends ServiceImpl<FormMetadataMapper, Form
         formMetadata.setFormState(formState);
         updateById(formMetadata);
     }
-
 }
