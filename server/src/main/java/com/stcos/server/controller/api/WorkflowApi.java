@@ -214,18 +214,18 @@ public interface WorkflowApi {
      * GET /workflow/processes/{processId}/forms : 获取表单
      * 获取表单
      *
-     * @param processId 指定流程实例 id (required)
-     * @return 成功获取可见表单列表 (status code 200)
+     * @param processId 指定流程实例 ID (required)
+     * @return ok (status code 200)
      *         or 指定流程不存在 (status code 404)
      */
     @Operation(
-            operationId = "getFormMetadata",
+            operationId = "getFormInfo",
             summary = "获取表单",
             description = "获取表单",
             tags = { "workflow" },
             responses = {
-                    @ApiResponse(responseCode = "200", description = "成功获取可见表单列表", content = {
-                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormMetadataDto.class)))
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormInfoDto.class)))
                     }),
                     @ApiResponse(responseCode = "404", description = "指定流程不存在")
             }
@@ -235,13 +235,13 @@ public interface WorkflowApi {
             value = "/workflow/processes/{processId}/forms",
             produces = { "application/json" }
     )
-    default ResponseEntity<List<FormMetadataDto>> getFormMetadata(
-            @Parameter(name = "processId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    default ResponseEntity<List<FormInfoDto>> getFormInfo(
+            @Parameter(name = "processId", description = "指定流程实例 ID", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"formName\" : \"formName\", \"formMetadataId\" : 0 }, { \"formName\" : \"formName\", \"formMetadataId\" : 0 } ]";
+                    String exampleString = "[ { \"formType\" : \"formType\", \"formState\" : \"formState\", \"createDate\" : \"createDate\" }, { \"formType\" : \"formType\", \"formState\" : \"formState\", \"createDate\" : \"createDate\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

@@ -307,23 +307,23 @@ paths:
         - workflow
       summary: 获取表单
       description: 获取表单
-      operationId: getFormMetadata
+      operationId: getFormInfo
       parameters:
         - name: processId
           in: path
-          description: 指定流程实例 id
+          description: 指定流程实例 ID
           schema:
             type: string
           required: true
       responses:
         '200':
-          description: 成功获取可见表单列表
+          description: ok
           content:
             'application/json':
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/FormMetadata"
+                  $ref: "#/components/schemas/FormInfo"
         '404':
           description: 指定流程不存在
 
@@ -984,18 +984,21 @@ components:
           type: string
           description: 文件类型
 
-    FormMetadata:
+    FormInfo:
       required:
-        - formMetadataId
-        - formName
+        - formType
+        - createDate
+        - formState
       properties:
-        formMetadataId:
-          type: integer
-          format: int64
-          description: 表单元数据 ID
-        formName:
+        formType:
           type: string
-          description: 表单名称
+          description: 表单类型
+        createDate:
+          type: string
+          description: 表单创建日期
+        formState:
+          type: string
+          description: 表单当前状态
 
     # 账号相关 DTO
     ClientDetails:

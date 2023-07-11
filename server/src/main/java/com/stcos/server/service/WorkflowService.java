@@ -1,5 +1,6 @@
 package com.stcos.server.service;
 
+import com.stcos.server.entity.dto.FormInfoDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
@@ -131,4 +132,6 @@ public interface WorkflowService {
     void saveFileForm(String processId, String formName, MultipartFile file) throws ServiceException;
 
     void deleteProcess(String processId) throws ServiceException;
+
+    List<FormInfoDto> getFormInfo(String processId) throws ServiceException;
 }

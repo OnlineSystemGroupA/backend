@@ -93,5 +93,6 @@ public interface FormMetadataService extends IService<FormMetadata> {
      */
     Long getFormId(Long formMetadataId);
 
+    void setFormState(Long formMetadataId, String formState);
 }
 

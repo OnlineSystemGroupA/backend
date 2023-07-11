@@ -4,7 +4,7 @@ import com.stcos.server.entity.form.Form;
 import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.exception.ServiceException;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface FormService {
@@ -66,4 +66,10 @@ public interface FormService {
     boolean hasWritePermission(Long formMetadataId, String userId);
 
     boolean hasReadPermission(Long formMetadataId, String userId);
+
+    LocalDateTime getCreatedDate(Long metadataId);
+
+    String getFormState(Long metadataId);
+
+    void setFormState(Long formMetadataId, String formState);
 }

@@ -1,8 +1,11 @@
 package com.stcos.server.service.impl;
 
+import com.stcos.server.entity.dto.FormInfoDto;
 import com.stcos.server.entity.file.FileMetadata;
 import com.stcos.server.entity.form.ContractForm;
+import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.ProcessDetails;
+import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.form.Form;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -291,7 +295,7 @@ public class WorkflowServiceImp implements WorkflowService {
     public ProcessDetails getProcessDetails(String processId) throws ServiceException {
 
         // 首先判断是否可见
-        User user = (Operator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!user.hasProcessInstance(processId)) throw new ServiceException(0);
         Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
         return processDetailsService.getById(projectId);
@@ -320,5 +324,43 @@ public class WorkflowServiceImp implements WorkflowService {
     @Override
     public void deleteProcess(String processId) throws ServiceException {
 
+    }
+
+
+    @Override
+    public List<FormInfoDto> getFormInfo(String processId) throws ServiceException {
+        List<FormInfoDto> formInfoDtoList = new ArrayList<>();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user instanceof Admin) {
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+                    .processInstanceId(processId)
+                    .includeProcessVariables()
+                    .singleResult();
+            if (processInstance == null) throw new ServiceException(0);
+            Map<String, Object> variables = processInstance.getProcessVariables();
+            for (String formType : FormType.FORM_TYPE_SET) {
+                Long metadataId = (Long) variables.get(formType);
+                String createdDate = formService.getCreatedDate(metadataId).toString();
+                String formState = formService.getFormState(metadataId);
+                formInfoDtoList.add(new FormInfoDto(formType, createdDate, formState));
+            }
+        } else {
+            if (user.hasProcessInstance(processId)) {
+                ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+                        .processInstanceId(processId)
+                        .includeProcessVariables()
+                        .singleResult();
+                Map<String, Object> variables = processInstance.getProcessVariables();
+                for (String formType : FormType.FORM_TYPE_SET) {
+                    Long metadataId = (Long) variables.get(formType);
+                    if (formService.hasReadPermission(metadataId, user.getUid())) {
+                        String createdDate = formService.getCreatedDate(metadataId).toString();
+                        String formState = formService.getFormState(metadataId);
+                        formInfoDtoList.add(new FormInfoDto(formType, createdDate, formState));
+                    }
+                }
+            }
+        }
+        return formInfoDtoList;
     }
 }

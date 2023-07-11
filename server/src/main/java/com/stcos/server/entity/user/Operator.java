@@ -62,9 +62,11 @@ public class Operator implements User {
     @TableField(value = "process_record", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
     private List<String> processRecordList;
 
-    public Operator(String uid) {
+    public Operator() {
         this.uid = "op-" + UUID.randomUUID();
         this.createdDate = LocalDateTime.now();
+        this.processInstanceList = new ArrayList<>();
+        this.processRecordList = new ArrayList<>();
     }
 
 
