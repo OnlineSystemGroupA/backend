@@ -26,17 +26,17 @@ class SampleMetadataServiceImpTest {
     void update() {
         Long sampleMetadataId = sampleMetadataService.create();
         Long fileMetadataId = 1L; // replace with an existing file metadata ID
-        sampleMetadataService.update(sampleMetadataId, fileMetadataId);
+        sampleMetadataService.addFileMetadata(sampleMetadataId, fileMetadataId);
         assertTrue(sampleMetadataService.getById(sampleMetadataId).getFileMetadataIdList().contains(fileMetadataId.intValue()));
     }
 
     @Test
-    void removeFileMetadataById() {
+    void removeFileMetadata() {
         Long sampleMetadataId = sampleMetadataService.create();
         Long fileMetadataId = 111111111111L; // replace with an existing file metadata ID
-        sampleMetadataService.update(sampleMetadataId, fileMetadataId);
+        sampleMetadataService.addFileMetadata(sampleMetadataId, fileMetadataId);
         assertTrue(sampleMetadataService.getById(sampleMetadataId).getFileMetadataIdList().contains(fileMetadataId));
-        sampleMetadataService.removeFileMetadataById(sampleMetadataId, fileMetadataId);
+        sampleMetadataService.removeFileMetadata(sampleMetadataId, fileMetadataId);
         assertFalse(sampleMetadataService.getById(sampleMetadataId).getFileMetadataIdList().contains(fileMetadataId));
     }
 

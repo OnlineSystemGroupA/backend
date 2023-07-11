@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 class FormMetadataTest {
 
@@ -16,7 +15,7 @@ class FormMetadataTest {
 
     @BeforeEach
     void setUp() {
-        formMetadata = new FormMetadata("ContractForm");
+        formMetadata = new FormMetadata(1L, FormType.TYPE_TEST_REPORT_FORM);
     }
 
     @Test
@@ -49,6 +48,9 @@ class FormMetadataTest {
     @Test
     void removeWritePermission() {
         formMetadata.addWritePermission("User3");
+        formMetadata.addWritePermission("User3");
+
+        assertTrue(formMetadata.hasWritePermission("User3"));
 
         formMetadata.removeWritePermission("User3");
 
@@ -69,7 +71,7 @@ class FormMetadataTest {
         assertFalse(formMetadata.hasReadPermission("User3"));
         assertFalse(formMetadata.hasReadPermission("User4"));
 
-        List<String> users = new ArrayList<>();
+        Set<String> users = new HashSet<>();
         users.add("User3");
         users.add("User4");
 
