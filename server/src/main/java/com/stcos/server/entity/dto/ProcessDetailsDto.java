@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("ProcessDetails")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-09T16:31:38.403102300+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-11T17:11:10.573960700+08:00[Asia/Shanghai]")
 public class ProcessDetailsDto {
 
   private Long projectId;
@@ -44,9 +44,11 @@ public class ProcessDetailsDto {
 
   private String currentTaskName;
 
+  private String assignee;
+
   /**
    * Default constructor
-   * @deprecated Use {@link ProcessDetailsDto#ProcessDetailsDto(Long, String, String, String, String, String, String, String, String, String, String, String, Integer, String)}
+   * @deprecated Use {@link ProcessDetailsDto#ProcessDetailsDto(Long, String, String, String, String, String, String, String, String, String, String, String, Integer, String, String)}
    */
   @Deprecated
   public ProcessDetailsDto() {
@@ -56,7 +58,7 @@ public class ProcessDetailsDto {
   /**
    * Constructor with only required parameters
    */
-  public ProcessDetailsDto(Long projectId, String title, String version, String testType, String applicationDate, String applicant, String company, String telephone, String email, String address, String startDate, String dueDate, Integer index, String currentTaskName) {
+  public ProcessDetailsDto(Long projectId, String title, String version, String testType, String applicationDate, String applicant, String company, String telephone, String email, String address, String startDate, String dueDate, Integer index, String currentTaskName, String assignee) {
     this.projectId = projectId;
     this.title = title;
     this.version = version;
@@ -71,6 +73,7 @@ public class ProcessDetailsDto {
     this.dueDate = dueDate;
     this.index = index;
     this.currentTaskName = currentTaskName;
+    this.assignee = assignee;
   }
 
   public ProcessDetailsDto projectId(Long projectId) {
@@ -353,6 +356,26 @@ public class ProcessDetailsDto {
     this.currentTaskName = currentTaskName;
   }
 
+  public ProcessDetailsDto assignee(String assignee) {
+    this.assignee = assignee;
+    return this;
+  }
+
+  /**
+   * 当前被分配人姓名
+   * @return assignee
+  */
+  @NotNull 
+  @Schema(name = "assignee", description = "当前被分配人姓名", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("assignee")
+  public String getAssignee() {
+    return assignee;
+  }
+
+  public void setAssignee(String assignee) {
+    this.assignee = assignee;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -375,12 +398,13 @@ public class ProcessDetailsDto {
         Objects.equals(this.startDate, processDetails.startDate) &&
         Objects.equals(this.dueDate, processDetails.dueDate) &&
         Objects.equals(this.index, processDetails.index) &&
-        Objects.equals(this.currentTaskName, processDetails.currentTaskName);
+        Objects.equals(this.currentTaskName, processDetails.currentTaskName) &&
+        Objects.equals(this.assignee, processDetails.assignee);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(projectId, title, version, testType, applicationDate, applicant, company, telephone, email, address, startDate, dueDate, index, currentTaskName);
+    return Objects.hash(projectId, title, version, testType, applicationDate, applicant, company, telephone, email, address, startDate, dueDate, index, currentTaskName, assignee);
   }
 
   @Override
@@ -401,6 +425,7 @@ public class ProcessDetailsDto {
     sb.append("    dueDate: ").append(toIndentedString(dueDate)).append("\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     sb.append("    currentTaskName: ").append(toIndentedString(currentTaskName)).append("\n");
+    sb.append("    assignee: ").append(toIndentedString(assignee)).append("\n");
     sb.append("}");
     return sb.toString();
   }

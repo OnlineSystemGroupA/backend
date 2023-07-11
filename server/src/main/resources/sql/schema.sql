@@ -158,3 +158,22 @@ CREATE TABLE IF NOT EXISTS t_sample_metadata
     PRIMARY KEY (sample_metadata_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+-- ProcessRecord
+CREATE TABLE IF NOT EXISTS t_process_record
+(
+    project_id            BIGINT AUTO_INCREMENT,
+    client_id             VARCHAR(64) NOT NULL,
+    marketing_manager_id  VARCHAR(64) NOT NULL,
+    testing_manager_id    VARCHAR(64) NOT NULL,
+    quality_manager_id    VARCHAR(64) NOT NULL,
+    signatory_id          VARCHAR(64) NOT NULL,
+    marketing_operator_id VARCHAR(64) NOT NULL,
+    testing_operator_id   VARCHAR(64) NOT NULL,
+    start_user_name       VARCHAR(32) NOT NULL,
+    title                 VARCHAR(64) NOT NULL,
+    start_date            DATETIME    NOT NULL,
+    finish_date           DATETIME    NOT NULL,
+    PRIMARY KEY (project_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

@@ -1,17 +1,11 @@
 package com.stcos.server.entity.process.configs;
 
-import com.stcos.server.entity.email.EmailContent;
 import com.stcos.server.service.FormService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.flowable.engine.RuntimeService;
 import org.flowable.task.api.Task;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +16,6 @@ import java.util.Set;
  * @version 1.0
  * @since 2023/5/19 16:45
  */
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

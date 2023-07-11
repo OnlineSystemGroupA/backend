@@ -1,5 +1,6 @@
 package com.stcos.server.listener;
 
+import com.stcos.server.entity.form.FormState;
 import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
@@ -32,6 +33,9 @@ public class VerifyApplicationListener extends OperatorTaskListener {
     public void create(DelegateTask task) {
         super.create(task);
         userService.addProcessInstance(task.getAssignee(), task.getProcessInstanceId());
+
+
+        formService.setFormState((Long) task.getVariable(FormType.TYPE_APPLICATION_FORM), FormState.STATE_VERIFYING);
     }
 
 }

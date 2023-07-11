@@ -129,7 +129,6 @@ public class WorkflowController implements WorkflowApi {
     }
 
 
-
     /* 上传 or 下载表单 */
     @Override
     public ResponseEntity<Void> uploadFileForm(String processId, String formName, MultipartFile file) {
@@ -218,13 +217,13 @@ public class WorkflowController implements WorkflowApi {
         ProcessDetails processDetails = null;
         try {
             processDetails = workflowService.getProcessDetails(processId);
+            Task task = workflowService.getTaskById(processId);
+            ProcessDetailsDto processDetailsDto = ProcessDetailsMapper.toProcessDetailsDto(processDetails, task);
+            return ResponseEntity.ok(processDetailsDto);
         } catch (ServiceException e) {
             if (e.getCode() == 0) return ResponseEntity.status(404).build();
         }
-        String currentTaskName = workflowService.getTaskById(processId).getName();
-        int index = TaskUtil.getTaskGroupIndex(currentTaskName);
-        ProcessDetailsDto processDetailsDto = ProcessDetailsMapper.toProcessDetailsDto(processDetails, currentTaskName, index);
-        return ResponseEntity.ok(processDetailsDto);
+        return ResponseEntity.internalServerError().build();
     }
 
     @Override
@@ -279,8 +278,8 @@ public class WorkflowController implements WorkflowApi {
         return result;
     }
 
-    @Secured("ROLE_ADMIN")
     @Override
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> deleteProcess(String processId) {
         ResponseEntity<Void> result = null;
         try {

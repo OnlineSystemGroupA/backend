@@ -920,6 +920,7 @@ components:
         - dueDate
         - index
         - currentTaskName
+        - assignee
       properties:
         projectId:
           description: 测试项目号
@@ -964,6 +965,9 @@ components:
           format: int32
         currentTaskName:
           description: 当前任务名称
+          type: string
+        assignee:
+          description: 当前被分配人姓名
           type: string
 
     fileMetadata:
