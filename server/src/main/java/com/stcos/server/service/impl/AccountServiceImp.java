@@ -191,7 +191,7 @@ public class AccountServiceImp implements AccountService {
         Operator operator = operatorService.getByJobNumber(operatorDetailsDto.getJobNumber());
         if (operator != null)
             throw new ServiceException(0);
-        operator = new Operator(operatorDetailsDto.getUid());
+        operator = new Operator();
         operator.setPassword(passwordEncoder.encode("123456"));
         operator.setJobNumber(operatorDetailsDto.getJobNumber());
         operator.setJobNumber(operatorDetailsDto.getJobNumber());
