@@ -32,7 +32,6 @@ public interface FormService {
      */
     void saveOrUpdateForm(Long formMetadataId, Form form) throws ServiceException;
 
-
     /**
      * 保存表单索引
      *
@@ -48,7 +47,7 @@ public interface FormService {
      */
     boolean existForm(long formMetadataId);
 
-    void addWritePermission(Long formMetadataId, String assignee);
+    void addWritePermission(Long formMetadataId, String userId);
 
     void addReadPermission(Long formMetadataId, String userId);
 
@@ -58,11 +57,13 @@ public interface FormService {
 
     Long createMetadata(Long projectId, String formType);
 
-    void removeWritePermission(Long formMetadataId, String assignee);
+    void removeWritePermission(Long formMetadataId, String userId);
 
     void removeWritePermission(Long formMetadataId);
 
     Form getForm(Long metadataId);
 
-    boolean hasWritePermission(Long formMetadataId, String uid);
+    boolean hasWritePermission(Long formMetadataId, String userId);
+
+    boolean hasReadPermission(Long formMetadataId, String userId);
 }

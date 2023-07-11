@@ -180,8 +180,8 @@ public class WorkflowController implements WorkflowApi {
             response = ResponseEntity.ok(workflowService.getFormFile(processId, formName));
         } catch (ServiceException e) {
             switch (e.getCode()) {
-                case 1 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
                 case 0 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                case 1 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
                 default -> ResponseEntity.internalServerError();
             }
         }
@@ -201,8 +201,8 @@ public class WorkflowController implements WorkflowApi {
             response = ResponseEntity.ok(fileMetadataDto);
         } catch (ServiceException e) {
             switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
-                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                case 0 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                case 1 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
                 default -> ResponseEntity.internalServerError();
             }
         }
@@ -228,8 +228,8 @@ public class WorkflowController implements WorkflowApi {
 
         } catch (ServiceException e) {
             switch (e.getCode()) {
-                case 0 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
-                case 1 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                case 0 -> response = ResponseEntity.status(404).build();   // 指定流程或表单不存在
+                case 1 -> response = ResponseEntity.status(403).build();   // 指定流程或表单对该用户不可见
                 default -> ResponseEntity.internalServerError();
             }
         }

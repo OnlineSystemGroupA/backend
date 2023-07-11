@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static com.itextpdf.io.util.FileUtil.fileExists;
+
 @Service
 public class FileMetadataServiceImp extends ServiceImpl<FileMetadataMapper, FileMetadata> implements FileMetadataService {
 
@@ -21,6 +23,7 @@ public class FileMetadataServiceImp extends ServiceImpl<FileMetadataMapper, File
 
     @Override
     public boolean existFile(long fileMetadataId) {
-        return getById(fileMetadataId).getFilePath() != null;
+        String filePath = getById(fileMetadataId).getFilePath();
+        return fileExists(filePath);
     }
 }

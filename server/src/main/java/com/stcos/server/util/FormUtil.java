@@ -48,9 +48,9 @@ public class FormUtil {
 
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static File replaceSpecialText(Form form, String formName, String fileName) {
+    public static File replaceSpecialText(Form form, String formType, String fileName) {
         try {
-            URI uri = Objects.requireNonNull(FormUtil.class.getResource(FORM_TEMPLATE_FILE_MAP.get(formName))).toURI();
+            URI uri = Objects.requireNonNull(FormUtil.class.getResource(FORM_TEMPLATE_FILE_MAP.get(formType))).toURI();
             //读文件
             XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage(uri.getPath()));
             //替换内容

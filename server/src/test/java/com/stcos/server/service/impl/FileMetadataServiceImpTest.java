@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +27,22 @@ class FileMetadataServiceImpTest {
 
     @Test
     void existFile() {
-        Long id = fileMetadataService.create("testFileName", "testFileType", 123L, "testUser", LocalDateTime.now(), "testFilePath");
-        assertTrue(fileMetadataService.existFile(id));
+        // Create a file
+        String filePath = "./testFile.txt";
+        File file = new File(filePath);
+        try {
+            boolean isFileCreated = file.createNewFile();
+            if (isFileCreated) {
+                Long id = fileMetadataService.create("testFileName", "testFileType", file.length(), "testUser", LocalDateTime.now(), filePath);
+                assertTrue(fileMetadataService.existFile(id));
+            } else {
+                fail("File could not be created");
+            }
+        } catch (IOException e) {
+            fail("Exception occurred while creating file: " + e.getMessage());
+        } finally {
+            // Delete the file
+            file.delete();
+        }
     }
 }

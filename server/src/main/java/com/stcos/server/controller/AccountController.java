@@ -123,7 +123,7 @@ public class AccountController implements AccountApi {
     /* 主管 */
     @Override
     @Secured("ROLE_MANAGER")  // 只有主管可以调用该 API
-    public ResponseEntity<List<OperatorDetailsDto>> getOperators() {
+    public ResponseEntity<List<OperatorDetailsDto>> getOperatorsDepartment() {
         Operator user = (Operator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Operator> operatorList = accountService.getOperatorsByDepartment(user.getDepartment());
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
@@ -146,7 +146,7 @@ public class AccountController implements AccountApi {
 
     @Secured("ROLE_ADMIN")
     @Override
-    public ResponseEntity<List<OperatorDetailsDto>> getOperatorsDepartment() {
+    public ResponseEntity<List<OperatorDetailsDto>> getOperators() {
         List<Operator> operatorList = accountService.getOperators();
         List<OperatorDetailsDto> ret = new ArrayList<>(operatorList.size());
         for (Operator operator : operatorList) {

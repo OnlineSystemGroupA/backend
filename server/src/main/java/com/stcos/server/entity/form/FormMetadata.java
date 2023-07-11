@@ -130,7 +130,7 @@ public class FormMetadata {
      */
     public void addWritePermission(String uid) {
         writableUsers.add(uid);
-        writableUsers = new HashSet<>(writableUsers).stream().toList();
+        writableUsers = new ArrayList<>(new HashSet<>(writableUsers));
     }
 
     /**
@@ -156,7 +156,7 @@ public class FormMetadata {
      */
     public void addReadPermission(String uid) {
         readableUsers.add(uid);
-        readableUsers = new HashSet<>(readableUsers).stream().toList();
+        readableUsers = new ArrayList<>(new HashSet<>(readableUsers));
     }
 
     /**
@@ -166,7 +166,7 @@ public class FormMetadata {
      */
     public void addReadPermission(Set<String> users) {
         readableUsers.addAll(users);
-        readableUsers = new HashSet<>(readableUsers).stream().toList();
+        readableUsers = new ArrayList<>(new HashSet<>(readableUsers));
     }
 
     /**

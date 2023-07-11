@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 class FormMetadataTest {
 
@@ -16,66 +15,62 @@ class FormMetadataTest {
 
     @BeforeEach
     void setUp() {
-        formMetadata = new FormMetadata("ContractForm");
+        formMetadata = new FormMetadata(1L, FormType.TYPE_TEST_REPORT_FORM);
     }
 
     @Test
     void hasReadPermission() {
-        assertFalse(formMetadata.hasReadPermission("User1"));
+        assertFalse(formMetadata.hasReadPermission("testUser1"));
 
-        formMetadata.addReadPermission("User1");
-
-        assertTrue(formMetadata.hasReadPermission("User1"));
+        formMetadata.addReadPermission("testUser1");
+        assertTrue(formMetadata.hasReadPermission("testUser1"));
     }
 
     @Test
     void hasWritePermission() {
-        assertFalse(formMetadata.hasWritePermission("User1"));
+        assertFalse(formMetadata.hasWritePermission("testUser1"));
 
-        formMetadata.addWritePermission("User1");
-
-        assertTrue(formMetadata.hasWritePermission("User1"));
+        formMetadata.addWritePermission("testUser1");
+        assertTrue(formMetadata.hasWritePermission("testUser1"));
     }
 
     @Test
     void addWritePermission() {
-        assertFalse(formMetadata.hasWritePermission("User2"));
+        assertFalse(formMetadata.hasWritePermission("testUser2"));
 
-        formMetadata.addWritePermission("User2");
-
-        assertTrue(formMetadata.hasWritePermission("User2"));
+        formMetadata.addWritePermission("testUser2");
+        assertTrue(formMetadata.hasWritePermission("testUser2"));
     }
 
     @Test
     void removeWritePermission() {
-        formMetadata.addWritePermission("User3");
+        formMetadata.addWritePermission("testUser3");
+        formMetadata.addWritePermission("testUser3");
+        assertTrue(formMetadata.hasWritePermission("testUser3"));
 
-        formMetadata.removeWritePermission("User3");
-
-        assertFalse(formMetadata.hasWritePermission("User3"));
+        formMetadata.removeWritePermission("testUser3");
+        assertFalse(formMetadata.hasWritePermission("testUser3"));
     }
 
     @Test
     void addReadPermission() {
-        assertFalse(formMetadata.hasReadPermission("User2"));
+        assertFalse(formMetadata.hasReadPermission("testUser2"));
 
-        formMetadata.addReadPermission("User2");
-
-        assertTrue(formMetadata.hasReadPermission("User2"));
+        formMetadata.addReadPermission("testUser2");
+        assertTrue(formMetadata.hasReadPermission("testUser2"));
     }
 
     @Test
     void testAddReadPermission() {
-        assertFalse(formMetadata.hasReadPermission("User3"));
-        assertFalse(formMetadata.hasReadPermission("User4"));
+        assertFalse(formMetadata.hasReadPermission("testUser3"));
+        assertFalse(formMetadata.hasReadPermission("testUser4"));
 
-        List<String> users = new ArrayList<>();
-        users.add("User3");
-        users.add("User4");
+        Set<String> users = new HashSet<>();
+        users.add("testUser3");
+        users.add("testUser4");
 
         formMetadata.addReadPermission(users);
-
-        assertTrue(formMetadata.hasReadPermission("User3"));
-        assertTrue(formMetadata.hasReadPermission("User4"));
+        assertTrue(formMetadata.hasReadPermission("testUser3"));
+        assertTrue(formMetadata.hasReadPermission("testUser4"));
     }
 }
