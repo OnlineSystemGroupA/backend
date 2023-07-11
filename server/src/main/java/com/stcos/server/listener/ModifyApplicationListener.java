@@ -1,12 +1,16 @@
 package com.stcos.server.listener;
 
 import com.stcos.server.entity.form.ApplicationForm;
+import com.stcos.server.entity.form.FormState;
 import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+
+import static com.stcos.server.entity.form.FormType.TYPE_APPLICATION_FORM;
+import static com.stcos.server.entity.form.FormType.TYPE_TEST_FUNCTION_FORM;
 
 /*
     __  ___          ___ ____      ___                ___            __  _             __    _      __
@@ -31,6 +35,16 @@ public class ModifyApplicationListener extends ClientTaskListener {
         super(TaskName.NAME_TASK_06);
     }
 
+    @Override
+    public void create(DelegateTask task) {
+        super.create(task);
+
+        Long metadataId = (Long) task.getVariable(FormType.TYPE_APPLICATION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_REFUSED);
+        metadataId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_REFUSED);
+    }
+
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void complete(DelegateTask task) {
@@ -53,5 +67,9 @@ public class ModifyApplicationListener extends ClientTaskListener {
                 form.getCompanyInfo().getAddress(),
                 (String) task.getVariable("startUser"),
                 form.getCompanyInfo().getTelephone());
+
+        formService.setFormState(metadataId, FormState.STATE_VERIFYING);
+        metadataId = (Long) task.getVariable(TYPE_TEST_FUNCTION_FORM);
+        formService.setFormState(metadataId, FormState.STATE_VERIFYING);
     }
 }
