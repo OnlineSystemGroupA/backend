@@ -32,7 +32,6 @@ public interface FormService {
      */
     void saveOrUpdateForm(Long formMetadataId, Form form) throws ServiceException;
 
-
     /**
      * 保存表单索引
      *
