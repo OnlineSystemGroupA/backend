@@ -57,12 +57,12 @@ public class Operator implements User {
     boolean enabled;
 
     @TableField(value = "process_instance", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> processInstanceList;
+    private List<String> processInstanceList = new ArrayList<>();
 
     @TableField(value = "process_record", jdbcType = JdbcType.BLOB, typeHandler = ListTypeHandler.class)
-    private List<String> processRecordList;
+    private List<String> processRecordList = new ArrayList<>();
 
-    public Operator(String uid) {
+    public Operator() {
         this.uid = "op-" + UUID.randomUUID();
         this.createdDate = LocalDateTime.now();
     }

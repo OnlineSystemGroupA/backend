@@ -21,11 +21,6 @@ import java.util.List;
 public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, ProcessDetails> implements ProcessDetailsService {
 
     @Override
-    public boolean addTaskDetails(String processInstanceId, TaskDetails taskDetails) throws ServiceException {
-        return false;
-    }
-
-    @Override
     public void openTask(Long projectId, String taskName, String userName) {
         ProcessDetails processDetails = getById(projectId);
         processDetails.openTask(taskName, userName);

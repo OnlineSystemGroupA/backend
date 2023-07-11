@@ -5,6 +5,8 @@ import com.stcos.server.service.FormMetadataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +14,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
+@Rollback
 class FormMetadataServiceImpTest {
     
     @Autowired
@@ -60,7 +64,6 @@ class FormMetadataServiceImpTest {
         formMetadataService.addWritePermission(formMetadataId, "testUser");
         assertTrue(formMetadataService.getById(formMetadataId).hasWritePermission("testUser"));
     }
-
 
     @Test
     void removeWritePermission() {

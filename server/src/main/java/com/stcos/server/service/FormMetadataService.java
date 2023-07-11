@@ -37,11 +37,11 @@ public interface FormMetadataService extends IService<FormMetadata> {
     /**
      * 为给定的用户列表赋予指定表单的读取权限
      *
-     * @param formMetadataId 表单元数据ID
-     * @param userId 用户ID集合
+     * @param formMetadataId 表单元数据 ID
+     * @param userIds 用户 ID 集合
      * @throws ServerErrorException 如果数据库写入失败
      */
-    void addReadPermission(Long formMetadataId, Set<String> userId);
+    void addReadPermission(Long formMetadataId, Set<String> userIds);
 
     /**
      * 删除所有用户对指定表单的读取权限

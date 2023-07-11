@@ -17,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +27,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
+@Rollback
 public class FormServiceImpTest {
 
     @Autowired
@@ -176,9 +180,9 @@ public class FormServiceImpTest {
 
         Long createdFormMetadataId = formService.createMetadata(projectId, formType);
 
-        FormMetadata retrievedFormMetadata = formMetadataService.getById(createdFormMetadataId);
-        assertEquals(projectId, retrievedFormMetadata.getProjectId());
-        assertEquals(formType, retrievedFormMetadata.getFormType());
+        FormMetadata formMetadata = formMetadataService.getById(createdFormMetadataId);
+        assertEquals(projectId, formMetadata.getProjectId());
+        assertEquals(formType, formMetadata.getFormType());
     }
 
     @Test

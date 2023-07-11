@@ -100,8 +100,8 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public void addReadPermission(Long formMetadataId, Set<String> userId) {
-        formMetadataService.addReadPermission(formMetadataId, userId);
+    public void addReadPermission(Long formMetadataId, Set<String> userIds) {
+        formMetadataService.addReadPermission(formMetadataId, userIds);
     }
 
     @Override
