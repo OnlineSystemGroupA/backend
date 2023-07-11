@@ -1,10 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.database.mongo.FormRepository;
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.form.TestReportForm;
+import com.stcos.server.entity.form.*;
 import com.stcos.server.entity.user.Client;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FormMetadataService;
@@ -56,7 +53,7 @@ public class FormServiceImpTest {
         form.setSoftwareName("testSoftwareName");
 
         // 创建一个 User 对象
-        mockUser = new Client("testUser", "testPassword", "testEmail");
+        mockUser = new Client("testUser", "testPassword", "testEmail@test.com");
         mockUser.setUid(testUid);
 
         // 创建一个模拟的 Authentication 对象
@@ -226,5 +223,33 @@ public class FormServiceImpTest {
 
         formService.addReadPermission(formMetadataId, testUid);
         assertTrue(formService.hasReadPermission(formMetadataId, testUid));
+    }
+
+    @Test
+    void getCreatedDate() throws ServiceException {
+        formMetadataService.addWritePermission(formMetadataId, testUid);
+        formService.saveOrUpdateForm(formMetadataId, form);
+        assertNotNull(formService.getCreatedDate(formMetadataId));
+    }
+
+    @Test
+    void getFormState() throws ServiceException {
+        formMetadataService.addWritePermission(formMetadataId, testUid);
+        formService.saveOrUpdateForm(formMetadataId, form);
+
+        String expectedState = FormState.STATE_NULL;
+        assertEquals(expectedState, formService.getFormState(formMetadataId));
+    }
+
+    @Test
+    void setFormState() throws ServiceException {
+        formMetadataService.addWritePermission(formMetadataId, testUid);
+        formService.saveOrUpdateForm(formMetadataId, form);
+
+        String newState = FormState.STATE_PASSED;
+        formService.setFormState(formMetadataId, newState);
+
+        FormMetadata formMetadata = formMetadataService.getById(formMetadataId);
+        assertEquals(newState, formMetadata.getFormState());
     }
 }
