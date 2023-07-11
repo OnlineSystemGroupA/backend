@@ -29,10 +29,63 @@
             <id column="description" property="description"/>
         </collection>
     </resultMap>
-    <select id="selectTaskListById" parameterType="int" resultMap="task_details">
+    <select id="selectTaskListById" parameterType="java.lang.Long" resultMap="task_details">
         SELECT * FROM
         t_task_details t1,t_process_details t2
         WHERE t1.process_id=t2.project_id
         AND t1.process_id=#{id}
     </select>
+    <insert id="saveProcess" parameterType="com.stcos.server.entity.process.ProcessDetails" useGeneratedKeys="true" keyColumn="project_id">
+        INSERT INTO t_process_details
+            (project_id,
+             title,
+             version,
+             test_type,
+             application_date,
+             applicant,
+             company,
+             telephone,
+             email,
+             address,
+             start_date,
+             due_date)
+        VALUES
+            (#{projectId},
+             #{title},
+             #{version},
+             #{testType},
+             #{applicationDate},
+             #{applicant},
+             #{company},
+             #{telephone},
+             #{email},
+             #{address},
+             #{startDate},
+             #{dueDate})
+        ON DUPLICATE KEY UPDATE;
+
+        <foreach collection="taskDetailsList" item="task" separator=";">
+            INSERT INTO t_task_details
+                (task_id,
+                 process_id,
+                 task_name,
+                 department,
+                 operator,
+                 start_date,
+                 finish_date,
+                 result,
+                 description)
+            VALUES(
+                   #{task.taskId},
+                   #{task.processId},
+                   #{task.taskName},
+                   #{task.department},
+                   #{task.operator},
+                   #{task.startDate},
+                   #{task.finishDate},
+                   #{task.result},
+                   #{task.description})
+            ON DUPLICATE KEY UPDATE;
+        </foreach>
+    </insert>
 </mapper>
