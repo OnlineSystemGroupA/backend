@@ -2,9 +2,13 @@ package com.stcos.server.util.dto;
 
 import com.stcos.server.entity.dto.ProcessDetailsDto;
 import com.stcos.server.entity.process.ProcessDetails;
+import com.stcos.server.util.TaskUtil;
 import lombok.experimental.UtilityClass;
+import org.flowable.task.api.Task;
 
 import java.time.LocalDateTime;
+
+import static com.stcos.server.entity.process.ProcessVariables.VAR_ASSIGNEE;
 
 /**
  * description
@@ -19,11 +23,14 @@ public class ProcessDetailsMapper {
 
     /**
      * @param processDetails
-     * @param currentTaskName
-     * @param index
+     * @param task
      * @return
      */
-    public ProcessDetailsDto toProcessDetailsDto(ProcessDetails processDetails, String currentTaskName, Integer index) {
+    public ProcessDetailsDto toProcessDetailsDto(ProcessDetails processDetails, Task task) {
+        String currentTaskName = task.getName();
+        String assignee = (String) task.getProcessVariables().get(VAR_ASSIGNEE);
+        int index = TaskUtil.getTaskGroupIndex(currentTaskName);
+
         LocalDateTime startDate = processDetails.getStartDate();
         LocalDateTime dueDate = processDetails.getDueDate();
 
@@ -45,7 +52,8 @@ public class ProcessDetailsMapper {
                 startDateStr,
                 dueDateStr,
                 index,
-                currentTaskName
+                currentTaskName,
+                assignee
         );
     }
 

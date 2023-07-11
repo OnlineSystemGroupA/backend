@@ -97,7 +97,7 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public Task getTaskById(String taskId) {
-        return taskService.createTaskQuery().processInstanceId(taskId).active().singleResult();
+        return taskService.createTaskQuery().processInstanceId(taskId).includeProcessVariables().active().singleResult();
     }
 
     private final Map<String, Comparator<ProcessInstance>> comparatorMap = new HashMap<>() {{
@@ -239,9 +239,6 @@ public class WorkflowServiceImp implements WorkflowService {
         String testingManagerId = settingService.getTestingManager();
         String qualityManagerId = settingService.getQualityManager();
         String signatoryId = settingService.getSignatory();
-
-        // 创建流程记录对象，并获取其 ID
-        Long recordId = processRecordService.create();
 
         // 初始化流程变量，创建 ProcessVariables 对象
         Map<String, Object> processVariables = ProcessVariablesBuilder.build(client.getUid(), client.getRealName(),
