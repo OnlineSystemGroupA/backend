@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS t_process_record
     start_user_name       VARCHAR(32) NOT NULL,
     title                 VARCHAR(64) NOT NULL,
     start_date            DATETIME    NOT NULL,
-    finish_date           DATETIME    NOT NULL,
+    finish_date           DATETIME,
     PRIMARY KEY (project_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

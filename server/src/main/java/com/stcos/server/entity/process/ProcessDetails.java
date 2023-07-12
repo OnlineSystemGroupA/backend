@@ -111,8 +111,8 @@ public class ProcessDetails {
         taskDetails.setProcessId(projectId)
                 .setTaskName(taskName)
                 .setOperator(userName)
-                .setStartDate(LocalDateTime.now());
-
+                .setStartDate(LocalDateTime.now())
+                .setFinishDate(LocalDateTime.now());
         taskDetailsList.add(taskDetails);
     }
 

@@ -17,8 +17,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@Transactional
-//@Rollback
+@Transactional
+@Rollback
 public class ProcessDetailsServiceImpTest {
 
     @Autowired
@@ -34,22 +34,22 @@ public class ProcessDetailsServiceImpTest {
         String taskName = "taskName";
         processDetailsService.openTask(projectId, taskName, "userName");
 
-        ProcessDetails processDetails = processDetailsMapper.selectById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         // Check if the task is opened
         assertEquals(taskName, processDetails.getCurrentTaskName());
     }
 
     @Test
     void closeTask() {
-//        Long projectId = processDetailsService.create();
-//
-//        String taskName = "taskName";
-//        processDetailsService.openTask(projectId, taskName, "userName");
-//        processDetailsService.closeTask(projectId, taskName);
-//
-//        ProcessDetails processDetails = processDetailsMapper.selectById(1L);
-//        // Check if the task is closed
-//        assertNotNull(processDetails.getTaskDetailsList().stream().filter(t -> t.getTaskName().equals(taskName)).findFirst().get().getFinishDate());
+        Long projectId = processDetailsService.create();
+
+        String taskName = "taskName";
+        processDetailsService.openTask(projectId, taskName, "userName");
+        processDetailsService.closeTask(projectId, taskName);
+
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
+        // Check if the task is closed
+        assertNotNull(processDetails.getTaskDetailsList().get(processDetails.getTaskDetailsList().size() - 1).getFinishDate());
     }
 
     @Test

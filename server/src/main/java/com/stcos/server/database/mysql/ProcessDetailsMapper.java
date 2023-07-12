@@ -9,7 +9,12 @@ import java.util.List;
 
 @Repository
 public interface ProcessDetailsMapper extends BaseMapper<ProcessDetails> {
-    List<TaskDetails> selectTaskListById(String id);
+
+    ProcessDetails selectProcessDetails(Long projectId);
+
+    List<TaskDetails> selectTaskDetailsByProcessId(Long processId);
 
     void saveProcess(ProcessDetails processDetails);
+
+    void saveTaskDetails(List<TaskDetails> taskDetailsList);
 }

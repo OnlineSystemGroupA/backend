@@ -29,20 +29,31 @@
             <id column="description" property="description"/>
         </collection>
     </resultMap>
-    <select id="selectTaskListById" parameterType="java.lang.Long" resultMap="task_details">
-        SELECT *
-        FROM t_task_details t1,
-             t_process_details t2
-        WHERE t1.process_id = t2.project_id
-          AND t1.process_id = #{id}
+
+    <select id="selectTaskDetailsByProcessId" resultMap="taskDetailsMap">
+        SELECT * FROM t_task_details WHERE process_id = #{processId};
     </select>
-    <insert id="saveProcess" parameterType="com.stcos.server.entity.process.ProcessDetails" useGeneratedKeys="true"
-            keyColumn="project_id">
-        USE stcos;
+
+    <select id="selectProcessDetails" resultMap="processDetailsMap">
+        SELECT * FROM t_process_details WHERE project_id = #{projectId};
+    </select>
+
+    <insert id="saveProcess" parameterType="com.stcos.server.entity.process.ProcessDetails" useGeneratedKeys="true" keyColumn="project_id">
         INSERT INTO t_process_details
-        VALUE
-        (
-        #{projectId},
+        (project_id,
+        title,
+        version,
+        test_type,
+        application_date,
+        applicant,
+        company,
+        telephone,
+        email,
+        address,
+        start_date,
+        due_date)
+        VALUES
+        (#{projectId},
         #{title},
         #{version},
         #{testType},
@@ -54,7 +65,8 @@
         #{address},
         #{startDate},
         #{dueDate})
-        ON DUPLICATE KEY UPDATE title=VALUES(title),
+        ON DUPLICATE KEY UPDATE
+        title=VALUES(title),
         version=VALUES(version),
         test_type=VALUES(test_type),
         application_date=VALUES(application_date),
@@ -64,11 +76,39 @@
         email=VALUES(email),
         address=VALUES(address),
         start_date=VALUES(start_date),
-        due_date=VALUES(due_date)
-        ;
-        INSERT INTO t_task_details VALUES
+        due_date=VALUES(due_date);
+
+        INSERT INTO t_task_details
+        (task_id,
+        process_id,
+        task_name,
+        department,
+        operator,
+        start_date,
+        finish_date,
+        result,
+        description)
+        VALUES
         <foreach collection="taskDetailsList" item="task" separator=",">
-            (#{task.taskId},#{task.processId},#{task.taskName},#{task.department},#{task.operator},#{task.startDate},#{task.finishDate},#{task.result},#{task.description})
+            (
+            #{task.taskId},
+            #{task.processId},
+            #{task.taskName},
+            #{task.department},
+            #{task.operator},
+            #{task.startDate},
+            #{task.finishDate},
+            #{task.result},
+            #{task.description})
+            ON DUPLICATE KEY UPDATE
+            process_id=VALUES(process_id),
+            task_name=VALUES(task_name),
+            department=VALUES(department),
+            operator=VALUES(operator),
+            start_date=VALUES(start_date),
+            finish_date=VALUES(finish_date),
+            result=VALUES(result),
+            description=VALUES(description);
         </foreach>;
     </insert>
 </mapper>
