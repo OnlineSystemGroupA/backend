@@ -85,11 +85,11 @@ remove dao
 'WorkflowService <-- UserService
 
 FormService <-- MongoDB
-FileService <-- MongoDB
+FileService <-- MySQL
 
 AuthService <-- UserService
 AccountService <-- UserService
-AccountService <-- FileService
+'AccountService <-- FileService
 
 UserService <-- MySQL
 ArchivesService <-- MySQL
@@ -97,8 +97,10 @@ ArchivesService <-- MySQL
 
 MenuService <-- MySQL
 AccountService <-- MySQL
-AuthService <-- MySQL
+AuthService <--- MySQL
 
+remove MenuController
+remove MenuService
 remove UserService
 
 @enduml

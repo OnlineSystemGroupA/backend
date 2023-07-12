@@ -2,7 +2,7 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.FormMetadataMapper;
-import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.model.form.FormMetadata;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.FormMetadataService;
 import org.springframework.stereotype.Service;

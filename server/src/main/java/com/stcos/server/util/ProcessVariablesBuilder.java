@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.stcos.server.entity.form.FormType.*;
-import static com.stcos.server.entity.process.ProcessVariables.*;
+import static com.stcos.server.model.form.FormType.*;
+import static com.stcos.server.model.process.ProcessVariables.*;
 
 /*
     ____                                _    __           _       __    __          ____        _ __    __

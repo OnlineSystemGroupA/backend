@@ -15,7 +15,7 @@ import com.itextpdf.layout.property.ListNumberingType;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
-import com.stcos.server.entity.form.ContractForm;
+import com.stcos.server.model.form.ContractForm;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

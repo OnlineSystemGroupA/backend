@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.stcos.server.entity.file.SampleMetadata;
+import com.stcos.server.model.file.SampleMetadata;
 import com.stcos.server.exception.ServerErrorException;
 
 import java.util.List;

@@ -1,17 +1,11 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.database.mysql.AdminMapper;
 import com.stcos.server.database.mysql.ClientMapper;
-import com.stcos.server.database.mysql.OperatorMapper;
-import com.stcos.server.entity.user.Client;
-import com.stcos.server.entity.user.Operator;
-import com.stcos.server.entity.user.User;
+import com.stcos.server.model.user.Client;
 import com.stcos.server.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;

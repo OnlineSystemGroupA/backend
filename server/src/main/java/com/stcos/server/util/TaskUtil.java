@@ -1,8 +1,7 @@
 package com.stcos.server.util;
 
-import com.stcos.server.entity.process.configs.TaskConfig;
-import com.stcos.server.entity.process.TaskName;
-import com.stcos.server.entity.process.configs.*;
+import com.stcos.server.model.process.configs.*;
+import com.stcos.server.model.process.TaskName;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.FormService;
 import lombok.experimental.UtilityClass;

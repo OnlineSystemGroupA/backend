@@ -1,7 +1,7 @@
 package com.stcos.server.util;
 
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormType;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.form.FormType;
 import lombok.experimental.UtilityClass;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;

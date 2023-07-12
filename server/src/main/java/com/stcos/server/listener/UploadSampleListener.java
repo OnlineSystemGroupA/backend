@@ -1,8 +1,7 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.file.SampleMetadata;
-import com.stcos.server.entity.process.ProcessVariables;
-import com.stcos.server.entity.process.TaskName;
+import com.stcos.server.model.process.ProcessVariables;
+import com.stcos.server.model.process.TaskName;
 import com.stcos.server.service.SampleMetadataService;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;

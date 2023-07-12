@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.form.Form;
+import com.stcos.server.model.file.FileMetadata;
+import com.stcos.server.model.form.Form;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import org.springframework.core.io.Resource;

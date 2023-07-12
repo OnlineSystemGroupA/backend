@@ -1,6 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.form.FormType;
+import com.stcos.server.model.form.FormType;
 import com.stcos.server.service.FormMetadataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

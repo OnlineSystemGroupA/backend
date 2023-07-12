@@ -1,15 +1,14 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.WorkflowApi;
-import com.stcos.server.entity.dto.*;
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.process.ProcessDetails;
+import com.stcos.server.model.dto.*;
+import com.stcos.server.model.file.FileMetadata;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.WorkflowService;
 import com.stcos.server.util.JSONUtil;
-import com.stcos.server.util.TaskUtil;
 import com.stcos.server.util.dto.ProcessDetailsMapper;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;

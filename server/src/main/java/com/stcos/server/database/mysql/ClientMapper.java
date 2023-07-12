@@ -1,7 +1,7 @@
 package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.entity.user.Client;
+import com.stcos.server.model.user.Client;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

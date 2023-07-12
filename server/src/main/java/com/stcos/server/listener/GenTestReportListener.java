@@ -1,6 +1,6 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.process.TaskName;
+import com.stcos.server.model.process.TaskName;
 import org.springframework.stereotype.Component;
 
 /**

@@ -1,14 +1,14 @@
 package com.stcos.server.util.dto;
 
-import com.stcos.server.entity.dto.ProcessDetailsDto;
-import com.stcos.server.entity.process.ProcessDetails;
+import com.stcos.server.model.dto.ProcessDetailsDto;
+import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.util.TaskUtil;
 import lombok.experimental.UtilityClass;
 import org.flowable.task.api.Task;
 
 import java.time.LocalDateTime;
 
-import static com.stcos.server.entity.process.ProcessVariables.VAR_ASSIGNEE;
+import static com.stcos.server.model.process.ProcessVariables.VAR_ASSIGNEE;
 
 /**
  * description

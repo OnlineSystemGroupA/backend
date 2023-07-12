@@ -1,5 +1,7 @@
 package com.stcos.server.entity.form;
 
+import com.stcos.server.model.form.FormMetadata;
+import com.stcos.server.model.form.FormType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

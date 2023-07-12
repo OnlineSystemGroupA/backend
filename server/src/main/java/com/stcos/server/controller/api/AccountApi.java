@@ -5,9 +5,9 @@
  */
 package com.stcos.server.controller.api;
 
-import com.stcos.server.entity.dto.ClientDetailsDto;
-import com.stcos.server.entity.dto.LockDto;
-import com.stcos.server.entity.dto.OperatorDetailsDto;
+import com.stcos.server.model.dto.ClientDetailsDto;
+import com.stcos.server.model.dto.LockDto;
+import com.stcos.server.model.dto.OperatorDetailsDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

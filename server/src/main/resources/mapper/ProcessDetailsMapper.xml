@@ -3,7 +3,7 @@
 
 <mapper namespace="com.stcos.server.database.mysql.ProcessDetailsMapper">
     <!--返回的对象为TaskDetails-->
-    <resultMap id="task_details" type="com.stcos.server.entity.process.ProcessDetails">
+    <resultMap id="task_details" type="com.stcos.server.model.process.ProcessDetails">
         <id column="project_id" property="projectId"/>
         <id column="title" property="title"/>
         <id column="version" property="version"/>
@@ -17,7 +17,7 @@
         <id column="start_date" property="startDate"/>
         <id column="due_date" property="dueDate"/>
         <collection property="taskDetailsList"
-                    ofType="com.stcos.server.entity.process.TaskDetails">
+                    ofType="com.stcos.server.model.process.TaskDetails">
             <id column="task_id" property="taskId"/>
             <id column="process_id" property="processId"/>
             <id column="task_name" property="taskName"/>
@@ -35,7 +35,7 @@
         WHERE t1.process_id=t2.project_id
         AND t1.process_id=#{id}
     </select>
-    <insert id="saveProcess" parameterType="com.stcos.server.entity.process.ProcessDetails" useGeneratedKeys="true" keyColumn="project_id">
+    <insert id="saveProcess" parameterType="com.stcos.server.model.process.ProcessDetails" useGeneratedKeys="true" keyColumn="project_id">
         INSERT INTO t_process_details
             (project_id,
              title,

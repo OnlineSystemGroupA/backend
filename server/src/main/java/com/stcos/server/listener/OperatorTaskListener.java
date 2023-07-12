@@ -1,6 +1,6 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.user.Operator;
+import com.stcos.server.model.user.Operator;
 import com.stcos.server.service.OperatorService;
 import org.flowable.task.service.delegate.DelegateTask;
 

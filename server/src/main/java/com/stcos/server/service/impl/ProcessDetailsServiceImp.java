@@ -2,9 +2,7 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.ProcessDetailsMapper;
-import com.stcos.server.entity.process.ProcessDetails;
-import com.stcos.server.entity.process.TaskDetails;
-import com.stcos.server.exception.ServiceException;
+import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.service.ProcessDetailsService;
 import org.springframework.stereotype.Component;
 

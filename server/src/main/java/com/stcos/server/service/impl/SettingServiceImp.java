@@ -2,7 +2,7 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.SettingMapper;
-import com.stcos.server.entity.Setting;
+import com.stcos.server.model.Setting;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.SettingService;
 import org.springframework.stereotype.Service;

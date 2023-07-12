@@ -1,7 +1,7 @@
 package com.stcos.server.database.mysql;
 
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.form.FormMetadata;
 import org.springframework.stereotype.Repository;
 
 /**

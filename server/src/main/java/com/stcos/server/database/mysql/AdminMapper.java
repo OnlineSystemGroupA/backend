@@ -2,9 +2,8 @@ package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.entity.user.Admin;
+import com.stcos.server.model.user.Admin;
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;

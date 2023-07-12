@@ -1,12 +1,12 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.AccountApi;
-import com.stcos.server.entity.dto.ClientDetailsDto;
-import com.stcos.server.entity.dto.LockDto;
-import com.stcos.server.entity.dto.OperatorDetailsDto;
-import com.stcos.server.entity.user.Client;
-import com.stcos.server.entity.user.Operator;
-import com.stcos.server.entity.user.User;
+import com.stcos.server.model.dto.ClientDetailsDto;
+import com.stcos.server.model.dto.LockDto;
+import com.stcos.server.model.dto.OperatorDetailsDto;
+import com.stcos.server.model.user.Client;
+import com.stcos.server.model.user.Operator;
+import com.stcos.server.model.user.User;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.util.dto.ClientDetailsMapper;

@@ -4,14 +4,38 @@
 skin rose
 
 interface UserDetails
-abstract class User {
-'    - uid
-'    - username
-'    - password
-'    - authorities
+interface  User {
+'    - getRealName()
+'    - getUid()
+'    - void addProcessInstance(String)
+'    - Set<String> getProcessInstances()
 '    - email
 }
-
+'String getEmail();
+'
+'    /**
+'     * 获取用户姓名
+'     */
+'    String ;
+'
+'    /**
+'     * 获取用户 ID
+'     */
+'    String ;
+'
+'    default void  {}
+'
+'    default void addProcessRecord(String processInstanceId) {}
+'
+'    Set<String> getProcessInstances();
+'
+'    int getProcessesCount();
+'
+'    default int getProcessRecordCount(){return 0;};
+'
+'    boolean hasProcessInstance(String processId);
+'
+'    default boolean hasProcessRecord(String processId){return false;};
 
 class Admin
 

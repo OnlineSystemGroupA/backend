@@ -3,7 +3,7 @@ package com.stcos.server.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.ClientMapper;
-import com.stcos.server.entity.user.Client;
+import com.stcos.server.model.user.Client;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.ClientService;
 import org.springframework.stereotype.Service;

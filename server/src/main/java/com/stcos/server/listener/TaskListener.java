@@ -1,8 +1,8 @@
 package com.stcos.server.listener;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.stcos.server.entity.process.ProcessVariables;
-import com.stcos.server.entity.user.User;
+import com.stcos.server.model.process.ProcessVariables;
+import com.stcos.server.model.user.User;
 import com.stcos.server.service.EmailService;
 import com.stcos.server.service.FormService;
 import com.stcos.server.service.ProcessDetailsService;
@@ -12,11 +12,10 @@ import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import static com.stcos.server.entity.process.ProcessVariables.VAR_PROJECT_ID;
-import static com.stcos.server.entity.process.ProcessVariables.VAR_START_USER;
+import static com.stcos.server.model.process.ProcessVariables.VAR_PROJECT_ID;
+import static com.stcos.server.model.process.ProcessVariables.VAR_START_USER;
 
 /**
  * description

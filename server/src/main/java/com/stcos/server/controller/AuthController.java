@@ -1,9 +1,9 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.AuthApi;
-import com.stcos.server.entity.dto.LoginParamDto;
-import com.stcos.server.entity.dto.RegisterParamDto;
-import com.stcos.server.entity.dto.TokenDto;
+import com.stcos.server.model.dto.LoginParamDto;
+import com.stcos.server.model.dto.RegisterParamDto;
+import com.stcos.server.model.dto.TokenDto;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.service.AuthService;
 import com.stcos.server.exception.ServiceException;

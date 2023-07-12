@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.model.file.FileMetadata;
 import com.stcos.server.exception.ServerErrorException;
 
 import java.time.LocalDateTime;

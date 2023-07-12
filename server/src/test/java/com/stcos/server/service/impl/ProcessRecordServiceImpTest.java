@@ -1,6 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.process.ProcessRecord;
+import com.stcos.server.model.process.ProcessRecord;
 import com.stcos.server.service.ProcessRecordService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,18 +1,16 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.form.ContractForm;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.process.ProcessDetails;
-import com.stcos.server.entity.process.ProcessVariables;
-import com.stcos.server.entity.process.TaskName;
+import com.stcos.server.model.form.ContractForm;
+import com.stcos.server.model.form.FormType;
+import com.stcos.server.model.process.ProcessDetails;
+import com.stcos.server.model.process.ProcessVariables;
+import com.stcos.server.model.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**

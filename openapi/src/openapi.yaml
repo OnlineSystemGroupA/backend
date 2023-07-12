@@ -144,6 +144,8 @@ paths:
 
   /archive/processes:
     get:
+      tags:
+        - archive
       summary: 获取已完成流程实例
       description: 获取与当前用户相关的所有已完成流程实例
       operationId: getArchiveProcesses

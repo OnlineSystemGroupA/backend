@@ -1,6 +1,6 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.user.Operator;
+import com.stcos.server.model.user.Operator;
 import com.stcos.server.service.OperatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,11 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.form.FormState;
-import com.stcos.server.entity.form.FormState;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.process.TaskName;
+import com.stcos.server.model.form.FormState;
+import com.stcos.server.model.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
-import static com.stcos.server.entity.form.FormType.*;
+import static com.stcos.server.model.form.FormType.*;
 
 /*
  _    __          _ ____      ___                ___            __  _             __    _      __

@@ -1,16 +1,15 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.form.ApplicationForm;
-import com.stcos.server.entity.form.FormState;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.process.TaskName;
+import com.stcos.server.model.form.ApplicationForm;
+import com.stcos.server.model.form.FormState;
+import com.stcos.server.model.form.FormType;
+import com.stcos.server.model.process.TaskName;
 import org.flowable.task.service.delegate.DelegateTask;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-import static com.stcos.server.entity.form.FormType.TYPE_APPLICATION_FORM;
-import static com.stcos.server.entity.form.FormType.TYPE_TEST_FUNCTION_FORM;
+import static com.stcos.server.model.form.FormType.TYPE_TEST_FUNCTION_FORM;
 
 /*
     __  ___          ___ ____      ___                ___            __  _             __    _      __

@@ -1,6 +1,6 @@
 package com.stcos.server.listener;
 
-import com.stcos.server.entity.user.Client;
+import com.stcos.server.model.user.Client;
 import com.stcos.server.service.ClientService;
 
 /**

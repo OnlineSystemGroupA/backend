@@ -2,10 +2,10 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.database.mysql.FileMetadataMapper;
 import com.stcos.server.database.mysql.SampleMetadataMapper;
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.file.SampleMetadata;
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.user.User;
+import com.stcos.server.model.file.FileMetadata;
+import com.stcos.server.model.file.SampleMetadata;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.user.User;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FileMetadataService;

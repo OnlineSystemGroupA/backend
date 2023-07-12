@@ -1,9 +1,7 @@
 package com.stcos.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.stcos.server.entity.process.ProcessDetails;
-import com.stcos.server.entity.process.TaskDetails;
-import com.stcos.server.exception.ServiceException;
+import com.stcos.server.model.process.ProcessDetails;
 
 import java.util.List;
 

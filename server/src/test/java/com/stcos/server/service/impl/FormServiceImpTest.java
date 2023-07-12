@@ -1,7 +1,7 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.form.*;
-import com.stcos.server.entity.user.Client;
+import com.stcos.server.model.form.*;
+import com.stcos.server.model.user.Client;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FormMetadataService;
 import com.stcos.server.service.FormService;

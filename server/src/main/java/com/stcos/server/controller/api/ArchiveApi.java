@@ -5,7 +5,7 @@
  */
 package com.stcos.server.controller.api;
 
-import com.stcos.server.entity.dto.ProcessDto;
+import com.stcos.server.model.dto.ProcessDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

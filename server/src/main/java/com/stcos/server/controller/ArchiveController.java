@@ -1,7 +1,7 @@
 package com.stcos.server.controller;
 
 import com.stcos.server.controller.api.ArchiveApi;
-import com.stcos.server.entity.dto.ProcessDto;
+import com.stcos.server.model.dto.ProcessDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

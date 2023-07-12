@@ -1,7 +1,7 @@
 package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.entity.file.FileMetadata;
+import com.stcos.server.model.file.FileMetadata;
 import org.springframework.stereotype.Repository;
 
 /**

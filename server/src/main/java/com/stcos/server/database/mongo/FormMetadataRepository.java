@@ -1,6 +1,6 @@
 package com.stcos.server.database.mongo;
 
-import com.stcos.server.entity.form.FormMetadata;
+import com.stcos.server.model.form.FormMetadata;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FormMetadataRepository extends MongoRepository<FormMetadata, Long> {

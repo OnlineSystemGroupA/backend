@@ -1,11 +1,11 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.database.mysql.AdminMapper;
-import com.stcos.server.entity.dto.ClientDetailsDto;
-import com.stcos.server.entity.dto.OperatorDetailsDto;
-import com.stcos.server.entity.user.Admin;
-import com.stcos.server.entity.user.Client;
-import com.stcos.server.entity.user.Operator;
+import com.stcos.server.model.dto.ClientDetailsDto;
+import com.stcos.server.model.dto.OperatorDetailsDto;
+import com.stcos.server.model.user.Admin;
+import com.stcos.server.model.user.Client;
+import com.stcos.server.model.user.Operator;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.AccountService;
 import com.stcos.server.service.ClientService;

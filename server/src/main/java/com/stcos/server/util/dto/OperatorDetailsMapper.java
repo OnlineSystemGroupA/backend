@@ -1,7 +1,7 @@
 package com.stcos.server.util.dto;
 
-import com.stcos.server.entity.dto.OperatorDetailsDto;
-import com.stcos.server.entity.user.Operator;
+import com.stcos.server.model.dto.OperatorDetailsDto;
+import com.stcos.server.model.user.Operator;
 import lombok.experimental.UtilityClass;
 
 /**

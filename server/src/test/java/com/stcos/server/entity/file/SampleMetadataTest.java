@@ -1,5 +1,6 @@
 package com.stcos.server.entity.file;
 
+import com.stcos.server.model.file.SampleMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

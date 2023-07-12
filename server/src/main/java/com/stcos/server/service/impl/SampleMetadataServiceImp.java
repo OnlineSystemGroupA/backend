@@ -2,7 +2,7 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.SampleMetadataMapper;
-import com.stcos.server.entity.file.SampleMetadata;
+import com.stcos.server.model.file.SampleMetadata;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.SampleMetadataService;
 import org.springframework.stereotype.Service;

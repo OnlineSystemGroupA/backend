@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.stcos.server.entity.user.Operator;
+import com.stcos.server.model.user.Operator;
 
 import java.util.List;
 

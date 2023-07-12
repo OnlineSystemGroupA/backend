@@ -1,6 +1,6 @@
 package com.stcos.server.database.mongo;
 
-import com.stcos.server.entity.file.SampleMetadata;
+import com.stcos.server.model.file.SampleMetadata;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface SampleMetadataRepository extends MongoRepository<SampleMetadata,Long> {

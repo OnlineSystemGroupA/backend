@@ -63,8 +63,6 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 平台账号：新增工作人员账号，修改工作人员账号权限，删除指定账号；
 
-流程定义：在平台上定义新的流程并替换原有流程。
-
 ## 2 架构设计
 
 > Date：2023.5.11
@@ -203,18 +201,19 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 #### 3.2.1 FormIndex 表单索引
 
-| 字段名           | 描述                           | 类型          |
-| ---------------- | ------------------------------ | ------------- |
-| formIndexId      | 表单索引 ID                    | Long          |
-| formId           | 表单索引对应表单的 ID          | Long          |
-| formName         | 表单名称                       | String        |
-| createdBy        | 表单的创建者                   | String        |
-| createdDate      | 表单创建时间                   | LocalDateTime |
-| lastModifiedBy   | 表单最后一次被谁修改           | String        |
-| lastModifiedDate | 表单最后一次被修改的时间       | LocalDateTime |
-| readableUsers    | 对表单具有读权限用户的 ID 列表 | List\<String> |
-| writableUsers    | 对表单具有写权限用户的 ID 列表 | List\<String> |
-| form             | 表单索引对应的表单实体，懒加载 | Form          |
+| 字段名           | 描述                                       | 类型          |
+| ---------------- | ------------------------------------------ | ------------- |
+| formMetadataId   | 表单元数据 ID                              | Long          |
+| formId           | 表单索引对应表单的 ID                      | Long          |
+| projectId        | 所属项目的项目号                           | Long          |
+| formType         | 表单名称                                   | String        |
+| formState        | 表单的状态：未填写、已通过、审核中、已驳回 | String        |
+| createdBy        | 表单的创建者                               | String        |
+| createdDate      | 表单创建时间                               | LocalDateTime |
+| lastModifiedBy   | 表单最后一次被谁修改                       | String        |
+| lastModifiedDate | 表单最后一次被修改的时间                   | LocalDateTime |
+| readableUsers    | 对表单具有读权限用户的 ID 列表             | List\<String> |
+| writableUsers    | 对表单具有写权限用户的 ID 列表             | List\<String> |
 
 #### 3.2.2 Form 表单
 
@@ -266,11 +265,11 @@ ProcessId 默认指的是 flowable 中的 processInstanceId
 
 | 字段名          | 描述         | 类型               |
 | --------------- | ------------ | ------------------ |
-| id              | 流程实例 ID  | String             |
+| projectId       | 流程实例 ID  | String             |
 | title           | 软件项目名称 | String             |
 | version         | 软件项目版本 | String             |
 | testType        | 测试类型     | String             |
-| applicationDate | 申请日期     | LocalDateTime      |
+| applicationDate | 申请日期     | String             |
 | applicant       | 申请人姓名   | String             |
 | company         | 公司名称     | String             |
 | telephone       | 联系电话     | String             |
@@ -336,12 +335,11 @@ public class ProcessVariable extends HashMap<String, Object> {
 
 任务配置接口中的各方法以及描述如下：
 
-| 方法名           | 描述                                                         | 返回值        |
-| ---------------- | ------------------------------------------------------------ | ------------- |
-| getRequiredForms | 获取完成任务需要提供的表单，用于判断当前任务是否满足完成条件 | List\<String> |
-| getEmailSubject  | 获取通知邮件的主题                                           | String        |
-| getEmailText     | 获取通知邮件的正文                                           | String        |
-| isCompletable    | 根据当前任务环境判断当前任务是否可被完成                     | boolean       |
+| 方法名                  | 描述                                     | 返回值       |
+| ----------------------- | ---------------------------------------- | ------------ |
+| getRequiredForms        | 获取完成任务需要提供的表单               | Set\<String> |
+| getRequiredParticipants | 获取完成任务需要定义的流程参与者         | Set\<String> |
+| isCompletable           | 根据当前任务环境判断当前任务是否可被完成 | boolean      |
 
 **工具类**
 
@@ -631,7 +629,7 @@ public class TaskUtil {
 
 #### 4.3.1 填写申请表
 
-| 任务名     | 参与者           | 需要产生的流程变量                | 备注                                                         |
+| 任务名     | 参与者           | 需要填写的表单                    | 备注                                                         |
 | ---------- | ---------------- | --------------------------------- | ------------------------------------------------------------ |
 | 填写申请表 | 客户#1（client） | ApplicationForm、TestFunctionForm | 更新<u>流程摘要</u>中的<u>项目标题</u><br />更新<u>流程详情</u> |
 

@@ -1,10 +1,10 @@
 package com.stcos.server.service;
 
-import com.stcos.server.entity.dto.FormInfoDto;
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.process.ProcessDetails;
+import com.stcos.server.model.dto.FormInfoDto;
+import com.stcos.server.model.file.FileMetadata;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.form.FormMetadata;
+import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
 import org.springframework.core.io.Resource;
