@@ -80,7 +80,7 @@ public class WorkflowServiceImp implements WorkflowService {
         if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 指定流程实例对当前用户不可见
         Task task = taskService.createTaskQuery().processInstanceId(processId).active().includeProcessVariables().singleResult();
         if (task == null) throw new ServiceException(1);                        // 找不到活跃的任务
-        if (!task.getAssignee().equals(user.getUid())) throw new ServiceException(0); //当前用户不是被分配到的用户（即不可见）
+        if (!task.getAssignee().equals(user.getUid())) throw new ServiceException(0); // 当前用户不是被分配到的用户（即不可见）
 
         if (TaskUtil.isCompletable(task, formService)) {
             runtimeService.setVariable(processId, "passable", passable);
