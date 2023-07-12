@@ -9,6 +9,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -216,8 +217,9 @@ public class FormUtil {
             String outputDate = null;
             try {
                 ZonedDateTime zonedDateTime = ZonedDateTime.parse(raw);
+                ZonedDateTime beijingDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"));
                 DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(outputPattern);
-                outputDate = zonedDateTime.format(outputFormatter);
+                outputDate = beijingDateTime.format(outputFormatter);
             } catch (DateTimeParseException e) {
                 e.printStackTrace();
             }
