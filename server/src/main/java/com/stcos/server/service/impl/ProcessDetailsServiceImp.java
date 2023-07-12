@@ -30,21 +30,21 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
 
     @Override
     public void openTask(Long projectId, String taskName, String userName) {
-        ProcessDetails processDetails = getById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.openTask(taskName, userName);
         saveProcess(processDetails);
     }
 
     @Override
     public void closeTask(Long projectId, String taskName) {
-        ProcessDetails processDetails = getById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.closeTask(taskName);
         saveProcess(processDetails);
     }
 
     @Override
     public void update(Long projectId, String softwareName, String softwareVersion, List<String> testTypes, String startDate, String companyChineseName, String email, String address, String startUser, String telephone) {
-        ProcessDetails processDetails = getById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.update(softwareName,
                 softwareVersion,
                 testTypes.toString(),

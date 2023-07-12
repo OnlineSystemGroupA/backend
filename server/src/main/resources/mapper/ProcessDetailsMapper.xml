@@ -69,17 +69,17 @@
              #{startDate},
              #{dueDate})
             ON DUPLICATE KEY UPDATE
-                                 title=VALUES(title),
-                                 version=VALUES(version),
-                                 test_type=VALUES(test_type),
-                                 application_date=VALUES(application_date),
-                                 applicant=VALUES(applicant),
-                                 company=VALUES(company),
-                                 telephone=VALUES(telephone),
-                                 email=VALUES(email),
-                                 address=VALUES(address),
-                                 start_date=VALUES(start_date),
-                                 due_date=VALUES(due_date);
+             title=VALUES(title),
+             version=VALUES(version),
+             test_type=VALUES(test_type),
+             application_date=VALUES(application_date),
+             applicant=VALUES(applicant),
+             company=VALUES(company),
+             telephone=VALUES(telephone),
+             email=VALUES(email),
+             address=VALUES(address),
+             start_date=VALUES(start_date),
+             due_date=VALUES(due_date);
     </insert>
 
     <insert id="saveTaskDetails" parameterType="com.stcos.server.entity.process.TaskDetails">
@@ -104,13 +104,13 @@
              #{result},
              #{description})
             ON DUPLICATE KEY UPDATE
-                                 process_id=VALUES(process_id),
-                                 task_name=VALUES(task_name),
-                                 department=VALUES(department),
-                                 operator=VALUES(operator),
-                                 start_date=VALUES(start_date),
-                                 finish_date=VALUES(finish_date),
-                                 result=VALUES(result),
-                                 description=VALUES(description);
+             process_id=VALUES(process_id),
+             task_name=VALUES(task_name),
+             department=VALUES(department),
+             operator=VALUES(operator),
+             start_date=VALUES(start_date),
+             finish_date=VALUES(finish_date),
+             result=VALUES(result),
+             description=VALUES(description);
     </insert>
 </mapper>
