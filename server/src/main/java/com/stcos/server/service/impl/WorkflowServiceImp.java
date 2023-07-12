@@ -2,30 +2,24 @@ package com.stcos.server.service.impl;
 
 import com.stcos.server.entity.dto.FormInfoDto;
 import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.form.ContractForm;
 import com.stcos.server.entity.form.FormType;
 import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.entity.user.Admin;
 import com.stcos.server.entity.user.Operator;
 import com.stcos.server.entity.user.User;
 import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
 import com.stcos.server.util.ProcessVariablesBuilder;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.*;
-import com.stcos.server.util.FormUtil;
 import com.stcos.server.util.TaskUtil;
-import com.stcos.server.util.WordAndPdfUtil;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -248,11 +242,6 @@ public class WorkflowServiceImp implements WorkflowService {
         ProcessInstance processInstance =
                 runtimeService.startProcessInstanceByKey("workfloww", processVariables);
         return processInstance.getProcessInstanceId();
-    }
-
-    @Override
-    public List<FormMetadata> getFormMetadata(String processId) throws ServiceException {
-        return null;
     }
 
     @Override

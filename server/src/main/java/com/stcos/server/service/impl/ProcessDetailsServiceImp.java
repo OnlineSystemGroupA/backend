@@ -32,16 +32,14 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
     public void openTask(Long projectId, String taskName, String userName) {
         ProcessDetails processDetails = getById(projectId);
         processDetails.openTask(taskName, userName);
-        updateById(processDetails);
-        processDetailsMapper.saveProcess(processDetails);
+        saveProcess(processDetails);
     }
 
     @Override
     public void closeTask(Long projectId, String taskName) {
         ProcessDetails processDetails = getById(projectId);
         processDetails.closeTask(taskName);
-        updateById(processDetails);
-        processDetailsMapper.saveProcess(processDetails);
+        saveProcess(processDetails);
     }
 
     @Override
@@ -64,6 +62,18 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
         ProcessDetails processDetails = new ProcessDetails();
         save(processDetails);
         return processDetails.getProjectId();
+    }
+
+    private void saveProcess(ProcessDetails processDetails) {
+        // Save process details and get the generated key
+        processDetailsMapper.saveProcessDetails(processDetails);
+        Long generatedProjectId = processDetails.getProjectId();
+
+        // Save each task detail with the generated key
+        for (TaskDetails taskDetail : processDetails.getTaskDetailsList()) {
+            taskDetail.setProcessId(generatedProjectId);
+            processDetailsMapper.saveTaskDetails(taskDetail);
+        }
     }
 
 }

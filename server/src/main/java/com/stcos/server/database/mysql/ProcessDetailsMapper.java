@@ -14,7 +14,7 @@ public interface ProcessDetailsMapper extends BaseMapper<ProcessDetails> {
 
     List<TaskDetails> selectTaskDetailsByProcessId(Long processId);
 
-    void saveProcess(ProcessDetails processDetails);
+    void saveProcessDetails(ProcessDetails processDetails);
 
-    void saveTaskDetails(List<TaskDetails> taskDetailsList);
+    void saveTaskDetails(TaskDetails taskDetails);
 }

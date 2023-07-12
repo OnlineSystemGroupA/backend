@@ -119,8 +119,6 @@ public interface WorkflowService {
      */
     String startProcess() throws ServiceException;
 
-    List<FormMetadata> getFormMetadata(String processId) throws ServiceException;
-
     int getProcessCount();
 
     void setParticipants(String processId, String userId) throws ServiceException;
