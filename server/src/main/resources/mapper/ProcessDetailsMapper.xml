@@ -2,32 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.stcos.server.database.mysql.ProcessDetailsMapper">
-    <!--返回的对象为TaskDetails-->
-    <resultMap id="task_details" type="com.stcos.server.entity.process.ProcessDetails">
-        <id column="project_id" property="projectId"/>
-        <id column="title" property="title"/>
-        <id column="version" property="version"/>
-        <id column="test_type" property="testType"/>
-        <id column="application_date" property="applicationDate"/>
-        <id column="applicant" property="applicant"/>
-        <id column="company" property="company"/>
-        <id column="telephone" property="telephone"/>
-        <id column="email" property="email"/>
-        <id column="address" property="address"/>
-        <id column="start_date" property="startDate"/>
-        <id column="due_date" property="dueDate"/>
-        <collection property="taskDetailsList"
-                    ofType="com.stcos.server.entity.process.TaskDetails">
-            <id column="task_id" property="taskId"/>
-            <id column="process_id" property="processId"/>
-            <id column="task_name" property="taskName"/>
-            <id column="department" property="department"/>
-            <id column="operator" property="operator"/>
-            <id column="start_date" property="startDate"/>
-            <id column="finish_date" property="finishDate"/>
-            <id column="result" property="result"/>
-            <id column="description" property="description"/>
-        </collection>
+    <!-- 返回的对象为 TaskDetails -->
+    <resultMap id="taskDetailsMap" type="com.stcos.server.entity.process.TaskDetails">
+        <id property="taskId" column="task_id"/>
+        <result property="processId" column="process_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="department" column="department"/>
+        <result property="operator" column="operator"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="finishDate" column="finish_date" jdbcType="TIMESTAMP"/>
+        <result property="result" column="result"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <!-- 返回的对象为 ProcessDetails -->
+    <resultMap id="processDetailsMap" type="com.stcos.server.entity.process.ProcessDetails">
+        <id property="projectId" column="project_id"/>
+        <result property="title" column="title"/>
+        <result property="version" column="version"/>
+        <result property="testType" column="test_type"/>
+        <result property="applicationDate" column="application_date"/>
+        <result property="applicant" column="applicant"/>
+        <result property="company" column="company"/>
+        <result property="telephone" column="telephone"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="dueDate" column="due_date" jdbcType="TIMESTAMP"/>
+        <collection property="taskDetailsList" ofType="com.stcos.server.entity.process.TaskDetails"
+                    select="selectTaskDetailsByProcessId" column="project_id"/>
     </resultMap>
 
     <select id="selectTaskDetailsByProcessId" resultMap="taskDetailsMap">

@@ -86,7 +86,7 @@ public class ProcessDetailsServiceImpTest {
     void create() {
         Long projectId = processDetailsService.create();
 
-        ProcessDetails processDetails = processDetailsMapper.selectById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         // Check if the processDetails is created
         assertNotNull(processDetails);
     }
