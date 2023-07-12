@@ -105,7 +105,7 @@ public class FormUtil {
      * @param formType 表单类型
      * @return 表单原始中文文件名
      */
-    public static String formName2Chinese(String formType) {
+    public static String formType2Chinese(String formType) {
         return FORM_CHINESE_NAME_MAP.get(formType);
     }
 
