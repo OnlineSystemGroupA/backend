@@ -17,8 +17,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
-@Rollback
+//@Transactional
+//@Rollback
 public class ProcessDetailsServiceImpTest {
 
     @Autowired
@@ -29,14 +29,14 @@ public class ProcessDetailsServiceImpTest {
 
     @Test
     void openTask() {
-//        Long projectId = processDetailsService.create();
-//
-//        String taskName = "taskName";
-//        processDetailsService.openTask(projectId, taskName, "userName");
-//
-//        ProcessDetails processDetails = processDetailsMapper.selectById(projectId);
-//        // Check if the task is opened
-//        assertEquals(taskName, processDetails.getCurrentTaskName());
+        Long projectId = processDetailsService.create();
+
+        String taskName = "taskName";
+        processDetailsService.openTask(projectId, taskName, "userName");
+
+        ProcessDetails processDetails = processDetailsMapper.selectById(projectId);
+        // Check if the task is opened
+        assertEquals(taskName, processDetails.getCurrentTaskName());
     }
 
     @Test

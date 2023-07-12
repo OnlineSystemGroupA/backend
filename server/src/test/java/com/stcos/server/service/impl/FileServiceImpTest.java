@@ -11,9 +11,6 @@ import com.stcos.server.service.FileMetadataService;
 import com.stcos.server.service.FileService;
 import com.stcos.server.service.SampleMetadataService;
 import com.stcos.server.util.FormUtil;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -106,6 +103,8 @@ class FileServiceImpTest {
         // Verify that the file is stored correctly
         Path path = Paths.get(fileMetadata.getFilePath());
         assertTrue(Files.exists(path)); // Check if the file exists
+
+        fileService.deleteSample(sampleMetadata.getSampleMetadataId());
     }
 
     @Test
@@ -171,6 +170,8 @@ class FileServiceImpTest {
             FileMetadata metadata = fileMetadataService.getById(fileMetadataId);
             assertTrue(fileNames.contains(metadata.getFileName()));
         }
+
+        fileService.deleteSample(sampleMetadata.getSampleMetadataId());
     }
 
     @Test
@@ -200,6 +201,9 @@ class FileServiceImpTest {
             fileService.downloadSample(testProcessId, sampleMetadata.getSampleMetadataId());
         });
         assertEquals(2, exception.getCode());
+
+        sampleMetadataService.removeFileMetadata(sampleMetadata.getSampleMetadataId(), mockFileMetadata.getFileMetadataId());
+        fileService.deleteSample(sampleMetadata.getSampleMetadataId());
     }
 
     @Test
@@ -246,6 +250,9 @@ class FileServiceImpTest {
             fileService.deleteSample(sampleMetadata.getSampleMetadataId());
         });
         assertEquals(2, exception.getCode());
+
+        sampleMetadataService.removeFileMetadata(sampleMetadata.getSampleMetadataId(), mockFileMetadata.getFileMetadataId());
+        assertDoesNotThrow(() -> fileService.deleteSample(sampleMetadata.getSampleMetadataId()));
     }
 
     @Test
@@ -297,13 +304,14 @@ class FileServiceImpTest {
 
     @Test
     void generateFormPdf() throws IOException {
-        Path targetDir = Paths.get(PATH_ROOT, testProcessId, PATH_FORM);
-        Files.createDirectories(targetDir);
+        Path targetDirPath = Paths.get(PATH_ROOT, testProcessId, PATH_FORM);
+        Files.createDirectories(targetDirPath);
 
         TestReportForm form = new TestReportForm();  // Initialize this with appropriate test data
         String formType = FormType.TYPE_TEST_REPORT_FORM;
-        String docxPath = Paths.get(PATH_ROOT, testProcessId, PATH_FORM, FormUtil.formName2Chinese(FormType.TYPE_TEST_REPORT_FORM) + ".docx").toString();
-        String pdfPath = Paths.get(PATH_ROOT, testProcessId, PATH_FORM, FormUtil.formName2Chinese(FormType.TYPE_TEST_REPORT_FORM) + ".pdf").toString();
+        String formName = FormUtil.formType2Chinese(FormType.TYPE_TEST_REPORT_FORM);
+        String docxPath = Paths.get(targetDirPath.toString(), formName + ".docx").toString();
+        String pdfPath = Paths.get(targetDirPath.toString(), formName + ".pdf").toString();
 
         // Create the DOCX file
         File docxFile = new File(docxPath);
@@ -321,29 +329,48 @@ class FileServiceImpTest {
 
         // The returned resource should be the PDF file
         assertEquals(pdfFile.getAbsolutePath(), result.getFile().getAbsolutePath());
+
+        tearDown(targetDirPath);
     }
 
-//    @Test
-//    void saveFormPdf() throws IOException {
-//        // Initialize test data
-//        String formType = FormType.TYPE_TEST_REPORT_FORM;
-//
-//        // Create a mock MultipartFile for testing
-//        String originalFileName = FormUtil.formName2Chinese(formType) + ".pdf";
-//        MockMultipartFile mockFile = new MockMultipartFile("file", originalFileName, "application/pdf", "pdf data".getBytes());
-//
-//        // Set up the expected file path
-//        String expectedFilePath = Paths.get(PATH_ROOT, testProcessId, PATH_FORM, originalFileName).toString();
-//
-//        // Call the method
-//        fileService.saveFormPdf(testProcessId, mockFile, formType);
-//
-//        // The file should be created at the expected location
-//        File savedFile = new File(expectedFilePath);
-//        assertTrue(savedFile.exists());
-//
-//        // Check that the contents of the saved file match the contents of the mock file
-//        byte[] savedFileContents = Files.readAllBytes(savedFile.toPath());
-//        assertArrayEquals(mockFile.getBytes(), savedFileContents);
-//    }
+    @Test
+    void saveFormPdf() throws IOException {
+        Path sourceDirPath = Path.of(PATH_ROOT + "/" + testProcessId + PATH_FORM);
+        Files.createDirectories(sourceDirPath);
+        Path targetDirPath = Path.of(PATH_ROOT + "/" + testProcessId + "Mock" + PATH_FORM);
+        Files.createDirectories(targetDirPath);
+
+        TestReportForm form = new TestReportForm();
+        String formType = FormType.TYPE_TEST_REPORT_FORM;
+
+        Resource result = fileService.generateFormPdf(testProcessId, form, formType);
+        MultipartFile multipartFile = new MockMultipartFile(
+                "file",
+                result.getFilename(),
+                "pdf/application",
+                result.getInputStream()
+        );
+
+        fileService.saveFormPdf(testProcessId + "Mock", multipartFile, formType);
+
+        byte[] file1 = Files.readAllBytes(Paths.get(sourceDirPath.toString(), FormUtil.formType2Chinese(FormType.TYPE_TEST_REPORT_FORM) + ".pdf"));
+        byte[] file2 = Files.readAllBytes(Paths.get(targetDirPath.toString(), FormUtil.formType2Chinese(FormType.TYPE_TEST_REPORT_FORM) + ".pdf"));
+
+        assertArrayEquals(file1, file2);
+        
+        tearDown(sourceDirPath);
+        tearDown(targetDirPath);
+    }
+
+    void tearDown(Path tempDir) {
+        // Delete temporary directory and all its contents
+        try {
+            Files.walk(tempDir)
+                    .map(Path::toFile)
+                    .sorted((o1, o2) -> -o1.compareTo(o2))
+                    .forEach(File::delete);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
