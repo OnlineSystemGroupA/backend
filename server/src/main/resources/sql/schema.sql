@@ -94,13 +94,13 @@ CREATE TABLE IF NOT EXISTS t_form_metadata
 -- TaskDetails
 CREATE TABLE IF NOT EXISTS t_task_details
 (
-    task_id     BIGINT       NOT NULL,
+    task_id     BIGINT AUTO_INCREMENT,
     process_id  BIGINT       NOT NULL,
     task_name   VARCHAR(64)  NOT NULL,
     department  VARCHAR(64)  NOT NULL,
     operator    VARCHAR(64)  NOT NULL,
     start_date  DATETIME     NOT NULL,
-    finish_date DATETIME     NOT NULL,
+    finish_date DATETIME,
     result      BOOLEAN      NOT NULL,
     description VARCHAR(128) NOT NULL,
     PRIMARY KEY (task_id)
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS t_process_record
 -- RecordSample
 CREATE TABLE IF NOT EXISTS t_record_sample
 (
-    record_id   BIGINT  NOT NULL ,
-    sample_id   BIGINT  NOT NULL
+    record_id BIGINT NOT NULL,
+    sample_id BIGINT NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

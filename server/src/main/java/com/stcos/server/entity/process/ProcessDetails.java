@@ -113,7 +113,7 @@ public class ProcessDetails {
                 .setOperator(userName)
                 .setStartDate(LocalDateTime.now());
 
-        taskDetailsList.add(new TaskDetails());
+        taskDetailsList.add(taskDetails);
     }
 
     /**
