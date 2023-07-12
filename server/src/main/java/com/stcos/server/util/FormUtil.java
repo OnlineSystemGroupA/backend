@@ -9,6 +9,10 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -207,6 +211,23 @@ public class FormUtil {
         }
     }
 
+    public static class StdTimeTransformer{
+        public static String transformDate(String raw) {
+            String outputPattern = "yyyy年MM月dd日";
+            String outputDate = null;
+            try {
+                ZonedDateTime zonedDateTime = ZonedDateTime.parse(raw);
+                ZonedDateTime beijingDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"));
+                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(outputPattern);
+                outputDate = beijingDateTime.format(outputFormatter);
+            } catch (DateTimeParseException e) {
+                e.printStackTrace();
+            }
+            return outputDate;
+        }
+    }
+
+@Deprecated
     //日期转换
     @SuppressWarnings("DuplicatedCode")
     public static class DateTransformer {
@@ -231,7 +252,7 @@ public class FormUtil {
             return year + " 年 " + month + " 月 " + day + " 日 ";
         }
     }
-
+@Deprecated
     //月份转换为数字
     private static class MonthAbbreviationConverter {
         private static final Map<String, String> monthAbbreviations = new HashMap<>();
