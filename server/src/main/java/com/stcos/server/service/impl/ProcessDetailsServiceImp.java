@@ -6,6 +6,7 @@ import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.entity.process.TaskDetails;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.ProcessDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,11 +21,19 @@ import java.util.List;
 @Component
 public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, ProcessDetails> implements ProcessDetailsService {
 
+    private ProcessDetailsMapper processDetailsMapper;
+
+    @Autowired
+    public void setProcessDetailsMapper(ProcessDetailsMapper processDetailsMapper) {
+        this.processDetailsMapper = processDetailsMapper;
+    }
+
     @Override
     public void openTask(Long projectId, String taskName, String userName) {
         ProcessDetails processDetails = getById(projectId);
         processDetails.openTask(taskName, userName);
         updateById(processDetails);
+        processDetailsMapper.saveProcess(processDetails);
     }
 
     @Override
@@ -32,6 +41,7 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
         ProcessDetails processDetails = getById(projectId);
         processDetails.closeTask(taskName);
         updateById(processDetails);
+        processDetailsMapper.saveProcess(processDetails);
     }
 
     @Override
