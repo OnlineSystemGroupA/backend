@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 /**
@@ -29,8 +30,7 @@ public class StampContractListener extends OperatorTaskListener {
         super(TaskName.NAME_TASK_18);
     }
 
-    private final SimpleDateFormat sf = new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss", Locale.ENGLISH);
-
+    final String inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     @Override
     public void complete(DelegateTask task) {
         super.complete(task);
@@ -40,11 +40,9 @@ public class StampContractListener extends OperatorTaskListener {
         Long projectId = (Long) task.getVariable(ProcessVariables.VAR_PROJECT_ID);
         ProcessDetails processDetails = processDetailsService.getById(projectId);
         try {
-            processDetails.setStartDate(sf.parse(form.getSignDate().replace("GMT", "")
-                    .replaceAll("\\(.*\\)", "")).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-//            processDetails.setDueDate(sf.parse(form.getValidDate().replace("GMT", "")
-//                    .replaceAll("\\(.*\\)", "")).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-        } catch (ParseException e) {
+            processDetails.setStartDate(LocalDateTime.parse(form.getSignDate(),DateTimeFormatter.ofPattern(inputPattern)).atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime());
+            processDetails.setDueDate(LocalDateTime.parse(form.getValidDate(),DateTimeFormatter.ofPattern(inputPattern)).atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime());
+        } catch (DateTimeParseException e) {
             throw new RuntimeException(e);
         }
 
