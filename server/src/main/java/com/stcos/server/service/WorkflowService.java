@@ -46,14 +46,14 @@ public interface WorkflowService {
      * 获取指定流程中的指定表单
      *
      * @param processId 指定流程实例 Id
-     * @param formName  表单类型
+     * @param formType  表单类型
      * @return 表单的 JSON 格式
      * @throws ServiceException 各异常状态码含义如下 <br>
      *                          code: <br>
      *                          0: 当前流程不存在 <br>
      *                          1: 该任务对当前用户不可见或当前用户无读取权限 <br>
      */
-    Form getForm(String processId, String formName) throws ServiceException;
+    Form getForm(String processId, String formType) throws ServiceException;
 
     /**
      * 更新指定流程中的指定表单
@@ -127,9 +127,9 @@ public interface WorkflowService {
 
     ProcessDetails getProcessDetails(String processId) throws ServiceException;
 
-    Resource getFormFile(String processId, String formName) throws ServiceException;
+    Resource getFormFile(String processId, String formType) throws ServiceException;
 
-    void saveFileForm(String processId, String formName, MultipartFile file) throws ServiceException;
+    void saveFileForm(String processId, String formType, MultipartFile file) throws ServiceException;
 
     void deleteProcess(String processId) throws ServiceException;
 
