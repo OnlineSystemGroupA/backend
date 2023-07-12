@@ -1,7 +1,10 @@
 package com.stcos.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.stcos.server.database.mysql.ProcessDetailsMapper;
 import com.stcos.server.entity.process.ProcessDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**

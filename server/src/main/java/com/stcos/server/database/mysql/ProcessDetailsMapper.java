@@ -11,5 +11,5 @@ import java.util.List;
 public interface ProcessDetailsMapper extends BaseMapper<ProcessDetails> {
     List<TaskDetails> selectTaskListById(String id);
 
-    void saveProcess(ProcessDetails process);
+    void saveProcess(ProcessDetails processDetails);
 }
