@@ -91,15 +91,6 @@ CREATE TABLE IF NOT EXISTS t_form_metadata
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
--- ProcessRecord
-CREATE TABLE IF NOT EXISTS t_process_record
-(
-    record_id bigint AUTO_INCREMENT, --
-    temp      VARCHAR(64) NOT NULL,  --
-    PRIMARY KEY (record_id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-
 -- TaskDetails
 CREATE TABLE IF NOT EXISTS t_task_details
 (
@@ -175,5 +166,13 @@ CREATE TABLE IF NOT EXISTS t_process_record
     start_date            DATETIME    NOT NULL,
     finish_date           DATETIME    NOT NULL,
     PRIMARY KEY (project_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+-- RecordSample
+CREATE TABLE IF NOT EXISTS t_record_sample
+(
+    record_id   BIGINT  NOT NULL ,
+    sample_id   BIGINT  NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
