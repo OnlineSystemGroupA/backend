@@ -44,73 +44,66 @@
     <insert id="saveProcessDetails" parameterType="com.stcos.server.entity.process.ProcessDetails" useGeneratedKeys="true" keyColumn="project_id">
         INSERT INTO t_process_details
         (project_id,
-         title,
-         version,
-         test_type,
-         application_date,
-         applicant,
-         company,
-         telephone,
-         email,
-         address,
-         start_date,
-         due_date)
+        title,
+        version,
+        test_type,
+        application_date,
+        applicant,
+        company,
+        telephone,
+        email,
+        address,
+        start_date,
+        due_date)
         VALUES
-            (#{projectId},
-             #{title},
-             #{version},
-             #{testType},
-             #{applicationDate},
-             #{applicant},
-             #{company},
-             #{telephone},
-             #{email},
-             #{address},
-             #{startDate},
-             #{dueDate})
-            ON DUPLICATE KEY UPDATE
-             title=VALUES(title),
-             version=VALUES(version),
-             test_type=VALUES(test_type),
-             application_date=VALUES(application_date),
-             applicant=VALUES(applicant),
-             company=VALUES(company),
-             telephone=VALUES(telephone),
-             email=VALUES(email),
-             address=VALUES(address),
-             start_date=VALUES(start_date),
-             due_date=VALUES(due_date);
-    </insert>
+        (#{projectId},
+        #{title},
+        #{version},
+        #{testType},
+        #{applicationDate},
+        #{applicant},
+        #{company},
+        #{telephone},
+        #{email},
+        #{address},
+        #{startDate},
+        #{dueDate})
+        ON DUPLICATE KEY UPDATE
+        title=VALUES(title),
+        version=VALUES(version),
+        test_type=VALUES(test_type),
+        application_date=VALUES(application_date),
+        applicant=VALUES(applicant),
+        company=VALUES(company),
+        telephone=VALUES(telephone),
+        email=VALUES(email),
+        address=VALUES(address),
+        start_date=VALUES(start_date),
+        due_date=VALUES(due_date);
 
-    <insert id="saveTaskDetails" parameterType="com.stcos.server.entity.process.TaskDetails">
-        INSERT INTO t_task_details
-        (task_id,
-         process_id,
-         task_name,
-         department,
-         operator,
-         start_date,
-         finish_date,
-         result,
-         description)
-        VALUES
-            (#{taskId},
-             #{processId},
-             #{taskName},
-             #{department},
-             #{operator},
-             #{startDate},
-             #{finishDate},
-             #{result},
-             #{description})
+        <if test="taskDetailsList.size() > 0">
+            INSERT INTO t_task_details VALUES
+            <foreach collection="taskDetailsList" item="task" separator=",">
+                (
+                #{task.taskId},
+                #{task.processId},
+                #{task.taskName},
+                #{task.department},
+                #{task.operator},
+                #{task.startDate},
+                #{task.finishDate},
+                #{task.result},
+                #{task.description})
+            </foreach>
             ON DUPLICATE KEY UPDATE
-             process_id=VALUES(process_id),
-             task_name=VALUES(task_name),
-             department=VALUES(department),
-             operator=VALUES(operator),
-             start_date=VALUES(start_date),
-             finish_date=VALUES(finish_date),
-             result=VALUES(result),
-             description=VALUES(description);
+            process_id=VALUES(process_id),
+            task_name=VALUES(task_name),
+            department=VALUES(department),
+            operator=VALUES(operator),
+            start_date=VALUES(start_date),
+            finish_date=VALUES(finish_date),
+            result=VALUES(result),
+            description=VALUES(description);
+        </if>
     </insert>
 </mapper>

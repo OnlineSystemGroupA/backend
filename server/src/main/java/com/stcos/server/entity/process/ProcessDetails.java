@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * description
+ * 这个服务接口提供了管理流程细节的方法
  *
  * @author Kekwy
  * @version 1.0

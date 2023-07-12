@@ -3,8 +3,6 @@ package com.stcos.server.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.ProcessDetailsMapper;
 import com.stcos.server.entity.process.ProcessDetails;
-import com.stcos.server.entity.process.TaskDetails;
-import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.ProcessDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,14 +30,14 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
     public void openTask(Long projectId, String taskName, String userName) {
         ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.openTask(taskName, userName);
-        saveProcess(processDetails);
+        processDetailsMapper.saveProcessDetails(processDetails);
     }
 
     @Override
     public void closeTask(Long projectId, String taskName) {
         ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.closeTask(taskName);
-        saveProcess(processDetails);
+        processDetailsMapper.saveProcessDetails(processDetails);
     }
 
     @Override
@@ -63,17 +61,4 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
         save(processDetails);
         return processDetails.getProjectId();
     }
-
-    private void saveProcess(ProcessDetails processDetails) {
-        // Save process details and get the generated key
-        processDetailsMapper.saveProcessDetails(processDetails);
-        Long generatedProjectId = processDetails.getProjectId();
-
-        // Save each task detail with the generated key
-        for (TaskDetails taskDetail : processDetails.getTaskDetailsList()) {
-            taskDetail.setProcessId(generatedProjectId);
-            processDetailsMapper.saveTaskDetails(taskDetail);
-        }
-    }
-
 }
