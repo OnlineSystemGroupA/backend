@@ -125,8 +125,8 @@ public class FormServiceImp implements FormService {
     }
 
     @Override
-    public Form getForm(Long metadataId) {
-        Long formId = formMetadataService.getFormId(metadataId);
+    public Form getForm(Long formMetadataId) {
+        Long formId = formMetadataService.getFormId(formMetadataId);
         return formRepository.getFormById(formId);
     }
 
