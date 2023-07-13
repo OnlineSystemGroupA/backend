@@ -7,7 +7,7 @@ import com.stcos.server.exception.ServerErrorException;
 import java.util.Set;
 
 /**
- * description
+ * 这个服务接口提供了管理表单元数据的方法
  *
  * @author Kekwy
  * @version 1.0

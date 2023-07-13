@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.stcos.server.model.process.ProcessRecord;
 
 /**
- * description
+ * 这个服务接口提供了管理流程记录的方法
  *
  * @author Kekwy
  * @version 1.0
@@ -12,4 +12,7 @@ import com.stcos.server.model.process.ProcessRecord;
  */
 public interface ProcessRecordService extends IService<ProcessRecord> {
 
+    public void saveProcessRecord(ProcessRecord processRecord);
+
+    public ProcessRecord selectProcessRecordById(Long projectId);
 }

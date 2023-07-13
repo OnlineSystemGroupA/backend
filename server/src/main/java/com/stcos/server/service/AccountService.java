@@ -10,7 +10,7 @@ import com.stcos.server.model.user.Operator;
 import java.util.List;
 
 /**
- * description
+ * 这个服务接口提供了管理不同类型账户的方法
  *
  * @author Kekwy
  * @version 1.0
@@ -80,29 +80,104 @@ public interface AccountService {
      */
     String getQualityManagerId();
 
-
+    /**
+     * 更新客户详细信息
+     *
+     * @param client 客户对象
+     * @param clientDetailsDto 客户详细信息传输对象
+     * @throws ServiceException 服务异常
+     */
     void updateClientDetails(Client client, ClientDetailsDto clientDetailsDto) throws ServiceException;
 
+    /**
+     * 根据部门获取运营人员列表
+     *
+     * @param department 部门名称
+     * @return 运营人员列表
+     */
     List<Operator> getOperatorsByDepartment(String department);
 
+    /**
+     * 更新运营人员详细信息
+     *
+     * @param operator 运营人员对象
+     * @param operatorDetailsDto 运营人员详细信息传输对象
+     * @throws ServiceException 服务异常
+     */
     void updateOperatorDetails(Operator operator, OperatorDetailsDto operatorDetailsDto) throws ServiceException;
 
+    /**
+     * 锁定或解锁运营人员账户
+     *
+     * @param uid 运营人员的用户唯一标识
+     * @param doLock 是否锁定，true为锁定，false为解锁
+     * @throws ServiceException 服务异常
+     */
     void lockOperator(String uid, Boolean doLock) throws ServiceException;
 
 
+    /**
+     * 锁定或解锁客户账户
+     *
+     * @param uid 客户的用户唯一标识
+     * @param doLock 是否锁定，true为锁定，false为解锁
+     * @throws ServiceException 服务异常
+     */
     void lockClient(String uid, Boolean doLock) throws ServiceException;
 
+    /**
+     * 根据用户唯一标识获取客户对象
+     *
+     * @param uid 用户唯一标识
+     * @throws ServiceException 服务异常
+     * @return 客户对象
+     */
     Client getClientById(String uid) throws ServiceException;
 
+    /**
+     * 根据用户唯一标识获取运营人员对象
+     *
+     * @param uid 用户唯一标识
+     * @throws ServiceException 服务异常
+     * @return 运营人员对象
+     */
     Operator getOperatorById(String uid) throws ServiceException;
 
+    /**
+     * 获取所有运营人员列表
+     *
+     * @return 运营人员列表
+     */
     List<Operator> getOperators();
 
+    /**
+     * 获取所有客户列表
+     *
+     * @return 客户列表
+     */
     List<Client> getClients();
 
+    /**
+     * 创建新的运营人员账户
+     *
+     * @param operatorDetailsDto 运营人员详细信息传输对象
+     * @throws ServiceException 服务异常
+     */
     void createOperator(OperatorDetailsDto operatorDetailsDto) throws ServiceException;
 
+    /**
+     * 根据用户唯一标识删除客户账户
+     *
+     * @param uid 用户唯一标识
+     * @throws ServiceException 服务异常
+     */
     void deleteClient(String uid) throws ServiceException;
 
+    /**
+     * 根据用户唯一标识删除运营人员账户
+     *
+     * @param uid 用户唯一标识
+     * @throws ServiceException 服务异常
+     */
     void deleteOperator(String uid) throws ServiceException;
 }

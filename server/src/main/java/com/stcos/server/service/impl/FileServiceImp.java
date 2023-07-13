@@ -272,22 +272,22 @@ public class FileServiceImp implements FileService {
 
     @Override
     public Resource generateFormPdf(String processId, Form form, String formType) {
-        String fileName = FormUtil.formName2Chinese(formType);  // 获取表单对应的中文文件名
-        String filePathDoc = PATH_ROOT + "/" + processId + PATH_FORM + "/" + fileName + ".docx";
-        String filePathPdf = PATH_ROOT + "/" + processId + PATH_FORM + "/" + fileName + ".pdf";
+        String fileName = FormUtil.formType2Chinese(formType);  // 获取表单对应的中文文件名
+        String filePathDoc = Paths.get(PATH_ROOT, processId, PATH_FORM, fileName + ".docx").toString();
+        String filePathPdf = Paths.get(PATH_ROOT, processId, PATH_FORM, fileName + ".pdf").toString();
         File file = new File(filePathPdf);
         if (file.exists()) return new FileSystemResource(file);
         File docFile = FormUtil.replaceSpecialText(form, formType, filePathDoc);
         WordAndPdfUtil.word2Pdf(filePathDoc, filePathPdf);      // 将 docx 文件转换为 pdf
-        //noinspection ResultOfMethodCallIgnored
+        // noinspection ResultOfMethodCallIgnored
         docFile.delete();                                       // 删除生成的中间 docx 文件
         return new FileSystemResource(filePathPdf);             // 从磁盘加载目标文件
     }
 
     @Override
     public void saveFormPdf(String processId, MultipartFile file, String formType) {
-        String fileName = FormUtil.formName2Chinese(formType);     // 获取表单对应的中文文件名
-        String filePath = PATH_ROOT + "/" + processId + PATH_FORM + "/" + fileName + "pdf";
+        String fileName = FormUtil.formType2Chinese(formType);     // 获取表单对应的中文文件名
+        String filePath = Paths.get(PATH_ROOT, processId, PATH_FORM, fileName + ".pdf").toString();
         try {
             FileOutputStream fOS = new FileOutputStream(filePath); // 创建文件输出流
             fOS.write(file.getBytes());                            // 将数据写入目标文件

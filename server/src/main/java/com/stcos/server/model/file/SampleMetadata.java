@@ -16,7 +16,6 @@ public class SampleMetadata {
      * 样品元数据 ID，保存对象时由数据库自动赋值
      */
     @TableId
-    @AutoId
     private long sampleMetadataId;
 
     /**

@@ -39,8 +39,6 @@ public class FormServiceImpTest {
 
     Client mockUser = null;
 
-    String testUid = "testUid";
-
     @BeforeEach
     void setUp() {
         // Prepare test data
@@ -50,7 +48,7 @@ public class FormServiceImpTest {
 
         // Create a User object
         mockUser = new Client("testUser", "testPassword", "testEmail@test.com");
-        mockUser.setUid(testUid);
+        mockUser.setUid("mockUser.getUid()");
 
         // Create a mock Authentication object
         Authentication authentication = Mockito.mock(Authentication.class);
@@ -65,7 +63,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void saveOrUpdateForm_WithoutWritePermission_ThrowsServiceException() {
+    void saveOrUpdateFormWithInvalidPermission() {
         // Expect a ServiceException to be thrown
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             formService.saveOrUpdateForm(formMetadataId, form);
@@ -74,9 +72,9 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void saveOrUpdateForm_WithWritePermission() throws ServiceException {
+    void saveOrUpdateFormSuccessful() throws ServiceException {
         // Simulate the current logged-in user having write permission
-        formMetadataService.addWritePermission(formMetadataId, testUid); // Test "addWritePermission()"
+        formMetadataService.addWritePermission(formMetadataId, mockUser.getUid()); // Test "addWritePermission()"
 
         formService.saveOrUpdateForm(formMetadataId, form);
 
@@ -87,7 +85,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void getForm_WithoutReadPermission_ThrowsServiceException() throws Exception {
+    void getFormWithInvalidPermission() {
         // Expect a ServiceException to be thrown
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             formService.getForm(formMetadataId, mockUser.getUid());
@@ -96,14 +94,14 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void getForm_WithReadPermission_ThrowsServiceException() throws Exception {
+    void getFormSuccessful() throws Exception {
         // Simulate the current logged-in user having write permission
-        formService.addWritePermission(formMetadataId, testUid);
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
 
         formService.saveOrUpdateForm(formMetadataId, form);
 
         // Simulate the current logged-in user having read permission
-        formService.addReadPermission(formMetadataId, testUid);
+        formService.addReadPermission(formMetadataId, mockUser.getUid());
 
         TestReportForm retrievedForm = (TestReportForm) formService.getForm(formMetadataId, mockUser.getUid());
         assertEquals(form.getSoftwareName(), retrievedForm.getSoftwareName());
@@ -111,7 +109,7 @@ public class FormServiceImpTest {
 
     @Test
     void existForm() throws ServiceException {
-        formService.addWritePermission(formMetadataId, testUid);
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
         assertFalse(formService.existForm(formMetadataId));
 
         formService.saveOrUpdateForm(formMetadataId, form);
@@ -120,18 +118,18 @@ public class FormServiceImpTest {
 
     @Test
     void addWritePermission() {
-        assertFalse(formService.hasWritePermission(formMetadataId, testUid));
+        assertFalse(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
 
-        formService.addWritePermission(formMetadataId, testUid);
-        assertTrue(formService.hasWritePermission(formMetadataId, testUid));
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
+        assertTrue(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
     }
 
     @Test
     void addReadPermission() {
-        assertFalse(formService.hasReadPermission(formMetadataId, testUid));
+        assertFalse(formService.hasReadPermission(formMetadataId, mockUser.getUid()));
 
-        formService.addReadPermission(formMetadataId, testUid);
-        assertTrue(formService.hasReadPermission(formMetadataId, testUid));
+        formService.addReadPermission(formMetadataId, mockUser.getUid());
+        assertTrue(formService.hasReadPermission(formMetadataId, mockUser.getUid()));
     }
 
     @Test
@@ -168,7 +166,7 @@ public class FormServiceImpTest {
 
     @Test
     void createMetadata() {
-        Long projectId = 1L;
+        Long projectId = 1234567890L;
         String formType = FormType.TYPE_TEST_REPORT_FORM;
 
         Long createdFormMetadataId = formService.createMetadata(projectId, formType);
@@ -180,25 +178,25 @@ public class FormServiceImpTest {
 
     @Test
     void removeWritePermission() {
-        formService.addWritePermission(formMetadataId, testUid);
-        assertTrue(formService.hasWritePermission(formMetadataId, testUid));
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
+        assertTrue(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
 
-        formService.removeWritePermission(formMetadataId, testUid);
-        assertFalse(formService.hasWritePermission(formMetadataId, testUid));
+        formService.removeWritePermission(formMetadataId, mockUser.getUid());
+        assertFalse(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
     }
 
     @Test
     void testRemoveWritePermission() {
-        formService.addWritePermission(formMetadataId, testUid);
-        assertTrue(formService.hasWritePermission(formMetadataId, testUid));
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
+        assertTrue(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
 
         formService.removeWritePermission(formMetadataId);
-        assertFalse(formService.hasWritePermission(formMetadataId, testUid));
+        assertFalse(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
     }
 
     @Test
     void getForm() throws ServiceException {
-        formService.addWritePermission(formMetadataId, testUid);
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
         formService.saveOrUpdateForm(formMetadataId, form);
 
         Form retrievedForm = formService.getForm(formMetadataId);
@@ -207,30 +205,30 @@ public class FormServiceImpTest {
 
     @Test
     void hasWritePermission() {
-        assertFalse(formService.hasWritePermission(formMetadataId, testUid));
+        assertFalse(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
 
-        formService.addWritePermission(formMetadataId, testUid);
-        assertTrue(formService.hasWritePermission(formMetadataId, testUid));
+        formService.addWritePermission(formMetadataId, mockUser.getUid());
+        assertTrue(formService.hasWritePermission(formMetadataId, mockUser.getUid()));
     }
 
     @Test
     void hasReadPermission() {
-        assertFalse(formService.hasReadPermission(formMetadataId, testUid));
+        assertFalse(formService.hasReadPermission(formMetadataId, mockUser.getUid()));
 
-        formService.addReadPermission(formMetadataId, testUid);
-        assertTrue(formService.hasReadPermission(formMetadataId, testUid));
+        formService.addReadPermission(formMetadataId, mockUser.getUid());
+        assertTrue(formService.hasReadPermission(formMetadataId, mockUser.getUid()));
     }
 
     @Test
     void getCreatedDate() throws ServiceException {
-        formMetadataService.addWritePermission(formMetadataId, testUid);
+        formMetadataService.addWritePermission(formMetadataId, mockUser.getUid());
         formService.saveOrUpdateForm(formMetadataId, form);
         assertNotNull(formService.getCreatedDate(formMetadataId));
     }
 
     @Test
     void getFormState() throws ServiceException {
-        formMetadataService.addWritePermission(formMetadataId, testUid);
+        formMetadataService.addWritePermission(formMetadataId, mockUser.getUid());
         formService.saveOrUpdateForm(formMetadataId, form);
 
         String expectedState = FormState.STATE_NULL;
@@ -239,7 +237,7 @@ public class FormServiceImpTest {
 
     @Test
     void setFormState() throws ServiceException {
-        formMetadataService.addWritePermission(formMetadataId, testUid);
+        formMetadataService.addWritePermission(formMetadataId, mockUser.getUid());
         formService.saveOrUpdateForm(formMetadataId, form);
 
         String newState = FormState.STATE_COMPLETED;

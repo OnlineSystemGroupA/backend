@@ -1,0 +1,46 @@
+@startuml
+
+!pragma useIntermediatePackages false
+
+left to right direction
+
+skin rose
+
+interface FormService {
+}
+
+interface FormService {
+}
+
+class FormServiceImp {
+}
+
+interface FormMetadataService {
+
+}
+
+interface com.baomidou.mybatisplus.extension.service.IService
+
+interface FormRepository
+
+interface MongoRepository
+
+
+FormService <|.. FormServiceImp
+
+
+FormRepository --|> MongoRepository
+
+FormServiceImp --> FormMetadataService: dependency
+FormServiceImp --> FormRepository: dependency
+
+FormMetadataService <|.. FormMetadataServiceImp
+
+FormMetadataService --|> com.baomidou.mybatisplus.extension.service.IService
+
+FormMetadataServiceImp --|> com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
+
+
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl .|> com.baomidou.mybatisplus.extension.service.IService
+
+@enduml

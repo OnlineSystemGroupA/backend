@@ -23,13 +23,13 @@ class FormMetadataServiceImpTest {
 
     @Test
     void create() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         assertNotNull(formMetadataId);
     }
 
     @Test
     void addReadPermission() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         formMetadataService.addReadPermission(formMetadataId, "testUser");
         assertTrue(formMetadataService.getById(formMetadataId).hasReadPermission("testUser"));
     }
@@ -40,7 +40,7 @@ class FormMetadataServiceImpTest {
         users.add("testUser1");
         users.add("testUser2");
 
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         formMetadataService.addReadPermission(formMetadataId, users);
         assertTrue(formMetadataService.getById(formMetadataId).hasReadPermission("testUser1"));
         assertTrue(formMetadataService.getById(formMetadataId).hasReadPermission("testUser2"));
@@ -48,7 +48,7 @@ class FormMetadataServiceImpTest {
 
     @Test
     void removeReadPermission() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         formMetadataService.addReadPermission(formMetadataId, "testUser1");
         formMetadataService.addReadPermission(formMetadataId, "testUser2");
         assertTrue(formMetadataService.getById(formMetadataId).hasReadPermission("testUser1"));
@@ -60,14 +60,14 @@ class FormMetadataServiceImpTest {
 
     @Test
     void addWritePermission() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         formMetadataService.addWritePermission(formMetadataId, "testUser");
         assertTrue(formMetadataService.getById(formMetadataId).hasWritePermission("testUser"));
     }
 
     @Test
     void removeWritePermission() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         formMetadataService.addWritePermission(formMetadataId, "testUser");
         assertTrue(formMetadataService.getById(formMetadataId).hasWritePermission("testUser"));
         formMetadataService.removeWritePermission(formMetadataId, "testUser");
@@ -76,7 +76,7 @@ class FormMetadataServiceImpTest {
 
     @Test
     void testRemoveWritePermission() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         formMetadataService.addWritePermission(formMetadataId, "testUser1");
         formMetadataService.addWritePermission(formMetadataId, "testUser2");
         assertTrue(formMetadataService.getById(formMetadataId).hasWritePermission("testUser1"));
@@ -87,13 +87,13 @@ class FormMetadataServiceImpTest {
 
     @Test
     void existForm() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         assertFalse(formMetadataService.existForm(formMetadataId));
     }
 
     @Test
     void getFormId() {
-        Long formMetadataId = formMetadataService.create(1L, FormType.TYPE_TEST_REPORT_FORM);
+        Long formMetadataId = formMetadataService.create(1234567890L, FormType.TYPE_TEST_REPORT_FORM);
         Long formId = formMetadataService.getFormId(formMetadataId);
         assertEquals(-1, formId);
     }

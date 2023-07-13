@@ -2,8 +2,10 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stcos.server.database.mysql.ProcessDetailsMapper;
+import com.stcos.server.entity.process.ProcessDetails;
 import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.service.ProcessDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,23 +20,30 @@ import java.util.List;
 @Component
 public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, ProcessDetails> implements ProcessDetailsService {
 
+    private ProcessDetailsMapper processDetailsMapper;
+
+    @Autowired
+    public void setProcessDetailsMapper(ProcessDetailsMapper processDetailsMapper) {
+        this.processDetailsMapper = processDetailsMapper;
+    }
+
     @Override
     public void openTask(Long projectId, String taskName, String userName) {
-        ProcessDetails processDetails = getById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.openTask(taskName, userName);
-        updateById(processDetails);
+        processDetailsMapper.saveProcessDetails(processDetails);
     }
 
     @Override
     public void closeTask(Long projectId, String taskName) {
-        ProcessDetails processDetails = getById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.closeTask(taskName);
-        updateById(processDetails);
+        processDetailsMapper.saveProcessDetails(processDetails);
     }
 
     @Override
     public void update(Long projectId, String softwareName, String softwareVersion, List<String> testTypes, String startDate, String companyChineseName, String email, String address, String startUser, String telephone) {
-        ProcessDetails processDetails = getById(projectId);
+        ProcessDetails processDetails = processDetailsMapper.selectProcessDetails(projectId);
         processDetails.update(softwareName,
                 softwareVersion,
                 testTypes.toString(),
@@ -53,5 +62,4 @@ public class ProcessDetailsServiceImp extends ServiceImpl<ProcessDetailsMapper, 
         save(processDetails);
         return processDetails.getProjectId();
     }
-
 }
