@@ -3,7 +3,6 @@ package com.stcos.server.model.file;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.stcos.server.database.mysql.handler.ListTypeHandler;
-import com.stcos.server.model.form.AutoId;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 

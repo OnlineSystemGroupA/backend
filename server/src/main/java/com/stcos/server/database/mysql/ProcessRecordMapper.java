@@ -16,6 +16,8 @@ import com.stcos.server.model.process.ProcessRecord;
  * @version 1.0
  * @since 2023/6/27 14:06
  */
+
+@Deprecated
 @Repository
 public interface ProcessRecordMapper extends BaseMapper<ProcessRecord> {
     @Select("SELECT a.*, c.* " +

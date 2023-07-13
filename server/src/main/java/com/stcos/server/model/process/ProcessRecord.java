@@ -1,18 +1,18 @@
 package com.stcos.server.model.process;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stcos.server.model.file.SampleMetadata;
+import com.stcos.server.database.mongo.AutoId;
 import com.stcos.server.model.form.FormMetadata;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 /**
  * description
@@ -24,11 +24,12 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_process_record")
+@Document(collection = "process_record")
 public class ProcessRecord {
-
-    @TableId(type = IdType.AUTO, value = "project_id")
-    private Long projectId;
+    @AutoId
+    @JsonIgnore
+    @MongoId(targetType = FieldType.INT64)
+    private long projectId = -1;
 
     private String clientId;
 
@@ -52,10 +53,8 @@ public class ProcessRecord {
 
     private LocalDateTime finishDate;
 
-    @TableField(exist = false)
     private List<FormMetadata> formMetadataList;
 
-    @TableField(exist = false)
     private SampleMetadata sampleMetadata;
 
 }

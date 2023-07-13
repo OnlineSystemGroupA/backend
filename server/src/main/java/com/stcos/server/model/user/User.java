@@ -2,6 +2,7 @@ package com.stcos.server.model.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ public interface User extends UserDetails {
 
     default void addProcessInstance(String processInstanceId) {}
 
-    default void addProcessRecord(String processInstanceId) {}
+    default void addProcessRecord(Long processInstanceId) {}
 
     Set<String> getProcessInstances();
 
@@ -42,4 +43,6 @@ public interface User extends UserDetails {
     boolean hasProcessInstance(String processId);
 
     default boolean hasProcessRecord(String processId){return false;};
+
+    default List<String> getProcessRecords(){return null;};
 }

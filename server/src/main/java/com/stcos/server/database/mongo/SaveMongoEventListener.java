@@ -1,6 +1,6 @@
 package com.stcos.server.database.mongo;
 
-import com.stcos.server.model.form.AutoId;
+import com.stcos.server.database.mongo.AutoId;
 import com.stcos.server.snowflake.SnowflakeIdWorker;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;

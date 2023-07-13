@@ -1,6 +1,7 @@
 package com.stcos.server.model.form;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.stcos.server.database.mongo.AutoId;
 import com.stcos.server.util.JSONUtil;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;

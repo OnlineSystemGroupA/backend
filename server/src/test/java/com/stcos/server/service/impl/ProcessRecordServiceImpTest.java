@@ -59,7 +59,7 @@ class ProcessRecordServiceImpTest {
         formMetadataSet.add(formMetadata2);
 
         ProcessRecord processRecord = new ProcessRecord(
-                null, // Automatically generated
+                -1L, // Automatically generated
                 clientId,
                 marketingManagerId,
                 testingManagerId,

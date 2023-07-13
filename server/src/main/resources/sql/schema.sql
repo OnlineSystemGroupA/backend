@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS t_setting
 CREATE TABLE IF NOT EXISTS t_form_metadata
 (
     form_metadata_id   BIGINT AUTO_INCREMENT, -- 表单元数据 ID，保存对象时由数据库自动赋值
-    form_id            BIGINT      NOT NULL,  --  表单元数据对应表单的 ID
+    form_id            BIGINT      NOT NULL,  -- 表单元数据对应表单的 ID
     project_id         BIGINT      NOT NULL,  -- 项目号
     form_type          VARCHAR(64) NOT NULL,  -- 表单名
     form_state         VARCHAR(16) NOT NULL,  -- 表单状态

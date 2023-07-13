@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
  * @version 1.0
  * @since 2023/5/22 18:08
  */
+@Deprecated
 @Repository
 public interface FormMapper {
     void saveForm(Form form);

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.stcos.server.database.mysql.handler.ListTypeHandler;
+import com.stcos.server.model.process.ProcessRecord;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
@@ -164,5 +165,15 @@ public class Client implements User {
     @Override
     public boolean hasProcessInstance(String processId) {
         return processInstanceList.contains(processId);
+    }
+
+    @Override
+    public void addProcessRecord(Long processRecordId) {
+        processInstanceList.add(processRecordId.toString());
+    }
+
+    @Override
+    public List<String> getProcessRecords(){
+        return processRecordList;
     }
 }

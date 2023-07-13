@@ -1,6 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.stcos.server.database.mongo.ProcessRecordRepository;
 import com.stcos.server.database.mysql.ProcessRecordMapper;
 import com.stcos.server.model.process.ProcessRecord;
 import com.stcos.server.service.ProcessRecordService;
@@ -17,19 +18,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProcessRecordServiceImp extends ServiceImpl<ProcessRecordMapper, ProcessRecord> implements ProcessRecordService {
 
-    ProcessRecordMapper processRecordMapper;
+    ProcessRecordRepository processRecordRepository;
 
     @Autowired
-    void setProcessRecordMapper(ProcessRecordMapper processRecordMapper) {
-        this.processRecordMapper = processRecordMapper;
+    void setProcessRecordMapper(ProcessRecordRepository processRecordRepository) {
+        this.processRecordRepository = processRecordRepository;
     }
 
     public void saveProcessRecord(ProcessRecord processRecord){
-        processRecordMapper.saveFull(processRecord);
+        processRecordRepository.save(processRecord);
     }
 
     public ProcessRecord selectProcessRecordById(Long projectId){
-        return processRecordMapper.findAWithBAndC(projectId);
+        return processRecordRepository.findById(projectId).get();
     }
+
+
 
 }

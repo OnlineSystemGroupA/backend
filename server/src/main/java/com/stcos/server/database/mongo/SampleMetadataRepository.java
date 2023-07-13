@@ -3,6 +3,7 @@ package com.stcos.server.database.mongo;
 import com.stcos.server.model.file.SampleMetadata;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+@Deprecated
 public interface SampleMetadataRepository extends MongoRepository<SampleMetadata,Long> {
     default public void saveSampleMetadata(SampleMetadata sampleMetadata){
         insert(sampleMetadata);

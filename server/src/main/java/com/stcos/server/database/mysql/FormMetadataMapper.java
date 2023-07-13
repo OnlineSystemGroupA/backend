@@ -25,4 +25,12 @@ public interface FormMetadataMapper extends BaseMapper<FormMetadata> {
         else
             return this.selectByMap(map).get(0);
     }
+    public default FormMetadata selectByFormId(Long formId){
+        Map<String, Object> map = new HashMap<>();
+        map.put("formId",formId);
+        if(this.selectByMap(map).isEmpty())
+            return null;
+        else
+            return this.selectByMap(map).get(0);
+    }
 }

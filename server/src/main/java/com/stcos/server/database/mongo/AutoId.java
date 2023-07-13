@@ -1,4 +1,4 @@
-package com.stcos.server.model.form;
+package com.stcos.server.database.mongo;
 
 import java.lang.annotation.*;
 
