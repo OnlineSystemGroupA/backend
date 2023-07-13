@@ -1,0 +1,33 @@
+@startuml
+!pragma useIntermediatePackages false
+skin rose
+
+
+class com.stcos.server.model.user.Operator {
+}
+class com.stcos.server.model.user.Admin {
+}
+interface com.stcos.server.model.user.User {
+~ String getEmail()
+~ String getRealName()
+~ String getUid()
+~ void addProcessInstance(String)
+~ void addProcessRecord(String)
+~ Set<String> getProcessInstances()
+~ Set<String> getProcessRecords()
+~ int getProcessesCount()
+~ int getProcessRecordCount()
+~ boolean hasProcessInstance(String)
+~ boolean hasProcessRecord(String)
+}
+class com.stcos.server.model.user.Client {
+}
+
+interface org.springframework.security.core.userdetails.UserDetails {
+}
+
+com.stcos.server.model.user.User <|.. com.stcos.server.model.user.Operator
+com.stcos.server.model.user.User <|.. com.stcos.server.model.user.Admin
+org.springframework.security.core.userdetails.UserDetails <|--- com.stcos.server.model.user.User
+com.stcos.server.model.user.User <|.. com.stcos.server.model.user.Client
+@enduml

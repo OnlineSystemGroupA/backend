@@ -1,7 +1,7 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.database.mysql.SettingMapper;
-import com.stcos.server.entity.Setting;
+import com.stcos.server.model.Setting;
 import com.stcos.server.exception.ServerErrorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

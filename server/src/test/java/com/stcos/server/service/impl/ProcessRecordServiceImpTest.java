@@ -1,9 +1,10 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.file.SampleMetadata;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.process.ProcessRecord;
+
+import com.stcos.server.model.file.SampleMetadata;
+import com.stcos.server.model.form.FormMetadata;
+import com.stcos.server.model.form.FormType;
+import com.stcos.server.model.process.ProcessRecord;
 import com.stcos.server.service.ProcessRecordService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +54,7 @@ class ProcessRecordServiceImpTest {
         formMetadata2.addReadPermission("uid2");
         formMetadata2.addWritePermission("uid2");
 
-        Set<FormMetadata> formMetadataSet = new HashSet<>();
+        List<FormMetadata> formMetadataSet = new ArrayList<>();
         formMetadataSet.add(formMetadata1);
         formMetadataSet.add(formMetadata2);
 

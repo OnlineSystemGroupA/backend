@@ -1,9 +1,8 @@
 package com.stcos.server.database.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.stcos.server.entity.file.SampleMetadata;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.process.ProcessRecord;
+import com.stcos.server.model.file.SampleMetadata;
+import com.stcos.server.model.form.FormMetadata;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -113,7 +112,7 @@ public interface ProcessRecordMapper extends BaseMapper<ProcessRecord> {
 
     default void saveFull(ProcessRecord processRecord){
         this.saveRecord(processRecord);
-        for (FormMetadata formMetadata : processRecord.getFormMetadataSet()) {
+        for (FormMetadata formMetadata : processRecord.getFormMetadataList()) {
             this.saveB(formMetadata);
         }
         this.saveSample(processRecord.getSampleMetadata());

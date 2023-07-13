@@ -1,16 +1,17 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.file.SampleMetadata;
-import com.stcos.server.entity.form.ContractForm;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.user.Client;
 import com.stcos.server.exception.ServiceException;
-import com.stcos.server.service.*;
+import com.stcos.server.model.file.FileMetadata;
+import com.stcos.server.model.file.SampleMetadata;
+import com.stcos.server.model.form.ContractForm;
+import com.stcos.server.model.form.FormType;
+import com.stcos.server.model.user.Client;
+import com.stcos.server.service.FileMetadataService;
+import com.stcos.server.service.FormMetadataService;
+import com.stcos.server.service.SampleMetadataService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.runtime.ProcessInstanceQuery;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -37,7 +38,7 @@ import java.util.zip.ZipFile;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional

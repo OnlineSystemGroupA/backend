@@ -1,12 +1,12 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.database.mongo.FormRepository;
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.form.TestReportForm;
-import com.stcos.server.entity.user.Client;
-import com.stcos.server.entity.user.User;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.form.FormMetadata;
+import com.stcos.server.model.form.FormType;
+import com.stcos.server.model.form.TestReportForm;
+import com.stcos.server.model.user.Client;
+import com.stcos.server.model.user.User;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FormMetadataService;
 import com.stcos.server.service.FormService;

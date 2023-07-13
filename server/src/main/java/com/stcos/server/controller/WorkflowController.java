@@ -278,7 +278,7 @@ public class WorkflowController implements WorkflowApi {
     }
 
     @Override
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_ADMIN")      // 只有管理员可以执行删除流程实例操作
     public ResponseEntity<Void> deleteProcess(String processId) {
         ResponseEntity<Void> result = null;
         try {

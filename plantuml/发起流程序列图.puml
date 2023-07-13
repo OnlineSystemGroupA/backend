@@ -8,7 +8,7 @@ autonumber
 participant "Spring Context" as a
 participant "Workflow Service" as b
 participant "Runtime Service" as d
-entity "Process Variable" as c
+entity "Process Variable Builder" as c
 
 -> a: 用户发送请求
 activate a

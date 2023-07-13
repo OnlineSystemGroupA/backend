@@ -29,11 +29,28 @@ rectangle "Menu Service"  as MenuService <<$archimate/service>> #business
 
 rectangle "File Service"  as FileService <<$archimate/service>> #motivation
 rectangle "Form Service"  as FormService <<$archimate/service>> #motivation
+rectangle "Process Details Service"  as ProcessDetailsService <<$archimate/service>> #motivation
+rectangle "ProcessRecord Service"  as ProcessRecordService <<$archimate/service>> #motivation
 rectangle "User Service"  as UserService <<$archimate/service>> #motivation
+rectangle "Operator Service"  as OperatorService <<$archimate/service>> #motivation
+rectangle "Admin Service"  as AdminService <<$archimate/service>> #motivation
+rectangle "Client Service"  as ClientService <<$archimate/service>> #motivation
+
+rectangle "File Metadata Service" as FileMetadataService <<$archimate/service>> #white
+rectangle "Form Metadata Service" as FormMetadataService <<$archimate/service>> #white
+rectangle "Sample Metadata Service" as SampleMetadataService <<$archimate/service>> #white
 
 AuthController <-- AuthService
 AuthController <-- AccountService
 WorkflowController <-- WorkflowService
+
+AuthService <-- OperatorService
+AuthService <-- AdminService
+AuthService <-- ClientService
+
+AccountService <-- OperatorService
+AccountService <-- AdminService
+AccountService <-- ClientService
 
 'WorkflowController <-- FileService
 
@@ -65,12 +82,14 @@ database "                          MySQL                         "  as MySQL <<
 '}
 
 WorkflowService <-- FileService
+WorkflowService <-- ProcessDetailsService
 
 AuthService <--- dao
 FileService <-- dao
 FormService <-- dao
 'WorkflowService <--- dao
 ArchivesService <--- dao
+ArchivesService <-- ProcessRecordService
 AccountService <--- dao
 MenuService <--- dao
 
@@ -84,20 +103,32 @@ remove dao
 
 'WorkflowService <-- UserService
 
-FormService <-- MongoDB
-FileService <-- MySQL
+FormService <--- MongoDB
 
 AuthService <-- UserService
 AccountService <-- UserService
 'AccountService <-- FileService
 
 UserService <-- MySQL
-ArchivesService <-- MySQL
 
 
 MenuService <-- MySQL
-AccountService <-- MySQL
-AuthService <--- MySQL
+ProcessDetailsService <--- MySQL
+
+OperatorService <--- MySQL
+AdminService <--- MySQL
+ClientService <--- MySQL
+ProcessRecordService <--- MySQL
+
+FileService <-- FileMetadataService
+FileService <-- SampleMetadataService
+FormService <-- FormMetadataService
+
+FormMetadataService <-- MySQL
+SampleMetadataService <-- MySQL
+FileMetadataService <-- MySQL
+
+remove AdminService
 
 remove MenuController
 remove MenuService

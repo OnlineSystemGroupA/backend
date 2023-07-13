@@ -2,8 +2,8 @@ package com.stcos.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.stcos.server.database.mysql.OperatorMapper;
-import com.stcos.server.entity.user.Client;
-import com.stcos.server.entity.user.Operator;
+import com.stcos.server.model.user.Client;
+import com.stcos.server.model.user.Operator;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.service.OperatorService;
 import org.junit.jupiter.api.BeforeEach;

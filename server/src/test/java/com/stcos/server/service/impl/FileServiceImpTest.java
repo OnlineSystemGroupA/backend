@@ -1,11 +1,11 @@
 package com.stcos.server.service.impl;
 
-import com.stcos.server.entity.file.FileMetadata;
-import com.stcos.server.entity.file.SampleMetadata;
-import com.stcos.server.entity.form.Form;
-import com.stcos.server.entity.form.FormType;
-import com.stcos.server.entity.form.TestReportForm;
-import com.stcos.server.entity.user.Client;
+import com.stcos.server.model.file.FileMetadata;
+import com.stcos.server.model.file.SampleMetadata;
+import com.stcos.server.model.form.Form;
+import com.stcos.server.model.form.FormType;
+import com.stcos.server.model.form.TestReportForm;
+import com.stcos.server.model.user.Client;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.service.FileMetadataService;
 import com.stcos.server.service.FileService;

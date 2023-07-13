@@ -1,8 +1,8 @@
 package com.stcos.server.service.impl;
 
 import com.stcos.server.database.mysql.FormMetadataMapper;
-import com.stcos.server.entity.form.FormMetadata;
-import com.stcos.server.entity.form.FormType;
+import com.stcos.server.model.form.FormMetadata;
+import com.stcos.server.model.form.FormType;
 import com.stcos.server.service.FormMetadataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

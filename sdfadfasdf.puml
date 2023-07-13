@@ -1,0 +1,14 @@
+@startuml
+
+
+class FormMetadata {
++ boolean hasReadPermission(String)
++ boolean hasWritePermission(String)
++ void addWritePermission(String)
++ void removeWritePermission(String)
++ void removeWritePermission()
++ void addReadPermission(String)
++ void addReadPermission(Set<String>)
++ void removeReadPermission()
+}
+@enduml

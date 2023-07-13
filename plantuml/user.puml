@@ -43,12 +43,12 @@ class Operator
 
 class Client
 
-UserDetails <|.. User
+UserDetails <|-- User
 
-User <|-- Admin
+User <|.. Admin
 
-User <|-- Operator
+User <|.. Operator
 
-User <|-- Client
+User <|.. Client
 
 @enduml
