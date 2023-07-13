@@ -13,4 +13,7 @@ import com.stcos.server.exception.ServerErrorException;
  */
 public interface ProcessRecordService extends IService<ProcessRecord> {
 
+    public void saveProcessRecord(ProcessRecord processRecord);
+
+    public ProcessRecord selectProcessRecordById(Long projectId);
 }

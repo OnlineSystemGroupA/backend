@@ -58,38 +58,38 @@ public interface ProcessRecordMapper extends BaseMapper<ProcessRecord> {
             "start_date, " +
             "finish_date) " +
             "VALUES " +
-            "(#{record.projectId}," +
-            "#{record.clientId}," +
-            "#{record.marketingManagerId}," +
-            "#{record.tesytingManagerId}," +
-            "#{record.qualityManagerId}," +
-            "#{record.signatoryId}," +
-            "#{record.marketingOperatorId}," +
-            "#{record.testingOperatorId}," +
-            "#{record.startUserName}," +
-            "#{record.title}," +
-            "#{record.startDate}," +
-            "#{record.finishDate}" +
+            "(#{processRecord.projectId}," +
+            "#{processRecord.clientId}," +
+            "#{processRecord.marketingManagerId}," +
+            "#{processRecord.testingManagerId}," +
+            "#{processRecord.qualityManagerId}," +
+            "#{processRecord.signatoryId}," +
+            "#{processRecord.marketingOperatorId}," +
+            "#{processRecord.testingOperatorId}," +
+            "#{processRecord.startUserName}," +
+            "#{processRecord.title}," +
+            "#{processRecord.startDate}," +
+            "#{processRecord.finishDate}" +
             ")")
     @Options(useGeneratedKeys = true, keyProperty = "projectId")
-    void saveRecord(ProcessRecord record);
+    void saveRecord(@Param("processRecord") ProcessRecord processRecord);
 
     @Insert("INSERT INTO t_form_metadata " +
             "(form_metadata_id, form_id, project_id, form_type, form_state, created_by, created_date, last_modified_by, last_modified_date, readable_users, writable_users) " +
             "VALUES " +
-            "(#{form.formMetadataId}," +
-            "#{form.formId}," +
-            "#{form.projectId}," +
-            "#{form.formType}," +
-            "#{form.formState}," +
-            "#{form.createdBy}," +
-            "#{form.cteatedDate}," +
-            "#{form.lastModifiedBy}," +
-            "#{form.lastModifiedDate}," +
-            "#{form.readableUsers}," +
-            "#{form.writableUsers}" +
+            "(#{formMetadata.formMetadataId}," +
+            "#{formMetadata.formId}," +
+            "#{formMetadata.projectId}," +
+            "#{formMetadata.formType}," +
+            "#{formMetadata.formState}," +
+            "#{formMetadata.createdBy}," +
+            "#{formMetadata.createdDate}," +
+            "#{formMetadata.lastModifiedBy}," +
+            "#{formMetadata.lastModifiedDate}," +
+            "#{formMetadata.readableUsers}," +
+            "#{formMetadata.writableUsers}" +
             ")")
-    void saveB(FormMetadata form);
+    void saveB(@Param("formMetadata") FormMetadata formMetadata);
 
     @Insert("INSERT INTO t_sample_metadata " +
             "(sample_metadata_id, " +
@@ -97,12 +97,12 @@ public interface ProcessRecordMapper extends BaseMapper<ProcessRecord> {
             "writable_users, " +
             "file_metadata_id_list) " +
             "VALUES " +
-            "(#{sample.sampleMetadataId}," +
-            "#{sample.readableUsers}," +
-            "#{sample.writableUsers}," +
-            "#{sample.fileMetadataIdList}" +
+            "(#{sampleMetadata.sampleMetadataId}," +
+            "#{sampleMetadata.readableUsers}," +
+            "#{sampleMetadata.writableUsers}," +
+            "#{sampleMetadata.fileMetadataIdList}" +
             ")")
-    void saveSample(SampleMetadata sample);
+    void saveSample(@Param("sampleMetadata") SampleMetadata sampleMetadata);
 
     @Insert("INSERT INTO t_record_sample " +
             "(record_id, sample_id) " +
@@ -110,15 +110,12 @@ public interface ProcessRecordMapper extends BaseMapper<ProcessRecord> {
             "(#{recordId}, #{sampleId})")
     void saveABRelation(@Param("recordId") Long recordId, @Param("sampleId") Long sampleId);
 
-
-    default void saveFull(ProcessRecord record){
-        this.saveRecord(record);
-        for (FormMetadata form : record.getFormMetadataSet()) {
-            this.saveB(form);
-
+    default void saveFull(ProcessRecord processRecord){
+        this.saveRecord(processRecord);
+        for (FormMetadata formMetadata : processRecord.getFormMetadataSet()) {
+            this.saveB(formMetadata);
         }
-        this.saveSample(record.getSampleMetadata());
-        this.saveABRelation(record.getProjectId(),record.getSampleMetadata().getSampleMetadataId());
+        this.saveSample(processRecord.getSampleMetadata());
+        this.saveABRelation(processRecord.getProjectId(),processRecord.getSampleMetadata().getSampleMetadataId());
     }
-
 }
