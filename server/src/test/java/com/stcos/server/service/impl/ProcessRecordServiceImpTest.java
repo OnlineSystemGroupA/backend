@@ -1,6 +1,5 @@
 package com.stcos.server.service.impl;
 
-
 import com.stcos.server.model.file.SampleMetadata;
 import com.stcos.server.model.form.FormMetadata;
 import com.stcos.server.model.form.FormType;
@@ -14,9 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +26,7 @@ class ProcessRecordServiceImpTest {
     private ProcessRecordService processRecordService;
 
     @Test
-    void saveProcessRecord() {
+    void saveAndSelectProcessRecord() {
 
         Long projectId = 1234567890L;
         String clientId = "testClientId";
@@ -46,6 +43,8 @@ class ProcessRecordServiceImpTest {
 
         SampleMetadata sampleMetadata = new SampleMetadata();
 
+        sampleMetadata.setSampleMetadataId(1234567890L);
+
         FormMetadata formMetadata1 = new FormMetadata(projectId, FormType.TYPE_TEST_REPORT_FORM);
         FormMetadata formMetadata2 = new FormMetadata(projectId, FormType.TYPE_APPLICATION_FORM);
 
@@ -59,7 +58,7 @@ class ProcessRecordServiceImpTest {
         formMetadataSet.add(formMetadata2);
 
         ProcessRecord processRecord = new ProcessRecord(
-                -1L, // Automatically generated
+                1234567890L,
                 clientId,
                 marketingManagerId,
                 testingManagerId,
@@ -79,7 +78,9 @@ class ProcessRecordServiceImpTest {
 
         ProcessRecord retrievedProcessRecord = processRecordService.selectProcessRecordById(projectId);
 
-        assertNotNull(retrievedProcessRecord, "Process record should not be null");
-        assertEquals(processRecord.getProjectId(), retrievedProcessRecord.getProjectId(), "Returned ID should match the record's ID");
+        assertNotNull(retrievedProcessRecord);
+        assertEquals(processRecord.getProjectId(), retrievedProcessRecord.getProjectId());
+        assertEquals(processRecord.getFormMetadataList(), retrievedProcessRecord.getFormMetadataList());
+        assertEquals(processRecord.getSampleMetadata(), retrievedProcessRecord.getSampleMetadata());
     }
 }

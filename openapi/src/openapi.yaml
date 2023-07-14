@@ -208,6 +208,32 @@ paths:
         '404':
           description: 指定流程不存在
 
+  /archive/processes/{processId}/record:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - workflow
+      summary: 获取流程记录
+      description: 获取流程记录
+      operationId: getProcessRecord
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ProcessDetails"
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
 
   /workflow/processes/count:
     get:
@@ -971,6 +997,132 @@ components:
         assignee:
           description: 当前被分配人姓名
           type: string
+
+    ProcessRecord:
+      required:
+        - projectId
+        - title
+        - startDate
+        - finishDate
+      properties:
+        projectId:
+          description: 测试项目号
+          type: integer
+          format: int64
+        clientId:
+          description: 客户 ID
+          type: string
+        marketDepartmentSupervisorId:
+          description: 市场部主管 ID
+          type: string
+        testingSupervisorId:
+          description: 测试部主管 ID
+          type: string
+        qualitySupervisorId:
+          description: 质量部主管 ID
+          type: string
+        signatoryId:
+          description: 签字人 ID
+          type: string
+        marketDepartmentEmployeeId:
+          description: 市场部员工 ID
+          type: string
+        testingEmployeeId:
+          description: 测试部员工 ID
+          type: string
+        startUserName:
+          description: 启动用户名称
+          type: string
+        title:
+          description: 软件项目名
+          type: string
+        startDate:
+          description: 测试开始时间
+          type: string
+        finishDate:
+          description: 测试结束时间
+          type: string
+        formMetadataList:
+          description: 表单元数据列表
+          type: array
+          items:
+            $ref: '#/components/schemas/FormMetadata'
+        sampleMetadata:
+          $ref: '#/components/schemas/SampleMetadata'
+
+    SampleMetadata:
+      required:
+        - sampleMetadataId
+      properties:
+        sampleMetadataId:
+          description: 样品元数据ID，保存对象时由数据库自动赋值
+          type: integer
+          format: int64
+        readableUsers:
+          description: 对样品具有读权限用户的ID列表
+          type: array
+          items:
+            type: string
+        writableUsers:
+          description: 对样品具有写权限用户的ID列表
+          type: array
+          items:
+            type: string
+        fileMetadataIdList:
+          description: 文件元数据ID列表
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    FormMetadata:
+      required:
+        - formMetadataId
+        - formId
+        - projectId
+        - formType
+        - formState
+      properties:
+        formMetadataId:
+          description: 表单元数据ID，保存对象时由数据库自动赋值
+          type: integer
+          format: int64
+        formId:
+          description: 表单元数据对应表单的ID
+          type: integer
+          format: int64
+        projectId:
+          description: 所属项目的项目号
+          type: integer
+          format: int64
+        formType:
+          description: 表单类型（中文）
+          type: string
+        formState:
+          description: 表单的状态：未填写、已通过、审核中、已驳回
+          type: string
+        createdBy:
+          description: 表单的创建者 (userId)
+          type: string
+        createdDate:
+          description: 表单创建时间
+          type: string
+        lastModifiedBy:
+          description: 表单最后一次被谁修改 (userId)
+          type: string
+        lastModifiedDate:
+          description: 表单最后一次被修改的时间
+          type: string
+        readableUsers:
+          description: 对表单具有读权限用户的ID列表
+          type: array
+          items:
+            type: string
+        writableUsers:
+          description: 对表单具有写权限用户的ID列表
+          type: array
+          items:
+            type: string
 
     fileMetadata:
       type: object

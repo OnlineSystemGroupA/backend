@@ -8,7 +8,6 @@ import com.stcos.server.model.user.Admin;
 import com.stcos.server.model.user.Operator;
 import com.stcos.server.model.user.User;
 import com.stcos.server.model.form.Form;
-import com.stcos.server.model.form.FormMetadata;
 import com.stcos.server.util.ProcessVariablesBuilder;
 import com.stcos.server.exception.ServerErrorException;
 import com.stcos.server.exception.ServiceException;
@@ -279,7 +278,6 @@ public class WorkflowServiceImp implements WorkflowService {
 
     @Override
     public ProcessDetails getProcessDetails(String processId) throws ServiceException {
-
         // 首先判断是否可见
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!user.hasProcessInstance(processId)) throw new ServiceException(0);

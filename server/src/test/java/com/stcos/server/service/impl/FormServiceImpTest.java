@@ -133,7 +133,7 @@ public class FormServiceImpTest {
     }
 
     @Test
-    void testAddReadPermission1() {
+    void testAddReadPermission() {
         assertFalse(formService.hasReadPermission(formMetadataId, "testUser1"));
         assertFalse(formService.hasReadPermission(formMetadataId, "testUser2"));
 

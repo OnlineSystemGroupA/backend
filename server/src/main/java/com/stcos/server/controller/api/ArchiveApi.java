@@ -6,6 +6,8 @@
 package com.stcos.server.controller.api;
 
 import com.stcos.server.model.dto.ProcessDto;
+import com.stcos.server.model.dto.ProcessDetailsDto;
+import com.stcos.server.model.dto.ProcessRecordDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -108,6 +110,49 @@ public interface ArchiveApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"processId\" : \"processId\", \"taskName\" : \"taskName\", \"assignee\" : \"assignee\", \"startUser\" : \"startUser\", \"title\" : \"title\", \"projectId\" : \"projectId\", \"taskId\" : \"taskId\", \"startDate\" : \"startDate\" }, { \"processId\" : \"processId\", \"taskName\" : \"taskName\", \"assignee\" : \"assignee\", \"startUser\" : \"startUser\", \"title\" : \"title\", \"projectId\" : \"projectId\", \"taskId\" : \"taskId\", \"startDate\" : \"startDate\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * GET /archive/processes/{processId}/record : 获取流程记录
+     * 获取流程记录
+     *
+     * @param processId 流程实例 Id (required)
+     * @return ok (status code 200)
+     *         or 指定流程对该用户不可见 (status code 403)
+     *         or 指定流程不存在 (status code 404)
+     */
+    @Operation(
+            operationId = "getProcessRecord",
+            summary = "获取流程记录",
+            description = "获取流程记录",
+            tags = { "workflow" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "ok", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessDetailsDto.class))
+                    }),
+                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
+                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/archive/processes/{processId}/record",
+            produces = { "application/json" }
+    )
+    default ResponseEntity<ProcessRecordDto> getProcessRecord(
+            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"address\" : \"address\", \"dueDate\" : \"dueDate\", \"testType\" : \"testType\", \"index\" : 6, \"telephone\" : \"telephone\", \"title\" : \"title\", \"version\" : \"version\", \"applicant\" : \"applicant\", \"currentTaskName\" : \"currentTaskName\", \"company\" : \"company\", \"assignee\" : \"assignee\", \"projectId\" : 0, \"email\" : \"email\", \"startDate\" : \"startDate\", \"applicationDate\" : \"applicationDate\" }";
+                    com.stcos.server.controller.api.ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
             }
