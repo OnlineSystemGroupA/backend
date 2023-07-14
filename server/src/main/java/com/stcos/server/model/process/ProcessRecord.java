@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description
@@ -53,7 +54,7 @@ public class ProcessRecord {
 
     private LocalDateTime finishDate;
 
-    private List<FormMetadata> formMetadataList;
+    private Map<String, Long> formMetadataIdMap;
 
     private SampleMetadata sampleMetadata;
 

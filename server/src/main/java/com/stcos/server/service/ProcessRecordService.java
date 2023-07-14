@@ -10,7 +10,7 @@ import com.stcos.server.model.process.ProcessRecord;
  * @version 1.0
  * @since 2023/6/27 14:08
  */
-public interface ProcessRecordService extends IService<ProcessRecord> {
+public interface ProcessRecordService {
 
     public void saveProcessRecord(ProcessRecord processRecord);
 

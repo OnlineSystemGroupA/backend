@@ -57,4 +57,24 @@ public class ProcessDetailsMapper {
         );
     }
 
+    public static ProcessDetailsDto toProcessDetailsDto(ProcessDetails processDetails) {
+
+        return new ProcessDetailsDto(
+                processDetails.getProjectId(),
+                processDetails.getTitle(),
+                processDetails.getVersion(),
+                processDetails.getTestType(),
+                processDetails.getApplicationDate(),
+                processDetails.getApplicant(),
+                processDetails.getCompany(),
+                processDetails.getTelephone(),
+                processDetails.getEmail(),
+                processDetails.getAddress(),
+                processDetails.getStartDate().toString(),
+                processDetails.getDueDate().toString(),
+                null,
+                null,
+                null
+        );
+    }
 }

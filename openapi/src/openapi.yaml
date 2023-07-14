@@ -148,7 +148,7 @@ paths:
         - archive
       summary: 获取已完成流程实例
       description: 获取与当前用户相关的所有已完成流程实例
-      operationId: getArchiveProcesses
+      operationId: getArchivedProcesses
       parameters:
         - name: assigned
           in: query
@@ -186,14 +186,15 @@ paths:
                 items:
                   $ref: "#/components/schemas/Process"
 
-  /archive/processes/{processId}:
+  /archive/processes/{projectId}/details:
     parameters:
-      - name: processId
+      - name: projectId
         in: path
         description: 流程实例 Id
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
     delete:
       tags:
         - admin
@@ -207,18 +208,7 @@ paths:
           description: 指定流程对该用户不可见
         '404':
           description: 指定流程不存在
-
-  /archive/processes/{processId}/record:
-    parameters:
-      - name: processId
-        in: path
-        description: 流程实例 Id
-        required: true
-        schema:
-          type: string
     get:
-      tags:
-        - workflow
       summary: 获取流程记录
       description: 获取流程记录
       operationId: getProcessRecord
@@ -233,6 +223,83 @@ paths:
           description: 指定流程对该用户不可见
         '404':
           description: 指定流程不存在
+
+  /archive/processes/count:
+    get:
+      tags:
+        - archive
+      summary: 流程记录总数
+      description: 获取与当前用户相关的流程记录总数
+      operationId: getProcessRecordCount
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: integer
+                format: int32
+
+  /archive/processes/{projectId}/forms:
+    get:
+      tags:
+        - archive
+      summary: 获取表单
+      description: 获取表单
+      operationId: getArchivedFormInfo
+      parameters:
+        - name: projectId
+          in: path
+          description: 指定流程记录的项目号
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FormInfo"
+        '404':
+          description: 指定流程记录不存在
+
+  /archive/processes/{projectId}/forms/{formName}:
+    parameters:
+      - name: projectId
+        in: path
+        description: 指定流程实例 id
+        schema:
+          type: integer
+          format: int64
+        required: true
+      - name: formName
+        in: path
+        description: 期望操作的表单名称
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - archive
+      summary: 获取表单
+      description: 获取表单
+      operationId: getArchivedForm
+      responses:
+        '200':
+          description: 成功获取指定表单
+          content:
+            'text/plain':
+              schema:
+                description: 包含表单对象的 JSON 字符串
+                type: string
+        '403':
+          description: 指定流程或表单对该用户不可见
+        '404':
+          description: 指定流程或表单不存在
 
 
   /workflow/processes/count:

@@ -5,9 +5,9 @@
  */
 package com.stcos.server.controller.api;
 
-import com.stcos.server.model.dto.ProcessDto;
+import com.stcos.server.model.dto.FormInfoDto;
 import com.stcos.server.model.dto.ProcessDetailsDto;
-import com.stcos.server.model.dto.ProcessRecordDto;
+import com.stcos.server.model.dto.ProcessDto;
 import com.stcos.server.util.ApiUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-10T14:31:57.470003700+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-14T18:30:42.223935400+08:00[Asia/Shanghai]")
 @Validated
 @Tag(name = "admin", description = "the admin API")
 public interface ArchiveApi {
@@ -43,10 +43,10 @@ public interface ArchiveApi {
     }
 
     /**
-     * DELETE /archive/processes/{processId} : 删除已完成流程
+     * DELETE /archive/processes/{projectId}/details : 删除已完成流程
      * 管理员删除已完成流程
      *
-     * @param processId 流程实例 Id (required)
+     * @param projectId 流程实例 Id (required)
      * @return 成功删除指定流程 (status code 200)
      *         or 指定流程对该用户不可见 (status code 403)
      *         or 指定流程不存在 (status code 404)
@@ -64,11 +64,90 @@ public interface ArchiveApi {
     )
     @RequestMapping(
         method = RequestMethod.DELETE,
-        value = "/archive/processes/{processId}"
+        value = "/archive/processes/{projectId}/details"
     )
     default ResponseEntity<Void> deleteArchiveProcess(
-        @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+        @Parameter(name = "projectId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("projectId") Long projectId
     ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /archive/processes/{projectId}/forms/{formName} : 获取表单
+     * 获取表单
+     *
+     * @param projectId 指定流程实例 id (required)
+     * @param formName 期望操作的表单名称 (required)
+     * @return 成功获取指定表单 (status code 200)
+     *         or 指定流程或表单对该用户不可见 (status code 403)
+     *         or 指定流程或表单不存在 (status code 404)
+     */
+    @Operation(
+        operationId = "getArchivedForm",
+        summary = "获取表单",
+        description = "获取表单",
+        tags = { "archive" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "成功获取指定表单", content = {
+                @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "指定流程或表单对该用户不可见"),
+            @ApiResponse(responseCode = "404", description = "指定流程或表单不存在")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/archive/processes/{projectId}/forms/{formName}",
+        produces = { "text/plain" }
+    )
+    default ResponseEntity<String> getArchivedForm(
+        @Parameter(name = "projectId", description = "指定流程实例 id", required = true, in = ParameterIn.PATH) @PathVariable("projectId") Long projectId,
+        @Parameter(name = "formName", description = "期望操作的表单名称", required = true, in = ParameterIn.PATH) @PathVariable("formName") String formName
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /archive/processes/{projectId}/forms : 获取表单
+     * 获取表单
+     *
+     * @param projectId 指定流程记录的项目号 (required)
+     * @return ok (status code 200)
+     *         or 指定流程记录不存在 (status code 404)
+     */
+    @Operation(
+        operationId = "getArchivedFormInfo",
+        summary = "获取表单",
+        description = "获取表单",
+        tags = { "archive" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FormInfoDto.class)))
+            }),
+            @ApiResponse(responseCode = "404", description = "指定流程记录不存在")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/archive/processes/{projectId}/forms",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<List<FormInfoDto>> getArchivedFormInfo(
+        @Parameter(name = "projectId", description = "指定流程记录的项目号", required = true, in = ParameterIn.PATH) @PathVariable("projectId") Long projectId
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"formType\" : \"formType\", \"formState\" : \"formState\", \"createDate\" : \"createDate\" }, { \"formType\" : \"formType\", \"formState\" : \"formState\", \"createDate\" : \"createDate\" } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -85,9 +164,10 @@ public interface ArchiveApi {
      * @return 成功获取流程实例列表 (status code 200)
      */
     @Operation(
-        operationId = "getArchiveProcesses",
+        operationId = "getArchivedProcesses",
         summary = "获取已完成流程实例",
         description = "获取与当前用户相关的所有已完成流程实例",
+        tags = { "archive" },
         responses = {
             @ApiResponse(responseCode = "200", description = "成功获取流程实例列表", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProcessDto.class)))
@@ -99,7 +179,7 @@ public interface ArchiveApi {
         value = "/archive/processes",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<ProcessDto>> getArchiveProcesses(
+    default ResponseEntity<List<ProcessDto>> getArchivedProcesses(
         @NotNull @Parameter(name = "pageIndex", description = "需要查询的页号", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageIndex", required = true) Integer pageIndex,
         @NotNull @Parameter(name = "numPerPage", description = "每页的项目条目数", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "numPerPage", required = true) Integer numPerPage,
         @NotNull @Parameter(name = "orderBy", description = "用于排序的字段", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "orderBy", required = true) String orderBy,
@@ -118,45 +198,75 @@ public interface ArchiveApi {
 
     }
 
+
     /**
-     * GET /archive/processes/{processId}/record : 获取流程记录
+     * GET /archive/processes/{projectId}/details : 获取流程记录
      * 获取流程记录
      *
-     * @param processId 流程实例 Id (required)
+     * @param projectId 流程实例 Id (required)
      * @return ok (status code 200)
      *         or 指定流程对该用户不可见 (status code 403)
      *         or 指定流程不存在 (status code 404)
      */
     @Operation(
-            operationId = "getProcessRecord",
-            summary = "获取流程记录",
-            description = "获取流程记录",
-            tags = { "workflow" },
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "ok", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessDetailsDto.class))
-                    }),
-                    @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
-                    @ApiResponse(responseCode = "404", description = "指定流程不存在")
-            }
+        operationId = "getProcessRecord",
+        summary = "获取流程记录",
+        description = "获取流程记录",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessDetailsDto.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "指定流程对该用户不可见"),
+            @ApiResponse(responseCode = "404", description = "指定流程不存在")
+        }
     )
     @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/archive/processes/{processId}/record",
-            produces = { "application/json" }
+        method = RequestMethod.GET,
+        value = "/archive/processes/{projectId}/details",
+        produces = { "application/json" }
     )
-    default ResponseEntity<ProcessRecordDto> getProcessRecord(
-            @Parameter(name = "processId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("processId") String processId
+    default ResponseEntity<ProcessDetailsDto> getProcessRecord(
+        @Parameter(name = "projectId", description = "流程实例 Id", required = true, in = ParameterIn.PATH) @PathVariable("projectId") Long projectId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"address\" : \"address\", \"dueDate\" : \"dueDate\", \"testType\" : \"testType\", \"index\" : 6, \"telephone\" : \"telephone\", \"title\" : \"title\", \"version\" : \"version\", \"applicant\" : \"applicant\", \"currentTaskName\" : \"currentTaskName\", \"company\" : \"company\", \"assignee\" : \"assignee\", \"projectId\" : 0, \"email\" : \"email\", \"startDate\" : \"startDate\", \"applicationDate\" : \"applicationDate\" }";
-                    com.stcos.server.controller.api.ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
             }
         });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /archive/processes/count : 流程记录总数
+     * 获取与当前用户相关的流程记录总数
+     *
+     * @return ok (status code 200)
+     */
+    @Operation(
+        operationId = "getProcessRecordCount",
+        summary = "流程记录总数",
+        description = "获取与当前用户相关的流程记录总数",
+        tags = { "archive" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/archive/processes/count",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Integer> getProcessRecordCount(
+        
+    ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

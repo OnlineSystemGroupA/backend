@@ -19,7 +19,7 @@ import java.util.Map;
 public interface FormMetadataMapper extends BaseMapper<FormMetadata> {
     public default FormMetadata selectByProjectId(Long projectId){
         Map<String, Object> map = new HashMap<>();
-        map.put("projectId",projectId);
+        map.put("project_id",projectId);
         if(this.selectByMap(map).isEmpty())
             return null;
         else
@@ -27,7 +27,7 @@ public interface FormMetadataMapper extends BaseMapper<FormMetadata> {
     }
     public default FormMetadata selectByFormId(Long formId){
         Map<String, Object> map = new HashMap<>();
-        map.put("formId",formId);
+        map.put("form_id",formId);
         if(this.selectByMap(map).isEmpty())
             return null;
         else

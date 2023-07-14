@@ -44,5 +44,5 @@ public interface User extends UserDetails {
 
     default boolean hasProcessRecord(String processId){return false;};
 
-    default List<String> getProcessRecords(){return null;};
+    default List<Long> getProcessRecords(){return null;};
 }

@@ -15,7 +15,7 @@ public class GenContractDraftConfig extends TaskConfig {
 
     public GenContractDraftConfig() {
         super(
-                Set.of(FormType.TYPE_CONTRACT_FORM),
+                Set.of(FormType.TYPE_CONTRACT_FORM, FormType.TYPE_CONFIDENTIALITY_FORM),
                 Set.of()
         );
     }

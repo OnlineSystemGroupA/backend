@@ -173,7 +173,11 @@ public class Client implements User {
     }
 
     @Override
-    public List<String> getProcessRecords(){
-        return processRecordList;
+    public List<Long> getProcessRecords() {
+        List<Long> temp = new ArrayList<>();
+        for (String s : processRecordList) {
+            temp.add(Long.valueOf(s));
+        }
+        return temp;
     }
 }

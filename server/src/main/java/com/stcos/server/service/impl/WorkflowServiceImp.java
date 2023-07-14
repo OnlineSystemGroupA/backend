@@ -64,14 +64,6 @@ public class WorkflowServiceImp implements WorkflowService {
         this.settingService = settingService;
     }
 
-
-    private ProcessRecordService processRecordService;
-
-    @Autowired
-    public void setProcessRecordService(ProcessRecordService processRecordService) {
-        this.processRecordService = processRecordService;
-    }
-
     @Override
     public void completeTask(String processId, Boolean passable) throws ServiceException {
 
@@ -338,9 +330,11 @@ public class WorkflowServiceImp implements WorkflowService {
                 for (String formType : FormType.FORM_TYPE_SET) {
                     Long metadataId = (Long) variables.get(formType);
                     if (formService.hasReadPermission(metadataId, user.getUid())) {
-                        String createdDate = formService.getCreatedDate(metadataId).toString();
+                        String createdDateStr = "";
+                        LocalDateTime createdDate = formService.getCreatedDate(metadataId);
+                        if (createdDate != null) createdDateStr = createdDate.toString();
                         String formState = formService.getFormState(metadataId);
-                        formInfoDtoList.add(new FormInfoDto(formType, createdDate, formState));
+                        formInfoDtoList.add(new FormInfoDto(formType, createdDateStr, formState));
                     }
                 }
             }

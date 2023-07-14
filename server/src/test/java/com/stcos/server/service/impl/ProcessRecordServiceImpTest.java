@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,9 +55,10 @@ class ProcessRecordServiceImpTest {
         formMetadata2.addReadPermission("uid2");
         formMetadata2.addWritePermission("uid2");
 
-        List<FormMetadata> formMetadataSet = new ArrayList<>();
-        formMetadataSet.add(formMetadata1);
-        formMetadataSet.add(formMetadata2);
+        Map<String, Long> formMetadataIdMap = new HashMap<>();
+//        List<FormMetadata> formMetadataSet = new ArrayList<>();
+//        formMetadataSet.add(formMetadata1);
+//        formMetadataSet.add(formMetadata2);
 
         ProcessRecord processRecord = new ProcessRecord(
                 1234567890L,
@@ -70,7 +73,7 @@ class ProcessRecordServiceImpTest {
                 title,
                 startDate,
                 finishDate,
-                formMetadataSet,
+                formMetadataIdMap,
                 sampleMetadata
         );
 
@@ -80,7 +83,7 @@ class ProcessRecordServiceImpTest {
 
         assertNotNull(retrievedProcessRecord);
         assertEquals(processRecord.getProjectId(), retrievedProcessRecord.getProjectId());
-        assertEquals(processRecord.getFormMetadataList(), retrievedProcessRecord.getFormMetadataList());
+        assertEquals(processRecord.getFormMetadataIdMap(), retrievedProcessRecord.getFormMetadataIdMap());
         assertEquals(processRecord.getSampleMetadata(), retrievedProcessRecord.getSampleMetadata());
     }
 }

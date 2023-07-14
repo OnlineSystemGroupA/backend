@@ -42,6 +42,7 @@ public class StampContractListener extends OperatorTaskListener {
         try {
             processDetails.setStartDate(LocalDateTime.parse(form.getSignDate(),DateTimeFormatter.ofPattern(inputPattern)).atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime());
             processDetails.setDueDate(LocalDateTime.parse(form.getValidDate(),DateTimeFormatter.ofPattern(inputPattern)).atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime());
+            processDetailsService.updateById(processDetails);
         } catch (DateTimeParseException e) {
             throw new RuntimeException(e);
         }

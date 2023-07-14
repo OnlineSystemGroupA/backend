@@ -15,7 +15,7 @@ public class SampleMetadata {
      * 样品元数据 ID，保存对象时由数据库自动赋值
      */
     @TableId
-    private long sampleMetadataId;
+    private Long sampleMetadataId;
 
     /**
      * 对样品具有读权限用户的 ID 列表

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description
@@ -39,8 +40,6 @@ public class ConfirmTestReportListener extends ClientTaskListener {
 
     private SampleMetadataMapper sampleMetadataMapper;
 
-    private FormMetadataMapper formMetadataMapper;
-
     @Autowired
     public void setProcessRecordService(ProcessRecordService processRecordService) {
         this.processRecordService = processRecordService;
@@ -49,11 +48,6 @@ public class ConfirmTestReportListener extends ClientTaskListener {
     @Autowired
     public void setSampleMetadataMapper(SampleMetadataMapper sampleMetadataMapper){
         this.sampleMetadataMapper = sampleMetadataMapper;
-    }
-
-    @Autowired
-    public void setFormMetadataMapper(FormMetadataMapper formMetadataMapper){
-        this.formMetadataMapper = formMetadataMapper;
     }
 
     @Override
@@ -75,11 +69,11 @@ public class ConfirmTestReportListener extends ClientTaskListener {
         processRecord.setSampleMetadata(sampleMetadataMapper
                 .selectById((Long)task
                         .getVariable(ProcessVariables.VAR_SAMPLE_METADATA)));
-        List<FormMetadata> list = new ArrayList<>();
+        Map<String, Long> map = new HashMap<>();
         for(String formType: FormType.FORM_TYPE_SET){
-            list.add(formMetadataMapper.selectByFormId((Long) task.getVariable(formType)));
+            map.put(formType, (Long) task.getVariable(formType));
         }
-        processRecord.setFormMetadataList(list);
+        processRecord.setFormMetadataIdMap(map);
         processRecordService.saveProcessRecord(processRecord);
         User user = userService.getById(task.getAssignee());
         user.addProcessRecord(processRecord.getProjectId());

@@ -27,6 +27,7 @@ import java.util.Map;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TestFunctionForm extends Form {
     private String softwareName;
     private String softwareVersion;
