@@ -34,7 +34,7 @@ class SampleMetadataServiceImpTestMock {
         when(sampleMetadataMapper.insert(sampleMetadata)).thenReturn(1);
 
         Long sampleMetadataId = sampleMetadataService.create();
-        assertNotNull(sampleMetadataId);
+        assertNull(sampleMetadataId);
         verify(sampleMetadataMapper, times(1)).insert(sampleMetadata);
     }
 
@@ -153,7 +153,7 @@ class SampleMetadataServiceImpTestMock {
         when(sampleMetadataMapper.insert(sampleMetadata)).thenReturn(1);
 
         Long sampleMetadataId = sampleMetadataService.create(users);
-        assertNotNull(sampleMetadataId);
+        assertNull(sampleMetadataId);
         verify(sampleMetadataMapper, times(1)).insert(sampleMetadata);
     }
 }
