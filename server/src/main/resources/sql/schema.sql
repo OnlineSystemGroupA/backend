@@ -168,11 +168,3 @@ CREATE TABLE IF NOT EXISTS t_process_record
     PRIMARY KEY (project_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-
--- RecordSample
-CREATE TABLE IF NOT EXISTS t_record_sample
-(
-    record_id BIGINT NOT NULL,
-    sample_id BIGINT NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
