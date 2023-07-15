@@ -1,0 +1,1343 @@
+openapi: 3.0.3
+info:
+  title: 南大软件测试中心在线系统
+  description: 后端 API 文档
+  version: 1.0.0
+  contact:
+    name: 在线系统项目 A 组
+    url: https://github.com/OnlineSystemGroupA
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://masterchedan.top:8081/
+    description: Development server
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - authentication
+      summary: 用户注册
+      description: 注册新用户
+      operationId: register
+      requestBody:
+        description: "用户注册所必需的信息"
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/RegisterParam"
+        required: true
+      responses:
+
+        '200':
+          description: 注册成功
+        '409':
+          description: 用户名已存在
+
+  /auth/login:
+    post:
+      tags:
+        - authentication
+      summary: 用户登录
+      description: 登录成功返回 token
+      operationId: login
+      parameters:
+        - name: user-type
+          in: query
+          required: true
+          description: 进行登录的用户类型：admin、operator、client.
+          schema:
+            type: string
+      requestBody:
+        description: 用户名、密码
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/LoginParam"
+        required: true
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/Token"
+        '404':
+          description: 用户不存在
+        '401':
+          description: 用户名或密码错误
+        '403':
+          description: 账号禁用
+
+  /auth/logout:
+    post:
+      tags:
+        - authentication
+      summary: 用户注销
+      description: 注销登录
+      operationId: logout
+      responses:
+        '200':
+          description: 注销成功
+
+  /workflow/start:
+    post:
+      tags:
+        - workflow
+      summary: 启动流程
+      description: 开启一个新的委托流程
+      operationId: startProcess
+      responses:
+        '200':
+          description: 启动成功
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ProcessId"
+
+  /workflow/processes:
+    get:
+      tags:
+        - workflow
+      summary: 获取流程实例
+      description: 获取与当前用户相关的流程实例
+      operationId: getProcesses
+      parameters:
+        - name: assigned
+          in: query
+          required: false
+          description: 其值为 true 表示获取当前有任务被分配给当前用户的项目
+          schema:
+            type: boolean
+        - name: pageIndex
+          in: query
+          required: true
+          description: 需要查询的页号
+          schema:
+            type: integer
+            format: int32
+        - name: numPerPage
+          in: query
+          required: true
+          description: 每页的项目条目数
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          required: true
+          description: 用于排序的字段
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取流程实例列表
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Process"
+
+  /archive/processes:
+    get:
+      tags:
+        - archive
+      summary: 获取已完成流程实例
+      description: 获取与当前用户相关的所有已完成流程实例
+      operationId: getArchivedProcesses
+      parameters:
+        - name: assigned
+          in: query
+          required: false
+          description: 其值为 true 表示获取当前有任务被分配给当前用户的项目
+          schema:
+            type: boolean
+        - name: pageIndex
+          in: query
+          required: true
+          description: 需要查询的页号
+          schema:
+            type: integer
+            format: int32
+        - name: numPerPage
+          in: query
+          required: true
+          description: 每页的项目条目数
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          required: true
+          description: 用于排序的字段
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取流程实例列表
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Process"
+
+  /archive/processes/{projectId}/details:
+    parameters:
+      - name: projectId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      tags:
+        - admin
+      summary: 删除已完成流程
+      description: 管理员删除已完成流程
+      operationId: deleteArchiveProcess
+      responses:
+        '200':
+          description: 成功删除指定流程
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+    get:
+      summary: 获取流程记录
+      description: 获取流程记录
+      operationId: getProcessRecord
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ProcessDetails"
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
+  /archive/processes/count:
+    get:
+      tags:
+        - archive
+      summary: 流程记录总数
+      description: 获取与当前用户相关的流程记录总数
+      operationId: getProcessRecordCount
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: integer
+                format: int32
+
+  /archive/processes/{projectId}/forms:
+    get:
+      tags:
+        - archive
+      summary: 获取表单
+      description: 获取表单
+      operationId: getArchivedFormInfo
+      parameters:
+        - name: projectId
+          in: path
+          description: 指定流程记录的项目号
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FormInfo"
+        '404':
+          description: 指定流程记录不存在
+
+  /archive/processes/{projectId}/forms/{formName}:
+    parameters:
+      - name: projectId
+        in: path
+        description: 指定流程实例 id
+        schema:
+          type: integer
+          format: int64
+        required: true
+      - name: formName
+        in: path
+        description: 期望操作的表单名称
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - archive
+      summary: 获取表单
+      description: 获取表单
+      operationId: getArchivedForm
+      responses:
+        '200':
+          description: 成功获取指定表单
+          content:
+            'text/plain':
+              schema:
+                description: 包含表单对象的 JSON 字符串
+                type: string
+        '403':
+          description: 指定流程或表单对该用户不可见
+        '404':
+          description: 指定流程或表单不存在
+
+
+  /workflow/processes/count:
+    get:
+      tags:
+        - workflow
+      summary: 流程实例总数
+      description: 获取与当前用户相关的流程实例总数
+      operationId: getProcessCount
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: integer
+                format: int32
+
+  /workflow/processes/{processId}/complete_task:
+    post:
+      tags:
+        - workflow
+      summary: 完成任务
+      description: 完成现阶段任务使流程进入下一阶段
+      operationId: completeTask
+      parameters:
+        - name: processId
+          in: path
+          description: 流程实例 Id
+          required: true
+          schema:
+            type: string
+        - name: passable
+          in: query
+          description: 是否通过，流程遇到网关用于决定运行方向
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 成功完成指定任务
+        '403':
+          description: 指定流程对该用户不可见或当前用户无完成任务权限
+        '404':
+          description: 指定流程不存在
+        '460':
+          description: 未满足完成条件
+
+  /workflow/processes/{processId}:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - admin
+      summary: 删除流程
+      description: 管理员删除流程
+      operationId: deleteProcess
+      responses:
+        '200':
+          description: 成功删除指定流程
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
+  /workflow/processes/{processId}/details:
+    parameters:
+      - name: processId
+        in: path
+        description: 流程实例 Id
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - workflow
+      summary: 获取流程详情
+      description: 获取流程详情
+      operationId: getProcessDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ProcessDetails"
+        '403':
+          description: 指定流程对该用户不可见
+        '404':
+          description: 指定流程不存在
+
+  /workflow/processes/{processId}/forms:
+    get:
+      tags:
+        - workflow
+      summary: 获取表单
+      description: 获取表单
+      operationId: getFormInfo
+      parameters:
+        - name: processId
+          in: path
+          description: 指定流程实例 ID
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FormInfo"
+        '404':
+          description: 指定流程不存在
+
+  /workflow/processes/{processId}/forms/{formName}:
+    parameters:
+      - name: processId
+        in: path
+        description: 指定流程实例 id
+        schema:
+          type: string
+        required: true
+      - name: formName
+        in: path
+        description: 期望操作的表单名称
+        schema:
+          type: string
+        required: true
+    put:
+      tags:
+        - workflow
+      summary: 更新或创建表单
+      description: 更新或创建表单
+      operationId: putForm
+      requestBody:
+        required: true
+        content:
+          'text/plain':
+            schema:
+              description: 包含表单对象的 JSON 字符串
+              type: string
+      responses:
+        '200':
+          description: 成功更新或创建表单
+        '403':
+          description: 该流程实例对当前用户不可见或当前用户无修改权限
+        '404':
+          description: 指定流程实例不存在
+    get:
+      tags:
+        - workflow
+      summary: 获取表单
+      description: 获取表单
+      operationId: getForm
+      responses:
+        '200':
+          description: 成功获取指定表单
+          content:
+            'text/plain':
+              schema:
+                description: 包含表单对象的 JSON 字符串
+                type: string
+        '403':
+          description: 指定流程或表单对该用户不可见
+        '404':
+          description: 指定流程或表单不存在
+
+  /workflow/processes/{processId}/files/forms/{formName}:
+    parameters:
+      - name: processId
+        in: path
+        description: 目标流程实例的 ID
+        schema:
+          type: string
+        required: true
+      - name: formName
+        in: path
+        description: 目标表单的名称
+        schema:
+          type: string
+        required: true
+    get:
+      summary: 下载表单
+      description: 下载表单 PDF 文件
+      operationId: downloadFileForm
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/pdf':
+              schema:
+                type: string
+                format: binary
+    post:
+      operationId: uploadFileForm
+      requestBody:
+
+        content:
+          'multipart/form-data':
+            schema:
+              required:
+                - file
+              properties:
+                file:
+                  description: 需要上传的表单 PDF 文件
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: ok
+
+
+
+  /workflow/processes/{processId}/files/sample:
+    parameters:
+      - name: processId
+        in: path
+        description: 指定流程实例 id
+        schema:
+          type: string
+        required: true
+    post:
+      tags:
+        - workflow
+      summary: 上传样品
+      description: 上传与对应流程相关的样品文件
+      operationId: uploadFileSample
+      requestBody:
+        description: 需要上传的样品文件
+        content:
+          'multipart/form-data':
+            schema:
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: 成功上传
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/fileMetadata"
+        '400':
+          description: 没有上传文件
+        '403':
+          description: 该任务对当前用户不可见或当前用户无修改权限，或文件校验不通过
+        '404':
+          description: 指定任务不存在
+        '500':
+          description: 上传文件失败
+        '507':
+          description: 存储空间不足
+    get:
+      tags:
+        - workflow
+      summary: 所有样品下载
+      description: 获取指定任务中的指定资源
+      operationId: downloadFileSample
+      responses:
+        '200':
+          description: 成功获取指定资源
+          content:
+            'application/octet-stream':
+              schema:
+                type: string
+                format: binary
+        '403':
+          description: 指定任务或资源对该用户不可见
+        '404':
+          description: 指定任务或资源不存在
+
+
+
+  /workflow/processes/{processId}/participants:
+    post:
+      summary: 分配人员
+      description: 为指定流程设置对应的流程参与者
+      operationId: setParticipant
+      parameters:
+        - name: processId
+          in: path
+          description: 指定流程实例 ID
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: 目标员工的 ID
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/UserId"
+      responses:
+        '200':
+          description: ok
+        '403':
+          description: 指定流程对当前登录用户不可见
+        '404':
+          description: 指定流程或用户不存在
+        '409':
+          description: 指定用户所在部门不符合要求
+
+
+  # 账号相关 API
+  /account/client_details:
+    get:
+      summary: 获取客户个人信息
+      description: 获取当前登录账号的账号信息
+      operationId: getClientDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ClientDetails'
+        '409':
+          description: 当前登录账号的类型不是 client
+    post:
+      summary: 修改客户个人信息
+      description: 修改当前登录账户的个人信息
+      operationId: updateClientDetails
+      requestBody:
+        description: 修改后的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/ClientDetails'
+      responses:
+        '200':
+          description: ok
+        '409':
+          description: 当前登录账号的类型不是 client
+
+  /account/clients:
+    get:
+      tags:
+        - admin
+      summary: 获取用户
+      description: 管理员获取所有用户
+      operationId: getClients
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientDetails'
+
+  /account/clients/{uid}:
+    parameters:
+      - name: uid
+        in: path
+        description: 指定客户uid
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - admin
+      summary: 获取客户信息
+      description: 管理员获取指定uid客户的账号信息
+      operationId: adminGetClientDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ClientDetails'
+        '404':
+          description: 不存在指定uid的客户
+
+    post:
+      tags:
+        - admin
+      summary: 修改客户信息
+      description: 管理员将指定uid的客户信息进行修改
+      operationId: updateClient
+      requestBody:
+        description: 待修改客户的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/ClientDetails'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的客户
+        '409':
+          description: 更改信息与其他信息冲突
+
+    delete:
+      tags:
+        - admin
+      summary: 删除客户
+      description: 管理员将指定uid的客户进行删除
+      operationId: deleteClient
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的客户
+
+  /account/clients/{uid}/locked:
+    parameters:
+      - name: uid
+        in: path
+        description: 目标客户的 uid
+        schema:
+          type: string
+        required: true
+    post:
+      tags:
+        - admin
+      summary: 锁定客户
+      description: 管理员将指定uid的客户进行封禁或解封
+      operationId: lockClient
+      requestBody:
+        description: 对账户进行解封/封禁
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Lock'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的客户
+
+  /account/operators_department:
+    get:
+      summary: 获取部门员工
+      description: 获取所在部门的所有员工
+      operationId: getOperatorsDepartment
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperatorDetails'
+
+  /account/operators:
+    get:
+      tags:
+        - admin
+      summary: 获取员工
+      description: 管理员获取所有员工
+      operationId: getOperators
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperatorDetails'
+    post:
+      tags:
+        - admin
+      summary: 创建员工
+      description: 管理员创建一个新的员工
+      operationId: createOperator
+      requestBody:
+        description: 待创建员工的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/OperatorDetails'
+      responses:
+        '200':
+          description: ok
+        '409':
+          description: 员工的信息冲突
+
+  /account/operators/{uid}:
+    parameters:
+      - name: uid
+        in: path
+        description: 指定员工uid
+        schema:
+          type: string
+        required: true
+    get:
+      tags:
+        - admin
+      summary: 获取员工信息
+      description: 管理员获取指定uid员工的账号信息
+      operationId: adminGetOperatorDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/OperatorDetails'
+        '404':
+          description: 不存在指定uid的员工
+
+    post:
+      tags:
+        - admin
+      summary: 修改员工信息
+      description: 管理员将指定uid的员工信息进行修改
+      operationId: updateOperator
+      requestBody:
+        description: 待修改员工的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/OperatorDetails'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的员工
+        '409':
+          description: 更改信息与其他信息冲突
+
+    delete:
+      tags:
+        - admin
+      summary: 删除员工
+      description: 管理员将指定uid的员工进行删除
+      operationId: deleteOperator
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的员工
+
+  /account/operators/{uid}/locked:
+    parameters:
+      - name: uid
+        in: path
+        description: 目标客户的 uid
+        schema:
+          type: string
+        required: true
+    post:
+      tags:
+        - admin
+      summary: 锁定员工
+      description: 管理员将指定uid的员工进行封禁或解封
+      operationId: lockOperator
+      requestBody:
+        description: 对账户进行解封/封禁
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Lock'
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: 不存在对应uid的员工
+
+  /account/operator_details:
+    get:
+      summary: 获取员工个人信息
+      description: 获取当前登录账号的账号信息
+      operationId: getOperatorDetails
+      responses:
+        '200':
+          description: ok
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/OperatorDetails'
+        '409':
+          description: 当前登录账号的类型不是 operator
+    post:
+      summary: 修改员工信息
+      description: 修改当前登录账户的个人信息
+      operationId: updateOperatorDetails
+      requestBody:
+        description: 修改后的个人信息
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/OperatorDetails'
+      responses:
+        '200':
+          description: ok
+        '409':
+          description: 当前登录账号的类型不是 operator
+
+
+
+components:
+  schemas:
+    UserId:
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+
+    RegisterParam:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: 用户名，唯一
+        email:
+          type: string
+          description: 用户邮箱
+        password:
+          type: string
+          description: 用户密码
+
+    LoginParam:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    Token:
+      type: object
+      required:
+        - tokenHead
+        - tokenStr
+      properties:
+        tokenHead:
+          type: string
+          description: token 的头部，前端请求携带 token 时需要将其拼接在 token 之前
+        tokenStr:
+          type: string
+          description: token 字符串
+
+    Process:
+      type: object
+      required:
+        - projectId
+        - processId
+        - taskId
+        - title
+        - taskName
+        - assignee
+        - startUser
+        - startDate
+        - endDate
+      properties:
+        projectId:
+          type: string
+          description: 软件测试项目的 ID
+        processId:
+          type: string
+          description: 流程实例 ID
+        taskId:
+          type: string
+          description: 当前任务的实例 ID
+        title:
+          type: string
+          description: 待测试软件名称
+        taskName:
+          type: string
+          description: 当前任务的名称
+        assignee:
+          type: string
+          description: 当前任务被分配人姓名
+        startUser:
+          type: string
+          description: 流程发起人姓名
+        startDate:
+          type: string
+          description: 流程发起时间
+        endDate:
+          type: string
+          description: 流程结束时间
+
+    ProcessId:
+      required:
+        - processId
+      properties:
+        processId:
+          type: string
+          description: 新委托流程的 ID
+
+    ProcessDetails:
+      required:
+        - projectId
+        - title
+        - version
+        - testType
+        - applicationDate
+        - applicant
+        - company
+        - telephone
+        - email
+        - address
+        - startDate
+        - dueDate
+        - index
+        - currentTaskName
+        - assignee
+      properties:
+        projectId:
+          description: 测试项目号
+          type: integer
+          format: int64
+        title:
+          description: 软件项目名
+          type: string
+        version:
+          description: 软件版本
+          type: string
+        testType:
+          description: 测试类型
+          type: string
+        applicationDate:
+          description: 申请日期
+          type: string
+        applicant:
+          description: 申请人
+          type: string
+        company:
+          description: 公司名称
+          type: string
+        telephone:
+          description: 电话
+          type: string
+        email:
+          description: 邮箱
+          type: string
+        address:
+          description: 地址
+          type: string
+        startDate:
+          description: 测试开始时间
+          type: string
+        dueDate:
+          description: 预计结束时间
+          type: string
+        index:
+          description: 当前任务所在组的编号
+          type: integer
+          format: int32
+        currentTaskName:
+          description: 当前任务名称
+          type: string
+        assignee:
+          description: 当前被分配人姓名
+          type: string
+
+    ProcessRecord:
+      required:
+        - projectId
+        - title
+        - startDate
+        - finishDate
+      properties:
+        projectId:
+          description: 测试项目号
+          type: integer
+          format: int64
+        clientId:
+          description: 客户 ID
+          type: string
+        marketDepartmentSupervisorId:
+          description: 市场部主管 ID
+          type: string
+        testingSupervisorId:
+          description: 测试部主管 ID
+          type: string
+        qualitySupervisorId:
+          description: 质量部主管 ID
+          type: string
+        signatoryId:
+          description: 签字人 ID
+          type: string
+        marketDepartmentEmployeeId:
+          description: 市场部员工 ID
+          type: string
+        testingEmployeeId:
+          description: 测试部员工 ID
+          type: string
+        startUserName:
+          description: 启动用户名称
+          type: string
+        title:
+          description: 软件项目名
+          type: string
+        startDate:
+          description: 测试开始时间
+          type: string
+        finishDate:
+          description: 测试结束时间
+          type: string
+        formMetadataList:
+          description: 表单元数据列表
+          type: array
+          items:
+            $ref: '#/components/schemas/FormMetadata'
+        sampleMetadata:
+          $ref: '#/components/schemas/SampleMetadata'
+
+    SampleMetadata:
+      required:
+        - sampleMetadataId
+      properties:
+        sampleMetadataId:
+          description: 样品元数据ID，保存对象时由数据库自动赋值
+          type: integer
+          format: int64
+        readableUsers:
+          description: 对样品具有读权限用户的ID列表
+          type: array
+          items:
+            type: string
+        writableUsers:
+          description: 对样品具有写权限用户的ID列表
+          type: array
+          items:
+            type: string
+        fileMetadataIdList:
+          description: 文件元数据ID列表
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    FormMetadata:
+      required:
+        - formMetadataId
+        - formId
+        - projectId
+        - formType
+        - formState
+      properties:
+        formMetadataId:
+          description: 表单元数据ID，保存对象时由数据库自动赋值
+          type: integer
+          format: int64
+        formId:
+          description: 表单元数据对应表单的ID
+          type: integer
+          format: int64
+        projectId:
+          description: 所属项目的项目号
+          type: integer
+          format: int64
+        formType:
+          description: 表单类型（中文）
+          type: string
+        formState:
+          description: 表单的状态：未填写、已通过、审核中、已驳回
+          type: string
+        createdBy:
+          description: 表单的创建者 (userId)
+          type: string
+        createdDate:
+          description: 表单创建时间
+          type: string
+        lastModifiedBy:
+          description: 表单最后一次被谁修改 (userId)
+          type: string
+        lastModifiedDate:
+          description: 表单最后一次被修改的时间
+          type: string
+        readableUsers:
+          description: 对表单具有读权限用户的ID列表
+          type: array
+          items:
+            type: string
+        writableUsers:
+          description: 对表单具有写权限用户的ID列表
+          type: array
+          items:
+            type: string
+
+    fileMetadata:
+      type: object
+      required:
+        - fileMetadataId
+        - fileName
+        - fileType
+      properties:
+        fileMetadataId:
+          type: integer
+          format: int64
+          description: 文件元数据 ID
+        fileName:
+          type: string
+          description: 文件名
+        fileType:
+          type: string
+          description: 文件类型
+
+    FormInfo:
+      required:
+        - formType
+        - createDate
+        - formState
+      properties:
+        formType:
+          type: string
+          description: 表单类型
+        createDate:
+          type: string
+          description: 表单创建日期
+        formState:
+          type: string
+          description: 表单当前状态
+
+    # 账号相关 DTO
+    ClientDetails:
+      required:
+        - uid
+        - username
+        - createdDate
+        - realName
+        - email
+        - phone
+        - gender
+        - company
+        - companyTelephone
+        - companyFax
+        - companyAddress
+        - companyPostcode
+        - companyWebsite
+        - companyEmail
+        - companyPhone
+        - isNonLocked
+      properties:
+        uid:
+          type: string
+          description: uid
+        username:
+          type: string
+          description: 用户名
+        createdDate:
+          type: string
+          description: 账号创建时间
+        realName:
+          type: string
+          description: 用户的真实姓名
+        email:
+          type: string
+          description: 邮箱
+        phone:
+          type: string
+          description: 联系电话
+        gender:
+          type: string
+          description: 性别
+        company:
+          type: string
+          description: 公司名称
+        companyTelephone:
+          type: string
+          description: 公司电话号
+        companyFax:
+          type: string
+          description: 公司传真
+        companyAddress:
+          type: string
+          description: 公司地址
+        companyPostcode:
+          type: string
+          description: 公司邮编
+        companyWebsite:
+          type: string
+          description: 公司网址
+        companyEmail:
+          type: string
+          description: 公司邮箱
+        companyPhone:
+          type: string
+          description: 公司电话
+        isNonLocked:
+          type: boolean
+          description: 账号是否被封禁
+
+    OperatorDetails:
+      required:
+        - uid
+        - jobNumber
+        - email
+        - phone
+        - realName
+        - department
+        - position
+        - isNonLocked
+      properties:
+        uid:
+          type: string
+          description: 员工 ID
+        jobNumber:
+          type: string
+          description: 员工工号
+        email:
+          type: string
+          description: 邮箱
+        phone:
+          type: string
+          description: 联系电话
+        realName:
+          type: string
+          description: 姓名
+        department:
+          type: string
+          description: 部门
+        position:
+          type: string
+          description: 职位
+        isNonLocked:
+          type: boolean
+          description: 账号是否被封禁
+
+    Lock:
+      required:
+        - doLock
+      properties:
+        doLock:
+          type: boolean
+          description: 选择对其进行封禁/解封

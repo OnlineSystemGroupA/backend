@@ -1,0 +1,58 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skin rose
+
+autonumber
+
+participant "Spring Context" as a
+participant "Workflow Service" as b
+participant "Runtime Service" as c
+
+
+
+participant "File Service" as f
+database "File Repository" as d
+entity "Sample Metadata" as e
+
+
+
+-> a: 用户发送请求
+activate a
+a -> b: 调用业务层方法
+activate b
+b -> c: 判断流程实例是否存在
+activate c
+return
+b -> c: 查询样品元数据 ID
+activate c
+return 样品元数据 ID
+b -> f: 对样品文件进行更新
+activate f
+f -> d: 获取样品元数据对象
+activate d
+d -> e: 查找样品元数据
+activate e
+d ---> f: 样品元数据对象
+deactivate d
+f -> a: 获取用户 ID
+activate a
+return 用户 ID
+'f -> e: 添加文件元数据
+f -> e: 判断写权限
+f -> f: 保存文件
+f -> f: 生成文件元数据
+f -> d: 保存文件元数据
+activate d
+d -> e: 加入文件元数据
+return 文件元数据 ID
+f -> d: 保存样品元数据
+activate d
+d -> e: 写回数据库
+deactivate e
+return
+return 样品元数据对象
+return 样品元数据 DTO
+return 向用户发送响应
+
+@enduml

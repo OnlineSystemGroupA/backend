@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.stcos.server.database.mysql.ProcessDetailsMapper">
+    <!-- 返回的对象为 TaskDetails -->
+    <resultMap id="taskDetailsMap" type="com.stcos.server.model.process.TaskDetails">
+        <id property="taskId" column="task_id"/>
+        <result property="processId" column="process_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="department" column="department"/>
+        <result property="operator" column="operator"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="finishDate" column="finish_date" jdbcType="TIMESTAMP"/>
+        <result property="result" column="result"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <!-- 返回的对象为 ProcessDetails -->
+    <resultMap id="processDetailsMap" type="com.stcos.server.model.process.ProcessDetails">
+        <id property="projectId" column="project_id"/>
+        <result property="title" column="title"/>
+        <result property="version" column="version"/>
+        <result property="testType" column="test_type"/>
+        <result property="applicationDate" column="application_date"/>
+        <result property="applicant" column="applicant"/>
+        <result property="company" column="company"/>
+        <result property="telephone" column="telephone"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="dueDate" column="due_date" jdbcType="TIMESTAMP"/>
+        <collection property="taskDetailsList" ofType="com.stcos.server.model.process.TaskDetails"
+                    select="selectTaskDetailsByProcessId" column="project_id"/>
+    </resultMap>
+
+    <select id="selectTaskDetailsByProcessId" resultMap="taskDetailsMap">
+        SELECT * FROM t_task_details WHERE process_id = #{processId};
+    </select>
+
+    <select id="selectProcessDetails" resultMap="processDetailsMap">
+        SELECT * FROM t_process_details WHERE project_id = #{projectId};
+    </select>
+
+    <insert id="saveProcessDetails" parameterType="com.stcos.server.model.process.ProcessDetails" useGeneratedKeys="true" keyColumn="project_id">
+        INSERT INTO t_process_details
+        (project_id,
+        title,
+        version,
+        test_type,
+        application_date,
+        applicant,
+        company,
+        telephone,
+        email,
+        address,
+        start_date,
+        due_date)
+        VALUES
+        (#{projectId},
+        #{title},
+        #{version},
+        #{testType},
+        #{applicationDate},
+        #{applicant},
+        #{company},
+        #{telephone},
+        #{email},
+        #{address},
+        #{startDate},
+        #{dueDate})
+        ON DUPLICATE KEY UPDATE
+        title=VALUES(title),
+        version=VALUES(version),
+        test_type=VALUES(test_type),
+        application_date=VALUES(application_date),
+        applicant=VALUES(applicant),
+        company=VALUES(company),
+        telephone=VALUES(telephone),
+        email=VALUES(email),
+        address=VALUES(address),
+        start_date=VALUES(start_date),
+        due_date=VALUES(due_date);
+
+        <if test="taskDetailsList.size() > 0">
+            INSERT INTO t_task_details VALUES
+            <foreach collection="taskDetailsList" item="task" separator=",">
+                (
+                #{task.taskId},
+                #{task.processId},
+                #{task.taskName},
+                #{task.department},
+                #{task.operator},
+                #{task.startDate},
+                #{task.finishDate},
+                #{task.result},
+                #{task.description})
+            </foreach>
+            ON DUPLICATE KEY UPDATE
+            process_id=VALUES(process_id),
+            task_name=VALUES(task_name),
+            department=VALUES(department),
+            operator=VALUES(operator),
+            start_date=VALUES(start_date),
+            finish_date=VALUES(finish_date),
+            result=VALUES(result),
+            description=VALUES(description);
+        </if>
+    </insert>
+</mapper>

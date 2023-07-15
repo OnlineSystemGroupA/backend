@@ -1,19 +1,24 @@
 package com.stcos.server.config.security;
 
-import com.stcos.server.database.UserRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+/*
+           _____                      _ __        ______            _____
+          / ___/___  _______  _______(_) /___  __/ ____/___  ____  / __(_)___ _
+          \__ \/ _ \/ ___/ / / / ___/ / __/ / / / /   / __ \/ __ \/ /_/ / __ `/
+         ___/ /  __/ /__/ /_/ / /  / / /_/ /_/ / /___/ /_/ / / / / __/ / /_/ /
+        /____/\___/\___/\__,_/_/  /_/\__/\__, /\____/\____/_/ /_/_/ /_/\__, /
+                                        /____/                        /____/
+ */
 
 /**
  * spring-security 配置类
@@ -44,9 +49,9 @@ public class SecurityConfig {
                 // 允许登录访问
                 .authorizeHttpRequests().requestMatchers(
                         "/hello",
-                        "/login",
-                        "/logout",
-                        "/register",
+                        "/auth/login",
+                        "/auth/logout",
+                        "/auth/register",
                         "/css/**",
                         "/js/**",
                         "/index.html",
@@ -70,7 +75,6 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 
-
         // 添加自定义未授权和未登录结果返回
         http.exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
@@ -81,15 +85,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(UserRepo repo) {
-        return username -> {
-            UserDetails account = repo.getUserByName(username);
-            if (account != null) return account;
-            throw new UsernameNotFoundException("找不到用户" + username);
-        };
     }
 
 }

@@ -1,0 +1,137 @@
+@startuml
+skin rose
+skinparam roundcorner 25
+rectangle "                     Front End                     "  as network <<$archimate/network>> #white
+
+rectangle "Spring Security"  as security <<$archimate/constraint>> #technology
+
+network -- security
+
+rectangle "Auth Controller"  as AuthController <<$archimate/component>> #application
+rectangle "Workflow Controller"  as WorkflowController <<$archimate/component>> #application
+rectangle "Archive Controller"  as ArchivesController <<$archimate/component>> #application
+rectangle "Manager Controller"  as ManagerController <<$archimate/component>> #application
+rectangle "Account Controller"  as AccountController <<$archimate/component>> #application
+rectangle "Menu Controller"  as MenuController <<$archimate/component>> #application
+
+security -- AuthController
+security -- WorkflowController
+security -- ArchivesController
+security -- ManagerController
+security -- AccountController
+security -- MenuController
+
+rectangle "Auth Service"  as AuthService <<$archimate/service>> #business
+rectangle "Workflow Service"  as WorkflowService <<$archimate/service>> #business
+rectangle "Archive Service"  as ArchivesService <<$archimate/service>> #business
+rectangle "Account Service"  as AccountService <<$archimate/service>> #business
+rectangle "Menu Service"  as MenuService <<$archimate/service>> #business
+
+rectangle "File Service"  as FileService <<$archimate/service>> #motivation
+rectangle "Form Service"  as FormService <<$archimate/service>> #motivation
+rectangle "Process Details Service"  as ProcessDetailsService <<$archimate/service>> #motivation
+rectangle "ProcessRecord Service"  as ProcessRecordService <<$archimate/service>> #motivation
+rectangle "User Service"  as UserService <<$archimate/service>> #motivation
+rectangle "Operator Service"  as OperatorService <<$archimate/service>> #motivation
+rectangle "Admin Service"  as AdminService <<$archimate/service>> #motivation
+rectangle "Client Service"  as ClientService <<$archimate/service>> #motivation
+
+rectangle "File Metadata Service" as FileMetadataService <<$archimate/service>> #white
+rectangle "Form Metadata Service" as FormMetadataService <<$archimate/service>> #white
+rectangle "Sample Metadata Service" as SampleMetadataService <<$archimate/service>> #white
+
+AuthController <-- AuthService
+AuthController <-- AccountService
+WorkflowController <-- WorkflowService
+
+AuthService <-- OperatorService
+AuthService <-- AdminService
+AuthService <-- ClientService
+
+AccountService <-- OperatorService
+AccountService <-- AdminService
+AccountService <-- ClientService
+
+'WorkflowController <-- FileService
+
+'ArchivesController <-- FileService
+ArchivesController <-- ArchivesService
+
+ManagerController <-- ArchivesService
+ManagerController <-- FileService
+ManagerController <-- AccountService
+ManagerController <-- WorkflowService
+ManagerController <-- MenuService
+
+AccountController <-- AccountService
+'UserInfoController <-- FileService
+
+MenuController <-- MenuService
+
+ArchivesService <-- FileService
+ArchivesService <-- FormService
+
+WorkflowService <-- FormService
+
+'package "  DataBase  " {
+
+
+database "                    MyBatis Mapper Dao                    "  as dao <<$archimate/strategy-capability>> #strategy
+database "               MongoDB              "  as MongoDB <<$archimate/strategy-capability>> #strategy
+database "                          MySQL                         "  as MySQL <<$archimate/strategy-capability>> #strategy
+'}
+
+WorkflowService <-- FileService
+WorkflowService <-- ProcessDetailsService
+
+AuthService <--- dao
+FileService <-- dao
+FormService <-- dao
+'WorkflowService <--- dao
+ArchivesService <--- dao
+ArchivesService <-- ProcessRecordService
+AccountService <--- dao
+MenuService <--- dao
+
+remove ManagerController
+remove dao
+
+'remove AuthController
+'remove AuthService
+
+'WorkflowController <-- AccountService
+
+'WorkflowService <-- UserService
+
+FormService <--- MongoDB
+
+AuthService <-- UserService
+AccountService <-- UserService
+'AccountService <-- FileService
+
+UserService <-- MySQL
+
+
+MenuService <-- MySQL
+ProcessDetailsService <--- MySQL
+
+OperatorService <--- MySQL
+AdminService <--- MySQL
+ClientService <--- MySQL
+ProcessRecordService <--- MySQL
+
+FileService <-- FileMetadataService
+FileService <-- SampleMetadataService
+FormService <-- FormMetadataService
+
+FormMetadataService <-- MySQL
+SampleMetadataService <-- MySQL
+FileMetadataService <-- MySQL
+
+remove AdminService
+
+remove MenuController
+remove MenuService
+remove UserService
+
+@enduml

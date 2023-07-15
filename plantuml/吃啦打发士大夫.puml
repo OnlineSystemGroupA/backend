@@ -1,0 +1,36 @@
+@startuml
+
+left to right direction
+
+allowmixing
+
+skin rose
+
+class WorkflowController {
+}
+
+class WorkflowServiceImp {
+}
+
+interface WorkflowService {
+}
+
+rectangle 表单资源管理模块
+rectangle 文件资源管理模块
+rectangle 流程资源管理模块
+
+package flowable {
+interface RuntimeService{}
+interface TaskService{}
+}
+
+
+WorkflowController ..> WorkflowService: dependency
+WorkflowServiceImp -|> WorkflowService: generalization
+WorkflowServiceImp ...> RuntimeService: dependency
+WorkflowServiceImp ...> TaskService: dependency
+WorkflowServiceImp ..> 表单资源管理模块: dependency
+WorkflowServiceImp ..> 文件资源管理模块: dependency
+WorkflowServiceImp ..> 流程资源管理模块: dependency
+
+@enduml

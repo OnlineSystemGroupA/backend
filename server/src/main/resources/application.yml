@@ -22,15 +22,55 @@ knife4j:
 
 
 spring:
-# 配置数据源信息
-    datasource:
-      # 配置数据源结构类型
-      type: com.zaxxer.hikari.HikariDataSource
-      # 数据库链接信息配置
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
-      username: stcos
-      password: stcosgroupa
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations:
+        - classpath:sql/data/setting.sql
+        - classpath:sql/data/admin.sql
+        - classpath:sql/data/operator.sql
+        - classpath:sql/data/client.sql
+  data:
+    #Java 操作 MongoDB
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      repositories:
+        enable: true
+      #  username:
+      #  password:
+      database: test
+  # 配置数据源信息
+  datasource:
+    # 配置数据源结构类型
+    type: com.zaxxer.hikari.HikariDataSource
+    # 数据库链接信息配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #      url: jdbc:mysql://masterchedan.top:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&userSSL=false
+    #      username: stcos
+    #      password: stcosgroupa
+    url: jdbc:mysql://localhost:3306/stcos?serverTimezone=GMT%2B8&characterEncoding=utf-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true
+    username: demo
+    password:
+  mail:
+    # 使用 smtp 协议
+    protocol: smtp
+    host: smtp.qq.com
+    port: 587
+    username: keekkewy@qq.com
+    # 授权码
+    password: thbigoxavkrkbhdg
+    test-connection: false
+    properties.mail:
+      smtp.auth: false
+      debug: false
+      mime.splitlongparameters: false
+    default-encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 500MB
 
 jwt:
   # JWT 存储的请求头
@@ -42,16 +82,26 @@ jwt:
   # JWT 负载中拿到开头
   tokenHead: Bearer
 
+
 # MyBatis配置
 mybatis-plus:
+  # mapper相关xml文件存储位置
+  type-handlers-package: com.stcos.server.database.mysql.handler
+  mapper-locations: classpath:mapper/*.xml
   configuration:
+    # 开启自动提交事务
+    default-executor-type: SIMPLE
     # 配置MyBatis日志文件
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
   # 设置MyBatis-Plus的全局配置
   global-config:
     db-config:
       # 配置MyBatis-Plus的主键策略
       id-type: auto
+      # 配置MyBaits-Plus的表单默认前缀
+      table-prefix: t_
 
 flowable:
   #关闭定时任务JOB
@@ -63,6 +113,17 @@ flowable:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://masterchedan.top:3306/flowable?serverTimezone=UTC&nullCatalogMeansCurrent=true
-    username: stcos
-    password: stcosgroupa
+    #    url: jdbc:mysql://masterchedan.top:3306/flowable?serverTimezone=UTC&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://localhost:3306/flowable_demo?serverTimezone=UTC&nullCatalogMeansCurrent=true
+    #    username: stcos
+    #    password: stcosgroupa
+    username: flowable_demo
+    password:
+
+file:
+  upload:
+    directory: "./temp"
+#logging:
+#  level:
+#    org.apache.ibatis: WARN
+#    sql: warn

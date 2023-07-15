@@ -15,6 +15,7 @@ import java.util.Map;
 public class JwtTokenUtil {
 
     private final String CLAIM_KEY_USERNAME = "sub";
+    private final String CLAIM_KEY_USERTYPE = "userType";
     private final String CLAIM_KEY_CREATED = "created";
 
     private String secret;
@@ -32,11 +33,13 @@ public class JwtTokenUtil {
     /**
      * 根据用户信息生成 JWT token
      * @param userDetails
+     * @param usertype
      * @return
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails,  String usertype) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_USERTYPE, usertype);
         claims.put(CLAIM_KEY_CREATED, new Date());
         return generateToken(claims);
     }
@@ -55,6 +58,17 @@ public class JwtTokenUtil {
             username = null;
         }
         return username;
+    }
+
+    public static String getUserTypeFromToken(String token) {
+        String usertype;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            usertype = (String) claims.get(CLAIM_KEY_USERTYPE);
+        } catch (Exception e) {
+            usertype = null;
+        }
+        return usertype;
     }
 
     /**
@@ -137,5 +151,6 @@ public class JwtTokenUtil {
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
+
 
 }

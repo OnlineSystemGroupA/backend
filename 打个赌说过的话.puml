@@ -1,0 +1,37 @@
+@startuml
+
+left to right direction
+
+allowmixing
+
+skin rose
+
+class ClientTaskListener {
+}
+class OperatorTaskListener {
+}
+abstract class TaskListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+
+interface FormService
+
+interface S
+
+interface ProcessDetailsService
+
+TaskListener <|--- ClientTaskListener
+TaskListener <|--- OperatorTaskListener
+
+TaskListener--> S:dependency
+TaskListener--> FormService:dependency
+TaskListener--> ProcessDetailsService:dependency
+
+rectangle 所有客户参与的任务
+rectangle 所有工作人员参与的任务
+
+ClientTaskListener <|-- 所有客户参与的任务
+OperatorTaskListener <|-- 所有工作人员参与的任务
+
+@enduml

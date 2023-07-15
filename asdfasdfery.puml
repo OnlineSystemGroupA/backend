@@ -1,0 +1,17 @@
+@startuml
+interface FormMetadataService {
+~ Long create(Long,String)
+~ void addReadPermission(Long,String)
+~ void addReadPermission(Long,Set<String>)
+~ void removeReadPermission(Long)
+~ void addWritePermission(Long,String)
+~ void removeWritePermission(Long,String)
+~ void removeWritePermission(Long)
+~ boolean existForm(long)
+~ Long getFormId(Long)
+~ void setFormState(Long,String)
+}
+
+
+com.baomidou.mybatisplus.extension.service.IService <|-- FormMetadataService
+@enduml

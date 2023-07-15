@@ -1,0 +1,122 @@
+@startuml
+class FillOutAppFormListener {
+}
+class VerifyTestPlanListener {
+}
+class AssignMarketingOperatorListener {
+}
+class OperatorTaskListener {
+}
+class SendTestReportListener {
+}
+class GenTestReportListener {
+}
+class ModifyApplicationListener {
+}
+class VerifyContractListener {
+}
+class ModifyTestReportListener {
+}
+class ManagerVerifyTestPlanListener {
+}
+class ModifyQuotationListener {
+}
+class ConfirmTestReportListener {
+}
+class ReUploadSampleListener {
+}
+class VerifyTestReportListener {
+}
+class TaskListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class UploadSampleListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class VerifySampleListener {
++ void complete(DelegateTask)
+}
+class ModifyContractDraftListener {
++ void complete(DelegateTask)
+}
+class ClientTaskListener {
+}
+class GenContractDraftListener {
+}
+class ModifyTestPlanListener {
++ void create(DelegateTask)
+}
+class VerifyQuotationListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class ModifyContractListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class VerifyApplicationListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class StampContractListener {
++ void complete(DelegateTask)
+}
+class AssignTestingOperatorListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class ClientVerifyTestReportListener {
+}
+class ArchiveListener {
++ void complete(DelegateTask)
+}
+class FillOutContractListener {
++ void complete(DelegateTask)
+}
+class SignContractListener {
+}
+class VerifyContractDraftListener {
++ void create(DelegateTask)
++ void complete(DelegateTask)
+}
+class GenTestPlanListener {
+}
+class GenQuotationListener {
+}
+
+
+ClientTaskListener <|-- FillOutAppFormListener
+OperatorTaskListener <|-- VerifyTestPlanListener
+OperatorTaskListener <|-- AssignMarketingOperatorListener
+TaskListener <|-- OperatorTaskListener
+OperatorTaskListener <|-- SendTestReportListener
+OperatorTaskListener <|-- GenTestReportListener
+ClientTaskListener <|-- ModifyApplicationListener
+OperatorTaskListener <|-- VerifyContractListener
+OperatorTaskListener <|-- ModifyTestReportListener
+OperatorTaskListener <|-- ManagerVerifyTestPlanListener
+OperatorTaskListener <|-- ModifyQuotationListener
+ClientTaskListener <|-- ConfirmTestReportListener
+ClientTaskListener <|-- ReUploadSampleListener
+OperatorTaskListener <|-- VerifyTestReportListener
+ClientTaskListener <|-- UploadSampleListener
+OperatorTaskListener <|-- VerifySampleListener
+OperatorTaskListener <|-- ModifyContractDraftListener
+TaskListener <|-- ClientTaskListener
+OperatorTaskListener <|-- GenContractDraftListener
+OperatorTaskListener <|-- ModifyTestPlanListener
+ClientTaskListener <|-- VerifyQuotationListener
+ClientTaskListener <|-- ModifyContractListener
+OperatorTaskListener <|-- VerifyApplicationListener
+OperatorTaskListener <|-- StampContractListener
+OperatorTaskListener <|-- AssignTestingOperatorListener
+ClientTaskListener <|-- ClientVerifyTestReportListener
+OperatorTaskListener <|-- ArchiveListener
+ClientTaskListener <|-- FillOutContractListener
+ClientTaskListener <|-- SignContractListener
+ClientTaskListener <|-- VerifyContractDraftListener
+OperatorTaskListener <|-- GenTestPlanListener
+OperatorTaskListener <|-- GenQuotationListener
+@enduml

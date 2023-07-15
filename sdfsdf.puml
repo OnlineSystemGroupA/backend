@@ -1,0 +1,4 @@
+@startuml
+class com.stcos.server.model.file.FileMetadata {
+}
+@enduml

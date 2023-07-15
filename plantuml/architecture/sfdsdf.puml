@@ -1,0 +1,26 @@
+@startsalt
+{
+{T
+ + com.stcos.server
+ ++ config
+ ++ controller
+ ++ database
+ +++ mysql
+ +++ mongo
+ ++ exception
+ +++ handler
+ ++ listener
+ ++ model
+ +++ dto
+ +++ email
+ +++ file
+ +++ form
+ +++ process
+ +++ user
+ ++ service
+ +++ impl
+ ++ snowflake
+ ++ util
+}
+}
+@endsalt

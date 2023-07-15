@@ -1,0 +1,143 @@
+@startuml
+skin rose
+
+class TestProblemForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestProblemForm$Problem {
+}
+class TestWorkCheckForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestWorkCheckForm$WorkStep {
+}
+class TestWorkCheckForm$WorkStep$StepContent {
+}
+abstract class Form {
++ {static} Form buildForm(String,String)
++ Map<String,String> toTemplateFormat()
+}
+class ContractForm {
++ Map<String,String> toTemplateFormat()
+}
+class ContractForm$ClientInfo {
+}
+class ContractForm$TrusteeInfo {
+}
+class DocumentReviewForm {
+}
+class DocumentReviewForm$ReviewCategory {
+}
+class DocumentReviewForm$ReviewCategory$ReviewItem {
+}
+class ApplicationVerifyForm {
+}
+class TestReportForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestReportForm$SoftwareEnvironment {
+}
+class TestReportForm$SoftwareEnvironment$OperatingSystem {
+}
+class TestReportForm$SoftwareEnvironment$Software {
+}
+class TestReportForm$SoftwareEnvironment$AncillaryTool {
+}
+class TestReportForm$SoftwareEnvironment$DevelopmentTool {
+}
+class TestReportForm$SoftwareEnvironment$TestSample {
+}
+class TestReportForm$FunctionTest {
+}
+class TestReportForm$GeneralTest {
+}
+class TestRecordsForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestRecordsForm$TestRecord {
+}
+class TestFunctionForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestFunctionForm$TestFunction {
+}
+class TestFunctionForm$TestFunction$TestFunctionItem {
+}
+class TestPlanVerifyForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestPlanVerifyForm$VerifyEmployee {
+}
+class TestPlanVerifyForm$VerifyItem {
+}
+
+class TestPlanForm {
++ Map<String,String> toTemplateFormat()
+}
+class TestPlanForm$EditRecord {
+}
+class TestPlanForm$TimeTable {
+}
+class ApplicationForm {
++ Map<String,String> toTemplateFormat()
+}
+class ApplicationForm$SoftwareScale {
+}
+class ApplicationForm$ClientSystem {
+}
+class ApplicationForm$Medium {
+}
+class ApplicationForm$CompanyInfo {
+}
+class QuotationForm {
++ Map<String,String> toTemplateFormat()
+}
+class ConfidentialityForm {
++ Map<String,String> toTemplateFormat()
+}
+class ReportVerifyForm {
++ Map<String,String> toTemplateFormat()
+}
+
+
+Form <|-- TestProblemForm
+TestProblemForm +.. TestProblemForm$Problem
+Form <|-- TestWorkCheckForm
+TestWorkCheckForm +.. TestWorkCheckForm$WorkStep
+TestWorkCheckForm$WorkStep +.. TestWorkCheckForm$WorkStep$StepContent
+Form <|-- ContractForm
+ContractForm +.. ContractForm$ClientInfo
+ContractForm +.. ContractForm$TrusteeInfo
+Form <|-- DocumentReviewForm
+DocumentReviewForm +.. DocumentReviewForm$ReviewCategory
+DocumentReviewForm$ReviewCategory +.. DocumentReviewForm$ReviewCategory$ReviewItem
+Form <|-- ApplicationVerifyForm
+Form <|-- TestReportForm
+TestReportForm +.. TestReportForm$SoftwareEnvironment
+TestReportForm$SoftwareEnvironment +.. TestReportForm$SoftwareEnvironment$OperatingSystem
+TestReportForm$SoftwareEnvironment +.. TestReportForm$SoftwareEnvironment$Software
+TestReportForm$SoftwareEnvironment +.. TestReportForm$SoftwareEnvironment$AncillaryTool
+TestReportForm$SoftwareEnvironment +.. TestReportForm$SoftwareEnvironment$DevelopmentTool
+TestReportForm$SoftwareEnvironment +.. TestReportForm$SoftwareEnvironment$TestSample
+TestReportForm +.. TestReportForm$FunctionTest
+TestReportForm +.. TestReportForm$GeneralTest
+Form <|-- TestRecordsForm
+TestRecordsForm +.. TestRecordsForm$TestRecord
+Form <|-- TestFunctionForm
+TestFunctionForm +.. TestFunctionForm$TestFunction
+TestFunctionForm$TestFunction +.. TestFunctionForm$TestFunction$TestFunctionItem
+Form <|-- TestPlanVerifyForm
+TestPlanVerifyForm +.. TestPlanVerifyForm$VerifyEmployee
+TestPlanVerifyForm +.. TestPlanVerifyForm$VerifyItem
+Form <|-- TestPlanForm
+TestPlanForm +.. TestPlanForm$EditRecord
+TestPlanForm +.. TestPlanForm$TimeTable
+Form <|-- ApplicationForm
+ApplicationForm +.. ApplicationForm$SoftwareScale
+ApplicationForm +.. ApplicationForm$ClientSystem
+ApplicationForm +.. ApplicationForm$Medium
+ApplicationForm +.. ApplicationForm$CompanyInfo
+Form <|-- QuotationForm
+Form <|-- ConfidentialityForm
+Form <|-- ReportVerifyForm
+@enduml

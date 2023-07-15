@@ -1,0 +1,60 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skin rose
+
+autonumber
+
+participant "Spring Context" as a
+participant "Workflow Service" as b
+participant "Runtime Service" as c
+database "Form Mapper" as d
+entity "Form Index" as e
+
+-> a: 用户发送请求
+activate a
+a -> b: 发起新的流程
+activate b
+b -> a: 获取用户 ID
+activate a
+return 用户 ID
+b -> c: 判断流程实例是否存在
+activate c
+return
+b -> c: 根据表单名获取表单索引
+activate c
+return 表单索引 ID
+b -> d: 根据表单索引 ID 查找数据库
+activate d
+return 表单索引对象
+b -> e: 判断当前登录用户是否具有修改权限
+activate e
+b -> e: 更新表单和表单索引
+deactivate
+
+b -> d: 保存表单和表单索引
+activate d
+return
+return
+return 向用户发送响应
+
+@enduml
+
+// 判断 processId 对应的流程是否存在
+        ProcessInstance processInstance = runtimeService.
+                createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        if (processInstance == null) {
+            throw new ServiceException(0);
+        }
+
+        // 获取表单索引
+
+        // 判断当前用户对该表单是否具有写权限
+
+        // 更新表单索引
+//        FormIndex formMetadata = new FormIndex();
+
+        // 将表单保存至数据库
+
+        // 将表单索引保存至流程实例变量中
+        runtimeService.setVariable(processInstanceId, formName, null);
