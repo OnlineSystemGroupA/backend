@@ -63,7 +63,8 @@ public class ArchiveController implements ArchiveApi {
                             null,
                             null,
                             processRecord.getStartUserName(),
-                            processRecord.getStartDate().toString()
+                            processRecord.getStartDate().toString(),
+                            processRecord.getFinishDate().toString()
                     )
             );
         }

@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @JsonTypeName("Process")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-06-27T16:30:13.830100300+08:00[Asia/Shanghai]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-14T20:08:09.493652700+08:00[Asia/Shanghai]")
 public class ProcessDto {
 
   private String projectId;
@@ -32,9 +32,11 @@ public class ProcessDto {
 
   private String startDate;
 
+  private String endDate;
+
   /**
    * Default constructor
-   * @deprecated Use {@link ProcessDto#ProcessDto(String, String, String, String, String, String, String, String)}
+   * @deprecated Use {@link ProcessDto#ProcessDto(String, String, String, String, String, String, String, String, String)}
    */
   @Deprecated
   public ProcessDto() {
@@ -44,7 +46,7 @@ public class ProcessDto {
   /**
    * Constructor with only required parameters
    */
-  public ProcessDto(String projectId, String processId, String taskId, String title, String taskName, String assignee, String startUser, String startDate) {
+  public ProcessDto(String projectId, String processId, String taskId, String title, String taskName, String assignee, String startUser, String startDate, String endDate) {
     this.projectId = projectId;
     this.processId = processId;
     this.taskId = taskId;
@@ -53,6 +55,7 @@ public class ProcessDto {
     this.assignee = assignee;
     this.startUser = startUser;
     this.startDate = startDate;
+    this.endDate = endDate;
   }
 
   public ProcessDto projectId(String projectId) {
@@ -215,6 +218,26 @@ public class ProcessDto {
     this.startDate = startDate;
   }
 
+  public ProcessDto endDate(String endDate) {
+    this.endDate = endDate;
+    return this;
+  }
+
+  /**
+   * 流程结束时间
+   * @return endDate
+  */
+  @NotNull 
+  @Schema(name = "endDate", description = "流程结束时间", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("endDate")
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -231,12 +254,13 @@ public class ProcessDto {
         Objects.equals(this.taskName, process.taskName) &&
         Objects.equals(this.assignee, process.assignee) &&
         Objects.equals(this.startUser, process.startUser) &&
-        Objects.equals(this.startDate, process.startDate);
+        Objects.equals(this.startDate, process.startDate) &&
+        Objects.equals(this.endDate, process.endDate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(projectId, processId, taskId, title, taskName, assignee, startUser, startDate);
+    return Objects.hash(projectId, processId, taskId, title, taskName, assignee, startUser, startDate, endDate);
   }
 
   @Override
@@ -251,6 +275,7 @@ public class ProcessDto {
     sb.append("    assignee: ").append(toIndentedString(assignee)).append("\n");
     sb.append("    startUser: ").append(toIndentedString(startUser)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
+    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
     sb.append("}");
     return sb.toString();
   }

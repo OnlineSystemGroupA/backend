@@ -246,7 +246,8 @@ public class WorkflowController implements WorkflowApi {
                             task.getName(),
                             (String) variables.get("assignee"),
                             (String) variables.get("startUser"),
-                            ((LocalDateTime) variables.get("startDate")).toString()
+                            ((LocalDateTime) variables.get("startDate")).toString(),
+                            null
                     )
             );
         }

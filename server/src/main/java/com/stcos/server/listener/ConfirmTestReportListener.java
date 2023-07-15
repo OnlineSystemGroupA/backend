@@ -9,6 +9,7 @@ import com.stcos.server.model.form.FormType;
 import com.stcos.server.model.process.ProcessRecord;
 import com.stcos.server.model.process.ProcessVariables;
 import com.stcos.server.model.process.TaskName;
+import com.stcos.server.model.user.Client;
 import com.stcos.server.model.user.User;
 import com.stcos.server.service.EmailService;
 import com.stcos.server.service.ProcessRecordService;
@@ -46,7 +47,7 @@ public class ConfirmTestReportListener extends ClientTaskListener {
     }
 
     @Autowired
-    public void setSampleMetadataMapper(SampleMetadataMapper sampleMetadataMapper){
+    public void setSampleMetadataMapper(SampleMetadataMapper sampleMetadataMapper) {
         this.sampleMetadataMapper = sampleMetadataMapper;
     }
 
@@ -65,18 +66,19 @@ public class ConfirmTestReportListener extends ClientTaskListener {
         processRecord.setStartUserName((String) task.getVariable(ProcessVariables.VAR_START_USER));
         processRecord.setTitle((String) task.getVariable(ProcessVariables.VAR_TITLE));
         processRecord.setStartDate((LocalDateTime) task.getVariable(ProcessVariables.VAR_START_DATE));
-        processRecord.setFinishDate((LocalDateTime) task.getVariable(ProcessVariables.VAR_FINISH_DATE));
+        processRecord.setFinishDate(LocalDateTime.now());
         processRecord.setSampleMetadata(sampleMetadataMapper
-                .selectById((Long)task
+                .selectById((Long) task
                         .getVariable(ProcessVariables.VAR_SAMPLE_METADATA)));
         Map<String, Long> map = new HashMap<>();
-        for(String formType: FormType.FORM_TYPE_SET){
+        for (String formType : FormType.FORM_TYPE_SET) {
             map.put(formType, (Long) task.getVariable(formType));
         }
         processRecord.setFormMetadataIdMap(map);
         processRecordService.saveProcessRecord(processRecord);
-        User user = userService.getById(task.getAssignee());
+        Client user = userService.getById(task.getAssignee());
         user.addProcessRecord(processRecord.getProjectId());
         // 执行归档操作
+        userService.updateById(user);
     }
 }

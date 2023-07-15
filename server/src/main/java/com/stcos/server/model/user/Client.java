@@ -169,7 +169,7 @@ public class Client implements User {
 
     @Override
     public void addProcessRecord(Long processRecordId) {
-        processInstanceList.add(processRecordId.toString());
+        processRecordList.add(processRecordId.toString());
     }
 
     @Override
@@ -179,5 +179,10 @@ public class Client implements User {
             temp.add(Long.valueOf(s));
         }
         return temp;
+    }
+
+    @Override
+    public boolean hasProcessRecord(String processId) {
+        return processRecordList.contains(processId);
     }
 }

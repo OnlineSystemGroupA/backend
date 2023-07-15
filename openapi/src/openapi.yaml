@@ -965,6 +965,7 @@ components:
         - assignee
         - startUser
         - startDate
+        - endDate
       properties:
         projectId:
           type: string
@@ -990,6 +991,9 @@ components:
         startDate:
           type: string
           description: 流程发起时间
+        endDate:
+          type: string
+          description: 流程结束时间
 
     ProcessId:
       required:

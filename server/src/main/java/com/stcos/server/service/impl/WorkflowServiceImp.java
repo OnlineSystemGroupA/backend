@@ -105,6 +105,12 @@ public class WorkflowServiceImp implements WorkflowService {
 
         // 查找当前登录用户可见的流程实例
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (user instanceof Admin) {
+            taskList.addAll(taskService.createTaskQuery().active().includeProcessVariables().list());
+            return taskList;
+        }
+
         Set<String> processInstanceSet = user.getProcessInstances();
         if (processInstanceSet.isEmpty()) return taskList;
         List<ProcessInstance> res = runtimeService.createProcessInstanceQuery()
