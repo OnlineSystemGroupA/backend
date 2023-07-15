@@ -7,7 +7,6 @@ package com.stcos.server.model.process;
  * @version 1.0
  * @since 2023/7/9 14:32
  */
-
 public class TaskName {
     /*    填写申请表    */
     public final static String NAME_TASK_01 = "填写申请表";

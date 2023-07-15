@@ -3,7 +3,6 @@ package com.stcos.server.service;
 import com.stcos.server.model.dto.FormInfoDto;
 import com.stcos.server.model.file.FileMetadata;
 import com.stcos.server.model.form.Form;
-import com.stcos.server.model.form.FormMetadata;
 import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.exception.ServiceException;
 import org.flowable.task.api.Task;
@@ -119,17 +118,65 @@ public interface WorkflowService {
      */
     String startProcess() throws ServiceException;
 
+    /**
+     * 获取当前用户可见的流程数量
+     *
+     * @return 当前用户可见的流程数量
+     */
     int getProcessCount();
 
+    /**
+     * 为指定的流程设置参与者
+     *
+     * @param processId 指定的流程 ID
+     * @param userId 要添加的用户 ID
+     * @throws ServiceException 异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 指定流程对当前用户不可见 <br>
+     *                          1: 用户不存在 <br>
+     */
     void setParticipants(String processId, String userId) throws ServiceException;
 
+    /**
+     * 获取指定流程的详细信息
+     * @param processId 指定的流程 ID
+     * @return 包含流程详细信息的 ProcessDetails 对象
+     * @throws ServiceException 异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 指定流程对当前用户不可见 <br>
+     */
     ProcessDetails getProcessDetails(String processId) throws ServiceException;
 
+    /**
+     * 获取指定流程和表单类型的表单文件
+     * @param processId 指定的流程 ID
+     * @param formType 指定的表单类型
+     * @return 包含表单文件的 Resource 对象
+     * @throws ServiceException 异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 指定流程对当前用户不可见 <br>
+     */
     Resource getFormFile(String processId, String formType) throws ServiceException;
 
+    /**
+     * 保存表单文件到指定的流程和表单类型
+     * @param processId 指定的流程 ID
+     * @param formType 指定的表单类型
+     * @param file 要保存的表单文件
+     * @throws ServiceException 异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 指定流程对当前用户不可见 <br>
+     *                          1: 用户没有写权限 <br>
+     */
     void saveFileForm(String processId, String formType, MultipartFile file) throws ServiceException;
 
-    void deleteProcess(String processId) throws ServiceException;
-
+    /**
+     * 获取指定流程的所有表单信息
+     * @param processId 指定的流程 ID
+     * @return 包含所有表单信息的列表
+     * @throws ServiceException 异常状态码含义如下 <br>
+     *                          code: <br>
+     *                          0: 指定流程实例不存在 <br>
+     */
     List<FormInfoDto> getFormInfo(String processId) throws ServiceException;
 }

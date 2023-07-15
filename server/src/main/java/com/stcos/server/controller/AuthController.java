@@ -98,7 +98,6 @@ public class AuthController implements AuthApi {
         return response;
     }
 
-
     @Override
     public ResponseEntity<Void> logout() {
         try {

@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
 /**
- * 这个服务接口提供了管理 'Operator' 实体的方法啊啊啊啊啊
+ * 设置服务接口，用于获取平台中的设置信息
  *
  * @author Kekwy
  * @version 1.0

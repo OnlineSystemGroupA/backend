@@ -6,6 +6,9 @@ import com.stcos.server.exception.ServerErrorException;
 
 import java.util.List;
 
+/**
+ * 样品元数据服务接口，用于操作样品元数据和权限
+ */
 public interface SampleMetadataService extends IService<SampleMetadata> {
     /**
      * 创建新的样品元数据

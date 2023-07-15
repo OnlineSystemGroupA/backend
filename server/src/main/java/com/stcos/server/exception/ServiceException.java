@@ -12,7 +12,6 @@ import lombok.EqualsAndHashCode;
  * @since 2023/5/3 11:20
  */
 
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor

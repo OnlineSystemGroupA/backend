@@ -5,7 +5,8 @@ import com.stcos.server.model.Setting;
 import org.springframework.stereotype.Repository;
 
 /**
- * description
+ * 对 Setting 实体进行操作的 Mapper 接口
+ * 提供了对数据库中设置表进行 CRUD 操作的方法
  *
  * @author Kekwy
  * @version 1.0
@@ -14,4 +15,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SettingMapper extends BaseMapper<Setting> {
+
 }

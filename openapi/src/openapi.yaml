@@ -348,28 +348,6 @@ paths:
         '460':
           description: 未满足完成条件
 
-  /workflow/processes/{processId}:
-    parameters:
-      - name: processId
-        in: path
-        description: 流程实例 Id
-        required: true
-        schema:
-          type: string
-    delete:
-      tags:
-        - admin
-      summary: 删除流程
-      description: 管理员删除流程
-      operationId: deleteProcess
-      responses:
-        '200':
-          description: 成功删除指定流程
-        '403':
-          description: 指定流程对该用户不可见
-        '404':
-          description: 指定流程不存在
-
   /workflow/processes/{processId}/details:
     parameters:
       - name: processId

@@ -8,7 +8,7 @@ import org.apache.commons.text.StringSubstitutor;
 import java.util.Map;
 
 /**
- * description
+ * 邮件内容
  *
  * @author Kekwy
  * @version 1.0

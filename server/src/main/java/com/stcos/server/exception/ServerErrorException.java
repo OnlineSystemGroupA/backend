@@ -1,7 +1,7 @@
 package com.stcos.server.exception;
 
 /**
- * 后端遇到无法恢复，需要结束请求的异常时抛出
+ * 当后端遇到无法恢复的错误，需要结束请求时，抛出该异常
  *
  * @author Kekwy
  * @version 1.0
@@ -9,8 +9,12 @@ package com.stcos.server.exception;
  */
 public class ServerErrorException extends RuntimeException {
 
+    /**
+     * 用指定的原因构造新的服务器错误异常。原因用来记录导致这个异常的底层错误
+     *
+     * @param cause 产生这个异常的原因
+     */
     public ServerErrorException(Throwable cause) {
         super(cause);
     }
-
 }

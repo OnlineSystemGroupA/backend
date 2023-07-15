@@ -6,6 +6,9 @@ import com.stcos.server.exception.ServerErrorException;
 
 import java.time.LocalDateTime;
 
+/**
+ * 文件元数据服务接口，用于处理文件元数据相关的操作
+ */
 public interface FileMetadataService extends IService<FileMetadata> {
     /**
      * 创建一个新的文件元数据记录并保存到数据库

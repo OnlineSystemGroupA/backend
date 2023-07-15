@@ -13,7 +13,7 @@ import org.springframework.util.ReflectionUtils;
 import java.util.Objects;
 
 /**
- * 对mongodb保存过程进行监听，实现主键的递增替换
+ * 对 mongodb 保存过程进行监听，实现主键的递增替换
  */
 @Component
 public class SaveMongoEventListener extends AbstractMongoEventListener<Object> {

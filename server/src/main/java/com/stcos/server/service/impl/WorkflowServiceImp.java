@@ -298,16 +298,10 @@ public class WorkflowServiceImp implements WorkflowService {
     public void saveFileForm(String processId, String formType, MultipartFile file) throws ServiceException {
         Long formMetadataId = getFormMetadataId(processId, formType);           // 判断 processId 对应的流程是否存在，并获取表单元数据 ID
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); //指定流程实例对当前登录用户不可见
+        if (!user.hasProcessInstance(processId)) throw new ServiceException(0); // 指定流程实例对当前登录用户不可见
         if (!formService.hasWritePermission(formMetadataId, user.getUid())) throw new ServiceException(1);
         fileService.saveFormPdf(processId, file, formType);
     }
-
-    @Override
-    public void deleteProcess(String processId) throws ServiceException {
-
-    }
-
 
     @Override
     public List<FormInfoDto> getFormInfo(String processId) throws ServiceException {

@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * description
+ * 表单工具类，用于处理与表单相关的操作
  *
  * @author Kekwy
  * @version 1.0

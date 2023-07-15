@@ -10,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.List;
 
+/**
+ * 文件服务接口，用于处理文件相关的操作
+ */
 public interface FileService {
 
     /**

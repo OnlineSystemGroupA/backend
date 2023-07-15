@@ -93,6 +93,12 @@ public interface FormMetadataService extends IService<FormMetadata> {
      */
     Long getFormId(Long formMetadataId);
 
+    /**
+     * 设置表单状态
+     *
+     * @param formMetadataId 表单元数据 ID
+     * @param formState 更新后的表单状态
+     */
     void setFormState(Long formMetadataId, String formState);
 }
 

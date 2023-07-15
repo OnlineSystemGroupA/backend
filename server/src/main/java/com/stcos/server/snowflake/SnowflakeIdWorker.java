@@ -1,5 +1,8 @@
 package com.stcos.server.snowflake;
 
+/**
+ * 雪花算法生成器，用于生成全局唯一的 ID
+ */
 public class SnowflakeIdWorker {
     // ==============================Fields==================
     /**

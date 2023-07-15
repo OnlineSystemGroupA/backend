@@ -4,8 +4,7 @@ import com.stcos.server.exception.ServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * 用户认证业务：
- * 注册、登录、登出。
+ * 用户认证业务：注册、登录、登出
  *
  * @author Kekwy
  * @version 1.0

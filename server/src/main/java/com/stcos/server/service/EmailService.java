@@ -1,7 +1,7 @@
 package com.stcos.server.service;
 
 /**
- * description
+ * 邮件服务接口，用于发送邮件
  *
  * @author Kekwy
  * @version 1.0

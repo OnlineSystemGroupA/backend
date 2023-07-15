@@ -163,8 +163,6 @@ public class WorkflowController implements WorkflowApi {
         return response;
     }
 
-
-    /**/
     @Override
     public ResponseEntity<FileMetadataDto> uploadFileSample(String processId, MultipartFile file) {
         ResponseEntity<FileMetadataDto> response = null;
@@ -270,23 +268,6 @@ public class WorkflowController implements WorkflowApi {
                 case 0 -> result = ResponseEntity.status(403).build();  // 目标流程实例当前登录用户不可见
                 case 1 -> result = ResponseEntity.status(404).build();  // 目标用户不存在
                 case 2 -> result = ResponseEntity.status(409).build();  // 当前任务阶段不允许设置该角色的参与者
-            }
-        }
-        if (result == null) {
-            result = ResponseEntity.ok().build();
-        }
-        return result;
-    }
-
-    @Override
-    @Secured("ROLE_ADMIN")      // 只有管理员可以执行删除流程实例操作
-    public ResponseEntity<Void> deleteProcess(String processId) {
-        ResponseEntity<Void> result = null;
-        try {
-            workflowService.deleteProcess(processId);
-        } catch (ServiceException e) {
-            if (e.getCode() == 0) {
-                result = ResponseEntity.status(404).build();  // 指定流程不存在
             }
         }
         if (result == null) {

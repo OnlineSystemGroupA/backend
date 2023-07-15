@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 文件元数据对象，用于存储文件的元数据信息
+ */
 @Data
 @NoArgsConstructor
 @TableName("t_file_metadata")

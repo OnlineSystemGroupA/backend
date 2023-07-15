@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Properties;
 
 /**
- * description
+ * 邮件服务实现类
  *
  * @author Kekwy
  * @version 1.0

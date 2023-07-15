@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * description
+ * List 类型处理器，用于将 List 对象转换为数据库字段进行存储和从数据库字段进行读取
  *
  * @author Kekwy
  * @version 1.0
@@ -19,6 +19,7 @@ import java.util.List;
  */
 @SuppressWarnings("rawtypes")
 public class ListTypeHandler extends BaseTypeHandler<List> {
+
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, JSONUtil.toJSONString(parameter));

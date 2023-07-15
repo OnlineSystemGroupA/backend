@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * description
+ * 流程记录服务实现类
  *
  * @author Kekwy
  * @version 1.0
@@ -30,7 +30,4 @@ public class ProcessRecordServiceImp implements ProcessRecordService {
     public ProcessRecord selectProcessRecordById(Long projectId){
         return processRecordRepository.findById(projectId).get();
     }
-
-
-
 }

@@ -17,7 +17,6 @@ import java.util.Objects;
  * @version 1.0
  * @since 2023/5/20 14:09
  */
-
 @Data
 @Accessors(chain = true)
 public class ProcessDetails {

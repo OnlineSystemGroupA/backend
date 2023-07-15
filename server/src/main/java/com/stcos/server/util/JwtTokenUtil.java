@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * JWT Token 工具类，用于生成和验证 JSON Web Tokens (JWT)
+ */
 @UtilityClass
 public class JwtTokenUtil {
 

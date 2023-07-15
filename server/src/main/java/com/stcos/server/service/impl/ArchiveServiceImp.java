@@ -3,7 +3,6 @@ package com.stcos.server.service.impl;
 import com.stcos.server.exception.ServiceException;
 import com.stcos.server.model.dto.FormInfoDto;
 import com.stcos.server.model.form.Form;
-import com.stcos.server.model.form.FormType;
 import com.stcos.server.model.process.ProcessDetails;
 import com.stcos.server.model.process.ProcessRecord;
 import com.stcos.server.model.user.Admin;
@@ -12,13 +11,10 @@ import com.stcos.server.service.ArchiveService;
 import com.stcos.server.service.FormService;
 import com.stcos.server.service.ProcessDetailsService;
 import com.stcos.server.service.ProcessRecordService;
-import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -45,21 +41,10 @@ public class ArchiveServiceImp implements ArchiveService {
         this.formService = formService;
     }
 
-    public ProcessRecord getProcessRecord(String processId) {
-//        if (!user.hasProcessInstance(processId)) throw new ServiceException(0);
-//        Long projectId = (Long) runtimeService.getVariable(processId, "projectId");
-
-//        return processRecordService.selectProcessRecordById(projectId);
-        return null;
-    }
-
     private final Map<String, Comparator<ProcessRecord>> comparatorMap = new HashMap<>() {{
         put("projectId", Comparator.comparing(ProcessRecord::getProjectId));
-
         put("title", Comparator.comparing(ProcessRecord::getTitle));
         put("startDate", Comparator.comparing(ProcessRecord::getStartDate));
-//        put("assignee", Comparator.comparing(a -> ((LocalDateTime) a.getProcessVariables().get("assignee"))));
-//        put("currentTask", Comparator.comparing(a -> ((String) a.getProcessVariables().get("currentTask"))));
     }};
 
     @Override
@@ -141,6 +126,4 @@ public class ArchiveServiceImp implements ArchiveService {
 
         return processRecordList.subList(beginIndex, toIndex);
     }
-
-
 }

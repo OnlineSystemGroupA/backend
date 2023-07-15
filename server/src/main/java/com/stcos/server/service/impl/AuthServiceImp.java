@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * description
+ * 用户认证实现类
  *
  * @author Mikeal-C
  * @version 1.0
@@ -72,9 +72,8 @@ public class AuthServiceImp implements AuthService {
         return userDetails;
     }
 
-    // 目前不需要实现
     @Override
     public void logout() throws ServiceException {
-    }
 
+    }
 }

@@ -8,7 +8,7 @@ import com.stcos.server.service.SettingService;
 import org.springframework.stereotype.Service;
 
 /**
- * description
+ * 系统设置服务实现类
  *
  * @author Kekwy
  * @version 1.0
@@ -23,8 +23,7 @@ public class SettingServiceImp extends ServiceImpl<SettingMapper, Setting> imple
         try {
             return baseMapper.selectById("marketingManager").getSettingVal();
         } catch (NullPointerException e) {
-            // 一般情况下，该返回值不能为 null，
-            // 若为 null 则说明发生错误
+            // 一般情况下，该返回值不能为 null，若为 null 则说明发生错误
             throw new ServerErrorException(e);
         }
     }

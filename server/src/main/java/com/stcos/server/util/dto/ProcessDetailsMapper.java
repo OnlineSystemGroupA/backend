@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import static com.stcos.server.model.process.ProcessVariables.VAR_ASSIGNEE;
 
 /**
- * description
+ * 这是一个映射工具类，主要用于将 ProcessDetails 对象映射为 ProcessDetailsDto 对象
  *
  * @author Kekwy
  * @version 1.0
@@ -22,9 +22,11 @@ import static com.stcos.server.model.process.ProcessVariables.VAR_ASSIGNEE;
 public class ProcessDetailsMapper {
 
     /**
-     * @param processDetails
-     * @param task
-     * @return
+     * 将 ProcessDetails 和 Task 对象映射为 ProcessDetailsDto 对象
+     *
+     * @param processDetails 要被映射的 ProcessDetails 对象
+     * @param task 要被映射的 Task 对象
+     * @return 映射后的 ProcessDetailsDto 对象
      */
     public ProcessDetailsDto toProcessDetailsDto(ProcessDetails processDetails, Task task) {
         String currentTaskName = task.getName();
@@ -57,6 +59,12 @@ public class ProcessDetailsMapper {
         );
     }
 
+    /**
+     * 将 ProcessDetails 对象映射为 ProcessDetailsDto 对象
+     *
+     * @param processDetails 要被映射的 ProcessDetails 对象
+     * @return 映射后的 ProcessDetailsDto 对象
+     */
     public static ProcessDetailsDto toProcessDetailsDto(ProcessDetails processDetails) {
 
         return new ProcessDetailsDto(

@@ -7,6 +7,9 @@ import com.stcos.server.exception.ServiceException;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * 表单服务接口，用于操作表单数据和权限
+ */
 public interface FormService {
     /**
      * 根据表单元数据 ID 和用户 ID 获取表单对象
